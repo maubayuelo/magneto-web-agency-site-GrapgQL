@@ -1,0 +1,65 @@
+// Calendly Button Styles
+// src/components/atoms/CalendlyButton/CalendlyButton.scss
+
+.calendly-button {
+  position: relative;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &.btn-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// Loading spinner for when Calendly is loading
+.calendly-loading {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: calendly-spin 1s linear infinite;
+  }
+  
+  & > * {
+    opacity: 0;
+  }
+}
+
+@keyframes calendly-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+// Calendly modal customization (if needed)
+.calendly-overlay {
+  z-index: 10000;
+}
+
+.calendly-popup {
+  z-index: 10001;
+}

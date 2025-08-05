@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CalendlyButton } from '../../atoms';
 import './Hero.scss';
 
 export interface HeroProps {
@@ -17,6 +18,9 @@ export interface HeroProps {
     text: string;
     href?: string;
     onClick?: () => void;
+    type?: 'link' | 'calendly' | 'button';
+    utmContent?: string;
+    utmTerm?: string;
   } | null;
   backgroundImage?: string;
   showImage?: boolean;
@@ -67,7 +71,15 @@ export function Hero({
         {children}
         {cta && (
           <div className="hero-cta-wrapper">
-            {cta.href ? (
+            {cta.type === 'calendly' ? (
+              <CalendlyButton 
+                utmContent={cta.utmContent}
+                utmTerm={cta.utmTerm}
+                className="btn btn-primary"
+              >
+                {cta.text}
+              </CalendlyButton>
+            ) : cta.href ? (
               <a href={cta.href} className="btn btn-primary">
                 {cta.text}
               </a>

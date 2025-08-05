@@ -46,7 +46,9 @@ export default function Home() {
         showImage={true}
         cta={{
           text: "Book a Free Strategy Call",
-          href: "/contact"
+          type: "calendly",
+          utmContent: "hero_home",
+          utmTerm: "strategy_call"
         }}
       />
       <AboutSection />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconComponent } from '../../atoms';
+import { IconComponent, CalendlyButton } from '../../atoms';
 import Image from 'next/image';
 import './PackageCard.scss';
 
@@ -16,6 +16,8 @@ export interface PackageCardProps {
   isPopular?: boolean;
   ctaText?: string;
   ctaHref?: string;
+  ctaType?: 'link' | 'calendly';
+  utmContent?: string;
   variant?: 'default' | 'popular';
   icon?: string;
 }
@@ -29,6 +31,8 @@ const PackageCard: React.FC<PackageCardProps> = ({
   isPopular = false,
   ctaText = 'Book a Free Strategy Call',
   ctaHref = '/contact',
+  ctaType = 'calendly',
+  utmContent,
   variant = 'default',
   icon = '/assets/images/ico-services-web-dev.svg'
 }) => {
@@ -57,9 +61,19 @@ const PackageCard: React.FC<PackageCardProps> = ({
         <p className="typo-md-medium m-0">{description}</p>
       </div>
       
-      <a href={ctaHref} className="btn btn-primary btn-medium">
+      {ctaType === 'calendly' ? (
+        <CalendlyButton 
+          className="btn btn-primary btn-medium"
+          utmContent={utmContent || `package_${title.toLowerCase()}`}
+          utmTerm="strategy_call"
+        >
+          {ctaText}
+        </CalendlyButton>
+      ) : (
+        <a href={ctaHref} className="btn btn-primary btn-medium">
           {ctaText}
         </a>
+      )}
       
       <div className="package-card__features">
         <h4 className="typo-md-extrabold m-0">What&apos;s included:</h4>

@@ -77,7 +77,9 @@ export default function PackagesPage() {
         showImage={false}
         cta={{
           text: "Book a Free Strategy Call",
-          href: "/contact"
+          type: "calendly",
+          utmContent: "hero_packages",
+          utmTerm: "strategy_call"
         }}
       />
       <div className="main typo-center">

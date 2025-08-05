@@ -1,4 +1,5 @@
 import { Hero } from '../../components/organisms';
+import { CalendlyButton } from '../../components/atoms';
 import Image from 'next/image';
 import '../../styles/pages/about.scss';
 
@@ -14,7 +15,9 @@ export default function AboutPage() {
         showImage={false}
         cta={{
           text: "Book a Free Strategy Call",
-          href: "/contact"
+          type: "calendly",
+          utmContent: "hero_about",
+          utmTerm: "strategy_call"
         }}
       />
       <div className='main'>
@@ -58,7 +61,13 @@ export default function AboutPage() {
                 <h3 className="typo-2xl-extrabold hero-title m-0">Ready to Bring Your Vision to Life?</h3>
                 <p className="typo-lg-medium hero-title m-0">Let&apos;s talk about how we can build a bold, strategic online presence for your brand. Whether you&apos;re starting fresh or scaling up, I&apos;ll help you map out the next steps — clearly and confidently.</p>
                 
-                  <a href="#" className="btn btn-secondary">Book a Free Strategy Call</a>
+                <CalendlyButton 
+                  variant="secondary"
+                  utmContent="about_bottom"
+                  utmTerm="strategy_call"
+                >
+                  Book a Free Strategy Call
+                </CalendlyButton>
                 
               </div>
             </div>

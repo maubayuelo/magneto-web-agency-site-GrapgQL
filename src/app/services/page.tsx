@@ -12,7 +12,9 @@ export default function ServicesPage() {
         showImage={false}
         cta={{
           text: "Book a Free Strategy Call",
-          href: "/contact"
+          type: "calendly",
+          utmContent: "hero_services",
+          utmTerm: "strategy_call"
         }}
       />
       <div className="main">

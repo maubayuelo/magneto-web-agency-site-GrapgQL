@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { CalendlyButton } from '../../atoms';
 import { PreFooterProps } from './types';
 import './PreFooter.scss';
 
@@ -9,6 +10,8 @@ export const PreFooter: React.FC<PreFooterProps> = ({
   title = "Stop losing leads. Start converting.",
   subtitle = "Request your free funnel quote today and find out what's holding you back.",
   buttonText = "Request Free Quote",
+  ctaType = 'calendly',
+  utmContent = 'prefooter',
   className = '',
   show = true
 }) => {
@@ -34,13 +37,23 @@ export const PreFooter: React.FC<PreFooterProps> = ({
               {subtitle}
             </p>
           </div>
-          <a 
-            className="btn btn-primary"
-            onClick={handleQuoteRequest}
-            type="button"
-          >
-            {buttonText}
-          </a>
+          {ctaType === 'calendly' ? (
+            <CalendlyButton 
+              className="btn btn-primary"
+              utmContent={utmContent}
+              utmTerm="free_quote"
+            >
+              {buttonText}
+            </CalendlyButton>
+          ) : (
+            <a 
+              className="btn btn-primary"
+              onClick={handleQuoteRequest}
+              type="button"
+            >
+              {buttonText}
+            </a>
+          )}
         </div>
       </div>
     </section>
