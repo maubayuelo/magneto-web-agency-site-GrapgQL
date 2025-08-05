@@ -151,10 +151,9 @@ export const openCalendlyPopup = async (options?: {
 /**
  * Track Calendly events
  */
-export const trackCalendlyEvent = (eventName: string, properties?: Record<string, unknown>) => {
-  if (typeof window !== 'undefined' && (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag) {
-    const gtag = (window as unknown as { gtag: (...args: unknown[]) => void }).gtag;
-    gtag('event', eventName, {
+export const trackCalendlyEvent = (eventName: string, properties?: Record<string, any>) => {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', eventName, {
       event_category: 'calendly',
       ...properties
     });
