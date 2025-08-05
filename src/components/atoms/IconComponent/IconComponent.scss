@@ -1,0 +1,54 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.icon-component {
+  background: $primary-color-light;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  // Small size - responsive (24x24px mobile/tablet → 30x30px desktop)
+  &--sm {
+    width: 30px;
+      height: 30px;
+    
+    .icon-component__placeholder {
+      width: 18px;
+        height: 18px;
+    }
+  }
+  
+  // Medium size - responsive (36x36px mobile/tablet → 48x48px desktop)
+  &--md {
+    width: 36px;
+    height: 36px;
+    
+    @include media-desktop-up {
+      width: 48px;
+      height: 48px;
+    }
+    
+    .icon-component__placeholder {
+      width: 24px;
+      height: 24px;
+      
+      @include media-desktop-up {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+  
+  &__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}

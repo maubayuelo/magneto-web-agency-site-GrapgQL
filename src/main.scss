@@ -1,0 +1,18 @@
+// 1. Variables and Mixins
+@import "./styles/variables";
+@import "./styles/mixins";
+@import "./styles/helpers";
+
+// 2. Typography and Global Styles
+@import "./styles/typography";
+@import "./styles/globals";
+
+// 3. Global Components (only generic/reusable styles)
+@import "./styles/components/button";
+@import "./styles/components/card";
+@import "./styles/components/form-field";
+@import "./styles/components/contact-form";
+
+// 4. Pages (page-specific styles)
+@import "./styles/pages/home";
+@import "./styles/pages/contact";

@@ -1,0 +1,36 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+@import "../../../styles/typography";
+
+.service-card {
+    @include card-base;
+    @include flex-column;
+    gap: $spacing-15;
+    padding: $spacing-15;
+
+    @include media-tablet-up {
+        padding: $spacing-15;
+        gap: $spacing-15;
+    }
+
+    @include media-desktop-up {
+        padding: $spacing-30;
+    }
+
+    &__content {
+        @include flex-column;
+        gap: $spacing-10;
+        flex: 1;
+    }
+
+    &__title {
+        margin: 0;
+    }
+
+    &__link {
+        color: $primary-color;
+        :hover {
+            color: $primary-color-dark;
+        }
+    }
+}

@@ -1,0 +1,63 @@
+// Define SCSS variables here
+
+$white: #ffffff;
+$black: #171717;
+$primary-color: #705af8;
+$primary-color-light: #e7e1ff;
+$primary-color-dark: #371b97;
+$success-color: #22c55e;
+
+// Gray scale variables (10-90)
+$gray-10: #f8f8f8;
+$gray-20: #f0f0f0;
+$gray-30: #e8e8e8;
+$gray-40: #dbdbdb;
+$gray-50: #c0c0c0;
+$gray-60: #a8a8a8;
+$gray-70: #909090;
+$gray-80: #787878;
+$gray-90: #606060;
+
+// Font variables
+$font-family: "DM Sans", sans-serif;
+$font-size-base: 16px;
+$font-weight-regular: 500;
+$font-weight-bold: 700;
+$font-weight-black: 900;
+
+// spacing variables
+$spacing-5: 5px;
+$spacing-10: 10px;
+$spacing-15: 15px;
+$spacing-20: 20px;
+$spacing-25: 25px;
+$spacing-30: 30px;
+$spacing-45: 45px;
+$spacing-60: 60px;
+$spacing-90: 90px;
+$spacing-120: 120px;
+
+// Breakpoint variables (mobile-first approach)
+$breakpoint-phone: 600px;
+$breakpoint-tablet: 601px;
+$breakpoint-desktop: 1024px;
+$breakpoint-desktop-lg: 1400px;
+$breakpoint-desktop-xl: 1600px;
+
+// Border radius variables (mobile-first)
+$border-radius-mobile: 15px;
+$border-radius-tablet: 24px;
+$border-radius-desktop: 30px;
+
+// Responsive border-radius mixin (mobile-first)
+@mixin responsive-border-radius {
+    border-radius: $border-radius-mobile;
+
+    @media (min-width: $breakpoint-tablet) {
+        border-radius: $border-radius-tablet;
+    }
+
+    @media (min-width: $breakpoint-desktop) {
+        border-radius: $border-radius-desktop;
+    }
+}

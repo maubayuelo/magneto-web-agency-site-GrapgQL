@@ -1,0 +1,83 @@
+// Unified Button System - Simplified and consistent design system
+// Import variables for consistency
+@import "../variables";
+@import "../typography";
+
+a {
+    color: $black;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: $primary-color;
+        text-decoration: none;
+    }
+}
+
+// Base button styles - shared by all button types
+.btn {
+    @include font-style(sm, bold, sm);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: $spacing-10;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    border-radius: $spacing-10;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    padding: $spacing-15 $spacing-30; // Default padding (was cta size)
+
+    // Antialiasing for crisp button text rendering
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+// Primary button variant - blue background
+.btn-primary {
+    background-color: $primary-color;
+    color: $white;
+}
+
+.btn-primary:hover {
+    color: $white;
+    background-color: $primary-color-dark;
+    text-decoration: none;
+}
+
+.btn-primary:active {
+    color: $white;
+    background-color: $primary-color-dark;
+    text-decoration: none;
+}
+
+// Secondary button variant - white background with border
+.btn-secondary {
+    background-color: $white;
+    color: $primary-color;
+    border: 2px solid $primary-color;
+}
+
+.btn-secondary:hover {
+    background-color: $primary-color-light;
+    text-decoration: none;
+}
+
+.btn-secondary:active {
+    background-color: $primary-color-light;
+    text-decoration: none;
+}
+
+// Size variants
+.btn-small {
+    padding: 6px 10px;
+    // Keep using font-style(sm, bold, sm) from .btn
+}
+
+.btn-large {
+    @include font-style(md, bold, md);
+    padding: $spacing-15 $spacing-30;
+}

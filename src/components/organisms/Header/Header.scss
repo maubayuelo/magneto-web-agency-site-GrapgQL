@@ -1,0 +1,118 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+@import "../../../styles/typography";
+
+.header {
+    display: flex;
+    width: 100%; // Make header take full width
+    background-color: $white;
+    &.scrolled{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease-in-out;
+    }
+    .main {
+        align-items: center;
+        align-self: stretch;
+        flex-direction: row;
+        align-content: center;
+        justify-content: space-between;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        .logo {
+            display: flex;
+            width: 84px; // Mobile-first: start with smaller logo
+            height: auto;
+
+            @media (min-width: $breakpoint-desktop) {
+                width: 100px; // Larger logo for desktop
+            }
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    ul {
+        &.nav {
+            display: none; // Mobile-first: hide desktop nav by default
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+            align-items: center;
+            @media (min-width: $breakpoint-desktop) {
+                display: flex; // Show desktop nav on larger screens
+            }
+            li {
+                margin-bottom: 0;
+            }
+        }
+
+        &.nav_mobile {
+            display: flex; // Mobile-first: show mobile nav by default
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            gap: 15px;
+            align-items: center;
+
+            @media (min-width: $breakpoint-desktop) {
+                display: none; // Hide mobile nav on larger screens
+            }
+
+            li {
+                margin-bottom: 0;
+                a {
+                display: flex;
+                align-items: center;
+            }
+        }
+        }
+    }
+}
+
+.nav_mobile__menu {
+    margin: 0;
+    background-color: #705af8;
+    padding: 20px; // Mobile-first: smaller padding
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    height: calc(100vh - 45px); // Full height minus header height
+    width: calc(100% - 40px); // Mobile-first: account for smaller padding
+    position: fixed;
+    top: 44px;
+    z-index: 5;
+    gap: $spacing-30; // Mobile-first: smaller gap
+    justify-content: center;
+    align-items: center;
+    @media (min-width: $breakpoint-tablet) {
+        gap: $spacing-30; // Larger gap for tablets and up
+    }
+
+    li {
+        a {
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            @include font-style(sm, extrabold, sm);
+
+            @media (min-width: $breakpoint-tablet) {
+                @include font-style(md, extrabold, md);
+            }
+
+            &:hover {
+                color: #d1c4e9;
+            }
+        }
+    }
+}

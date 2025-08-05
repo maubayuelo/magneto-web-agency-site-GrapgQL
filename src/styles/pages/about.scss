@@ -1,0 +1,88 @@
+// About page styles - mobile first approach
+@import "../variables";
+@import "../mixins";
+
+.about-hero-section {
+    @include flex-column;
+    gap: $spacing-10;
+
+    @include media-tablet-up {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: $spacing-30;
+    }
+
+    @include media-desktop-up {
+        gap: $spacing-60;
+    }
+}
+
+.about-profile-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    align-self: center;
+
+    @include media-tablet-up {
+        width: 210px;
+        height: 210px;
+        align-self: flex-start;
+    }
+
+    @include media-desktop-up {
+        width: 450px;
+        height: 450px;
+    }
+}
+
+.about-content-wrapper {
+    @include flex-column;
+    gap: $spacing-30;
+    flex: 1;
+}
+
+.about-section {
+    @include flex-column;
+    gap: $spacing-10;
+}
+
+.about-linkedin-link {
+    @include flex-center;
+    gap: 3px;
+    align-self: flex-start;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.about-linkedin-icon {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    overflow: hidden;
+
+    @include media-tablet-up {
+        width: 18px;
+        height: 18px;
+    }
+
+    @include media-desktop-up {
+        width: 20px;
+        height: 20px;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 60%;
+        left: 20%;
+        top: 20%;
+        outline: 2px $primary-color solid;
+        outline-offset: -1px;
+    }
+}

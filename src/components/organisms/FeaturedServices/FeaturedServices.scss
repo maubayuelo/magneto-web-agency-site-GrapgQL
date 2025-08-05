@@ -1,0 +1,58 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+@import "../../../styles/typography";
+
+.services-section {
+    width: 100%;
+    align-self: stretch;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: $spacing-5; // Smaller gap on mobile
+    display: flex;
+    flex-direction: column; // Stack vertically on mobile
+    // Tablet and up
+    @media (min-width: $breakpoint-phone) {
+        gap: $spacing-15;
+        flex-direction: row; // Side by side on larger screens
+    }
+    // Desktop and up
+    @media (min-width: $breakpoint-desktop) {
+        gap: $spacing-30;
+    }
+
+    &__title {
+        text-align: left;
+        width: min-content;
+        width: 100%;
+
+        // Tablet and up
+        @media (min-width: $breakpoint-phone) {
+            width: $spacing-120;
+            flex-shrink: 0;
+        }
+
+        // Desktop and up
+        @media (min-width: $breakpoint-desktop) {
+            width: 250px;
+            text-align: left;
+        }
+    }
+
+    &__grid {
+        width: 100%;
+        display: grid;
+        gap: $spacing-15;
+        grid-template-columns: 1fr;
+
+        @include media-breakpoint-up(sm) {
+            grid-template-columns: repeat(2, 1fr);
+            gap: $spacing-15;
+        }
+
+        @include media-breakpoint-up(lg) {
+            flex: 1;
+            grid-template-columns: repeat(2, 1fr);
+            gap: $spacing-30;
+        }
+    }
+}

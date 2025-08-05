@@ -1,0 +1,37 @@
+@import "variables";
+
+// Global SCSS (custom variables)
+:root {
+    --background: #{$white};
+    --foreground: #{$black};
+    --primary-500: #{$primary-color};
+    --font-main: #{$font-family};
+    // ...other variables
+}
+
+body {
+    background: var(--background);
+    color: var(--foreground);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    .main {
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        padding-left: 15px;
+        padding-right: 15px;
+        width: calc(100% - 30px);
+        max-width: 100%; // Mobile-first: full width
+
+        @include media-desktop-up {
+            padding-left: 30px;
+            padding-right: 30px;
+            width: calc(100% - 60px);
+            max-width: 1200px;
+        }
+    }
+}
+
+

@@ -1,0 +1,82 @@
+// Import variables to access breakpoints
+@import "variables";
+
+// Media query mixins using unified breakpoints (mobile-first)
+@mixin media-phone-up {
+    @media (min-width: $breakpoint-phone) {
+        @content;
+    }
+}
+
+@mixin media-tablet-up {
+    @media (min-width: $breakpoint-tablet) {
+        @content;
+    }
+}
+
+@mixin media-desktop-up {
+    @media (min-width: $breakpoint-desktop) {
+        @content;
+    }
+}
+
+// Legacy support - map old breakpoint names to new ones
+@mixin media-breakpoint-up($name) {
+    @if $name == "sm" {
+        @include media-phone-up {
+            @content;
+        }
+    } @else if $name == "md" {
+        @include media-tablet-up {
+            @content;
+        }
+    } @else if $name == "lg" {
+        @include media-desktop-up {
+            @content;
+        }
+    } @else {
+        // For other breakpoints, use original system as fallback
+        $breakpoints: (
+            xs: 0,
+            sm: 576px,
+            md: 768px,
+            lg: 992px,
+            xl: 1200px,
+            xxl: 1400px,
+        );
+        $min: map-get($breakpoints, $name);
+
+        @if $min != 0 {
+            @media (min-width: $min) {
+                @content;
+            }
+        } @else {
+            @content;
+        }
+    }
+}
+
+// Flexbox utilities
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+// Card styling mixin
+@mixin card-base {
+    @include responsive-border-radius;
+    background: $white;
+    border: 1px solid $gray-50;
+}

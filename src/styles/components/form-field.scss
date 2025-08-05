@@ -1,0 +1,92 @@
+// Form Field Component Styles
+// Reusable form field component that follows the design system
+
+@import "../variables";
+@import "../typography";
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-10;
+  width: 100%;
+}
+
+.form-field__label {
+  @include font-style(md, black, lg);
+  color: $black;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.form-field__required {
+  color: #e74c3c;
+  font-weight: $font-weight-bold;
+}
+
+.form-field__control {
+  @include font-style(sm, regular, md);
+  //width: 100%;
+  padding: 14px 16px;
+  background: $white;
+  border: 2px solid $gray-40;
+  border-radius: 8px;
+  color: $black;
+  transition: all 0.2s ease;
+  box-shadow: 0px 3px 6px -3px rgba(0, 0, 0, 0.05);
+  
+  &::placeholder {
+    color: #a5a5a5;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0px 3px 6px -3px rgba(112, 90, 248, 0.15);
+  }
+  
+  &:hover:not(:focus) {
+    border-color: $gray-50;
+  }
+}
+
+.form-field__select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
+  appearance: none;
+}
+
+// Textarea specific styles
+textarea.form-field__control {
+  resize: vertical;
+  min-height: 100px;
+  font-family: $font-family;
+  line-height: 1.5;
+}
+
+// Error state
+.form-field--error {
+  .form-field__control {
+    border-color: #e74c3c;
+    
+    &:focus {
+      border-color: #e74c3c;
+      box-shadow: 0px 3px 6px -3px rgba(231, 76, 60, 0.15);
+    }
+  }
+}
+
+// Disabled state
+.form-field__control:disabled {
+  background-color: $gray-20;
+  color: $gray-70;
+  cursor: not-allowed;
+  
+  &::placeholder {
+    color: $gray-60;
+  }
+}

@@ -1,0 +1,272 @@
+// Margin helpers
+.m-0 {
+    margin: 0 !important;
+} // m-reseted
+.m-15 {
+    margin: $spacing-15;
+} // m-xs
+.m-30 {
+    margin: $spacing-30;
+} // m-sm
+.m-60 {
+    margin: $spacing-60;
+} // m-lg
+.m-90 {
+    margin: $spacing-90;
+} // m-xl
+.m-120 {
+    margin: $spacing-120;
+} // m-xxl
+
+.mt-15 {
+    margin-top: $spacing-15;
+}
+.mt-30 {
+    margin-top: $spacing-30;
+}
+.mt-60 {
+    margin-top: $spacing-60;
+}
+.mt-90 {
+    margin-top: $spacing-90;
+}
+.mt-120 {
+    margin-top: $spacing-120;
+}
+
+.mb-15 {
+    margin-bottom: $spacing-15;
+}
+.mb-30 {
+    margin-bottom: $spacing-30;
+}
+.mb-60 {
+    margin-bottom: $spacing-60;
+}
+.mb-90 {
+    margin-bottom: $spacing-90;
+}
+.mb-120 {
+    margin-bottom: $spacing-120;
+}
+
+.ml-15 {
+    margin-left: $spacing-15;
+}
+.ml-30 {
+    margin-left: $spacing-30;
+}
+.ml-60 {
+    margin-left: $spacing-60;
+}
+.ml-90 {
+    margin-left: $spacing-90;
+}
+.ml-120 {
+    margin-left: $spacing-120;
+}
+
+.mr-15 {
+    margin-right: $spacing-15;
+}
+.mr-30 {
+    margin-right: $spacing-30;
+}
+.mr-60 {
+    margin-right: $spacing-60;
+}
+.mr-90 {
+    margin-right: $spacing-90;
+}
+.mr-120 {
+    margin-right: $spacing-120;
+}
+
+// Padding helpers
+.p-0 {
+    padding: 0 !important;
+}
+.p-15 {
+    padding: $spacing-15;
+}
+.p-30 {
+    padding: $spacing-30;
+}
+.p-60 {
+    padding: $spacing-60;
+}
+.p-90 {
+    padding: $spacing-90;
+}
+.p-120 {
+    padding: $spacing-120;
+}
+
+.pt-15 {
+    padding-top: $spacing-15;
+}
+.pt-30 {
+    padding-top: $spacing-30;
+}
+.pt-60 {
+    padding-top: $spacing-60;
+}
+.pt-90 {
+    padding-top: $spacing-90;
+}
+.pt-120 {
+    padding-top: $spacing-120;
+}
+
+.pb-15 {
+    padding-bottom: $spacing-15;
+}
+.pb-30 {
+    padding-bottom: $spacing-30;
+}
+.pb-60 {
+    padding-bottom: $spacing-60;
+}
+.pb-90 {
+    padding-bottom: $spacing-90;
+}
+.pb-120 {
+    padding-bottom: $spacing-120;
+}
+
+.pl-15 {
+    padding-left: $spacing-15;
+}
+.pl-30 {
+    padding-left: $spacing-30;
+}
+.pl-60 {
+    padding-left: $spacing-60;
+}
+.pl-90 {
+    padding-left: $spacing-90;
+}
+.pl-120 {
+    padding-left: $spacing-120;
+}
+
+.pr-15 {
+    padding-right: $spacing-15;
+}
+.pr-30 {
+    padding-right: $spacing-30;
+}
+.pr-60 {
+    padding-right: $spacing-60;
+}
+.pr-90 {
+    padding-right: $spacing-90;
+}
+.pr-120 {
+    padding-right: $spacing-120;
+}
+
+// Responsive helpers
+.mt-md-responsive {
+    margin-top: $spacing-15;
+
+    @include media-desktop-up {
+        margin-top: $spacing-30;
+    }
+}
+
+.mb-md-responsive {
+    margin-bottom: $spacing-15;
+
+    @include media-desktop-up {
+        margin-bottom: $spacing-30;
+    }
+}
+
+.pt-md-responsive {
+    padding-top: $spacing-15;
+
+    @include media-desktop-up {
+        padding-top: $spacing-30;
+    }
+}
+
+.pb-md-responsive {
+    padding-bottom: $spacing-15;
+
+    @include media-desktop-up {
+        padding-bottom: $spacing-30;
+    }
+}
+
+.mt-lg-responsive {
+    margin-top: $spacing-30;
+
+    @include media-desktop-up {
+        margin-top: $spacing-60;
+    }
+}
+
+.mb-lg-responsive {
+    margin-bottom: $spacing-30;
+
+    @include media-desktop-up {
+        margin-bottom: $spacing-60;
+    }
+}
+
+.pt-lg-responsive {
+    padding-top: $spacing-30;
+
+    @include media-desktop-up {
+        padding-top: $spacing-60;
+    }
+}
+
+.pb-lg-responsive {
+    padding-bottom: $spacing-30;
+
+    @include media-desktop-up {
+        padding-bottom: $spacing-60;
+    }
+}
+
+.mt-sm-responsive {
+    margin-top: $spacing-10;
+
+    @include media-desktop-up {
+        margin-top: $spacing-15;
+    }
+}
+
+.mb-sm-responsive {
+    margin-bottom: $spacing-10;
+
+    @include media-desktop-up {
+        margin-bottom: $spacing-15;
+    }
+}
+
+.pt-sm-responsive {
+    padding-top: $spacing-10;
+
+    @include media-desktop-up {
+        padding-top: $spacing-15;
+    }
+}
+
+.pb-sm-responsive {
+    padding-bottom: $spacing-10;
+
+    @include media-desktop-up {
+        padding-bottom: $spacing-15;
+    }
+}
+
+.background-primary-color-light {
+    background-color: $primary-color-light;
+}
+
+.background-white {
+    background-color: $white;
+}

@@ -1,0 +1,125 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.hero {
+    align-self: stretch;
+    width: 100%;
+    padding: 30px 15px 0 15px; // Mobile-first: start with mobile padding
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, $black 100%);
+    background-image: url("/assets/images/hero-background.png");
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    @include responsive-border-radius;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    &.hero-home {
+        height: calc(66vh); // Mobile-first: start with mobile height
+
+        @media (min-width: $breakpoint-phone) {
+            padding: 45px 30px 0 30px;
+            height: calc(100vh - 450px);
+        }
+
+        @media (min-width: $breakpoint-desktop) {
+            padding: 60px 30px 0 30px;
+            height: calc(100vh - 240px);
+        }
+
+        @media (min-width: $breakpoint-desktop-lg) {
+            height: calc(100vh - 200px);
+        }
+
+        @media (min-width: $breakpoint-desktop-xl) {
+            height: calc(100vh - 300px);
+        }
+    }
+
+    .hero-content {
+        align-self: stretch;
+        padding-bottom: 45px;
+        height: calc(100% - 45px);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .hero-image {
+        height: 100%;
+        width: 100%;
+        max-height: 300px; // Mobile-first: start with smaller image
+        max-width: 300px;
+        position: absolute;
+        left: 50%;
+        bottom: -30px;
+        transform: translateX(-50%);
+        object-fit: cover;
+        z-index: 1;
+
+        @media (min-width: $breakpoint-phone) {
+            max-height: 450px;
+            max-width: 450px;
+        }
+
+        @media (min-width: $breakpoint-desktop) {
+            max-height: 350px;
+            max-width: 350px;
+        }
+        @media (min-width: $breakpoint-desktop-lg) {
+            max-height: 450px;
+            max-width: 450px;
+        }
+        @media (min-width: $breakpoint-desktop-xl) {
+            max-height: 500px;
+            max-width: 500px;
+        }
+    }
+
+    .hero-title {
+        text-align: center;
+        color: $white;
+        word-break: break-word;
+        z-index: 2;
+        line-height: 30px;
+
+        @media (min-width: $breakpoint-phone) {
+            line-height: inherit;
+        }
+    }
+
+    .hero-subtitle {
+        align-self: stretch;
+        text-align: center;
+        color: $white;
+        word-break: break-word;
+        z-index: 2;
+        line-height: 30px;
+
+        @media (min-width: $breakpoint-phone) {
+            line-height: inherit;
+        }
+    }
+
+    .hero-cta-wrapper {
+        padding-top: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        z-index: 2;
+        text-transform: uppercase;
+
+        // Button specific styles for hero section
+        .btn {
+            font-weight: 900;
+            // External border using box-shadow
+            box-shadow: 0 0 0 5px rgba($white, 0.3); // Creates a 5px white external border
+        }
+    }
+}

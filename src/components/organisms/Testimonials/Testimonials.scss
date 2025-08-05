@@ -1,0 +1,82 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+@import "../../../styles/typography";
+
+.testimonials {
+    flex-direction: column;
+
+    &__grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+
+        gap: $spacing-15;
+        align-items: start;
+        justify-items: stretch;
+
+        @include media-tablet-up {
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: 1fr;
+        }
+
+        @include media-desktop-up {
+            grid-template-columns: repeat(4, 1fr);
+            gap: $spacing-30;
+        }
+    }
+}
+
+.testimonial-card {
+    @include card-base;
+    padding: $spacing-15;
+
+    @include flex-column;
+    gap: $spacing-5;
+    width: 100%;
+    background: $white;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+
+    @include media-tablet-up {
+        padding: $spacing-30;
+        border-radius: $border-radius-tablet;
+    }
+
+    @include media-desktop-up {
+        border-radius: $border-radius-desktop;
+    }
+
+    &__avatar {
+        width: $spacing-60;
+        height: $spacing-60;
+        position: relative;
+        margin-bottom: $spacing-10;
+
+        @include media-phone-up {
+            margin-bottom: $spacing-10;
+        }
+    }
+
+    &__avatar-image {
+        width: $spacing-60;
+        height: $spacing-60;
+        border-radius: 50%;
+        border: 1px solid $gray-60;
+        object-fit: cover;
+    }
+
+    &__quote {
+        @include font-style(sm, medium, sm);
+        color: $black;
+        word-wrap: break-word;
+        flex-grow: 1;
+        margin: 0;
+    }
+
+    &__author {
+        @include font-style(md, extrabold, md);
+        color: $primary-color;
+        word-wrap: break-word;
+        margin-top: auto;
+    }
+}

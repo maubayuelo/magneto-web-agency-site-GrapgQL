@@ -1,0 +1,214 @@
+// Contact Form Styles
+// Specific styles for the contact page form section
+
+@import "../variables";
+@import "../typography";
+@import "../mixins";
+
+.contact-form-container {
+  display: flex;
+  flex-direction: column; // Mobile-first: stacked layout
+  align-items: flex-start;
+  gap: $spacing-30; // Mobile-first: smaller gap
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  @include media-tablet-up {
+    gap: $spacing-45; // Tablet: medium gap
+  }
+  
+  @include media-desktop-up {
+    flex-direction: row; // Desktop: side-by-side layout
+    gap: $spacing-60; // Desktop: larger gap
+  }
+}
+
+.contact-form-content {
+  width: 100%; // Mobile-first: full width
+  
+  @include media-desktop-up {
+    flex: 1;
+    max-width: 600px; // Desktop: constrain width
+  }
+}
+
+.contact-form-header {
+  margin-bottom: $spacing-25; // Mobile-first: smaller spacing
+  text-align: center; // Mobile-first: centered text
+  
+  @include media-tablet-up {
+    margin-bottom: $spacing-30; // Tablet: medium spacing
+  }
+  
+  @include media-desktop-up {
+    margin-bottom: $spacing-45; // Desktop: larger spacing
+    text-align: left; // Desktop: left-aligned text
+  }
+  
+  h2 {
+    font-size: 2rem; // Mobile-first: smaller heading
+    margin-bottom: $spacing-10;
+    
+    @include media-tablet-up {
+      font-size: 2.5rem; // Tablet: medium heading
+      margin-bottom: $spacing-15;
+    }
+    
+    @include media-desktop-up {
+      font-size: 3rem; // Desktop: larger heading
+    }
+  }
+  
+  h3 {
+    font-size: 1.25rem; // Mobile-first: smaller subheading
+    margin-bottom: $spacing-15;
+    
+    @include media-tablet-up {
+      font-size: 1.5rem; // Tablet: medium subheading
+      margin-bottom: $spacing-20;
+    }
+    
+    @include media-desktop-up {
+      font-size: 1.75rem; // Desktop: larger subheading
+    }
+  }
+  
+  p {
+    margin-bottom: 0;
+    line-height: 1.6; // Mobile-first: good readability
+    
+    @include media-desktop-up {
+      line-height: 1.5; // Desktop: slightly tighter
+    }
+  }
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-20; // Mobile-first: smaller gap
+  
+  @include media-tablet-up {
+    gap: $spacing-25; // Tablet: medium gap
+  }
+  
+  @include media-desktop-up {
+    gap: $spacing-30; // Desktop: larger gap
+  }
+}
+
+.contact-form-submit {
+  align-self: stretch; // Mobile-first: full width button
+  margin-top: $spacing-10;
+  min-width: 140px;
+  
+  @include media-tablet-up {
+    align-self: center; // Tablet: centered button
+    min-width: 200px;
+    width: auto; // Override stretch
+  }
+  
+  @include media-desktop-up {
+    align-self: flex-start; // Desktop: left-aligned button
+    min-width: 140px;
+  }
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none;
+      background-color: $primary-color;
+    }
+  }
+}
+
+.contact-form-image {
+  width: 100%; // Mobile-first: full width
+  margin: 0 auto;
+  max-width: 100%; // Mobile-first: no constraint
+  
+  @include media-tablet-up {
+    max-width: 500px;
+     // Tablet: constrain width
+  }
+  
+  @include media-desktop-up {
+    width: 600px; // Desktop: fixed width
+    flex-shrink: 0;
+    margin: 0; // Remove auto centering
+    max-width: none; // Remove constraint
+  }
+}
+
+.contact-form-img {
+  width: 100%;
+  aspect-ratio: 1 / 1; // Force 1:1 square ratio on all devices
+  object-fit: cover;
+  border-radius: $border-radius-mobile; // Mobile-first: smaller radius
+  
+  @include media-tablet-up {
+    border-radius: $border-radius-tablet; // Tablet: medium radius
+  }
+  
+  @include media-desktop-up {
+    border-radius: $border-radius-desktop; // Desktop: larger radius
+  }
+}
+
+// Form validation feedback
+.form-success {
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid $success-color;
+  color: #166534;
+  padding: $spacing-15;
+  border-radius: 8px;
+  margin-bottom: $spacing-20;
+  
+  @include font-style(sm, regular, md);
+}
+
+.form-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #991b1b;
+  padding: $spacing-15;
+  border-radius: 8px;
+  margin-bottom: $spacing-20;
+  
+  @include font-style(sm, regular, md);
+}
+
+// Focus states for better accessibility
+.contact-form {
+  .form-field:focus-within {
+    .form-field__label {
+      color: $primary-color;
+    }
+  }
+}
+
+// Loading state styles
+.contact-form-submit[disabled] {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid $white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}

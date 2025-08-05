@@ -1,0 +1,89 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.service-icon {
+    width: 33px;
+    height: 33px;
+    padding: 6px;
+    background: $primary-color-light;
+    border-radius: 50%;
+    @include flex-center;
+    flex-shrink: 0;
+
+    &__shape {
+        width: 100%;
+        height: 100%;
+        border: 3px solid $primary-color;
+        border-radius: 4px;
+
+        // Different shapes for different icon types
+        .service-icon--funnel & {
+            clip-path: polygon(20% 0%, 80% 0%, 70% 50%, 30% 50%);
+        }
+
+        .service-icon--website & {
+            border-radius: 6px;
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 20%;
+                left: 10%;
+                right: 10%;
+                height: 20%;
+                background: $primary-color;
+                border-radius: 2px;
+            }
+        }
+
+        .service-icon--seo & {
+            border-radius: 50%;
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 60%;
+                height: 60%;
+                background: $primary-color;
+                border-radius: 50%;
+            }
+        }
+
+        .service-icon--design & {
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .service-icon--email & {
+            border-radius: 6px;
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 30%;
+                left: 20%;
+                right: 20%;
+                height: 40%;
+                background: transparent;
+                border: 2px solid $primary-color;
+                border-radius: 4px;
+            }
+        }
+
+        .service-icon--branding & {
+            clip-path: polygon(
+                25% 0%,
+                75% 0%,
+                100% 50%,
+                75% 100%,
+                25% 100%,
+                0% 50%
+            );
+        }
+    }
+}

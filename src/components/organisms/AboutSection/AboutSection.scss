@@ -1,0 +1,54 @@
+// AboutSection component styles
+
+@import "../../../styles/variables";
+
+.about-section {
+    align-self: stretch;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: $spacing-5; // Smaller gap on mobile
+    display: flex;
+    flex-direction: column; // Stack vertically on mobile
+
+    // Tablet and up
+    @media (min-width: $breakpoint-phone) {
+        gap: $spacing-15;
+        flex-direction: row; // Side by side on larger screens
+    }
+
+    // Desktop and up
+    @media (min-width: $breakpoint-desktop) {
+        gap: $spacing-30;
+    }
+
+    .about-title {
+        text-align: left;
+        width: 100%;
+
+        // Tablet and up
+        @media (min-width: $breakpoint-phone) {
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        // Desktop and up
+        @media (min-width: $breakpoint-desktop) {
+            width: 250px;
+            text-align: left;
+        }
+    }
+
+    .about-content {
+        flex: 1;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        display: flex;
+        width: 100%;
+
+        // Tablet and up
+        @media (min-width: $breakpoint-phone) {
+            width: auto;
+        }
+    }
+}

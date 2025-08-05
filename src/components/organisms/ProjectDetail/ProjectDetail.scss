@@ -1,0 +1,117 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+
+.project-detail {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+ 
+
+  &__description {
+    margin: 0 auto;
+    color: $gray-80;
+    max-width: 800px;
+  }
+
+  &__image {
+    overflow: hidden;
+    border-radius: $border-radius-mobile;
+        @include media-tablet-up {
+            border-radius: $border-radius-tablet;
+        }
+        @include media-desktop-up {
+            border-radius: $border-radius-desktop;
+        }
+  }
+
+  &__main-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__columns {
+    display: grid;
+    gap: $spacing-30;
+    grid-template-columns: 1fr;
+
+    @include media-tablet-up {
+      grid-template-columns: repeat(3, 1fr);
+      gap: $spacing-45;
+    }
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__column-title {
+    margin: 0 0 $spacing-20 0;
+    //color: $primary-color;
+    text-align: center;
+
+    @include media-tablet-up {
+      text-align: left;
+    }
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    //gap: $spacing-15;
+
+    li {
+      position: relative;
+      padding-left: $spacing-30;
+      color: $gray-80;
+
+      &:before {
+        content: '•';
+        color: $primary-color;
+        position: absolute;
+        left: 0;
+        font-weight: bold;
+        font-size: 1.5em;
+      }
+
+      // Remove bullets for result items with check icons
+      &:has(.project-detail__result-item) {
+        padding-left: 0;
+        
+        &:before {
+          display: none;
+        }
+      }
+    }
+  }
+
+  // Results with check icons
+  &__result-item {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-10;
+  }
+
+  &__check-icon {
+    flex-shrink: 0;
+    margin-top: 2px; // Slight adjustment to align with text
+  }
+
+  &__check {
+    display: block;
+  }
+
+  &__navigation {
+    display: flex;
+    justify-content: center;
+  }
+}
