@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { CalendlyButton } from "../../atoms";
 import "./Header.scss";
 
 export const Header = ({ className = "", logo }: { className?: string; logo?: string }) => {
@@ -22,7 +23,6 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
   if (!mounted) {
     return (
       <header className={` ${className}`}>
-
           <div className="main main--header">
             <Link className="logo" href="/">
               <Image src={logo || "/logo.png"} alt="Logo" width={120} height={43} />
@@ -33,12 +33,32 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
               <li><a href="/packages/" className="typo-sm-bold">Packages</a></li>
               <li><a href="/portfolio/" className="typo-sm-bold">Portfolio</a></li>
               <li><a href="/contact/" className="typo-sm-bold">Contact</a></li>
-              <li><a href="#" className="btn btn-primary btn-small">Schedule Call</a></li>
+              <li>
+                <CalendlyButton 
+                  variant="primary" 
+                  size="sm"
+                  className="btn-small"
+                  utmContent="header_desktop"
+                  utmTerm="schedule_call"
+                >
+                  Schedule Call
+                </CalendlyButton>
+              </li>
               <li><a href="#" className="typo-sm-bold">FR</a></li>
               <li><a href="#" className="typo-sm-bold">ES</a></li>
             </ul>
             <ul className="nav_mobile">
-              <li><a href="#" className="btn btn-primary btn-small typo-white">Schedule Call</a></li>
+              <li>
+                <CalendlyButton 
+                  variant="primary" 
+                  size="sm"
+                  className="btn-small typo-white"
+                  utmContent="header_mobile_top"
+                  utmTerm="schedule_call"
+                >
+                  Schedule Call
+                </CalendlyButton>
+              </li>
               <li>
                 <a href="#">
                   <Image
@@ -51,7 +71,6 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
               </li>
             </ul>
           </div>
-
       </header>
     );
   }
@@ -70,28 +89,48 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
             <li><a href="/packages/" className="typo-sm-bold">Packages</a></li>
             <li><a href="/portfolio/" className="typo-sm-bold">Portfolio</a></li>
             <li><a href="/contact/" className="typo-sm-bold">Contact</a></li>
-            <li><a href="#" className="btn btn-primary btn-small">Schedule Call</a></li>
+            <li>
+              <CalendlyButton 
+                variant="primary" 
+                size="sm"
+                className="btn-small"
+                utmContent="header_desktop"
+                utmTerm="schedule_call"
+              >
+                Schedule Call
+              </CalendlyButton>
+            </li>
             <li><a href="#" className="typo-sm-bold">FR</a></li>
             <li><a href="#" className="typo-sm-bold">ES</a></li>
           </ul>
           <ul className="nav_mobile">
-            <li><a href="#" className="btn btn-primary btn-small">Schedule Call</a></li>
-              <li>
+            <li>
+              <CalendlyButton 
+                variant="primary" 
+                size="sm"
+                className="btn-small"
+                utmContent="header_mobile"
+                utmTerm="schedule_call"
+              >
+                Schedule Call
+              </CalendlyButton>
+            </li>
+            <li>
               <a
                 href="#"
                 onClick={e => {
-                e.preventDefault();
-                setMenuOpen(prev => !prev);
+                  e.preventDefault();
+                  setMenuOpen(prev => !prev);
                 }}
               >
                 <Image
-                src={menuOpen ? "/assets/images/ico-close.svg" : "/assets/images/ico-ham.svg"}
-                alt={menuOpen ? "Close" : "Menu"}
-                width={24}
-                height={24}
+                  src={menuOpen ? "/assets/images/ico-close.svg" : "/assets/images/ico-ham.svg"}
+                  alt={menuOpen ? "Close" : "Menu"}
+                  width={24}
+                  height={24}
                 />
               </a>
-              </li>
+            </li>
           </ul>
         </div>
       </header>
