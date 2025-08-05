@@ -43,7 +43,7 @@ export interface CalendlyConfig {
 
 // Calendly configuration - UPDATE THIS WITH YOUR ACTUAL CALENDLY URL
 export const calendlyConfig: CalendlyConfig = {
-  url: 'https://calendly.com/your-username/strategy-call', // Replace with your actual Calendly URL
+  url: 'https://calendly.com/mauriciobayuelo/free-discovery-call', // Replace with your actual Calendly URL
   defaultUtm: {
     utmSource: 'website',
     utmMedium: 'cta',
