@@ -63,3 +63,16 @@
 .calendly-popup {
   z-index: 10001;
 }
+
+// Override Calendly's mobile styles
+@media (max-width: 975px) {
+  .calendly-overlay .calendly-popup {
+    // Override Calendly's mobile positioning
+    top: 45px !important;
+  }
+}
+
+.calendly-overlay{
+    background-color: #a5a5a5;
+    background-color: rgba($black, .84) !important;
+}
