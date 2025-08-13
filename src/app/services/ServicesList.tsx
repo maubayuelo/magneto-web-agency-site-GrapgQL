@@ -111,7 +111,7 @@ export default function ServicesList() {
         <ServiceItem
           key={service.id}
           service={service}
-          variant={index % 2 === 0 ? 'left' : 'right'}
+          variant={index % 2 === 0 ? 'left' : 'right'} // Pass 'left' or 'right' variant to alternate layout for each service
         />
       ))}
     </div>

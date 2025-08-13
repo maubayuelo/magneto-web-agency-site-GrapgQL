@@ -125,6 +125,50 @@ This project can be deployed on any platform that supports Node.js:
 - **DigitalOcean App Platform**: Node.js application
 - **AWS Amplify**: Full-stack deployment
 
+## 🧑‍💻 How the Web App Works
+
+This project is a modern web application built with Next.js, TypeScript, and SCSS. It uses a modular, component-based architecture for scalability and maintainability.
+
+### How the Code and Files Work
+
+- **Pages** are defined in `src/app/` as folders with a `page.tsx` file. Each folder (like `about/`, `services/`) maps to a route.
+- **Components** are organized by atomic design in `src/components/` as atoms (basic UI), molecules (combinations of atoms), and organisms (complex UI sections). Components are imported into pages to build the UI.
+- **Props** are used to pass data from parent to child components, enabling reusability and flexibility.
+- **SCSS Modules** (`.module.scss`) provide scoped, maintainable styles for each component, while global styles and variables live in `src/styles/`.
+- **TypeScript** (`.tsx` and `.ts` files) ensures type safety for props, data, and functions, making the codebase robust and easier to maintain.
+- **Data** is often stored in `src/data/` as static arrays or objects, and imported where needed.
+- **Utility functions** and helpers live in `src/lib/`.
+- **Types** for data and props are defined in `src/types/`.
+
+### Example: Services List
+
+The `ServicesList` component (`src/app/services/ServicesList.tsx`) demonstrates how data and components work together:
+
+- A list of services is defined as an array of objects, each with a title, description, image, and icon.
+- The component maps over this array and renders a `ServiceItem` for each service.
+- Layout alternates between left and right alignment using a `variant` prop.
+- Images are rendered with Next.js's `Image` component for optimization.
+- Icons are rendered using a reusable `IconComponent`.
+- All styles are applied using SCSS classes.
+
+### NPM Packages
+
+- **next**: Framework for routing and SSR.
+- **react**: UI library for building components.
+- **typescript**: Adds static typing.
+- **sass**: Enables SCSS styling.
+- **eslint, prettier**: Code linting and formatting.
+
+### Communication & Logic
+
+- Data flows via props between components.
+- Utility functions and static data are imported as needed.
+- TypeScript types ensure robust, maintainable code.
+
+---
+
+This structure makes the app easy to extend and maintain, and ensures a consistent developer experience for teams.
+
 ## 🤝 Contributing
 
 If you'd like to contribute to this project:
@@ -139,9 +183,7 @@ If you'd like to contribute to this project:
 
 For questions about this project or potential collaboration:
 
-- **Website**: [Your Agency Website]
-- **Email**: [your-email@example.com]
-- **LinkedIn**: [Your LinkedIn Profile]
+- **LinkedIn**: [[Mauricio Bayuelo](https://www.linkedin.com/in/maubayuelo/)]
 
 ## 📜 License
 
@@ -149,4 +191,4 @@ This project is private and proprietary. All rights reserved.
 
 ---
 
-Built with ❤️ by [Your Name] - Helping experts and coaches build their online presence through high-converting websites and funnels.
+Built with ❤️ by [[Mauricio Bayuelo](https://www.linkedin.com/in/maubayuelo/)] - Helping experts and coaches build their online presence through high-converting websites and funnels.
