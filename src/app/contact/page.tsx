@@ -1,18 +1,11 @@
-import { Hero, ContactForm } from '../../components/organisms';
+import HeroLoader from '@/components/organisms/Hero/HeroLoader';
+import { ContactForm } from '@/components/organisms';
 
 export default function ContactPage() {
   return (
     <>
-      <Hero 
-        variant="contact"
-        title="Get In Touch"
-        subtitle="Ready to transform your digital presence? Let's start the conversation."
-        showImage={false}
-        cta={{
-          text: "Start Your Project",
-          href: "#contact-form"
-        }}
-      />
+      {/* HeroLoader fetches and renders the Hero section for this page */}
+            <HeroLoader pageUri="contact" variant="contact" />
       <div className="main">
         <ContactForm />
       </div>

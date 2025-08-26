@@ -1,7 +1,15 @@
 // Home page
 
-//import Image from "next/image";
-import { Hero, FeaturedServices, AboutSection, ProjectsGrid, Testimonials } from '../components/organisms';
+import HeroLoader from '@/components/organisms/Hero/HeroLoader';
+// Update the import path if the file is located elsewhere, for example:
+import { GET_PROJECTS } from '@/data/projects';
+// Or adjust the path to match the actual location of your projects query file.
+import { fetchWPGraphQL } from '@/lib/wp-graphql'; // Your custom fetcher
+import { FeaturedServices, ProjectsGrid, Testimonials } from '../components/organisms';
+import AboutSection from '../components/organisms/AboutSection';
+
+
+
 
 const testimonialData = [
   {
@@ -34,28 +42,45 @@ const testimonialData = [
   }
 ];
 
-export default function Home() {
+export default async function Home() {
+  let projects = [];
+  let fetchError = false;
+  try {
+    const data = await fetchWPGraphQL(typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || '');
+    // In your Home component, after fetching:
+    console.log("Raw data from CMS:", data);
+    const projectsRaw = data?.projects?.nodes || [];
+    projects = projectsRaw.map((project: any) => ({
+      id: project.id,
+      slug: project.slug,
+      title: project.title,
+      featuredImage: project.featuredImage,
+    }));
+    console.log("Projects loaded for ProjectsGrid:", projects);
+  } catch (e) {
+    console.error("Error fetching projects:", e);
+    fetchError = true;
+  }
+  
+  
+
   return (
     <>
-      <Hero 
-        variant="home"
-        title="Attract leads online"
-        subtitle="Websites & Funnels That Convert. Strategic Design for Experts & Coaches"
-        titleSize="typo-5xl-extrabold"
-        subtitleSize="typo-xl-medium"
-        showImage={true}
-        cta={{
-          text: "Book a Free Strategy Call",
-          type: "calendly",
-          utmContent: "hero_home",
-          utmTerm: "strategy_call"
-        }}
-      />
+      {/* HeroLoader fetches and renders the Hero section for this page */}
+      <HeroLoader pageUri="/" variant="home" />
       <AboutSection />
       <FeaturedServices />
-      <ProjectsGrid maxProjects={3} />
+      <ProjectsGrid
+          projects={projects} 
+          maxProjects={3} 
+          showButton={true} 
+          title=""
+        />
       <Testimonials testimonials={testimonialData} />
-      
     </>
   );
 }
+
+/*
+ProjectsGrid
+*/

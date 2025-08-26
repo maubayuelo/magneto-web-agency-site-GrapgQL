@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
 import { ProjectDetail } from '../../../components/organisms';
 import { notFound } from 'next/navigation';
-import { projectsData } from '../../../data/projects';
+import { GET_PROJECTS } from '@/data/projects';
+import { fetchWPGraphQL } from '@/lib/wp-graphql'; // Your custom fetcher
 
 interface PageProps {
   params: Promise<{
@@ -10,8 +11,15 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+
+  const data = await fetchWPGraphQL(
+    typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || ''
+  );
+  const projects = data?.projects?.nodes || [];
+
+
   const { slug } = await params;
-  const project = projectsData.find(p => p.slug === slug);
+  const project = projects.find(p => p.slug === slug);
   
   if (!project) {
     return {
@@ -26,8 +34,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function ProjectPage({ params }: PageProps) {
+
+  const data = await fetchWPGraphQL(
+    typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || ''
+  );
+  const projects = data?.projects?.nodes || [];
+
+
   const { slug } = await params;
-  const project = projectsData.find(p => p.slug === slug);
+  const project = projects.find(p => p.slug === slug);
 
   if (!project) {
     notFound();
@@ -39,7 +54,17 @@ export default async function ProjectPage({ params }: PageProps) {
 }
 
 export async function generateStaticParams() {
-  return projectsData.map((project) => ({
+
+  const data = await fetchWPGraphQL(
+    typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || ''
+  );
+  const projects = data?.projects?.nodes || [];
+
+  if (!Array.isArray(projects)) {
+    throw new Error("Unexpected response structure");
+  }
+
+  return projects.map((project) => ({
     slug: project.slug,
   }));
 }

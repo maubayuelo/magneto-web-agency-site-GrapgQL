@@ -1,28 +1,35 @@
 import React from 'react';
-import ServiceIcon from '../../atoms/ServiceIcon';
-import './ServiceCard.scss';
 
-interface ServiceCardProps {
-  title: string;
+interface AboutMagnetoSectionProps {
+  sectionTitle: string;
   description: string;
-  icon: string;
+  linkText: string;
+  linkUrl: string;
+  generalText: string;
+  calendlyText: string;
+  calendly_url: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon }) => {
-  return (
-    <div className="service-card">
-      <div className="service-card__icon">
-        <ServiceIcon type={icon} />
-      </div>
-      <div className="service-card__content">
-        <h3 className="typo-2xl-extrabold m-0">{title}</h3>
-        <p className="typo-paragraph-medium m-0">{description}</p>
-      </div>
-      <a href='#' className="service-card__link typo-xl-extrabold typo-color-primary">
-        Learn More
+export const AboutMagnetoSection: React.FC<AboutMagnetoSectionProps> = ({
+  sectionTitle,
+  description,
+  linkText,
+  linkUrl,
+  generalText,
+  calendlyText,
+  calendly_url,
+}) => (
+  <section className="main about-section">
+    <h2 className="typo-3xl-extrabold m-0">{sectionTitle}</h2>
+    <p className="typo-xl-medium">{description}</p>
+    <div dangerouslySetInnerHTML={{ __html: generalText }} />
+    {linkText && linkUrl && (
+      <a href={linkUrl} className="btn btn-primary mt-15">{linkText}</a>
+    )}
+    {calendlyText && calendly_url && (
+      <a href={calendly_url} className="btn btn-secondary mt-15" target="_blank" rel="noopener noreferrer">
+        {calendlyText}
       </a>
-    </div>
-  );
-};
-
-export default ServiceCard;
+    )}
+  </section>
+);

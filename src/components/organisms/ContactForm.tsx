@@ -88,7 +88,7 @@ export const ContactForm: React.FC = () => {
 
   return (
 
-      <div className="contact-form-container" id="contact-form">
+      <div className="contact-form-container" id="contact-area">
         <div className="contact-form-content">
           <div className="contact-form-header">
             <h2 className="typo-4xl-extrabold m-0">Request Free Quote</h2>

@@ -11,7 +11,7 @@ const ServiceIcon: React.FC<ServiceIconProps> = ({ type, size = 27 }) => {
   return (
     <div className={`service-icon service-icon--${type}`} data-size={size}>
       <Image
-        src={`/assets/images/ico-${type}.svg`}
+        src={type}
         alt={`${type} icon`}
         width={size}
         height={size}

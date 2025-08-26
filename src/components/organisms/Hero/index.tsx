@@ -3,7 +3,7 @@ import { CalendlyButton } from '../../atoms';
 import './Hero.scss';
 
 export interface HeroProps {
-  variant?: 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'default';
+  variant?: 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'packages' | 'default';
   title: string;
   subtitle: string;
   titleSize?: string;
@@ -69,9 +69,14 @@ export function Hero({
         <h1 className={`${finalTitleSize} m-0 hero-title`}>{title}</h1>
         <p className={`${finalSubtitleSize} m-0 hero-subtitle`}>{subtitle}</p>
         {children}
-        {cta && (
+         {cta && (
           <div className="hero-cta-wrapper">
-            {cta.type === 'calendly' ? (
+            {/* 
+              If the CTA is for Calendly (either by explicit type or by matching the Calendly URL),
+              render the CalendlyButton which opens the modal.
+              Otherwise, render a normal link or button.
+            */}
+            {(cta.type === 'calendly' || cta.href === "https://calendly.com/mauriciobayuelo/free-discovery-call") ? (
               <CalendlyButton 
                 utmContent={cta.utmContent}
                 utmTerm={cta.utmTerm}
@@ -80,17 +85,19 @@ export function Hero({
                 {cta.text}
               </CalendlyButton>
             ) : cta.href ? (
+              // If CTA has an href and is not Calendly, render as a normal link
               <a href={cta.href} className="btn btn-primary">
                 {cta.text}
               </a>
             ) : (
+              // Otherwise, render as a button (e.g., for onClick actions)
               <button onClick={cta.onClick} className="btn btn-primary">
                 {cta.text}
               </button>
             )}
           </div>
         )}
-        {finalImage && (
+        {finalImage?.src && (
           <Image
             src={finalImage.src}
             alt={finalImage.alt}

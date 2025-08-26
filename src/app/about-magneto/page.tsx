@@ -1,4 +1,4 @@
-import { Hero } from '../../components/organisms';
+import HeroLoader from '@/components/organisms/Hero/HeroLoader';
 import { CalendlyButton } from '../../components/atoms';
 import Image from 'next/image';
 import '../../styles/pages/about.scss';
@@ -6,20 +6,8 @@ import '../../styles/pages/about.scss';
 export default function AboutPage() {
   return (
     <>
-      <Hero 
-        variant="about"
-        title="About Magneto"
-        subtitle="More than a web studio—Magneto is a mission to empower creators, coaches, and conscious brands through strategic design and digital transformation."
-        titleSize="typo-4xl-extrabold"
-        subtitleSize="typo-lg-medium"
-        showImage={false}
-        cta={{
-          text: "Book a Free Strategy Call",
-          type: "calendly",
-          utmContent: "hero_about",
-          utmTerm: "strategy_call"
-        }}
-      />
+      {/* HeroLoader fetches and renders the Hero section for this page */}
+      <HeroLoader pageUri="about-magneto" variant="about" />
       <div className='main'>
         <div className="about-content pb-lg-responsive">
           <div className="about-hero-section">

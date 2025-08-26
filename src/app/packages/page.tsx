@@ -1,6 +1,7 @@
 import React from 'react';
-import { Hero, PackagesGrid } from '../../components/organisms';
-import { PackageCardProps } from '../../components/molecules/PackageCard';
+import HeroLoader from '@/components/organisms/Hero/HeroLoader';
+import { PackagesGrid } from '@/components/organisms';
+import { PackageCardProps } from '@/components/molecules/PackageCard';
 
 const packagesData: PackageCardProps[] = [
   {
@@ -70,19 +71,10 @@ const packagesData: PackageCardProps[] = [
 export default function PackagesPage() {
   return (
     <>
-      <Hero 
-        variant="default"
-        title="Flexible Packages"
-        subtitle="Smart web solutions for bold digital creators. Choose the package that meets your growth goals—not just pretty pages."
-        showImage={false}
-        cta={{
-          text: "Book a Free Strategy Call",
-          type: "calendly",
-          utmContent: "hero_packages",
-          utmTerm: "strategy_call"
-        }}
-      />
-      <div className="main typo-center">
+      {/* HeroLoader fetches and renders the Hero section for this page */}
+      <HeroLoader pageUri="packages" variant="packages" />
+      
+      <div className="main typo-center" id='packages'>
         <h3 className="typo-3xl-bold m-0">
           All packages are customizable. Multilingual support available.<br />
           Payment plans upon request.
