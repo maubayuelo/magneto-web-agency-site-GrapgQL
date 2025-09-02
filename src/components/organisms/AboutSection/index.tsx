@@ -2,14 +2,14 @@ import "./AboutSection.scss";
 import { getHomeAboutSection } from "./api";
 
 export default async function AboutSection() {
-  const { sectiontitle, description } = await getHomeAboutSection();
+  const { aboutSectionTitle, description } = await getHomeAboutSection();
 
-  if (!sectiontitle && !description) return null;
+  if (!aboutSectionTitle && !description) return null;
 
   return (
     <section className="main about-section">
-      {sectiontitle && (
-        <h3 className="about-title typo-3xl-extrabold m-0">{sectiontitle}</h3>
+      {aboutSectionTitle && (
+        <h3 className="about-title typo-3xl-extrabold m-0">{aboutSectionTitle}</h3>
       )}
       {description && (
         <div className="about-content">

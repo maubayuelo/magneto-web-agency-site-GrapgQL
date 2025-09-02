@@ -1,26 +1,31 @@
 'use client';
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { getHomePrefooter } from './api';
 import { PreFooterProps } from './types';
 import './PreFooter.scss';
 
 export const PreFooter: React.FC<PreFooterProps> = ({
-  title = "Stop losing leads. Start converting.",
-  subtitle = "Request your free funnel quote today and find out what's holding you back.",
-  buttonText = "Request Free Quote",
   className = '',
-  show = true
+  show = true,
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const [data, setData] = useState<any>(null);
 
-  const handleQuoteRequest = () => {
-    router.push('/contact');
-  };
+  // Hide PreFooter on contact page
+  const shouldShow = show && pathname !== '/contact';
 
-  if (!show) {
-    return null;
-  }
+  useEffect(() => {
+    async function fetchData() {
+      const prefooter = await getHomePrefooter();
+      setData(prefooter);
+    }
+    fetchData();
+  }, []);
+
+  if (!shouldShow) return null;
 
   return (
     <section className={`pre-footer main ${className} `}>
@@ -28,18 +33,18 @@ export const PreFooter: React.FC<PreFooterProps> = ({
         <div className="pre-footer__content">
           <div className="pre-footer__text">
             <h2 className="typo-center typo-3xl-extrabold m-0 typo-primary-color">
-              {title}
+              {data?.title || "Stop losing leads. Start converting."}
             </h2>
             <p className="typo-center typo-xl-bold m-0">
-              {subtitle}
+              {data?.subtitle || "Request your free funnel quote today and find out what's holding you back."}
             </p>
           </div>
-          <button 
+          <button
             className="btn btn-primary"
-            onClick={handleQuoteRequest}
+            onClick={() => router.push(data?.ctaLink?.edges?.[0]?.node?.uri || '/contact')}
             type="button"
           >
-            {buttonText}
+            {data?.ctaText || "Request Free Quote"}
           </button>
         </div>
       </div>

@@ -4,7 +4,7 @@ const ABOUT_SECTION_QUERY = `
   query GetHomeAboutSection {
     page(id: "home", idType: URI) {
       homeAboutSection {
-        sectiontitle
+        aboutSectionTitle
         description
       }
     }

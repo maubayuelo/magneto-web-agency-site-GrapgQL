@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/wp-content/uploads/**',
       },
+      {
+        protocol: 'http', // <-- add this block for local HTTP
+        hostname: 'magneto-cms.local',
+        port: '',
+        pathname: '/wp-content/uploads/**',
+      },
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',

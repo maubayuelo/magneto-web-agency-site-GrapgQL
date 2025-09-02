@@ -1,22 +1,50 @@
-import { fetchWPGraphQL } from "@/lib/wp-graphql";
+import { fetchWPGraphQL } from '@/lib/wp-graphql';
 
-const ABOUT_SECTION_QUERY = `
+const HOME_TESTIMONIALS_QUERY = `
   query GetHomeTestimonials {
-  homeTestimonials {
-    testimonials {
-      author
-      testimonial
-      thumb {
-        sourceUrl
-        altText
+    page(id: "home", idType: URI) {
+      homeTestimonialsSection {
+        testimonials {
+          author
+          testimonial
+          thumb {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+        }
       }
     }
   }
-}
 `;
 
-export async function GetHomeTestimonials() {
-  const data = await fetchWPGraphQL(ABOUT_SECTION_QUERY);
-  //console.log("Fetched data:", data); // Debug line
-  return data?.page?.homeAboutSection || {};
+// Define interfaces for the structure of your data
+export interface TestimonialThumb {
+  node: {
+    sourceUrl: string;
+    altText: string;
+  };
+}
+
+export interface Testimonial {
+  author: string;
+  testimonial: string;
+  thumb: TestimonialThumb | null;
+}
+
+export interface HomeTestimonialsSection {
+  testimonials: Testimonial[];
+}
+
+export interface HomeTestimonialsQueryResult {
+  page: {
+    homeTestimonialsSection: HomeTestimonialsSection;
+  };
+}
+
+export async function getHomeTestimonials() {
+  const data = await fetchWPGraphQL(HOME_TESTIMONIALS_QUERY);
+  
+  return data?.page?.homeTestimonialsSection?.testimonials || [];
 }

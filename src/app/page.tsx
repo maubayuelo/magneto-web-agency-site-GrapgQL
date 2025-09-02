@@ -5,50 +5,18 @@ import HeroLoader from '@/components/organisms/Hero/HeroLoader';
 import { GET_PROJECTS } from '@/data/projects';
 // Or adjust the path to match the actual location of your projects query file.
 import { fetchWPGraphQL } from '@/lib/wp-graphql'; // Your custom fetcher
+import { getHomeTestimonials } from '../components/organisms/Testimonials/api';
 import { FeaturedServices, ProjectsGrid, Testimonials } from '../components/organisms';
 import AboutSection from '../components/organisms/AboutSection';
-
-
-
-
-const testimonialData = [
-  {
-    id: 1,
-    quote: "Working with Magneto was a game-changer for my online coaching program. Their innovative funnel design doubled my lead generation in just a few weeks!",
-    author: "Elena M.",
-    role: "Wellness Coach",
-    avatar: "https://placehold.co/54x54"
-  },
-  {
-    id: 2,
-    quote: "Magneto completely transformed my coaching business. The new funnel brought in 3x more leads in just one month!",
-    author: "Marcus T.",
-    role: "biz. Coach", 
-    avatar: "https://placehold.co/54x54"
-  },
-  {
-    id: 3,
-    quote: "Magneto expertly crafted funnel not only streamlined my processes but also tripled my lead generation in just a month!",
-    author: "Sarah K.",
-    role: "Life Coach",
-    avatar: "https://placehold.co/54x54"
-  },
-  {
-    id: 4,
-    quote: "Partnering with Magneto was a transformative experience for my coaching business. Their expertly designed funnel increased my lead generation by 300% in just 30 days!",
-    author: "David R.",
-    role: "Exec. Coach",
-    avatar: "https://placehold.co/54x54"
-  }
-];
 
 export default async function Home() {
   let projects = [];
   let fetchError = false;
+  let testimonialData = [];
   try {
     const data = await fetchWPGraphQL(typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || '');
     // In your Home component, after fetching:
-    console.log("Raw data from CMS:", data);
+    //console.log("Raw data from CMS:", data);
     const projectsRaw = data?.projects?.nodes || [];
     projects = projectsRaw.map((project: any) => ({
       id: project.id,
@@ -56,11 +24,23 @@ export default async function Home() {
       title: project.title,
       featuredImage: project.featuredImage,
     }));
-    console.log("Projects loaded for ProjectsGrid:", projects);
+    //console.log("Projects loaded for ProjectsGrid:", projects);
+    // Fetch testimonials from CMS
+    testimonialData = await getHomeTestimonials();
+    //console.log("Testimonials loaded:", testimonialData);
   } catch (e) {
     console.error("Error fetching projects:", e);
     fetchError = true;
   }
+
+  // Map CMS data to TestimonialCard shape
+  const testimonials = testimonialData.map((t: any, idx: number) => ({
+    id: idx + 1,
+    quote: t.testimonial,
+    author: t.author,
+    avatar: t.thumb?.node?.sourceUrl || "https://placehold.co/54x54",
+    role: "", // Add role if available in CMS
+  }));
   
   
 
@@ -72,11 +52,11 @@ export default async function Home() {
       <FeaturedServices />
       <ProjectsGrid
           projects={projects} 
-          maxProjects={3} 
-          showButton={true} 
-          title=""
+          maxProjects={3}  
+          title="Recent Projects"
+          showButton={true}
         />
-      <Testimonials testimonials={testimonialData} />
+      <Testimonials testimonials={testimonials} />
     </>
   );
 }

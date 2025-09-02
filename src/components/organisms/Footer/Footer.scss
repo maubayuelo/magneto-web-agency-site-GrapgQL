@@ -6,7 +6,8 @@
     width: 100%;
     height: auto;
     @include responsive-border-radius;
-    background-image: url("/assets/images/hero-background.png");
+    background-color: $black;
+    //background-image: url("/assets/images/hero-background.png");
     background-size: cover;
     background-position: center;
     @include flex-column;
@@ -21,14 +22,14 @@
         @include flex-column;
         justify-content: center;
         align-items: center;
-        gap: $spacing-15;
+        //gap: $spacing-15;
     }
 
     &__content {
         @include flex-column;
         justify-content: flex-start;
         align-items: center;
-        gap: $spacing-15;
+        //gap: $spacing-15;
         width: 100%;
     }
 
@@ -59,31 +60,8 @@
         align-self: stretch;
         text-align: center;
         color: $white;
-        line-height: $spacing-30;
         word-wrap: break-word;
-        margin: 0;
     }
 
-    &__legal {
-        align-self: stretch;
-        text-align: center;
-        color: $white;
-        line-height: $spacing-30;
-        word-wrap: break-word;
-        margin: 0;
-
-        &-link {
-            color: $white;
-            text-decoration: none;
-            transition: opacity 0.3s ease;
-
-            &:hover {
-                opacity: 0.8;
-            }
-        }
-
-        &-separator {
-            color: $white;
-        }
-    }
+    
 }

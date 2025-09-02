@@ -3,7 +3,7 @@
 
 import '../main.scss'; // Import global styles at the root
 import type { Metadata } from 'next';
-import { Header, ConditionalPreFooter, Footer } from '../components/organisms';
+import { Header, PreFooter, Footer } from '../components/organisms';
 
 
 
@@ -41,7 +41,7 @@ export default function RootLayout({
           logo="/assets/images/logo-magneto.svg"
         />
         {children}
-        <ConditionalPreFooter />
+        <PreFooter/>
         <Footer />
       </body>
     </html>

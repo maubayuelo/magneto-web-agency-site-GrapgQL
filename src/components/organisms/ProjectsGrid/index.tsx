@@ -31,7 +31,7 @@ export const ProjectsGrid = ({
 }: ProjectsGridProps) => {
   const displayedProjects = projects.slice(0, maxProjects);
 
-  console.log(projects);
+  //console.log(projects);
 
   return (
     <div className="main">
@@ -52,11 +52,11 @@ export const ProjectsGrid = ({
             <div key={project.id} className="projects-grid__item">
               <Link href={`/projects/${project.slug}`} className="projects-grid__item-link">
                 <Image
-                  src={project.featuredImage?.node?.sourceUrl || "/placeholder.png"}
+                  src={project.featuredImage?.node?.sourceUrl || "https://placehold.co/400x300"}
                   alt={project.title}
                   className="projects-grid__image"
-                  width={675}
-                  height={460}
+                  width={390}
+                  height={270}
                   priority
                 />
               </Link>
