@@ -1,4 +1,4 @@
-import { fetchWPGraphQL } from '@/lib/wp-graphql';
+import { fetchWPGraphQL } from '@/utils/wp-graphql';
 
 const HOME_TESTIMONIALS_QUERY = `
   query GetHomeTestimonials {

@@ -1,4 +1,4 @@
-import { fetchWPGraphQL } from '@/lib/wp-graphql';
+import { fetchWPGraphQL } from '@/utils/wp-graphql';
 
 const PACKAGES_QUERY = `
   query GetPackagesPageData {

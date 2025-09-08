@@ -4,7 +4,7 @@ import HeroLoader from '@/components/organisms/Hero/HeroLoader';
 // Update the import path if the file is located elsewhere, for example:
 import { GET_PROJECTS } from '@/data/projects';
 // Or adjust the path to match the actual location of your projects query file.
-import { fetchWPGraphQL } from '@/lib/wp-graphql'; // Your custom fetcher
+import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Your custom fetcher
 import { getHomeTestimonials } from '../components/organisms/Testimonials/api';
 import { FeaturedServices, ProjectsGrid, Testimonials } from '../components/organisms';
 import AboutSection from '../components/organisms/AboutSection';

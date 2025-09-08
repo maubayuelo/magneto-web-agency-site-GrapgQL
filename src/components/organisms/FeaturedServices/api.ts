@@ -1,4 +1,4 @@
-import { fetchWPGraphQL } from "@/lib/wp-graphql";
+import { fetchWPGraphQL } from "@/utils/wp-graphql";
 
 const SERVICE_SECTION_QUERY = `
   query GetHomeFeaturedServices {

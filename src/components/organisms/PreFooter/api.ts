@@ -1,4 +1,4 @@
-import { fetchWPGraphQL } from '@/lib/wp-graphql';
+import { fetchWPGraphQL } from '@/utils/wp-graphql';
 
 export const HOME_PREFOOTER_QUERY = `
   query HomePrefooter {

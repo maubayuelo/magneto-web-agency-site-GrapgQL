@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { ProjectDetail } from '../../../components/organisms';
 import { notFound } from 'next/navigation';
 import { GET_PROJECTS } from '@/data/projects';
-import { fetchWPGraphQL } from '@/lib/wp-graphql'; // Your custom fetcher
+import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Your custom fetcher
 
 interface PageProps {
   params: Promise<{

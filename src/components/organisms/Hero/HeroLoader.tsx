@@ -1,5 +1,5 @@
 import { Hero } from './index';
-import { fetchWPGraphQL } from '../../../lib/wp-graphql';
+import { fetchWPGraphQL } from '../../../utils/wp-graphql';
 
 interface HeroLoaderProps {
   pageUri: string;

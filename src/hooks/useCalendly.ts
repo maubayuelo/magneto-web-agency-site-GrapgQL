@@ -4,7 +4,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { openCalendlyPopup, loadCalendlyScript } from '../calendly';
+import { openCalendlyPopup, loadCalendlyScript } from '../utils/calendly';
 
 export interface UseCalendlyOptions {
   utmContent?: string;

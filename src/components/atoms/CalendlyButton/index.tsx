@@ -3,7 +3,7 @@
 
 'use client';
 
-import { openCalendlyPopup } from '../../../lib/calendly';
+import { openCalendlyPopup } from '../../../utils/calendly';
 
 export interface CalendlyButtonProps {
   children: React.ReactNode;

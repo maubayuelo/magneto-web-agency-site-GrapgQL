@@ -1,5 +1,5 @@
 // filepath: [api.ts](http://_vscodecontentref_/0)
-import { fetchWPGraphQL } from '@/lib/wp-graphql';
+import { fetchWPGraphQL } from '@/utils/wp-graphql';
 
 export const HOME_FOOTER_QUERY = `
   query HomeFooter {

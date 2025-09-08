@@ -1,7 +1,7 @@
 import HeroLoader from '@/components/organisms/Hero/HeroLoader';
 
 import { GET_PROJECTS } from '@/data/projects';
-import { fetchWPGraphQL } from '@/lib/wp-graphql'; // Your custom fetcher
+import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Your custom fetcher
 import { ProjectsGrid } from '../../components/organisms';
 
 export default async function PortfolioPage() {
