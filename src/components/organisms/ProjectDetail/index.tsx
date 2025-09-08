@@ -96,24 +96,28 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
         {/* Gallery - Full width images */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="project-detail__gallery">
-            {project.gallery.map((image, index) => (
-              <div key={index} className="project-detail__image mb-md-responsive">
+            {project.gallery.map((img, i) => (
+              <div key={i} className="project-detail__image mb-md-responsive">
                 <Image
-                  src={image}
-                  alt={`${project.title} - Image ${index + 1}`}
+                  src={img.image}
+                  alt={img.footNote || `Gallery image ${i + 1}`}
                   width={1200}
                   height={600}
                   className="project-detail__main-image"
                 />
+                <p>
+                {img.footNote}
+                </p>
               </div>
+              
             ))}
           </div>
         )}
 
         {/* Back Button */}
-        <nav className="project-detail__navigation mt-md-responsive">
-          <Link href="/portfolio" className="btn btn-secondary">
-            ← Back to Portfolio
+        <nav className="project-detail__navigation mt-sm">
+          <Link href="/projects" className="btn btn-secondary">
+            ← Back to Projects
           </Link>
         </nav>
 

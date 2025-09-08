@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { FormField } from '../molecules/FormField';
 
+
+
 interface ContactFormData {
   fullName: string;
   email: string;
@@ -30,18 +32,38 @@ export const ContactForm: React.FC = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    try {
-      // Here you would integrate with your form submission service
-      console.log('Form submitted:', formData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Reset form on successful submission
+
+// ...existing code...
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  try {
+    const formBody = new FormData();
+    formBody.append('fullName', formData.fullName);
+    formBody.append('email', formData.email);
+    formBody.append('projectType', formData.projectType);
+    formBody.append('budget', formData.budget);
+    formBody.append('timeline', formData.timeline);
+    formBody.append('description', formData.description);
+    formBody.append('referral', formData.referral);
+
+    formBody.append('_wpcf7', '303');
+    formBody.append('_wpcf7_version', '5.9.3');
+    formBody.append('_wpcf7_locale', 'en_US');
+    formBody.append('_wpcf7_unit_tag', 'wpcf7-f303-p1-o1');
+    formBody.append('_wpcf7_container_post', '0');
+
+    const response = await fetch('https://magneto-cms.local/wp-json/contact-form-7/v1/contact-forms/303/feedback', {
+      method: 'POST',
+      body: formBody,
+      // Do NOT set Content-Type header manually!
+    });
+
+    const data = await response.json();
+    console.log('Contact Form 7 API response:', data);
+
+    if (data.status === 'mail_sent') {
       setFormData({
         fullName: '',
         email: '',
@@ -51,55 +73,48 @@ export const ContactForm: React.FC = () => {
         description: '',
         referral: '',
       });
-      
       alert('Thank you! Your inquiry has been sent successfully.');
-    } catch (error) {
-      console.error('Form submission error:', error);
-      alert('Sorry, there was an error sending your message. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      alert(data.message || 'Sorry, there was an error sending your message. Please try again.');
     }
-  };
+  } catch (error) {
+    console.error('Form submission error:', error);
+    alert('Sorry, there was an error sending your message. Please try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+
 
   const projectTypeOptions = [
-    { value: 'website', label: 'Website Development' },
-    { value: 'ecommerce', label: 'E-commerce Store' },
-    { value: 'funnel', label: 'Sales Funnel' },
-    { value: 'branding', label: 'Branding & Design' },
-    { value: 'webapp', label: 'Web Application' },
-    { value: 'other', label: 'Other' },
-  ];
+  { value: 'Website Development', label: 'Website Development' },
+  { value: 'E-commerce Store', label: 'E-commerce Store' },
+  { value: 'Sales Funnel', label: 'Sales Funnel' },
+  { value: 'Branding & Design', label: 'Branding & Design' },
+  { value: 'Web Application', label: 'Web Application' },
+  { value: 'Other', label: 'Other' },
+];
 
-  const budgetOptions = [
-    { value: '5k-10k', label: '$5,000 - $10,000' },
-    { value: '10k-20k', label: '$10,000 - $20,000' },
-    { value: '20k-50k', label: '$20,000 - $50,000' },
-    { value: '50k+', label: '$50,000+' },
-    { value: 'discuss', label: 'Let\'s Discuss' },
-  ];
+const budgetOptions = [
+  { value: '$5,000 - $10,000', label: '$5,000 - $10,000' },
+  { value: '$10,000 - $20,000', label: '$10,000 - $20,000' },
+  { value: '$20,000 - $50,000', label: '$20,000 - $50,000' },
+  { value: '$50,000+', label: '$50,000+' },
+  { value: "Let's Discuss", label: "Let's Discuss" },
+];
 
-  const timelineOptions = [
-    { value: 'asap', label: 'ASAP' },
-    { value: '1-2months', label: '1-2 Months' },
-    { value: '3-6months', label: '3-6 Months' },
-    { value: '6months+', label: '6+ Months' },
-    { value: 'flexible', label: 'Flexible' },
-  ];
+const timelineOptions = [
+  { value: 'ASAP', label: 'ASAP' },
+  { value: '1-2 Months', label: '1-2 Months' },
+  { value: '3-6 Months', label: '3-6 Months' },
+  { value: '6+ Months', label: '6+ Months' },
+  { value: 'Flexible', label: 'Flexible' },
+];
 
   return (
 
-      <div className="contact-form-container" id="contact-area">
-        <div className="contact-form-content">
-          <div className="contact-form-header">
-            <h2 className="typo-4xl-extrabold m-0">Request Free Quote</h2>
-            <h3 className="typo-2xl-extrabold mt-15">Let's Build Something Powerful Together</h3>
-            <p className="typo-lg-medium">
-              Whether you need a high-converting website, a sleek funnel, or full branding for your next launch—I'm here to help. 
-              Fill out the form below, and I'll get back to you within 48 hours.
-            </p>
-          </div>
-
-          <form className="contact-form" onSubmit={handleSubmit} id="contact-form">
+      <form className="contact-form" onSubmit={handleSubmit} id="contact-form">
             <FormField
               label="Full Name"
               id="fullName"
@@ -176,16 +191,7 @@ export const ContactForm: React.FC = () => {
             >
               {isSubmitting ? 'Sending...' : 'Send Inquiry'}
             </button>
-          </form>
-        </div>
-        <div className="contact-form-image">
-          <img 
-            src="/assets/images/contact-visual.png" 
-            alt="Contact us" 
-            className="contact-form-img"
-          />
-        </div>
-      </div>
+      </form>
     
   );
 };
