@@ -1,0 +1,26 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.final-cta-section {
+    &__container {
+        width: 100%;
+        background: $black;
+        border-radius: $border-radius-mobile;
+        padding: $spacing-30;
+        @include media-tablet-up {
+            border-radius: $border-radius-tablet;
+            padding: $spacing-60;
+            max-width: 1000px;
+        }
+        @include media-desktop-up {
+            border-radius: $border-radius-desktop;
+            padding: $spacing-60;
+            max-width: 1380px;
+        }
+    }
+    .btn {
+            //font-weight: 900;
+            // External border using box-shadow
+            box-shadow: 0 0 0 5px rgba($white, 0.3); // Creates a 5px white external border
+        }
+}

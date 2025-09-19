@@ -17,7 +17,9 @@
 .m-120 {
     margin: $spacing-120;
 } // m-xxl
-
+.mt-0 {
+    margin-top: 0;
+}
 .mt-15 {
     margin-top: $spacing-15;
 }
@@ -101,7 +103,9 @@
 .p-120 {
     padding: $spacing-120;
 }
-
+.pt-0 {
+    padding-top: 0;
+}
 .pt-15 {
     padding-top: $spacing-15;
 }
@@ -167,6 +171,18 @@
 }
 
 // Responsive helpers
+.mt-sm-responsive {
+    margin-top: $spacing-5;
+    @include media-desktop-up {
+        margin-top: $spacing-15;
+    }
+}
+.mb-sm-responsive {
+    margin-bottom: $spacing-5;
+    @include media-desktop-up {
+        margin-bottom: $spacing-15;
+    }
+}
 .mt-md-responsive {
     margin-top: $spacing-15;
 

@@ -92,10 +92,6 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
     </>
   );
 
-  // Prevent hydration mismatch by using suppressHydrationWarning
-  if (!mounted) {
-    return <div suppressHydrationWarning>{renderHeaderContent()}</div>;
-  }
-
+  // Effects already guard access to window. Render the same content server and client
   return renderHeaderContent();
 };

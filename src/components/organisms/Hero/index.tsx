@@ -80,18 +80,18 @@ export function Hero({
               <CalendlyButton 
                 utmContent={cta.utmContent}
                 utmTerm={cta.utmTerm}
-                className="btn btn-primary"
+                className="btn btn-primary typo-uppercase typo-extrabold"
               >
                 {cta.text}
               </CalendlyButton>
             ) : cta.href ? (
               // If CTA has an href and is not Calendly, render as a normal link
-              <a href={cta.href} className="btn btn-primary">
+              <a href={cta.href} className="btn btn-primary typo-uppercase typo-extrabold">
                 {cta.text}
               </a>
             ) : (
               // Otherwise, render as a button (e.g., for onClick actions)
-              <button onClick={cta.onClick} className="btn btn-primary">
+              <button onClick={cta.onClick} className="btn btn-primary typo-uppercase typo-extrabold">
                 {cta.text}
               </button>
             )}

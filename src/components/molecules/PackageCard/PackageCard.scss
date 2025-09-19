@@ -15,6 +15,7 @@
   
   @include media-tablet-up {
     min-height: 650px;
+    height: -webkit-fill-available;
   }
 
   &--popular {
@@ -25,10 +26,11 @@
     border-radius: $border-radius-mobile;
     display: flex;
     flex-direction: column;
-    gap: $spacing-30;
+    gap: 9px;
     
     @include media-tablet-up {
       border-radius: $border-radius-tablet;
+      gap: 12px;
     }
   }
 
@@ -41,16 +43,6 @@
     display: flex;
     align-items: center;
     gap: 6px;
-  }
-
-  &__popular-badge {
-    padding: 3px 6px;
-    background: $primary-color-light;
-    border-radius: 6px;
-    
-    span {
-      color: $primary-color-dark;
-    }
   }
 
   &__pricing {
@@ -77,10 +69,10 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 0;
     
     @include media-tablet-up {
-      gap: 9px;
+      //gap: 9px;
     }
   }
 

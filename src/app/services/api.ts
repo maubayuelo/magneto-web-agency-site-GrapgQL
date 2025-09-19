@@ -3,9 +3,13 @@ import { fetchWPGraphQL } from '@/utils/wp-graphql';
 const SERVICES_PAGE_QUERY = `
   query GetServicesPageData {
     page(id: "services", idType: URI) {
+    pageintrotext {
+      pageIntroText
+    }
       servicesServiceDetails {
         services {
           title
+          featuredService
           description
           icon {
             node {

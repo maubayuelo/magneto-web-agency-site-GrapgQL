@@ -1,9 +1,10 @@
 import { Hero } from './index';
 import { fetchWPGraphQL } from '../../../utils/wp-graphql';
 
+
 interface HeroLoaderProps {
   pageUri: string;
-  variant?: string;
+  variant?: 'default' | 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'packages';
 }
 
 export default async function HeroLoader({ pageUri, variant = 'default' }: HeroLoaderProps) {
@@ -15,9 +16,9 @@ export default async function HeroLoader({ pageUri, variant = 'default' }: HeroL
           title
           heroContent {
             heroTitle
-            subtitle
-            ctaText
-            ctaLink
+            subtitleHero
+            ctaTextHero
+            ctaLinkHero
             image {
               node {
                 sourceUrl
@@ -41,18 +42,17 @@ export default async function HeroLoader({ pageUri, variant = 'default' }: HeroL
 
   return (
     <Hero
-      variant={variant}
+      variant={variant as any}
       title={hero?.heroTitle || about?.title || "Magneto"}
-      subtitle={hero?.subtitle || ""}
-      cta={hero?.ctaText && hero?.ctaLink ? { text: hero.ctaText, href: hero.ctaLink } : undefined}
+      subtitle={hero?.subtitleHero || ""}
+      cta={hero?.ctaTextHero && hero?.ctaLinkHero ? { text: hero.ctaTextHero, href: hero.ctaLinkHero } : undefined}
       showImage={!!hero?.image?.node?.sourceUrl}
       image={
         hero?.image?.node?.sourceUrl
           ? { src: hero.image.node.sourceUrl, alt: about?.title || "Hero Image" }
           : undefined
       }
-      backgroundImage={hero?.backgroundImage?.node?.sourceUrl || undefined}
-      calendlyModal={hero?.ctaLink === "https://calendly.com/mauriciobayuelo/free-discovery-call"}
+  backgroundImage={hero?.backgroundImage?.node?.sourceUrl || undefined}
     />
   );
 }

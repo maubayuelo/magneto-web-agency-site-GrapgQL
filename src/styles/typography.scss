@@ -297,6 +297,16 @@ $line-heights-phone: (
     text-align: center;
 }
 
+.typo-uppercase{
+    text-transform: uppercase;
+}
+.typo-bold{
+    font-weight: map-get($font-weights, bold);
+}
+.typo-extrabold{
+    font-weight: map-get($font-weights, extrabold);
+}
+
 @mixin cta-text {
     @include heading-style(md, extrabold, md);
     color: $primary-color;
@@ -308,6 +318,8 @@ $line-heights-phone: (
 }
 
 ul {
+    margin-top: 0;
+    margin-bottom: 0;
     padding-left: 24px;
     li {
         margin-bottom: $spacing-10;
@@ -327,3 +339,15 @@ h6 {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }
+
+
+.badge {
+    padding: 3px 6px;
+    background: $primary-color-light;
+    border-radius: 6px;
+    width: fit-content;
+    
+    span {
+      color: $primary-color-dark;
+    }
+  }

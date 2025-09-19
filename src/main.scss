@@ -3,6 +3,11 @@
 @import "./styles/mixins";
 @import "./styles/helpers";
 
+// Reset body margin to avoid depending on server-rendered body class
+html, body {
+	margin: 0;
+}
+
 // 2. Typography and Global Styles
 @import "./styles/typography";
 @import "./styles/globals";

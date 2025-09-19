@@ -43,7 +43,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <h3 className="typo-xl-extrabold m-0">{title}</h3>
           <div className="package-card__icon">
             {isPopular && (
-              <div className="package-card__popular-badge">
+              <div className="badge">
                 <span className="typo-sm-bold">Popular</span>
               </div>
             )}

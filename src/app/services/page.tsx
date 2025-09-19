@@ -1,15 +1,54 @@
 import HeroLoader from '@/components/organisms/Hero/HeroLoader';
 import ServicesList from './ServicesList';
 import './Services.scss';
+import { getServicesPageData } from './api';
+
+// Service data structure
+interface Service {
+  pageintrotext: string;
+}
+
+const servicesPageData = await getServicesPageData();
+const introText = servicesPageData?.pageintrotext?.pageIntroText || '';
 
 export default function ServicesPage() {
   return (
     <>
       {/* HeroLoader fetches and renders the Hero section for this page */}
       <HeroLoader pageUri="services" variant="services" />
-      <div className="main">
+      {introText ? (
+        <div className="main typo-center pb-md-responsive">
+          <h3
+            className="typo-3xl-bold m-0"
+            dangerouslySetInnerHTML={{ __html: introText.replace(/\r?\n/g, '<br />') }}
+          />
+        </div>
+      ) : null}
+      <div className="main pb-md-responsive">
         <ServicesList />
       </div>
     </>
   );
+}
+
+// If you have a CMS API helper for services, call it here. Otherwise this
+// generateMetadata will fetch a presumed endpoint at /api/pages/services.
+export async function generateMetadata() {
+  try {
+    const res = await fetch(`${process.env.WP_API || ''}/pages/services`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('failed to fetch');
+    const json = await res.json();
+    const title = json.title ?? 'Services - Magneto Marketing';
+    const desc = json.meta_description ?? 'Strategy, Web Development, UX/UI and growth services offered by Magneto Marketing.';
+    return {
+      title,
+      description: desc,
+      openGraph: { title, description: desc },
+      twitter: { title, description: desc },
+    };
+  } catch (err) {
+    const title = 'Services - Magneto Marketing';
+    const desc = 'Strategy, Web Development, UX/UI and growth services offered by Magneto Marketing.';
+    return { title, description: desc, openGraph: { title, description: desc }, twitter: { title, description: desc } };
+  }
 }

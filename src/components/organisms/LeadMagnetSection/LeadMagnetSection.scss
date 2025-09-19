@@ -1,0 +1,47 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.lead-magnet-section {
+    &__container {
+        width: 100%;
+        //border: solid 1px $gray-60;
+        background-color: $gray-30;
+        border-radius: $border-radius-mobile;
+        padding: $spacing-30;
+        @include media-tablet-up {
+            border-radius: $border-radius-tablet;
+            padding: $spacing-60;
+            max-width: 1000px;
+        }
+        @include media-desktop-up {
+            border-radius: $border-radius-desktop;
+            padding: $spacing-60;
+            max-width: 1380px;
+        }
+    }
+
+    &__content {
+        width: 100%;
+        @include flex-column;
+        align-items: center;
+        gap: $spacing-15;
+
+        @include media-tablet-up {
+            gap: $spacing-30;
+        }
+    }
+
+    &__text {
+        @include flex-column;
+        align-items: center;
+        gap: 9px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .btn {
+            //font-weight: 900;
+            // External border using box-shadow
+            //box-shadow: 0 0 0 5px rgba($white, 0.3); // Creates a 5px white external border
+        }
+}

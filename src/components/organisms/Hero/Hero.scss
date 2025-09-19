@@ -17,24 +17,24 @@
     align-items: center;
 
     &.hero-home {
-        height: calc(66vh); // Mobile-first: start with mobile height
+        height: calc(100vh); // Mobile-first: start with mobile height
+        max-height: 450px;
 
         @media (min-width: $breakpoint-phone) {
             padding: 45px 30px 0 30px;
-            height: calc(100vh - 450px);
         }
 
         @media (min-width: $breakpoint-desktop) {
             padding: 60px 30px 0 30px;
-            height: calc(100vh - 240px);
+            max-height: 450px;
         }
 
         @media (min-width: $breakpoint-desktop-lg) {
-            height: calc(100vh - 200px);
+            max-height: 480px;
         }
 
         @media (min-width: $breakpoint-desktop-xl) {
-            height: calc(100vh - 300px);
+           max-height: 540px;
         }
     }
 
@@ -50,35 +50,38 @@
         gap: 9px;
     }
 
-    .hero-image {
-        height: 100%;
-        width: 100%;
-        max-height: 300px; // Mobile-first: start with smaller image
-        max-width: 300px;
-        position: absolute;
-        left: 50%;
-        bottom: -30px;
-        transform: translateX(-50%);
-        object-fit: cover;
-        z-index: 1;
+    .hero-image {   
+    position: absolute;
+    left: 50%;
+    bottom: 15px;
+    transform: translateX(-50%);
+    z-index: 1;
+    height: auto;
+    width: 100%;
+    max-height: 240px;
+    max-width: 240px;
 
         @media (min-width: $breakpoint-phone) {
-            max-height: 450px;
-            max-width: 450px;
+            max-height: 270px;
+            max-width: 270px;
         }
 
+        
         @media (min-width: $breakpoint-desktop) {
+            max-height: 330px;
+            max-width: 330px;
+        }
+
+        @media (min-width: $breakpoint-desktop-lg) {
             max-height: 350px;
             max-width: 350px;
         }
-        @media (min-width: $breakpoint-desktop-lg) {
-            max-height: 450px;
-            max-width: 450px;
-        }
+
         @media (min-width: $breakpoint-desktop-xl) {
-            max-height: 500px;
-            max-width: 500px;
+            max-height: 420px;
+            max-width: 420px;
         }
+
     }
 
     .hero-title {
@@ -117,7 +120,7 @@
 
         // Button specific styles for hero section
         .btn {
-            font-weight: 900;
+            //font-weight: 900;
             // External border using box-shadow
             box-shadow: 0 0 0 5px rgba($white, 0.3); // Creates a 5px white external border
         }

@@ -6,7 +6,7 @@
     width: 100%;
     height: auto;
     @include responsive-border-radius;
-    background-color: $black;
+    //background-color: $black;
     //background-image: url("/assets/images/hero-background.png");
     background-size: cover;
     background-position: center;
@@ -44,8 +44,9 @@
             height: $spacing-30;
             position: relative;
             overflow: hidden;
+            //background:red;
             &:hover {
-                opacity: 0.5;
+                opacity: 0.75;
             }
             transition: opacity 0.3s ease;
         }
@@ -56,12 +57,7 @@
         height: 100%;
     }
 
-    &__location {
-        align-self: stretch;
-        text-align: center;
-        color: $white;
-        word-wrap: break-word;
-    }
+   
 
     
 }

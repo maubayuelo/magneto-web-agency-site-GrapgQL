@@ -5,11 +5,6 @@ export const HOME_FOOTER_QUERY = `
   query HomeFooter {
     page(id: "home", idType: URI) {
       homeFooter {
-        footerBgImage {
-          node {
-            sourceUrl
-          }
-        }
         footerLine1
         footerSocialIcons {
           iconSvg {

@@ -1,6 +1,7 @@
 import HeroLoader from "@/components/organisms/Hero/HeroLoader";
 import { ContactForm } from "@/components/organisms";
 import {getContactPageData} from '@/app/contact/api'; 
+import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 
 export default async function ContactPage() {
 
@@ -26,9 +27,9 @@ export default async function ContactPage() {
           <ContactForm />
         </div>
         <div className="contact-form-image">
-          <img
-            src={contactData.featuredImage?.sourceUrl || '/default-contact-image.jpg'}
-            alt={contactData.featuredImage?.altText || 'Contact us'}
+          <WpResponsiveImage
+            // cast to any because the CMS response types are loose in several places
+            image={(contactData.featuredImage as any) || { sourceUrl: (contactData.featuredImage as any)?.sourceUrl, altText: (contactData.featuredImage as any)?.altText }}
             className="contact-form-img"
           />
         </div>
@@ -36,4 +37,18 @@ export default async function ContactPage() {
       </div>
     </>
   );
+}
+
+export async function generateMetadata() {
+  try {
+  await getContactPageData();
+  const title = 'Contact - Magneto Marketing';
+  const desc = 'Get in touch with Magneto Marketing to book a strategy call or ask about services.';
+  return { title, description: desc, openGraph: { title, description: desc }, twitter: { title, description: desc } };
+  } catch (e) {
+    return {
+      title: 'Contact - Magneto Marketing',
+      description: 'Get in touch with Magneto Marketing to book a strategy call or ask about services.',
+    };
+  }
 }

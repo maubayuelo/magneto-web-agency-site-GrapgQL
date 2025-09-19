@@ -3,8 +3,10 @@ import { fetchWPGraphQL } from '@/utils/wp-graphql';
 const PACKAGES_QUERY = `
   query GetPackagesPageData {
     page(id: "packages", idType: URI) {
+    pageintrotext {
+      pageIntroText
+    }
       packagesPackageFeatures {
-        packagesText
         packagesElements {
           name
           popularChoise
@@ -30,7 +32,7 @@ export async function getPackagesPageData() {
   const data = await fetchWPGraphQL(PACKAGES_QUERY);
   const pkg = data?.page?.packagesPackageFeatures;
   return {
-    packagesText: pkg?.packagesText || "",
+    introText: data?.page?.pageintrotext?.pageIntroText || "",
     packages: (pkg?.packagesElements || []).map((el: any) => ({
       title: el.name,
       price: el.price,

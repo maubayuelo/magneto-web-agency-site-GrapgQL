@@ -5,20 +5,21 @@
   align-self: stretch;
   &__container {
     display: grid;
-    gap: $spacing-30;
+    gap: $spacing-15;
     
     // Mobile: Column layout (single column)
     grid-template-columns: 1fr;
     
     // Tablet: 2x2 grid layout
     @include media-tablet-up {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       max-width: none;
     }
     
     // Desktop: Row layout (all cards in a row)
     @include media-desktop-up {
-      grid-template-columns: repeat(4, 1fr);
+      gap: $spacing-30;
+      grid-template-columns: repeat(3, 1fr);
       justify-content: center;
       align-items: flex-start;
     }

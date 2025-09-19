@@ -23,6 +23,10 @@ export default async function Home() {
       slug: project.slug,
       title: project.title,
       featuredImage: project.featuredImage,
+      // Extract solutions from ACF/projectData if available
+      solutions: (project.projectsProjectData?.projectData?.solutions || []).map((s: any) => s.item),
+      // Extract results (outcomes) from ACF/projectData if available
+      results: (project.projectsProjectData?.projectData?.results || []).map((r: any) => r.item),
     }));
     //console.log("Projects loaded for ProjectsGrid:", projects);
     // Fetch testimonials from CMS
@@ -50,15 +54,32 @@ export default async function Home() {
       <HeroLoader pageUri="/" variant="home" />
       <AboutSection />
       <FeaturedServices />
+      <Testimonials testimonials={testimonials} />
       <ProjectsGrid
           projects={projects} 
           maxProjects={3}  
           title="Recent Projects"
           showButton={true}
         />
-      <Testimonials testimonials={testimonials} />
+      
     </>
   );
+}
+
+export async function generateMetadata() {
+  // Try to fetch a site-wide short description via GraphQL if available, otherwise fallback
+  try {
+    // Reuse fetchWPGraphQL/GET_PROJECTS logic if you have a site metadata query; keep a simple fallback for now
+    return {
+      title: 'Magneto Marketing - Home',
+      description: 'Magneto Marketing — strategy, web development and UX services for solo founders and small teams.',
+    };
+  } catch (e) {
+    return {
+      title: 'Magneto Marketing - Home',
+      description: 'Magneto Marketing — strategy, web development and UX services for solo founders and small teams.',
+    };
+  }
 }
 
 /*

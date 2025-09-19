@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 
   const { slug } = await params;
-  const project = projects.find(p => p.slug === slug);
+  const project = (projects as any[]).find((p: any) => p.slug === slug);
   
   if (!project) {
     return {
@@ -39,7 +39,7 @@ export default async function ProjectPage({ params }: PageProps) {
   );
   const projects = data?.projects?.nodes || [];
   const { slug } = await params;
-  const project = projects.find(p => p.slug === slug);
+  const project = (projects as any[]).find((p: any) => p.slug === slug);
 
   if (!project) {
     notFound();

@@ -96,20 +96,20 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
         {/* Gallery - Full width images */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="project-detail__gallery">
-            {project.gallery.map((img, i) => (
+            {project.gallery.map((img: any, i: number) => (
               <div key={i} className="project-detail__image mb-md-responsive">
                 <Image
-                  src={img.image}
-                  alt={img.footNote || `Gallery image ${i + 1}`}
+                  src={typeof img === 'string' ? img : img.image}
+                  alt={typeof img === 'string' ? `Gallery image ${i + 1}` : (img.footNote || `Gallery image ${i + 1}`)}
                   width={1200}
                   height={600}
                   className="project-detail__main-image"
                 />
                 <p>
-                {img.footNote}
+                {typeof img === 'string' ? '' : img.footNote}
                 </p>
               </div>
-              
+
             ))}
           </div>
         )}

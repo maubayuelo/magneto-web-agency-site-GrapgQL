@@ -1,3 +1,18 @@
+# magneto-web-agency-site-GrapgQL
+
+CHANGES
+-------
+* Added basic SEO improvements: centralized `src/utils/seo.ts`, page-level `metadata` exports for key pages, and route handlers for `/sitemap.xml` and `/robots.txt`.
+* Set `NEXT_PUBLIC_SITE_URL` in your environment to your production site URL so generated canonical links and sitemap entries are correct.
+
+Example:
+
+```bash
+export NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+```
+
+The sitemap is available at `/sitemap.xml` and robots at `/robots.txt` when running the Next.js app.
+
 # Magneto - Web Solo Agency Site
 
 A modern, responsive website for a solo web agency specializing in creating high-converting websites and funnels for experts and coaches. Built with Next.js 15, TypeScript, and SCSS.
