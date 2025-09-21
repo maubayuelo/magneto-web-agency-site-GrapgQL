@@ -1,4 +1,5 @@
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
+import type { FinalCTAData } from './types';
 
 export const FINAL_CTA_QUERY = `
   query finalCtaSection {
@@ -18,9 +19,7 @@ export const FINAL_CTA_QUERY = `
   }
 `;
 
-export async function getHomePrefooter() {
+export async function getHomePrefooter(): Promise<FinalCTAData> {
   const data = await fetchWPGraphQL(FINAL_CTA_QUERY);
-  //console.log('Prefooter data:', data);
-  // The GraphQL returns the fields under `page.finalCtaSection`
-  return data?.page?.finalCtaSection || {};
+  return (data?.page?.finalCtaSection as FinalCTAData) || {};
 }

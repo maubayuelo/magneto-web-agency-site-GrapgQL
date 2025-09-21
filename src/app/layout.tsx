@@ -1,9 +1,14 @@
 // Root layout (fonts, global styles, SEO defaults)
 // src/app/layout.tsx
 
-import '../main.scss'; // Import global styles at the root
+// Root layout: this file defines the top-level HTML structure and metadata for the app.
+// Beginners: Next.js (app router) uses this component to wrap every page. Put global
+// css imports, site header/footer, and shared markup here. Server-side code can run
+// in this file (it is an async server component), which is why `generateMetadata`
+// performs a GraphQL fetch to retrieve site metadata at build/time.
+import '@/main.scss'; // Import global styles at the root (use alias for consistency)
 import type { Metadata } from 'next';
-import { Header, FinalCTASection, LeadMagnetSection, Footer } from '../components/organisms';
+import { Header, FinalCTASection, LeadMagnetSection, Footer } from '@/components/organisms';
 import { SITE_URL, siteName, defaultOgImage, buildCanonical } from '@/utils/seo';
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
 import { GET_SITE_METADATA } from '@/data/site';
@@ -15,6 +20,8 @@ const FALLBACK_DESCRIPTION = 'A creative digital agency showcasing work and serv
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
+    // Fetch site-level metadata from WordPress using a GraphQL query.
+    // This runs on the server during build or at request-time depending on Next's settings.
     const data = await fetchWPGraphQL(GET_SITE_METADATA);
     const settings = data?.generalSettings || {};
     const siteTitle = settings.title || FALLBACK_TITLE;
@@ -70,6 +77,8 @@ export async function generateMetadata(): Promise<Metadata> {
       }
     };
   } catch (e) {
+    // If fetching fails, log the error and return a safe fallback set of metadata.
+    // This prevents build-time failures and keeps the site SEO-friendly.
     console.error('Failed to fetch site metadata, using fallback', e);
     return {
       metadataBase: new URL(SITE_URL),
@@ -102,14 +111,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      {...({ 'data-lt-installed': 'true', 'suppresshydrationwarning': 'true', suppressHydrationWarning: true } as any)}
+      {...({ 'data-lt-installed': 'true', suppressHydrationWarning: true } as any)}
     >
       <body>
+        {/* Header: site navigation and branding. This is a shared component used across pages. */}
         <Header
           className="header"
           logo="/assets/images/logo-magneto.svg"
         />
+
+        {/* children is where page-specific content is rendered (each page's content). */}
         {children}
+
+        {/* These are common marketing sections rendered on most pages: lead magnet, final CTA and footer. */}
         <LeadMagnetSection/>
         <FinalCTASection/>
         <Footer />

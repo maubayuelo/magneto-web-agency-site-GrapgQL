@@ -1,5 +1,5 @@
 import { Hero } from './index';
-import { fetchWPGraphQL } from '../../../utils/wp-graphql';
+import { fetchWPGraphQL } from '@/utils/wp-graphql';
 
 
 interface HeroLoaderProps {
@@ -21,12 +21,34 @@ export default async function HeroLoader({ pageUri, variant = 'default' }: HeroL
             ctaLinkHero
             image {
               node {
+                id
                 sourceUrl
+                mediaDetails {
+                  width
+                  height
+                  sizes {
+                    name
+                    width
+                    height
+                    sourceUrl
+                  }
+                }
               }
             }
             backgroundImage {
               node {
+                id
                 sourceUrl
+                mediaDetails {
+                  width
+                  height
+                  sizes {
+                    name
+                    width
+                    height
+                    sourceUrl
+                  }
+                }
               }
             }
           }
@@ -42,16 +64,18 @@ export default async function HeroLoader({ pageUri, variant = 'default' }: HeroL
 
   return (
     <Hero
-      variant={variant as any}
+      variant={variant}
       title={hero?.heroTitle || about?.title || "Magneto"}
       subtitle={hero?.subtitleHero || ""}
       cta={hero?.ctaTextHero && hero?.ctaLinkHero ? { text: hero.ctaTextHero, href: hero.ctaLinkHero } : undefined}
       showImage={!!hero?.image?.node?.sourceUrl}
       image={
+        // keep legacy simple src/alt for non-CMS uses
         hero?.image?.node?.sourceUrl
           ? { src: hero.image.node.sourceUrl, alt: about?.title || "Hero Image" }
           : undefined
       }
+      imageNode={hero?.image?.node}
   backgroundImage={hero?.backgroundImage?.node?.sourceUrl || undefined}
     />
   );

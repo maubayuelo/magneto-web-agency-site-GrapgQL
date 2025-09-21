@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconComponent, CalendlyButton } from '../../atoms';
+import { IconComponent, CalendlyButton } from '@/components/atoms';
 import Image from 'next/image';
 import './PackageCard.scss';
 

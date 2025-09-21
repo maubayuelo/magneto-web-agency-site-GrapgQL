@@ -1,5 +1,6 @@
 // filepath: [api.ts](http://_vscodecontentref_/0)
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
+import type { FooterResponse } from './types';
 
 export const HOME_FOOTER_QUERY = `
   query HomeFooter {
@@ -20,11 +21,11 @@ export const HOME_FOOTER_QUERY = `
   }
 `;
 
-export async function getHomeFooter() {
+export async function getHomeFooter(): Promise<FooterResponse> {
   const data = await fetchWPGraphQL(HOME_FOOTER_QUERY);
   //console.log('Full GraphQL response:', data);
   if (!data?.page) {
     console.error('No page data found. Check if the "home" page exists and has the ACF group.');
   }
-  return data?.page?.homeFooter || {};
+  return (data?.page?.homeFooter as FooterResponse) || {};
 }

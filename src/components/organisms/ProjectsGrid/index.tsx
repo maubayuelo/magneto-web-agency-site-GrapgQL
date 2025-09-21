@@ -4,45 +4,18 @@ import './ProjectsGrid.scss';
 import Image from 'next/image';
 import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 import Link from 'next/link';
+import type { ProjectItem } from './types';
 
-
-interface ProjectsGridProps {
-  projects: {
-    id: string | number;
-    slug: string;
-    title: string;
-    featuredImage?: {
-      node?: {
-        sourceUrl: string;
-        altText?: string;
-      }
-    };
-    solutions?: string[];
-    results?: string[];
-    // Add other fields as needed
-  }[];
-  title?: string;
-  maxProjects?: number;
-  showButton?: boolean;
-}
 
 export const ProjectsGrid = ({ 
   projects,
   maxProjects = 6, 
   showButton = true, 
   title = "Recent Projects" 
-}: ProjectsGridProps) => {
+}: { projects: ProjectItem[]; maxProjects?: number; showButton?: boolean; title?: string }) => {
   const displayedProjects = projects.slice(0, maxProjects);
 
-  // Determine the first solution to display prominently (from the first project)
-  const firstSolution = displayedProjects.length > 0 && displayedProjects[0].solutions && displayedProjects[0].solutions.length > 0
-    ? displayedProjects[0].solutions[0]
-    : null;
-
-  // Determine the first result/outcome to display prominently (from the first project)
-  const firstResult = displayedProjects.length > 0 && displayedProjects[0].results && displayedProjects[0].results.length > 0
-    ? displayedProjects[0].results[0]
-    : null;
+  // No-op: keep displayedProjects prepared for rendering. Avoid unused variable warnings.
 
   //console.log(projects);
 
@@ -66,7 +39,7 @@ export const ProjectsGrid = ({
               <Link href={`/projects/${project.slug}`} className="projects-grid__item-link mb-15">
                 {project.featuredImage?.node?.sourceUrl ? (
                   <WpResponsiveImage
-                    image={project.featuredImage?.node as any}
+                    image={project.featuredImage?.node}
                     className="projects-grid__image"
                     width={390}
                     height={270}

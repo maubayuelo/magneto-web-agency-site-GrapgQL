@@ -1,26 +1,18 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import ServiceCard from '../../molecules/ServiceCard';
+import ServiceCard from '@/components/molecules/ServiceCard';
 import { getHomeFeaturedServices } from './api';
+import type { FeaturedServicesResponse, FeaturedServiceItem } from './types';
 import Link from 'next/link';
 import './FeaturedServices.scss';
 
-interface Service {
-  serviceTitle: string;
-  serviceDescription: string;
-  serviceIcon?: any; // could be string or object with node.sourceUrl
-  anchorLink?: string;
-}
-
-
 const HomeFeaturedServices: React.FC = () => {
   const [sectionTitle, setSectionTitle] = useState<string>('');
-  const [services, setServices] = useState<Service[]>([]);
+  const [services, setServices] = useState<FeaturedServiceItem[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getHomeFeaturedServices();
-      //console.log("Fetched services data:", data); // <--- Add this
+      const data: FeaturedServicesResponse = await getHomeFeaturedServices();
       setSectionTitle(data.sectionTitle || 'Featured Services');
       setServices(data.service || []);
     }
@@ -36,10 +28,10 @@ const HomeFeaturedServices: React.FC = () => {
           {services.map((service, idx) => (
             <ServiceCard
               key={service.anchorLink || idx}
-              title={service.serviceTitle}
-              description={service.serviceDescription}
-              icon={(service.serviceIcon?.node?.sourceUrl) || (typeof service.serviceIcon === 'string' ? service.serviceIcon : "")}
-              anchorLink={service.anchorLink}
+              title={service.serviceTitle || ''}
+              description={service.serviceDescription || ''}
+              icon={typeof service.serviceIcon === 'string' ? service.serviceIcon : (service.serviceIcon?.node?.sourceUrl || '')}
+              anchorLink={service.anchorLink ? String(service.anchorLink) : undefined}
             />
           ))}
 

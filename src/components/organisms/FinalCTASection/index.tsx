@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { getHomePrefooter } from './api';
-import { FinalCTASectionProps } from './types';
-import { CalendlyButton } from '../../atoms';
+import type { FinalCTASectionProps, FinalCTAData } from './types';
+import { CalendlyButton } from '@/components/atoms';
 import './FinalCTASection.scss';
 
 export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
@@ -13,16 +13,15 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<FinalCTAData | null>(null);
 
   // Derive CTA object from fetched data (keeps backward compatibility with existing props)
   const cta = {
-    type: data?.ctaType || (data?.ctaLink && data?.ctaLink.includes('calendly') ? 'calendly' : undefined),
+    type: data?.ctaLink && data?.ctaLink.includes('calendly') ? 'calendly' : undefined,
     href: data?.ctaLink || undefined,
     onClick: undefined,
-    utmContent: data?.utmContent,
-    utmTerm: data?.utmTerm,
-    // pass Calendly customUrl when it's a Calendly link
+    utmContent: undefined,
+    utmTerm: undefined,
     customUrl: data?.ctaLink && data?.ctaLink.includes('calendly') ? data.ctaLink : undefined
   };
 
@@ -31,8 +30,8 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
 
   useEffect(() => {
     async function fetchData() {
-      const prefooter = await getHomePrefooter();
-      setData(prefooter);
+      const prefooter: FinalCTAData = await getHomePrefooter();
+      setData(prefooter || null);
     }
     fetchData();
   }, []);

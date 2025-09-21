@@ -1,8 +1,8 @@
-import HeroLoader from '@/components/organisms/Hero/HeroLoader';
-import { CalendlyButton } from '../../components/atoms';
+import { HeroLoader } from '@/components/organisms/Hero';
+import { CalendlyButton } from '@/components/atoms';
 import Image from 'next/image';
 import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
-import '../../styles/pages/about.scss';
+import '@/styles/pages/about.scss';
 import { getAboutPageData } from './api';
 
 export async function generateMetadata() {
@@ -36,7 +36,7 @@ export async function generateMetadata() {
 
 export default async function AboutPage() {
   const aboutData = await getAboutPageData();
-  console.log('About page data from CMS:', aboutData);
+  //console.log('About page data from CMS:', aboutData);
 
   return (
     <>

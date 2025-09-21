@@ -1,15 +1,21 @@
 // Custom React hook for Calendly integration
 // src/lib/hooks/useCalendly.ts
 
+// Calendly integration hook
+// This is a client-side hook (note the 'use client' directive) because it
+// interacts with a third-party script and the browser DOM.
 'use client';
 
 import { useState, useCallback } from 'react';
-import { openCalendlyPopup, loadCalendlyScript } from '../utils/calendly';
+import { openCalendlyPopup, loadCalendlyScript } from '@/utils/calendly';
 
+// Options you can pass when opening Calendly. For example, UTM params or callbacks.
 export interface UseCalendlyOptions {
   utmContent?: string;
   utmTerm?: string;
   customUrl?: string;
+  /** If true, open Calendly in a new tab/window (avoid embedded iframe). */
+  forceNewWindow?: boolean;
   onOpen?: () => void;
   onError?: (error: Error) => void;
 }
@@ -19,6 +25,7 @@ export interface UseCalendlyReturn {
   isLoading: boolean;
   error: string | null;
   isScriptLoaded: boolean;
+  preload: () => void;
 }
 
 export function useCalendly(options: UseCalendlyOptions = {}): UseCalendlyReturn {
@@ -26,6 +33,11 @@ export function useCalendly(options: UseCalendlyOptions = {}): UseCalendlyReturn
   const [error, setError] = useState<string | null>(null);
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
+  /**
+   * openCalendly
+   * - Ensures the Calendly embed script is loaded, then opens the popup.
+   * - Errors are saved in state and passed to optional callbacks for consumer components.
+   */
   const openCalendly = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -37,22 +49,23 @@ export function useCalendly(options: UseCalendlyOptions = {}): UseCalendlyReturn
         setIsScriptLoaded(true);
       }
 
-      // Call onOpen callback
+      // Optional hook for calling code to react when Calendly opens
       if (options.onOpen) {
         options.onOpen();
       }
 
-      // Open Calendly popup
+      // Open Calendly popup; openCalendlyPopup is a small helper that wraps the Calendly API.
       await openCalendlyPopup({
         utmContent: options.utmContent,
         utmTerm: options.utmTerm,
-        customUrl: options.customUrl
+        customUrl: options.customUrl,
+        forceNewWindow: options.forceNewWindow
       });
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to open Calendly';
       setError(errorMessage);
-      
+
       if (options.onError) {
         options.onError(err instanceof Error ? err : new Error(errorMessage));
       }
@@ -61,10 +74,20 @@ export function useCalendly(options: UseCalendlyOptions = {}): UseCalendlyReturn
     }
   }, [options, isScriptLoaded]);
 
+  const preload = () => {
+    // fire-and-forget preload of Calendly assets on intent (hover/focus)
+    try {
+      loadCalendlyScript().then(() => setIsScriptLoaded(true)).catch(() => {});
+    } catch (e) {
+      // swallow
+    }
+  };
+
   return {
     openCalendly,
     isLoading,
     error,
     isScriptLoaded
+    ,preload
   };
 }

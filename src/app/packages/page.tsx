@@ -1,5 +1,5 @@
 import React from 'react';
-import HeroLoader from '@/components/organisms/Hero/HeroLoader';
+import { HeroLoader } from '@/components/organisms/Hero';
 import { PackagesGrid } from '@/components/organisms';
 import { getPackagesPageData } from './api';
 

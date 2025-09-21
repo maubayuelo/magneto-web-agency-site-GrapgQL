@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { getLeadMagnetSection } from './api';
-import { LeadMagnetSectionProps } from './types';
+import type { LeadMagnetSectionProps, LeadMagnetSectionData, LinkNode } from './types';
 import { CalendlyButton } from '../../atoms';
 import './LeadMagnetSection.scss';
 
@@ -13,17 +13,17 @@ export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [dataLeadMagnetSection, setDataLeadMagnetSection] = useState<any>(null);
+  const [dataLeadMagnetSection, setDataLeadMagnetSection] = useState<LeadMagnetSectionData | null>(null);
 
   // Derive CTA object from fetched data (keeps backward compatibility with existing props)
   // The API sometimes returns `ctaLink` as a string or as an object (e.g. { node: { url, uri, id } }).
-  const rawCtaLink = dataLeadMagnetSection?.ctaLink;
+  const rawCtaLink: string | LinkNode | undefined | null = (dataLeadMagnetSection as LeadMagnetSectionData)?.ctaLink;
   let normalizedHref: string | undefined = undefined;
   if (typeof rawCtaLink === 'string') {
     normalizedHref = rawCtaLink;
   } else if (rawCtaLink && typeof rawCtaLink === 'object') {
     // try a few common fields that might contain a url
-    normalizedHref = rawCtaLink.node?.url || rawCtaLink.node?.uri || rawCtaLink.node?.link || rawCtaLink.node?.id || undefined;
+    normalizedHref = rawCtaLink.node?.url || rawCtaLink.node?.uri || rawCtaLink.node?.link || (rawCtaLink.node?.id ? String(rawCtaLink.node.id) : undefined) || undefined;
   }
 
   const isCalendly = typeof normalizedHref === 'string' && normalizedHref.includes('calendly');
@@ -43,8 +43,8 @@ export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
 
   useEffect(() => {
     async function fetchData() {
-      const section = await getLeadMagnetSection();
-      setDataLeadMagnetSection(section);
+      const section: LeadMagnetSectionData = await getLeadMagnetSection();
+      setDataLeadMagnetSection(section || null);
     }
     fetchData();
   }, []);

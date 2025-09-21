@@ -12,6 +12,14 @@ const CONTACT_PAGE_QUERY = `
         node {
           sourceUrl
           altText
+          mediaDetails {
+            sizes {
+              sourceUrl
+              width
+              height
+              name
+            }
+          }
         }
       }
     }

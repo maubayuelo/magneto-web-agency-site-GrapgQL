@@ -1,7 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ProjectData } from '../../../data/projects';
+import DOMPurify from 'isomorphic-dompurify';
+import { ProjectData } from '@/data/projects';
 import './ProjectDetail.scss';
 
 interface ProjectDetailProps {
@@ -14,16 +15,18 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
       <div className="project-detail__container">
 
         {/* Header */}
-        <header className="project-detail__header typo-center">
-          <h1 className="typo-4xl-extrabold m-0">{project.title}</h1>
+        <header className="project-detail__header">
+          <h1 className="typo-4xl-extrabold typo-center m-0">{project.title}</h1>
           {project.tagText && (
-            <h2 className="typo-2xl-bold mt-15">{project.tagText}</h2>
+            <h2 className="typo-2xl-bold mt-15 typo-center">{project.tagText}</h2>
           )}
+          <div
+            className="project-detail__description typo-xl-medium pb-30"
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description || '') }}
+          />
         </header>
 
-        <header className="">
-          <p className="project-detail__description typo-xl-medium pb-30">{project.description}</p>
-        </header>
+        
 
         {/* Main Image */}
         <div className="project-detail__image mb-md-responsive">

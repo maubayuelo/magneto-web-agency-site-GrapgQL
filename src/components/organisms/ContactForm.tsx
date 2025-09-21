@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FormField } from '../molecules/FormField';
+import { FormField } from '@/components/molecules/FormField';
 
 
 

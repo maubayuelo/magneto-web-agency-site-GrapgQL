@@ -1,6 +1,11 @@
+import React from 'react';
 import Image from "next/image";
-import { CalendlyButton } from '../../atoms';
+import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
+import { CalendlyButton } from '@/components/atoms';
 import './Hero.scss';
+import { fetchWPGraphQL } from '@/utils/wp-graphql';
+import { HOME_HERO_QUERY } from './api';
+import type { HomeHero } from './types';
 
 export interface HeroProps {
   variant?: 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'packages' | 'default';
@@ -14,6 +19,17 @@ export interface HeroProps {
     width?: number;
     height?: number;
   };
+  imageNode?: {
+    sourceUrl?: string;
+    altText?: string;
+    mediaDetails?: {
+      sizes?: {
+        sourceUrl?: string;
+        width?: number;
+        height?: number;
+      }[];
+    };
+  } | null;
   cta?: {
     text: string;
     href?: string;
@@ -39,7 +55,8 @@ export function Hero({
   backgroundImage,
   showImage,
   className = '',
-  children
+  children,
+  imageNode
 }: HeroProps) {
   // Set default sizes based on variant
   const defaultTitleSize = variant === 'home' ? 'typo-5xl-extrabold' : 'typo-4xl-extrabold';
@@ -97,7 +114,7 @@ export function Hero({
             )}
           </div>
         )}
-        {finalImage?.src && (
+        {finalImage?.src && !imageNode && (
           <Image
             src={finalImage.src}
             alt={finalImage.alt}
@@ -107,8 +124,139 @@ export function Hero({
             className="hero-image"
           />
         )}
+
+        {imageNode && (
+          <WpResponsiveImage
+            image={imageNode}
+            alt={imageNode.altText || finalImage?.alt || 'Hero Image'}
+            className="hero-image"
+            omitSizeAttributes={false}
+            priority
+            // prefer a reasonably-sized rendered image for hero; Hero layout expects a fixed visual
+            width={500}
+            height={500}
+          />
+        )}
       </div>
     </section>
     </div>
+  );
+}
+// ---------------------------
+// Server-side loader helper
+// ---------------------------
+// This function can be used in server components to fetch the home hero content
+// and return props suitable for the `Hero` component.
+export async function loadHomeHero(): Promise<Partial<HeroProps>> {
+  try {
+    const data = await fetchWPGraphQL(HOME_HERO_QUERY);
+    const hero: HomeHero = data?.page?.homeHero || {};
+
+    const image = (hero.heroImage && hero.heroImage.sourceUrl && hero.heroImage.altText) ? {
+      src: hero.heroImage.sourceUrl,
+      alt: hero.heroImage.altText,
+      // Derive width/height from mediaDetails.sizes if available (matches previous implementation)
+      width: hero.heroImage.mediaDetails?.sizes?.[0]?.width || undefined,
+      height: hero.heroImage.mediaDetails?.sizes?.[0]?.height || undefined,
+    } : undefined;
+
+    const ctaProp = hero.cta ? {
+      text: hero.cta.text || '',
+      href: hero.cta.href || undefined,
+      type: hero.cta.type || undefined,
+      utmContent: hero.cta.utmContent || undefined,
+      utmTerm: hero.cta.utmTerm || undefined,
+    } : null;
+
+    return {
+      title: hero.title || '',
+      subtitle: hero.subtitle || '',
+      image,
+      cta: ctaProp,
+      backgroundImage: hero.backgroundImage?.sourceUrl || undefined,
+      variant: 'home'
+    };
+  } catch (e) {
+    console.error('loadHomeHero error:', e);
+    return {};
+  }
+}
+
+// ---------------------------
+// Client wrapper (previously HeroWithData)
+// ---------------------------
+// Keep as a small client component that fetches home hero on the client when used
+// inside client-only pages.
+export async function HeroLoader({ pageUri, variant = 'default' }: { pageUri: string; variant?: HeroProps['variant']; }) {
+  // Preserve previous server-side loader behaviour by delegating to fetchWPGraphQL
+  let about = null as any;
+  try {
+    const data = await fetchWPGraphQL(`
+      query GetHeroContent {
+        pageBy(uri: "${pageUri}") {
+          title
+          heroContent {
+            heroTitle
+            subtitleHero
+            ctaTextHero
+            ctaLinkHero
+            image {
+              node {
+                id
+                sourceUrl
+                mediaDetails {
+                  width
+                  height
+                  sizes {
+                    name
+                    width
+                    height
+                    sourceUrl
+                  }
+                }
+              }
+            }
+            backgroundImage {
+              node {
+                id
+                sourceUrl
+                mediaDetails {
+                  width
+                  height
+                  sizes {
+                    name
+                    width
+                    height
+                    sourceUrl
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `);
+    about = data.pageBy;
+  } catch (e) {
+    console.error('GraphQL fetch error:', e);
+  }
+
+  const hero = about?.heroContent;
+
+  return (
+    <Hero
+      variant={variant}
+      title={hero?.heroTitle || about?.title || "Magneto"}
+      subtitle={hero?.subtitleHero || ""}
+      cta={hero?.ctaTextHero && hero?.ctaLinkHero ? { text: hero.ctaTextHero, href: hero.ctaLinkHero } : undefined}
+      showImage={!!hero?.image?.node?.sourceUrl}
+      image={
+        hero?.image?.node?.sourceUrl
+          ? { src: hero.image.node.sourceUrl, alt: about?.title || "Hero Image" }
+          : undefined
+      }
+      imageNode={hero?.image?.node}
+      backgroundImage={hero?.backgroundImage?.node?.sourceUrl || undefined}
+    />
   );
 }

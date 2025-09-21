@@ -1,3 +1,5 @@
+import type { FinalCTAData } from '../FinalCTASection/types';
+
 export interface PreFooterProps {
   title?: string;
   subtitle?: string;
@@ -5,5 +7,5 @@ export interface PreFooterProps {
   buttonLink?: string;
   className?: string;
   show?: boolean;
-  debugData?: any;
+  debugData?: FinalCTAData | null;
 }

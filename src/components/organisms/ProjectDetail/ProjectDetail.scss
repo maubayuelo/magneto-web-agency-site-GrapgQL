@@ -5,27 +5,31 @@
   &__container {
     display: flex;
     flex-direction: column;
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
   }
 
- 
-
   &__description {
     margin: 0 auto;
-    color: $gray-80;
-    max-width: 800px;
+    color: $gray-90;
+    //max-width: 1024px;
   }
 
   &__image {
     overflow: hidden;
-    border-radius: $border-radius-mobile;
+    img{
+      border-radius: $border-radius-mobile;
         @include media-tablet-up {
             border-radius: $border-radius-tablet;
         }
         @include media-desktop-up {
             border-radius: $border-radius-desktop;
         }
+    }
+    p{
+      //max-width: 1024px;
+      margin: 15px auto 0 auto;
+    }
   }
 
   &__main-image {
@@ -33,6 +37,8 @@
     height: auto;
     object-fit: cover;
     display: block;
+    //max-width: 1024px;
+    margin: 0 auto;
   }
 
   &__columns {

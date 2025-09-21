@@ -1,5 +1,5 @@
 import React from 'react';
-import { TestimonialCard } from '../TestimonialCard';
+import { TestimonialCard } from '@/components/organisms/TestimonialCard';
 import { TestimonialsProps } from './types';
 import './Testimonials.scss';
 

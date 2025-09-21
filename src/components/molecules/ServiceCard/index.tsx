@@ -1,5 +1,5 @@
 import React from 'react';
-import ServiceIcon from '../../atoms/ServiceIcon';
+import ServiceIcon from '@/components/atoms/ServiceIcon';
 import './ServiceCard.scss';
 
 interface ServiceCardProps {

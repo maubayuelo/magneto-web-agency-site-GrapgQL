@@ -1,4 +1,4 @@
-import HeroLoader from '@/components/organisms/Hero/HeroLoader';
+import { HeroLoader } from '@/components/organisms/Hero';
 import ServicesList from './ServicesList';
 import './Services.scss';
 import { getServicesPageData } from './api';

@@ -1,4 +1,4 @@
-import HeroLoader from "@/components/organisms/Hero/HeroLoader";
+import { HeroLoader } from "@/components/organisms/Hero";
 import { ContactForm } from "@/components/organisms";
 import {getContactPageData} from '@/app/contact/api'; 
 import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';

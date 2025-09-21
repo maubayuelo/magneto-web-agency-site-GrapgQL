@@ -34,6 +34,14 @@ export const GET_PROJECTS = gql`
           node {
             sourceUrl
             altText
+            mediaDetails {
+              sizes {
+                sourceUrl
+                width
+                height
+                name
+              }
+            }
           }
         }
         projectsProjectData {
@@ -55,6 +63,14 @@ export const GET_PROJECTS = gql`
               node {
                 sourceUrl
                 altText
+                mediaDetails {
+                  sizes {
+                    sourceUrl
+                    width
+                    height
+                    name
+                  }
+                }
               }
             }
             footNote

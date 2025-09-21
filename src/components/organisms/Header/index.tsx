@@ -4,11 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { CalendlyButton } from "../../atoms";
 import "./Header.scss";
+import { getHomeHeader } from "./api";
+import { HomeHeader } from './types';
 
 export const Header = ({ className = "", logo }: { className?: string; logo?: string }) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [logoUrl, setLogoUrl] = useState<string | undefined>(logo);
 
   useEffect(() => {
     setMounted(true);
@@ -19,14 +22,27 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    async function fetchLogo() {
+      try {
+        const data: HomeHeader = await getHomeHeader();
+        const src = data?.logo?.sourceUrl;
+        if (src) setLogoUrl(src);
+      } catch (err) {
+        // keep fallback
+      }
+    }
+    fetchLogo();
+  }, []);
+
   // Render the header content (same for both mounted states to ensure consistency)
   const renderHeaderContent = () => (
     <>
       <section className={`header ${className} ${scrolled ? "scrolled" : ""}`}>
         <header className={`${className} ${scrolled ? "scrolled" : ""}`}>
           <div className="main">
-            <Link className="logo" href="/">
-              <Image src={logo || "/logo.png"} alt="Logo" width={120} height={43} />
+              <Link className="logo" href="/">
+              <Image src={logoUrl || logo || "/logo.png"} alt="Logo" width={120} height={43} />
             </Link>
             <ul className="nav">
               <li><a href="/about-magneto/" className="typo-sm-bold">About</a></li>
@@ -45,8 +61,8 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
                   Schedule Call
                 </CalendlyButton>
               </li>
-              <li><a href="#" className="typo-sm-bold">FR</a></li>
-              <li><a href="#" className="typo-sm-bold">ES</a></li>
+              {/* <li><a href="#" className="typo-sm-bold">FR</a></li>
+              <li><a href="#" className="typo-sm-bold">ES</a></li> */}
             </ul>
             <ul className="nav_mobile">
               <li>
@@ -81,13 +97,13 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
         </header>
       </section>
       <ul className="nav_mobile__menu" style={{ display: menuOpen ? "flex" : "none" }}>
-        <li><a href="/about/" onClick={() => setMenuOpen(false)}>About</a></li>
+        <li><a href="/about-magneto/" onClick={() => setMenuOpen(false)}>About</a></li>
         <li><a href="/services/" onClick={() => setMenuOpen(false)}>Services</a></li>
         <li><a href="/packages/" onClick={() => setMenuOpen(false)}>Packages</a></li>
         <li><a href="/projects/" onClick={() => setMenuOpen(false)}>Projects</a></li>
         <li><a href="/contact/" onClick={() => setMenuOpen(false)}>Contact</a></li>
-        <li><a href="#" onClick={() => setMenuOpen(false)}>FR</a></li>
-        <li><a href="#" onClick={() => setMenuOpen(false)}>ES</a></li>
+        {/* <li><a href="#" onClick={() => setMenuOpen(false)}>FR</a></li>
+        <li><a href="#" onClick={() => setMenuOpen(false)}>ES</a></li> */}
       </ul>
     </>
   );

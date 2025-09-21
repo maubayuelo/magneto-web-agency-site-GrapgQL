@@ -1,87 +1,85 @@
 // Home page
 
-import HeroLoader from '@/components/organisms/Hero/HeroLoader';
-// Update the import path if the file is located elsewhere, for example:
+// Home page (server component)
+// This component fetches CMS data (projects and testimonials) and renders the main
+// sections of the homepage. In Next.js app router, async server components can
+// fetch data directly. Client-only behavior should be placed in components with
+// "use client" at the top.
+import { HeroLoader } from '@/components/organisms/Hero';
+// `GET_PROJECTS` is a GraphQL query string defined in `src/data/projects` that asks the CMS for project posts.
 import { GET_PROJECTS } from '@/data/projects';
-// Or adjust the path to match the actual location of your projects query file.
-import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Your custom fetcher
-import { getHomeTestimonials } from '../components/organisms/Testimonials/api';
-import { FeaturedServices, ProjectsGrid, Testimonials } from '../components/organisms';
-import AboutSection from '../components/organisms/AboutSection';
+import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Centralized GraphQL fetch helper
+import { getHomeTestimonials } from '@/components/organisms/Testimonials/api';
+import { FeaturedServices, ProjectsGrid, Testimonials } from '@/components/organisms';
+import AboutSection from '@/components/organisms/AboutSection';
 
 export default async function Home() {
+  // Default values for the data we'll render
   let projects = [];
   let fetchError = false;
   let testimonialData = [];
+
   try {
+    // Fetch projects using the GraphQL helper. `GET_PROJECTS` is a string query.
     const data = await fetchWPGraphQL(typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || '');
-    // In your Home component, after fetching:
-    //console.log("Raw data from CMS:", data);
+
+    // The CMS response format depends on your GraphQL schema. Here we expect
+    // `data.projects.nodes` to be an array of project nodes.
     const projectsRaw = data?.projects?.nodes || [];
+
+    // Normalize the CMS project objects into the shape the React components expect.
     projects = projectsRaw.map((project: any) => ({
       id: project.id,
       slug: project.slug,
       title: project.title,
       featuredImage: project.featuredImage,
-      // Extract solutions from ACF/projectData if available
+      // Example of mapping nested ACF fields if present
       solutions: (project.projectsProjectData?.projectData?.solutions || []).map((s: any) => s.item),
-      // Extract results (outcomes) from ACF/projectData if available
       results: (project.projectsProjectData?.projectData?.results || []).map((r: any) => r.item),
     }));
-    //console.log("Projects loaded for ProjectsGrid:", projects);
-    // Fetch testimonials from CMS
+
+    // Fetch testimonials from a helper; this might call the CMS or return static data.
     testimonialData = await getHomeTestimonials();
-    //console.log("Testimonials loaded:", testimonialData);
   } catch (e) {
-    console.error("Error fetching projects:", e);
+    // If any fetch fails, set a flag and continue rendering fallbacks.
+    console.error('Error fetching projects:', e);
     fetchError = true;
   }
 
-  // Map CMS data to TestimonialCard shape
+  // Map testimonials into the shape required by the `Testimonials` component.
   const testimonials = testimonialData.map((t: any, idx: number) => ({
     id: idx + 1,
     quote: t.testimonial,
     author: t.author,
-    avatar: t.thumb?.node?.sourceUrl || "https://placehold.co/54x54",
-    role: "", // Add role if available in CMS
+    avatar: t.thumb?.node?.sourceUrl || 'https://placehold.co/54x54',
+    role: '', // Optional: add role if available in the CMS
   }));
-  
-  
 
   return (
     <>
-      {/* HeroLoader fetches and renders the Hero section for this page */}
+      {/* HeroLoader: server component that renders the hero for the page */}
       <HeroLoader pageUri="/" variant="home" />
+      {/* AboutSection, FeaturedServices and other page sections: usually composed from smaller components */}
       <AboutSection />
       <FeaturedServices />
       <Testimonials testimonials={testimonials} />
       <ProjectsGrid
-          projects={projects} 
-          maxProjects={3}  
+          projects={projects}
+          maxProjects={3}
           title="Recent Projects"
           showButton={true}
         />
-      
     </>
   );
 }
 
 export async function generateMetadata() {
-  // Try to fetch a site-wide short description via GraphQL if available, otherwise fallback
-  try {
-    // Reuse fetchWPGraphQL/GET_PROJECTS logic if you have a site metadata query; keep a simple fallback for now
-    return {
-      title: 'Magneto Marketing - Home',
-      description: 'Magneto Marketing — strategy, web development and UX services for solo founders and small teams.',
-    };
-  } catch (e) {
-    return {
-      title: 'Magneto Marketing - Home',
-      description: 'Magneto Marketing — strategy, web development and UX services for solo founders and small teams.',
-    };
-  }
+  // This function can run server-side to provide page-specific metadata.
+  // For the homepage we return a short title and description. If you need
+  // dynamic metadata based on CMS content, you can fetch it here similarly
+  // to the approach used in `layout.tsx`.
+  return {
+    title: 'Magneto Marketing - Home',
+    description: 'Magneto Marketing — strategy, web development and UX services for solo founders and small teams.',
+  };
 }
-
-/*
-ProjectsGrid
-*/

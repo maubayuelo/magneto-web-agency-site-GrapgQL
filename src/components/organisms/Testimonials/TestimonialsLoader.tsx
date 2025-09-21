@@ -1,20 +1,19 @@
-import { getHomeTestimonials } from './api';
+import { getHomeTestimonials, Testimonial } from './api';
 import { Testimonials } from '.';
 
 export default async function TestimonialsLoader({ title = "Testimonials", className = "" }) {
-  const testimonialsRaw = await getHomeTestimonials();
+  const testimonialsRaw: Testimonial[] = await getHomeTestimonials();
 
   // Map CMS data to TestimonialsProps
-  const testimonials = (testimonialsRaw || []).map((item: any, idx: number) => {
-  //console.log('Testimonial avatar:', item.thumb?.node?.sourceUrl);
-  return {
-    id: idx,
-    author: item.author,
-    quote: item.testimonial,
-    avatar: item.thumb?.node?.sourceUrl,
-    role: "",
-  };
-});
+  const testimonials = (testimonialsRaw || []).map((item, idx: number) => {
+    return {
+      id: idx,
+      author: item.author || '',
+      quote: item.testimonial || '',
+      avatar: item.thumb?.node?.sourceUrl || '',
+      role: "",
+    };
+  });
 
   return (
     <Testimonials

@@ -3,17 +3,16 @@
 import { useEffect, useState } from 'react';
 import { getHomeFooter } from "./api";
 import './Footer.scss';
-import { FooterProps } from './types';
+import type { FooterProps, FooterResponse, FooterSocialIcon } from './types';
 import Link from 'next/link';
 
 export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
-  const [footerData, setFooterData] = useState<any>(null);
+  const [footerData, setFooterData] = useState<FooterResponse | null>(null);
 
   useEffect(() => {
     async function fetchFooter() {
       const data = await getHomeFooter();
-      setFooterData(data);
-      //console.log(data);
+      setFooterData(data || null);
     }
     fetchFooter();
   }, []);
@@ -28,8 +27,8 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
 
         {/* Social Media Icons */}
         <div className="footer__social">
-          {footerData?.footerSocialIcons?.map((icon: any, idx: number) => {
-            const iconUrl = icon.iconSvg?.node?.sourceUrl;
+          {footerData?.footerSocialIcons?.map((icon: FooterSocialIcon, idx: number) => {
+            const iconUrl = icon?.iconSvg?.node?.sourceUrl || '';
             const isExternal = iconUrl && (iconUrl.startsWith('http://') || iconUrl.startsWith('https://'));
             const src = isExternal ? iconUrl : '/assets/images/default-icon.svg';
             // Use <img> for SVGs, especially local ones
@@ -43,7 +42,7 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
               >
                 <img
                   src={src}
-                  alt={icon.alt || 'Social Icon'}
+                  alt={(icon && (icon as any).alt) || 'Social Icon'}
                   className="footer__icon"
                 />
               </Link>

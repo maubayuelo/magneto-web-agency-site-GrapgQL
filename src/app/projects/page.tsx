@@ -1,8 +1,8 @@
-import HeroLoader from '@/components/organisms/Hero/HeroLoader';
+import { HeroLoader } from '@/components/organisms/Hero';
 
 import { GET_PROJECTS } from '@/data/projects';
 import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Your custom fetcher
-import { ProjectsGrid } from '../../components/organisms';
+import { ProjectsGrid } from '@/components/organisms';
 import { getProjectsPageData } from './api';
 
 export default async function PortfolioPage() {
