@@ -7,7 +7,7 @@
   
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba($black, 0.15);
   }
   
   &:active {
@@ -73,7 +73,7 @@
 }
 
 .calendly-overlay{
-    background-color: #a5a5a5;
+    background-color: $gray-90;
     background-color: rgba($black, .84) !important;
 }
 
@@ -81,7 +81,7 @@
 #calendly-embedded-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba($black, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,11 +92,11 @@
   width: 90%;
   max-width: 980px;
   height: 80%;
-  background: #fff;
+  background: $white;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.35);
+  box-shadow: 0 24px 48px rgba($black, 0.35);
 }
 
 #calendly-embedded-close {

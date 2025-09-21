@@ -178,7 +178,7 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
   if (!useNextImage) {
     const { srcSet, sizesAttr } = deriveSrcSetAndSizes(image)
     return (
-      <div ref={containerRef} style={{ display: 'inline-block' }}>
+      <div ref={containerRef}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={finalSrc} alt={finalAlt} className={className} style={style as React.CSSProperties} loading="lazy" srcSet={srcSet} sizes={sizesAttr} />
       </div>
@@ -190,7 +190,7 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
   const nextHeight = typeof height !== 'undefined' ? height : finalHeight
 
   return (
-    <div ref={containerRef} style={{ display: 'inline-block' }}>
+    <div ref={containerRef}>
       <Image
         src={finalSrc}
         alt={finalAlt}

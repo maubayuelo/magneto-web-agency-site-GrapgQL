@@ -5,6 +5,7 @@
 
 import { useState } from 'react';
 import { openCalendlyPopup, loadCalendlyScript } from '@/utils/calendly';
+import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 export interface CalendlyButtonProps {
   children: React.ReactNode;
   className?: string;
@@ -17,6 +18,8 @@ export interface CalendlyButtonProps {
   onClick?: () => void; // Additional onClick handler
   /** If true, open Calendly in a new tab/window instead of the embedded popup. */
   forceNewWindow?: boolean;
+  /** If true, skip the email collector and open Calendly immediately */
+  skipCollector?: boolean;
 }
 
 export function CalendlyButton({
@@ -31,8 +34,16 @@ export function CalendlyButton({
   onClick
   ,
   forceNewWindow
+  ,skipCollector = false
 }: CalendlyButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  let openModal: ((opts?: any) => void) | undefined;
+  try {
+    // Attempt to read email modal; guard for usage outside provider
+    openModal = useEmailModal().openModal;
+  } catch (e) {
+    openModal = undefined;
+  }
 
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -44,16 +55,28 @@ export function CalendlyButton({
       onClick();
     }
 
-    setIsLoading(true);
+    // If forced to open in new window or skipCollector requested, open Calendly directly
+    if (forceNewWindow || skipCollector || !openModal) {
+      setIsLoading(true);
+      try {
+        await openCalendlyPopup({ utmContent, utmTerm, customUrl, forceNewWindow });
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    // Otherwise, open the email collector modal which will handle subscribing then opening Calendly
     try {
-      await openCalendlyPopup({
-        utmContent,
-        utmTerm,
-        customUrl,
-        forceNewWindow
-      });
-    } finally {
-      setIsLoading(false);
+      openModal({ utmContent, utmTerm, customUrl, forceNewWindow });
+    } catch (err) {
+      // fallback to direct open
+      setIsLoading(true);
+      try {
+        await openCalendlyPopup({ utmContent, utmTerm, customUrl, forceNewWindow });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 

@@ -1,197 +1,104 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
-import { FormField } from '@/components/molecules/FormField';
 
-
-
-interface ContactFormData {
-  fullName: string;
-  email: string;
-  projectType: string;
-  budget: string;
-  timeline: string;
-  description: string;
-  referral: string;
-}
-
-export const ContactForm: React.FC = () => {
-  const [formData, setFormData] = useState<ContactFormData>({
-    fullName: '',
-    email: '',
-    projectType: '',
-    budget: '',
-    timeline: '',
-    description: '',
-    referral: '',
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const updateField = (field: keyof ContactFormData) => (value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-
-// ...existing code...
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-
-  try {
-    const formBody = new FormData();
-    formBody.append('fullName', formData.fullName);
-    formBody.append('email', formData.email);
-    formBody.append('projectType', formData.projectType);
-    formBody.append('budget', formData.budget);
-    formBody.append('timeline', formData.timeline);
-    formBody.append('description', formData.description);
-    formBody.append('referral', formData.referral);
-
-    formBody.append('_wpcf7', '303');
-    formBody.append('_wpcf7_version', '5.9.3');
-    formBody.append('_wpcf7_locale', 'en_US');
-    formBody.append('_wpcf7_unit_tag', 'wpcf7-f303-p1-o1');
-    formBody.append('_wpcf7_container_post', '0');
-
-    const response = await fetch('https://magneto-cms.local/wp-json/contact-form-7/v1/contact-forms/303/feedback', {
-      method: 'POST',
-      body: formBody,
-      // Do NOT set Content-Type header manually!
-    });
-
-    const data = await response.json();
-    console.log('Contact Form 7 API response:', data);
-
-    if (data.status === 'mail_sent') {
-      setFormData({
-        fullName: '',
-        email: '',
-        projectType: '',
-        budget: '',
-        timeline: '',
-        description: '',
-        referral: '',
-      });
-      alert('Thank you! Your inquiry has been sent successfully.');
-    } else {
-      alert(data.message || 'Sorry, there was an error sending your message. Please try again.');
-    }
-  } catch (error) {
-    console.error('Form submission error:', error);
-    alert('Sorry, there was an error sending your message. Please try again.');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-
-
-  const projectTypeOptions = [
-  { value: 'Website Development', label: 'Website Development' },
-  { value: 'E-commerce Store', label: 'E-commerce Store' },
-  { value: 'Sales Funnel', label: 'Sales Funnel' },
-  { value: 'Branding & Design', label: 'Branding & Design' },
-  { value: 'Web Application', label: 'Web Application' },
+const BUSINESS_OPTIONS = [
+  { value: 'Coach', label: 'Coach' },
+  { value: 'Therapist', label: 'Therapist' },
+  { value: 'Ecommerce', label: 'Ecommerce' },
+  { value: 'Real State', label: 'Real State' },
   { value: 'Other', label: 'Other' },
 ];
 
-const budgetOptions = [
-  { value: '$5,000 - $10,000', label: '$5,000 - $10,000' },
-  { value: '$10,000 - $20,000', label: '$10,000 - $20,000' },
-  { value: '$20,000 - $50,000', label: '$20,000 - $50,000' },
-  { value: '$50,000+', label: '$50,000+' },
-  { value: "Let's Discuss", label: "Let's Discuss" },
-];
+export const ContactForm: React.FC = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [businessType, setBusinessType] = useState('');
+  const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-const timelineOptions = [
-  { value: 'ASAP', label: 'ASAP' },
-  { value: '1-2 Months', label: '1-2 Months' },
-  { value: '3-6 Months', label: '3-6 Months' },
-  { value: '6+ Months', label: '6+ Months' },
-  { value: 'Flexible', label: 'Flexible' },
-];
+  const validateEmail = (e: string) => !!e && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+  const handleSubmit = async (ev: React.FormEvent) => {
+    ev.preventDefault();
+    setError(null);
+    setSuccess(null);
+
+    if (!name.trim()) return setError('Please enter your name.');
+    if (!validateEmail(email.trim())) return setError('Please enter a valid email address.');
+    if (!businessType) return setError('Please select a business type.');
+
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch('/api/brevo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          businessType: businessType,
+          message: message.trim() || undefined,
+        }),
+      });
+
+      const payload = await res.json().catch(() => ({}));
+      const msg = payload?.message || (payload && typeof payload === 'object' && 'details' in payload ? (payload as { details?: { message?: string } }).details?.message : undefined) || 'Failed to submit form';
+      if (!res.ok || !payload?.success) {
+        throw new Error(msg);
+      }
+
+      setSuccess("Thanks! We'll get back to you within 24–48 hours.");
+      setName('');
+      setEmail('');
+      setBusinessType('');
+      setMessage('');
+    } catch (err: unknown) {
+      console.error('Brevo submit error:', err);
+      const msg = err instanceof Error ? err.message : String(err || 'Submission failed');
+      setError(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
+    <form className="contact-form" onSubmit={handleSubmit} aria-label="Contact form">
+      <div className="form-field">
+        <label className="form-field__label" htmlFor="scf-name">Name<span className="form-field__required">*</span></label>
+        <input id="scf-name" name="name" className="form-field__control" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required />
+      </div>
 
-      <form className="contact-form" onSubmit={handleSubmit} id="contact-form">
-            <FormField
-              label="Full Name"
-              id="fullName"
-              type="text"
-              placeholder="Helps personalize communication."
-              required
-              value={formData.fullName}
-              onChange={updateField('fullName')}
-            />
+      <div className="form-field">
+        <label className="form-field__label" htmlFor="scf-email">Email Address<span className="form-field__required">*</span></label>
+        <input id="scf-email" name="email" type="email" className="form-field__control" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      </div>
 
-            <FormField
-              label="Email Address"
-              id="email"
-              type="email"
-              placeholder="Where I'll send your reply."
-              required
-              value={formData.email}
-              onChange={updateField('email')}
-            />
+      <div className="form-field">
+        <label className="form-field__label" htmlFor="scf-business">Business Type<span className="form-field__required">*</span></label>
+        <select id="scf-business" name="businessType" className="form-field__control form-field__select" value={businessType} onChange={(e) => setBusinessType(e.target.value)} required>
+          <option value="" disabled>Choose an option</option>
+          {BUSINESS_OPTIONS.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+      </div>
 
-            <FormField
-              label="Project Type"
-              id="projectType"
-              type="select"
-              placeholder="Select option"
-              value={formData.projectType}
-              onChange={updateField('projectType')}
-              options={projectTypeOptions}
-            />
+      <div className="form-field">
+        <label className="form-field__label" htmlFor="scf-message">Message (optional)</label>
+        <textarea id="scf-message" name="message" className="form-field__control" rows={4} placeholder="A short note about your project" value={message} onChange={(e) => setMessage(e.target.value)} />
+      </div>
 
-            <FormField
-              label="Your Budget Range"
-              id="budget"
-              type="select"
-              placeholder="Select option"
-              value={formData.budget}
-              onChange={updateField('budget')}
-              options={budgetOptions}
-            />
+      {error && <div className="form-error" role="alert">{error}</div>}
+      {success && <div className="form-success" role="status">{success}</div>}
 
-            <FormField
-              label="Project Timeline"
-              id="timeline"
-              type="select"
-              placeholder="Select option"
-              value={formData.timeline}
-              onChange={updateField('timeline')}
-              options={timelineOptions}
-            />
-
-            <FormField
-              label="Tell Me About Your Project"
-              id="description"
-              type="textarea"
-              placeholder="What are you hoping to build or achieve?"
-              value={formData.description}
-              onChange={updateField('description')}
-              rows={6}
-            />
-
-            <FormField
-              label="How Did You Hear About Magneto?"
-              id="referral"
-              type="text"
-              placeholder="Helps improve outreach and marketing."
-              value={formData.referral}
-              onChange={updateField('referral')}
-            />
-
-            <button 
-              type="submit" 
-              className="btn btn-primary contact-form-submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Sending...' : 'Send Inquiry'}
-            </button>
-      </form>
-    
+      <button type="submit" className="btn btn-primary contact-form-submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Sending...' : 'Send'}
+      </button>
+    </form>
   );
 };
+
+export default ContactForm;

@@ -1,0 +1,39 @@
+.ec-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.ec-modal {
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.ec-close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.ec-title { margin: 0 0 6px 0; font-size: 18px; }
+.ec-sub { margin: 0 0 14px 0; color: #666; font-size: 14px; }
+
+.ec-form { display:flex; flex-direction:column; gap:12px; }
+.ec-field { display:flex; flex-direction:column; }
+.ec-label { font-size:12px; color:#444; margin-bottom:6px; }
+.ec-field input { padding:10px 12px; border:1px solid #ddd; border-radius:6px; }
+.ec-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:6px; }
+.ec-error { color: #a11; font-size: 13px; }

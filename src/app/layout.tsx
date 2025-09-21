@@ -9,6 +9,7 @@
 import '@/main.scss'; // Import global styles at the root (use alias for consistency)
 import type { Metadata } from 'next';
 import { Header, FinalCTASection, LeadMagnetSection, Footer } from '@/components/organisms';
+import EmailCollectorProvider from '@/components/organisms/EmailCollectorProvider';
 import { SITE_URL, siteName, defaultOgImage, buildCanonical } from '@/utils/seo';
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
 import { GET_SITE_METADATA } from '@/data/site';
@@ -115,18 +116,20 @@ export default function RootLayout({
     >
       <body>
         {/* Header: site navigation and branding. This is a shared component used across pages. */}
-        <Header
-          className="header"
-          logo="/assets/images/logo-magneto.svg"
-        />
+        <EmailCollectorProvider>
+          <Header
+            className="header"
+            logo="/assets/images/logo-magneto.svg"
+          />
 
-        {/* children is where page-specific content is rendered (each page's content). */}
-        {children}
+          {/* children is where page-specific content is rendered (each page's content). */}
+          {children}
 
-        {/* These are common marketing sections rendered on most pages: lead magnet, final CTA and footer. */}
-        <LeadMagnetSection/>
-        <FinalCTASection/>
-        <Footer />
+          {/* These are common marketing sections rendered on most pages: lead magnet, final CTA and footer. */}
+          <LeadMagnetSection/>
+          <FinalCTASection/>
+          <Footer />
+        </EmailCollectorProvider>
       </body>
     </html>
   );
