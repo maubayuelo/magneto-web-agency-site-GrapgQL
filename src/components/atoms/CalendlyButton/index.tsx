@@ -4,7 +4,8 @@
  'use client';
 
 import { useState } from 'react';
-import { openCalendlyPopup, loadCalendlyScript } from '@/utils/calendly';
+import { openCalendlyPopup, loadCalendlyScript, warmCalendlyResources } from '@/utils/calendly';
+import { gtagEvent } from '@/utils/analytics';
 import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 export interface CalendlyButtonProps {
   children: React.ReactNode;
@@ -55,6 +56,13 @@ export function CalendlyButton({
       onClick();
     }
 
+    try {
+      // best-effort CTA click tracking for Calendly CTAs
+      gtagEvent('cta_clicked', { event_category: 'engagement', event_label: utmContent || 'calendly_cta', utm_content: utmContent || null });
+    } catch (e) {
+      // ignore
+    }
+
     // If forced to open in new window or skipCollector requested, open Calendly directly
     if (forceNewWindow || skipCollector || !openModal) {
       setIsLoading(true);
@@ -82,9 +90,10 @@ export function CalendlyButton({
 
   // Preload Calendly script on hover/focus to reduce perceived wait time
   const handlePreload = () => {
-    // fire-and-forget; avoid throwing
+    // Warm resources on intent (preconnect + preload). This is cheap and
+    // avoids executing heavy 3rd-party JS until the user clicks.
     try {
-      loadCalendlyScript().catch(() => {});
+      warmCalendlyResources();
     } catch (e) {
       // swallow
     }

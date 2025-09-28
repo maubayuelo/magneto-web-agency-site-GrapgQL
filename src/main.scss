@@ -17,7 +17,9 @@ html, body {
 @import "./styles/components/card";
 @import "./styles/components/form-field";
 @import "./styles/components/contact-form";
-@import "./components/atoms/CalendlyButton/CalendlyButton";
+// Component-level styles should be imported by the component itself to enable
+// better scoping and potential code-splitting. Remove global imports of
+// individual component SCSS files here.
 
 // 4. Pages (page-specific styles)
 @import "./styles/pages/home";

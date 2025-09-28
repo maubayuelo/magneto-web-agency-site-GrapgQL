@@ -12,6 +12,20 @@ export const LEAD_MAGNET_SECTION_QUERY = `
         ctaLinkLeadMagnetSection {
           node {
             id
+            uri
+            ... on MediaItem {
+              sourceUrl
+              mimeType
+              databaseId
+              guid
+              mediaDetails {
+                file
+                sizes {
+                  file
+                  sourceUrl
+                }
+              }
+            }
           }
         }
       }
@@ -27,6 +41,56 @@ export async function getLeadMagnetSection(): Promise<LeadMagnetSectionData> {
   const normalized: LeadMagnetSectionData = {
     ...raw,
     ctaLink: linkNode?.node?.url || linkNode?.node?.uri || undefined,
+    // If the CTA link resolves to a media item, normalize the media source URL as downloadUrl
+    downloadUrl: (linkNode?.node as any)?.sourceUrl || undefined,
   };
+
+  // Prefer guid when MediaItem reports mimeType=application/pdf — guid usually points to the original file URL
+  try {
+    const nodeAny = (linkNode?.node as any) || {};
+    const mime = (nodeAny?.mimeType || '').toLowerCase();
+    const guid = nodeAny?.guid;
+    if (mime.includes('pdf') && guid && typeof guid === 'string') {
+      normalized.downloadUrl = guid;
+    }
+  } catch (err) {
+    // ignore
+  }
+  // Simplified logic: prefer guid when present; otherwise prefer a direct .pdf URL if provided;
+  // otherwise use the WP REST API (by databaseId) to obtain `source_url`; finally fall back to any provided URL.
+  try {
+    const nodeAny = (linkNode?.node as any) || {};
+    if (!normalized.downloadUrl) {
+      const possibleUrl = nodeAny.sourceUrl || nodeAny.url || nodeAny.link || undefined;
+      const mime = (nodeAny?.mimeType || '').toLowerCase();
+
+      // If the node explicitly claims to be a PDF and there's a direct PDF URL, use it
+      if (mime.includes('pdf') && possibleUrl && typeof possibleUrl === 'string' && possibleUrl.toLowerCase().includes('.pdf')) {
+        normalized.downloadUrl = possibleUrl;
+      }
+
+      // REST fallback by databaseId
+      if (!normalized.downloadUrl && nodeAny?.databaseId) {
+        const restBase = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'http://magneto-cms.local';
+        try {
+          const restUrl = `${restBase.replace(/\/$/, '')}/wp-json/wp/v2/media/${nodeAny.databaseId}`;
+          const r = await fetch(restUrl).catch(() => null);
+          if (r && r.ok) {
+            const j = await r.json().catch(() => null);
+            const src = j?.source_url || (j?.media_details && j.media_details.file ? `${restBase.replace(/\/$/, '')}/wp-content/uploads/${j.media_details.file}` : null);
+            if (src && typeof src === 'string') normalized.downloadUrl = src;
+          }
+        } catch (err) {
+          // ignore
+        }
+      }
+
+      // final fallback: any direct URL provided (even if not .pdf)
+      if (!normalized.downloadUrl && possibleUrl) normalized.downloadUrl = possibleUrl;
+    }
+  } catch (err) {
+    // ignore
+  }
+
   return normalized;
 }

@@ -68,14 +68,15 @@ export default async function HeroLoader({ pageUri, variant = 'default' }: HeroL
       title={hero?.heroTitle || about?.title || "Magneto"}
       subtitle={hero?.subtitleHero || ""}
       cta={hero?.ctaTextHero && hero?.ctaLinkHero ? { text: hero.ctaTextHero, href: hero.ctaLinkHero } : undefined}
-      showImage={!!hero?.image?.node?.sourceUrl}
+      // Only show the hero image on the home variant. Some pages provide a
+      // CMS image but the design requires the visual only on the home page.
+      showImage={variant === 'home' ? !!hero?.image?.node?.sourceUrl : false}
       image={
-        // keep legacy simple src/alt for non-CMS uses
-        hero?.image?.node?.sourceUrl
-          ? { src: hero.image.node.sourceUrl, alt: about?.title || "Hero Image" }
+        variant === 'home' && hero?.image?.node?.sourceUrl
+          ? { src: hero.image.node.sourceUrl, alt: about?.title || 'Hero Image' }
           : undefined
       }
-      imageNode={hero?.image?.node}
+      imageNode={variant === 'home' ? hero?.image?.node : undefined}
   backgroundImage={hero?.backgroundImage?.node?.sourceUrl || undefined}
     />
   );

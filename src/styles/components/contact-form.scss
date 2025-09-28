@@ -146,6 +146,7 @@
   width: 100%;
   aspect-ratio: 1 / 1; // Force 1:1 square ratio on all devices
   object-fit: cover;
+  height: auto; // Ensure aspect ratio is preserved when CSS changes size
   border-radius: $border-radius-mobile; // Mobile-first: smaller radius
   
   @include media-tablet-up {

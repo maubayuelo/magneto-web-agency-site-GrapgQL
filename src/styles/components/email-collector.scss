@@ -1,3 +1,6 @@
+@import "../variables";
+@import "../typography";
+
 .ec-overlay {
   position: fixed;
   inset: 0;
@@ -9,11 +12,11 @@
 }
 
 .ec-modal {
-  background: #fff;
-  padding: 24px;
-  border-radius: 8px;
+  background: $white;
+  padding: $spacing-30;
+  border-radius: $border-radius-mobile;
   width: 100%;
-  max-width: 420px;
+  max-width: 480px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   position: relative;
 }
@@ -28,12 +31,28 @@
   cursor: pointer;
 }
 
-.ec-title { margin: 0 0 6px 0; font-size: 18px; }
-.ec-sub { margin: 0 0 14px 0; color: #666; font-size: 14px; }
+.ec-title {
+  margin: 0 0 $spacing-10 0;
+  @include heading-style(md, extrabold, md);
+}
 
-.ec-form { display:flex; flex-direction:column; gap:12px; }
-.ec-field { display:flex; flex-direction:column; }
-.ec-label { font-size:12px; color:#444; margin-bottom:6px; }
-.ec-field input { padding:10px 12px; border:1px solid #ddd; border-radius:6px; }
-.ec-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:6px; }
+.ec-sub {
+  margin: 0 0 $spacing-15 0;
+  color: $gray-70;
+  @include font-style(sm, medium, sm);
+}
+
+/* Reuse design system form-field styles by composing classes in JSX. */
+.ec-form { display:flex; flex-direction:column; gap:$spacing-15; }
+
+.ec-actions { display:flex; gap:$spacing-10; justify-content:flex-end; margin-top:$spacing-10; }
 .ec-error { color: #a11; font-size: 13px; }
+
+/* small adjustments for success state inside modal */
+.ec-success-msg {
+  @include font-style(md, medium, md);
+  margin-bottom: $spacing-10;
+}
+
+.ec-success-actions { display:flex; gap:$spacing-10; }
+

@@ -7,7 +7,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { openCalendlyPopup, loadCalendlyScript } from '@/utils/calendly';
+import { openCalendlyPopup, loadCalendlyScript, warmCalendlyResources } from '@/utils/calendly';
 
 // Options you can pass when opening Calendly. For example, UTM params or callbacks.
 export interface UseCalendlyOptions {
@@ -26,6 +26,8 @@ export interface UseCalendlyReturn {
   error: string | null;
   isScriptLoaded: boolean;
   preload: () => void;
+  /** Explicitly load the Calendly script */
+  load: () => Promise<void> | void;
 }
 
 export function useCalendly(options: UseCalendlyOptions = {}): UseCalendlyReturn {
@@ -75,11 +77,23 @@ export function useCalendly(options: UseCalendlyOptions = {}): UseCalendlyReturn
   }, [options, isScriptLoaded]);
 
   const preload = () => {
-    // fire-and-forget preload of Calendly assets on intent (hover/focus)
+    // Lightweight warm-up on user intent (hover/focus). This avoids executing
+    // the full Calendly script but preconnects and preloads assets to speed up
+    // an eventual full load. Consumers can still call `load` to explicitly
+    // load the script ahead of time.
     try {
-      loadCalendlyScript().then(() => setIsScriptLoaded(true)).catch(() => {});
+      warmCalendlyResources();
     } catch (e) {
       // swallow
+    }
+  };
+
+  const load = () => {
+    // Explicit API to load the full Calendly script (returns a promise)
+    try {
+      return loadCalendlyScript().then(() => setIsScriptLoaded(true)).catch(() => {});
+    } catch (e) {
+      return Promise.resolve();
     }
   };
 
@@ -88,6 +102,7 @@ export function useCalendly(options: UseCalendlyOptions = {}): UseCalendlyReturn
     isLoading,
     error,
     isScriptLoaded
-    ,preload
+    ,preload,
+    load
   };
 }

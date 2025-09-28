@@ -13,6 +13,7 @@ export interface LeadMagnetSectionData {
   subtitleLeadMagnetSection?: string | null;
   ctaTextLeadMagnetSection?: string | null;
   ctaLinkLeadMagnetSection?: LinkNode | null;
+  downloadUrl?: string | null;
   // Normalized/legacy fields - some templates expect these names
   ctaLink?: string | LinkNode | null;
   ctaType?: string | null;

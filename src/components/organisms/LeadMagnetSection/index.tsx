@@ -6,15 +6,18 @@ import { getLeadMagnetSection } from './api';
 import type { LeadMagnetSectionProps, LeadMagnetSectionData, LinkNode } from './types';
 import { CalendlyButton } from '../../atoms';
 import './LeadMagnetSection.scss';
+import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 
 export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
   className = '',
   show = true,
 }) => {
+  const { openModal } = useEmailModal();
   const router = useRouter();
   const pathname = usePathname();
   const [dataLeadMagnetSection, setDataLeadMagnetSection] = useState<LeadMagnetSectionData | null>(null);
 
+  
   // Derive CTA object from fetched data (keeps backward compatibility with existing props)
   // The API sometimes returns `ctaLink` as a string or as an object (e.g. { node: { url, uri, id } }).
   const rawCtaLink: string | LinkNode | undefined | null = (dataLeadMagnetSection as LeadMagnetSectionData)?.ctaLink;
@@ -68,8 +71,19 @@ export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
           </div>
           
 
-          <button onClick={cta.onClick} className="btn btn-secondary typo-extrabold">
-                {dataLeadMagnetSection?.ctaTextLeadMagnetSection || "Request Free Quote"}
+          <button
+            onClick={() =>
+              {
+                try { (window as any)?.gtag && (window as any).gtag('event', 'cta_clicked_mailchimp', { event_category: 'engagement', event_label: 'leadmagnet_home', utm_content: 'leadmagnet_home' }); } catch (e) {}
+                openModal({
+                  downloadUrl: dataLeadMagnetSection?.downloadUrl || '/assets/guides/free-guide.pdf',
+                  utmContent: 'leadmagnet_home',
+                })
+              }
+            }
+            className="btn btn-secondary typo-extrabold"
+          >
+            {dataLeadMagnetSection?.ctaTextLeadMagnetSection || "Request Free Quote"}
           </button>
 
         </div>

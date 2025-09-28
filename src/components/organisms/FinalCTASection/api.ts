@@ -12,6 +12,14 @@ export const FINAL_CTA_QUERY = `
         bgimage {
           node {
             sourceUrl
+            mediaDetails {
+              sizes {
+                name
+                width
+                height
+                sourceUrl
+              }
+            }
           }
         }
       }

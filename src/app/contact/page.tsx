@@ -6,10 +6,14 @@ import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 export default async function ContactPage() {
 
   const contactData = await getContactPageData();
-  const rawFeatured = contactData.featuredImage as unknown;
-  const featuredImage = (rawFeatured && typeof rawFeatured === 'object')
-    ? (rawFeatured as { sourceUrl?: string; altText?: string })
-    : undefined;
+  // Preserve the full featuredImage object coming from the API (including
+  // mediaDetails.sizes). Earlier we narrowed this to only sourceUrl/altText
+  // which dropped the size metadata WpResponsiveImage needs to pick the
+  // correct variant. Keep the shape loose here and let the image component
+  // read the sizes.
+  const featuredImage = contactData.featuredImage as
+    | { sourceUrl?: string; altText?: string; mediaDetails?: { sizes?: any[] } }
+    | undefined;
 
   return (
     <>

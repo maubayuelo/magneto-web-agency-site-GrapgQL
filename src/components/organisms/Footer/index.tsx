@@ -5,6 +5,7 @@ import { getHomeFooter } from "./api";
 import './Footer.scss';
 import type { FooterProps, FooterResponse, FooterSocialIcon } from './types';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
   const [footerData, setFooterData] = useState<FooterResponse | null>(null);
@@ -40,11 +41,15 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
                 rel="noopener noreferrer"
                 className="footer__social-icon"
               >
-                <img
-                  src={src}
-                  alt={(icon && (icon as any).alt) || 'Social Icon'}
-                  className="footer__icon"
-                />
+                {src ? (
+                  <Image
+                    src={src}
+                    alt={(icon && (icon as any).alt) || 'Social Icon'}
+                    className="footer__icon"
+                    width={24}
+                    height={24}
+                  />
+                ) : null}
               </Link>
             );
           })}

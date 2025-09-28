@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CalendlyButton } from "../../atoms";
+import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 import "./Header.scss";
 import { getHomeHeader } from "./api";
 import { HomeHeader } from './types';
@@ -36,13 +37,67 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
   }, []);
 
   // Render the header content (same for both mounted states to ensure consistency)
+  function HeaderCTA({ utmContent, utmTerm, text, href }: { utmContent?: string; utmTerm?: string; text?: string; href?: string }) {
+    const { openModal } = useEmailModal();
+    // Import analytics lazily to avoid SSR issues
+    // eslint-disable-next-line no-unused-vars
+    const { gtagEvent: _unused } = ({} as any);
+    // We'll use the analytics util directly below when available
+    // (import at top-level could be fine too, but keep consistent pattern)
+    const isCalendly = href ? href.includes('calendly') : true; // default behaviour is calendly button
+    const downloadUrl = href && href.endsWith('.pdf') ? href : undefined;
+
+    if (isCalendly) {
+      // keep original CalendlyButton visual by applying the same classes
+      return (
+        <button type="button" className={["btn","btn-primary","btn-sm","btn-small"].filter(Boolean).join(' ')} onClick={() => {
+          try { (window as any)?.gtag && (window as any).gtag('event', 'cta_clicked', { event_category: 'engagement', event_label: 'header', utm_content: utmContent || 'header' }); } catch (e) {}
+          openModal({ origin: 'header', utmContent });
+        }}>
+          {text}
+        </button>
+      );
+    }
+
+    if (downloadUrl) {
+      return (
+        <button type="button" className="btn-small btn-secondary" onClick={() => openModal({ downloadUrl, utmContent })}>
+          {text}
+        </button>
+      );
+    }
+
+    if (href) {
+      return <a href={href} className="btn-small">{text}</a>;
+    }
+
+    return <button type="button" className="btn-small">{text}</button>;
+  }
+
   const renderHeaderContent = () => (
     <>
       <section className={`header ${className} ${scrolled ? "scrolled" : ""}`}>
         <header className={`${className} ${scrolled ? "scrolled" : ""}`}>
           <div className="main">
               <Link className="logo" href="/">
-              <Image src={logoUrl || logo || "/logo.png"} alt="Logo" width={120} height={43} />
+              {(() => {
+                const src = logoUrl || logo || '/logo.png';
+                const isSvg = typeof src === 'string' && src.toLowerCase().endsWith('.svg');
+                const isExternal = typeof src === 'string' && (src.startsWith('http://') || src.startsWith('https://'));
+                // Use <img> for SVGs (external or local). Use next/image for raster local images.
+                if (isSvg) {
+                  // eslint-disable-next-line @next/next/no-img-element
+                  return <img src={src} alt="Logo" width={120} height={43} />;
+                }
+
+                // For external raster images, use plain img to avoid next/image domain config issues
+                if (isExternal) {
+                  // eslint-disable-next-line @next/next/no-img-element
+                  return <img src={src} alt="Logo" width={120} height={43} />;
+                }
+
+                return <Image src={src} alt="Logo" width={120} height={43} />;
+              })()}
             </Link>
             <ul className="nav">
               <li><a href="/about-magneto/" className="typo-sm-bold">About</a></li>
@@ -51,30 +106,22 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
               <li><a href="/projects/" className="typo-sm-bold">Projects</a></li>
               <li><a href="/contact/" className="typo-sm-bold">Contact</a></li>
               <li>
-                <CalendlyButton 
-                  variant="primary" 
-                  size="sm"
-                  className="btn-small"
+                <HeaderCTA
                   utmContent="header_desktop"
                   utmTerm="schedule_call"
-                >
-                  Schedule Call
-                </CalendlyButton>
+                  text="Free Schedule Call"
+                />
               </li>
               {/* <li><a href="#" className="typo-sm-bold">FR</a></li>
               <li><a href="#" className="typo-sm-bold">ES</a></li> */}
             </ul>
             <ul className="nav_mobile">
               <li>
-                <CalendlyButton 
-                  variant="primary" 
-                  size="sm"
-                  className="btn-small"
+                <HeaderCTA
                   utmContent="header_mobile"
                   utmTerm="schedule_call"
-                >
-                  Schedule Call
-                </CalendlyButton>
+                  text="Free Schedule Call"
+                />
               </li>
               <li>
                 <a
@@ -84,7 +131,9 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
                     setMenuOpen(prev => !prev);
                   }}
                 >
-                  <Image
+                  {/* Use plain img for these simple SVG icons */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={menuOpen ? "/assets/images/ico-close.svg" : "/assets/images/ico-ham.svg"}
                     alt={menuOpen ? "Close" : "Menu"}
                     width={24}

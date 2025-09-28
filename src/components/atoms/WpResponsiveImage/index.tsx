@@ -91,7 +91,23 @@ function deriveEntries(image?: WpImage) {
     const existing = bySrc.get(e.src)
     if (!existing || e.w > existing.w) bySrc.set(e.src, e)
   })
-  return Array.from(bySrc.values()).sort((a, b) => a.w - b.w)
+  let result = Array.from(bySrc.values()).sort((a, b) => a.w - b.w)
+
+  // Defensive fallback: if the largest available derived size is still very
+  // small (e.g. thumbnails only), add the top-level sourceUrl as a large
+  // candidate to avoid picking a tiny image variant that may not exist on
+  // the remote host with the exact cropped filename pattern.
+  const largest = result.length ? result[result.length - 1] : undefined
+  const hasLargeEnough = largest && largest.w > 300
+  const topSource = normalizeUrl(image.sourceUrl)
+  if (!hasLargeEnough && topSource) {
+    // Assign a conservative large width if we don't have a real width from
+    // mediaDetails. If mediaDetails.top-level width is available, prefer it.
+    const fallbackW = (image as any)?.mediaDetails?.width || 1200
+    result.push({ src: topSource, w: fallbackW, h: (image as any)?.mediaDetails?.height })
+  }
+
+  return result
 }
 
 function selectBestSizeFromImage(image?: WpImage, targetWidth = 1024, dpr = 1) {
@@ -99,8 +115,20 @@ function selectBestSizeFromImage(image?: WpImage, targetWidth = 1024, dpr = 1) {
   if (!entries.length) return null
   const needed = Math.round(targetWidth * dpr)
   // choose the smallest entry that is >= needed, otherwise the largest available
-  const candidate = entries.find((e) => e.w >= needed) || entries[entries.length - 1]
-  return candidate || null
+  let candidate = entries.find((e) => e.w >= needed) || entries[entries.length - 1]
+
+  // Defensive: if the chosen candidate is very small (e.g. <= 100px) it's
+  // likely a thumbnail-only dataset or a bad size selection during SSR. In
+  // that case prefer the largest available variant so the optimizer doesn't
+  // emit a tiny image. This threshold is conservative.
+  if (candidate && candidate.w > 0 && candidate.w <= 100 && entries.length > 1) {
+    candidate = entries[entries.length - 1]
+  }
+
+  // If we still don't have a sensible width, try to fall back to the
+  // top-level sourceUrl (full size) with no derived dims.
+  if (candidate && candidate.w > 0) return candidate
+  return null
 }
 
 export default function WpResponsiveImage({ sources, image, alt, className, priority, sizes, style, omitSizeAttributes = false, width, height, fill, ...rest }: Props) {
@@ -158,14 +186,72 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
     return null
   }
 
-  // If the caller requested omission via prop, render a plain <img>
+  // Defensive: if the chosen finalSrc is a WP-generated size filename
+  // (e.g. contains "-768x768"), prefer the canonical sourceUrl when
+  // available. Some CMS setups report sizes that don't exist on disk, and
+  // requesting those variants causes 404s from the optimizer.
+  let resolvedSrc: string = finalSrc as string
+  let resolvedWidth = finalWidth
+  let resolvedHeight = finalHeight
+  try {
+    if (image && image.sourceUrl && typeof resolvedSrc === 'string') {
+      const variantRe = /-\d+x\d+(?=\.[a-zA-Z0-9]+$)/
+      const srcPath = resolvedSrc
+      const topSource = normalizeUrl(image.sourceUrl)
+      if (variantRe.test(srcPath) && topSource && topSource !== srcPath) {
+        // Prefer the top-level canonical source URL
+        resolvedSrc = topSource
+        // If top-level mediaDetails include width/height, use them
+        const topW = (image as any)?.mediaDetails?.width
+        const topH = (image as any)?.mediaDetails?.height
+        if (typeof topW === 'number') resolvedWidth = topW
+        if (typeof topH === 'number') resolvedHeight = topH
+      }
+    }
+  } catch (e) {
+    // Non-fatal: fall back to the previously computed values
+  }
+
+  // If the caller requested omission via prop, try to render a responsive next/image
+  // using `fill` inside a positioned container when we have an aspect ratio. If
+  // no reliable dimensions are available, fall back to a native <img> to avoid
+  // layout shifts.
   if (omitSizeAttributes) {
     const { srcSet, sizesAttr } = deriveSrcSetAndSizes(image)
+    // If we have intrinsic dimensions, prefer next/image with fill and aspect-ratio box
+        if (resolvedWidth && resolvedHeight) { 
+              if (className) {
+                return <Image src={resolvedSrc} alt={finalAlt} width={resolvedWidth} height={resolvedHeight} className={className} style={style as React.CSSProperties} sizes={sizes} />
+              }
+              return (
+                <div ref={containerRef}>
+                  <Image src={resolvedSrc} alt={finalAlt} width={resolvedWidth} height={resolvedHeight} className={className} style={style as React.CSSProperties} sizes={sizes} />
+                </div>
+              )
+    }
+
+    // Best-effort: render next/image with a loose width to let the optimizer handle resizing
+    if (!finalWidth && !finalHeight) {
+          if (className) {
+            return <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} />
+          }
+          return (
+            <div ref={containerRef} style={{ display: 'inline-block' }}>
+              <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} />
+            </div>
+          )
+    }
+
+    // Fallback to a sized next/image when possible to preserve CSS targeting.
+    if (className) {
+      return <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} />
+    }
+
+    // Otherwise fall back to native <img> wrapped for layout safety
     return (
       <div ref={containerRef} style={{ display: 'inline-block' }}>
-        {/* plain image lets external CSS size the image (matches previous behaviour) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={finalSrc} alt={finalAlt} className={className} style={style as React.CSSProperties} loading="lazy" srcSet={srcSet} sizes={sizesAttr} />
+        <img src={resolvedSrc} alt={finalAlt} className={className} style={style as React.CSSProperties} loading="lazy" srcSet={srcSet} sizes={sizesAttr} />
       </div>
     )
   }
@@ -178,31 +264,76 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
   if (!useNextImage) {
     const { srcSet, sizesAttr } = deriveSrcSetAndSizes(image)
     return (
-      <div ref={containerRef}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={finalSrc} alt={finalAlt} className={className} style={style as React.CSSProperties} loading="lazy" srcSet={srcSet} sizes={sizesAttr} />
-      </div>
+          <div ref={containerRef} style={{ display: 'inline-block' }}>
+            <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizesAttr} />
+          </div>
     )
   }
 
   // Choose width/height to pass to next/image: prefer explicit props, then derived WP size
-  const nextWidth = typeof width !== 'undefined' ? width : finalWidth
-  const nextHeight = typeof height !== 'undefined' ? height : finalHeight
+  const nextWidth = typeof width !== 'undefined' ? width : resolvedWidth
+  const nextHeight = typeof height !== 'undefined' ? height : resolvedHeight
+
+  // Build props for next/image carefully: next/image forbids providing width/height
+  // together with fill. Only pass width/height when not using fill.
+  const imageProps: any = {
+    src: resolvedSrc,
+    alt: finalAlt,
+    className,
+    priority,
+    sizes,
+    style,
+    ...rest,
+  }
+
+  if (!fill) {
+    // width/height should be numbers when provided
+    if (typeof nextWidth !== 'undefined') imageProps.width = nextWidth
+    if (typeof nextHeight !== 'undefined') imageProps.height = nextHeight
+  } else {
+    imageProps.fill = true
+  }
+
+  // Avoid inserting positioned wrappers or inline styles when the caller
+  // provided a `className` that expects to style the image directly. Prefer
+  // rendering `next/image` with explicit width/height (non-fill) so existing
+  // CSS selectors keep working. Only use `fill` when the caller explicitly
+  // passes `fill` and no className is present or when sizes aren't available.
+
+  const shouldAvoidWrapper = !!className
+
+  if (imageProps.fill && shouldAvoidWrapper) {
+    // Try to render the Image with explicit width/height instead of fill so
+    // the image element receives the className and CSS rules. Use derived
+    // dimensions when available.
+    if (nextWidth && nextHeight) {
+      const sizedProps = { ...imageProps }
+      delete (sizedProps as any).fill
+      sizedProps.width = nextWidth
+      sizedProps.height = nextHeight
+            if (className) {
+              return <Image {...sizedProps} style={style as React.CSSProperties} />
+            }
+            return (
+              <div ref={containerRef}>
+                <Image {...sizedProps} style={style as React.CSSProperties} />
+              </div>
+            )
+    }
+
+    // If we don't have dimensions, fall back to native <img> (preserves CSS)
+    const { srcSet, sizesAttr } = deriveSrcSetAndSizes(image)
+    return (
+      <div ref={containerRef}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={resolvedSrc} alt={finalAlt} className={className} style={style as React.CSSProperties} loading="lazy" srcSet={srcSet} sizes={sizesAttr} />
+      </div>
+    )
+  }
 
   return (
     <div ref={containerRef}>
-      <Image
-        src={finalSrc}
-        alt={finalAlt}
-        className={className}
-        priority={priority}
-        sizes={sizes}
-        style={style}
-        width={nextWidth}
-        height={nextHeight}
-        {...(fill ? { fill: true } : {})}
-        {...rest}
-      />
+      <Image {...imageProps} />
     </div>
   )
 }

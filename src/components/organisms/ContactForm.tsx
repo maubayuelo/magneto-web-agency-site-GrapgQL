@@ -33,7 +33,7 @@ export const ContactForm: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch('/api/brevo', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -56,7 +56,7 @@ export const ContactForm: React.FC = () => {
       setBusinessType('');
       setMessage('');
     } catch (err: unknown) {
-      console.error('Brevo submit error:', err);
+  console.error('ContactForm submit error:', err);
       const msg = err instanceof Error ? err.message : String(err || 'Submission failed');
       setError(msg);
     } finally {

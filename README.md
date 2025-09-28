@@ -207,3 +207,66 @@ This project is private and proprietary. All rights reserved.
 ---
 
 Built with ❤️ by [[Mauricio Bayuelo](https://www.linkedin.com/in/maubayuelo/)] - Helping experts and coaches build their online presence through high-converting websites and funnels.
+
+## ⚙️ Third‑party scripts (Calendly)
+
+This project defers heavy third‑party scripts (like Calendly) to avoid blocking initial page load and improve performance. Key notes:
+
+- Warm on intent: UI elements that open Calendly call `warmCalendlyResources()` on hover/focus. That function adds `preconnect` and `preload` hints for Calendly assets so the browser can fetch resources early without executing the full widget.
+- Load on demand: The actual Calendly widget script is only injected when needed via an idempotent loader `loadCalendlyScript()` exposed in `src/utils/calendly.ts`. The loader uses a module-level singleton promise to avoid duplicate network requests.
+- Hook API: Use the `useCalendly` hook in `src/hooks/useCalendly.ts` which exposes:
+	- `openCalendly(): Promise<void>` — ensures script is loaded and opens the popup.
+	- `preload(): void` — cheap warm-up (calls `warmCalendlyResources()`), intended for hover/focus.
+	- `load(): Promise<void>` — explicit API to load the full Calendly script programmatically.
+
+Quick test steps:
+
+1. Run the dev server: `npm run dev`.
+2. Open the site and inspect the Network tab.
+3. Hover a Calendly CTA — you should see `preconnect` / `preload` network hints, but NOT the heavy Calendly JS executing yet.
+4. Click the CTA — the Calendly widget script will be injected and executed (you'll see the script network request and then the popup).
+
+If you want me to apply the same pattern for analytics, chat widgets, or other third‑party scripts, tell me which ones to target and I’ll implement a deferred loader for them as well.
+
+### Analytics & GTM helpers
+
+I added lightweight helpers that follow the same warm/load pattern for analytics and Google Tag Manager:
+
+- `src/utils/thirdParty.ts` — generic `warmResource(href)` and `loadScript({ src, crossOrigin, attrs })` utilities (idempotent loader via an internal promise map).
+- `src/utils/analytics.ts` — `warmAnalytics()`, `loadAnalytics()` and `gtagEvent()` helpers. Uses `process.env.NEXT_PUBLIC_GA_ID` for the Google Analytics property.
+- `src/utils/gtm.ts` — `warmGtm()`, `loadGtm()` and `gtmPush()` helpers. Uses `process.env.NEXT_PUBLIC_GTM_ID` for Google Tag Manager.
+
+Environment variables (add these to your `.env.local` if you use them):
+
+```
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+```
+
+Usage examples:
+
+- Warm analytics on hover/focus of an analytics-related CTA:
+
+```tsx
+import { warmAnalytics } from '@/utils/analytics';
+
+// onMouseEnter / onFocus => warmAnalytics();
+```
+
+- Load analytics programmatically (e.g., after an interaction or after consent):
+
+```ts
+import { loadAnalytics } from '@/utils/analytics';
+await loadAnalytics();
+```
+
+- For GTM you can warm and load similarly and use `gtmPush` to send events:
+
+```ts
+import { warmGtm, loadGtm, gtmPush } from '@/utils/gtm';
+warmGtm(); // cheap warm
+await loadGtm(); // inject GTM script
+gtmPush({ event: 'conversion', value: 42 });
+```
+
+These helpers are optional — they give you a safe pattern to avoid blocking the page with large third‑party scripts while still enabling quick load when the user interacts.

@@ -1,6 +1,14 @@
 export interface ImageNode {
   node?: {
     sourceUrl?: string | null;
+    mediaDetails?: {
+      sizes?: Array<{
+        name?: string | null;
+        width?: number | null;
+        height?: number | null;
+        sourceUrl?: string | null;
+      } | null> | null;
+    } | null;
   } | null;
 }
 

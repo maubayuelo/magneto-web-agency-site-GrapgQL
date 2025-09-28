@@ -1,4 +1,5 @@
 export interface WpImageSize {
+  name?: string | null;
   sourceUrl?: string | null;
   width?: number | null;
   height?: number | null;
@@ -8,6 +9,8 @@ export interface ImageNode {
   sourceUrl?: string | null;
   altText?: string | null;
   mediaDetails?: {
+    width?: number | null;
+    height?: number | null;
     sizes?: WpImageSize[] | null;
   } | null;
 }
@@ -31,14 +34,18 @@ export interface HomeHero {
 }
 
 export interface HeroProps {
+  variant?: 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'packages' | 'default';
   title?: string | null;
   subtitle?: string | null;
+  titleSize?: string;
+  subtitleSize?: string;
+  image?: { src: string; alt?: string; width?: number; height?: number } | null;
   imageNode?: ImageNode | null;
-}
-export interface HeroProps {
-  heading?: string;
-  subheading?: string;
+  cta?: CTA | null;
+  backgroundImage?: string | null;
+  showImage?: boolean;
   className?: string;
+  children?: React.ReactNode;
 }
 
 export default HeroProps;

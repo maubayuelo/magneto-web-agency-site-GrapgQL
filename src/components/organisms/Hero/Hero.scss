@@ -2,6 +2,7 @@
 @import "../../../styles/mixins";
 
 .hero {
+    position: relative;
     align-self: stretch;
     width: 100%;
     padding: 30px 15px 0 15px; // Mobile-first: start with mobile padding
@@ -15,6 +16,22 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+
+    // when rendering dynamic background via next/image, use wrapper
+    &__bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
+        z-index: 1;
+        pointer-events: none;
+    }
 
     &.hero-home {
         height: calc(100vh); // Mobile-first: start with mobile height

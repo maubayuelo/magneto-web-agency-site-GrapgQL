@@ -62,51 +62,117 @@ export const calendlyConfig: CalendlyConfig = {
 /**
  * Load Calendly widget script dynamically
  */
+export const CALENDLY_CSS = 'https://assets.calendly.com/assets/external/widget.css';
+export const CALENDLY_SCRIPT = 'https://assets.calendly.com/assets/external/widget.js';
+
+// Module-level singleton promise so multiple callers can await the same load.
+let _loadPromise: Promise<void> | null = null;
 export const loadCalendlyScript = (): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    // Check if Calendly is already loaded
-    if (window.Calendly) {
-      resolve();
-      return;
-    }
+  // If Calendly is already present, return resolved promise
+  if (typeof window !== 'undefined' && (window as any).Calendly) {
+    return Promise.resolve();
+  }
 
-    // Check if script is already in DOM
-    if (document.querySelector('script[src*="calendly.com"]')) {
-      // Script exists, wait for it to load
-      const checkCalendly = () => {
-        if (window.Calendly) {
-          resolve();
-        } else {
-          setTimeout(checkCalendly, 100);
-        }
+  // Return existing promise if load already started
+  if (_loadPromise) return _loadPromise;
+
+  _loadPromise = new Promise<void>((resolve, reject) => {
+    try {
+      // If script tag already exists, wait for Calendly global to appear
+      const existing = document.querySelector(`script[src="${CALENDLY_SCRIPT}"]`);
+      if (existing) {
+        const check = () => {
+          if ((window as any).Calendly) resolve();
+          else setTimeout(check, 100);
+        };
+        check();
+        return;
+      }
+
+      // Load CSS (best-effort; allow browser to cache)
+      const link = document.createElement('link');
+      link.href = CALENDLY_CSS;
+      link.rel = 'stylesheet';
+      link.crossOrigin = '';
+      document.head.appendChild(link);
+
+      // Create script but do not execute immediately where possible; mark as defer
+      const script = document.createElement('script');
+      script.src = CALENDLY_SCRIPT;
+      script.async = true;
+      // set defer as a hint that execution can be deferred until parser is idle
+      // note: for dynamically inserted scripts, defer has no effect in some browsers,
+      // but async=true keeps it non-blocking. We maintain idempotency via _loadPromise.
+      script.defer = true;
+
+      script.onload = () => {
+        // Small grace period for the Calendly global to initialize
+        setTimeout(() => {
+          if ((window as any).Calendly) resolve();
+          else reject(new Error('Calendly failed to initialize'));
+        }, 100);
       };
-      checkCalendly();
-      return;
+
+      script.onerror = () => reject(new Error('Failed to load Calendly script'));
+
+      // Append as late as possible; callers control when to call this loader.
+      document.head.appendChild(script);
+    } catch (err) {
+      reject(err);
     }
+  })
+    .catch((err) => {
+      // Reset promise so future attempts can retry
+      _loadPromise = null;
+      throw err;
+    });
 
-    // Load CSS
-    const link = document.createElement('link');
-    link.href = 'https://assets.calendly.com/assets/external/widget.css';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
+  return _loadPromise!;
+};
 
-    // Load JS
-    const script = document.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    script.onload = () => {
-      // Wait a bit for Calendly to initialize
-      setTimeout(() => {
-        if (window.Calendly) {
-          resolve();
-        } else {
-          reject(new Error('Calendly failed to load'));
-        }
-      }, 100);
-    };
-    script.onerror = () => reject(new Error('Failed to load Calendly script'));
-    document.head.appendChild(script);
-  });
+// Lightweight warm-up: preconnect + preload Calendly assets on user intent (hover/focus)
+let _calendlyWarmed = false;
+export const warmCalendlyResources = (): void => {
+  try {
+    if (typeof document === 'undefined' || _calendlyWarmed) return;
+    _calendlyWarmed = true;
+
+    const origins = ['https://assets.calendly.com', 'https://calendly.com'];
+    origins.forEach((href) => {
+      // preconnect helps reduce DNS/TCP/SSL overhead
+      const preconnect = document.createElement('link');
+      preconnect.rel = 'preconnect';
+      preconnect.href = href;
+      preconnect.crossOrigin = '';
+      document.head.appendChild(preconnect);
+
+      // dns-prefetch as a graceful fallback for older browsers
+      const dns = document.createElement('link');
+      dns.rel = 'dns-prefetch';
+      dns.href = href;
+      document.head.appendChild(dns);
+    });
+
+    // Preload the widget CSS and JS so the browser can fetch them earlier without
+    // executing the script until we explicitly add it (loadCalendlyScript does that).
+    const cssHref = 'https://assets.calendly.com/assets/external/widget.css';
+    const preloadCss = document.createElement('link');
+    preloadCss.rel = 'preload';
+    preloadCss.as = 'style';
+    preloadCss.href = cssHref;
+    document.head.appendChild(preloadCss);
+
+    const scriptHref = 'https://assets.calendly.com/assets/external/widget.js';
+    const preloadScript = document.createElement('link');
+    preloadScript.rel = 'preload';
+    preloadScript.as = 'script';
+    preloadScript.href = scriptHref;
+    // preload cross-origin script; the actual script node will be appended by loadCalendlyScript
+    preloadScript.crossOrigin = 'anonymous';
+    document.head.appendChild(preloadScript);
+  } catch (e) {
+    // swallow - warm-up should never throw
+  }
 };
 
 /**
@@ -118,6 +184,8 @@ export const openCalendlyPopup = async (options?: {
   customUrl?: string;
   /** If true, open Calendly in a new browser tab/window instead of using the embedded popup widget. */
   forceNewWindow?: boolean;
+  /** Optional map of utm_* params to append to the Calendly URL */
+  utmParams?: Record<string, string | undefined>;
 }) => {
   try {
     // If caller prefers a new window (avoids iframe/permission policies), open immediately
@@ -127,6 +195,13 @@ export const openCalendlyPopup = async (options?: {
     targetUrl.searchParams.set('utm_campaign', calendlyConfig.defaultUtm.utmCampaign);
     if (options?.utmContent) targetUrl.searchParams.set('utm_content', options.utmContent);
     if (options?.utmTerm) targetUrl.searchParams.set('utm_term', options.utmTerm);
+
+    // Append any explicit utm params provided by the caller (these override defaults)
+    if (options?.utmParams) {
+      Object.entries(options.utmParams).forEach(([k, v]) => {
+        if (v) targetUrl.searchParams.set(k, v);
+      });
+    }
 
     const useNewWindow = options?.forceNewWindow ?? calendlyConfig.preferNewWindow;
 

@@ -2,13 +2,17 @@
 
 import React, { createContext, useContext, useState } from 'react';
 import '@/styles/components/email-collector.scss';
-import { openCalendlyPopup, loadCalendlyScript } from '@/utils/calendly';
+import { openCalendlyPopup, warmCalendlyResources } from '@/utils/calendly';
+import { gtagEvent } from '@/utils/analytics';
+import { getUtm } from '@/utils/utm';
 
 type ModalOptions = {
   utmContent?: string;
   utmTerm?: string;
   customUrl?: string;
   forceNewWindow?: boolean;
+  downloadUrl?: string;
+  origin?: string; // e.g. 'header','hero','package','finalcta'
 };
 
 interface EmailModalContextValue {
@@ -17,23 +21,38 @@ interface EmailModalContextValue {
 
 const EmailModalContext = createContext<EmailModalContextValue | undefined>(undefined);
 
-export const EmailCollectorProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [options, setOptions] = useState<ModalOptions | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [options, setOptions] = useState<ModalOptions | undefined>(undefined);
+  const [downloadAvailable, setDownloadAvailable] = useState<boolean | null>(null);
+  const [downloadCheckLoading, setDownloadCheckLoading] = useState(false);
 
   const openModal = (opts?: ModalOptions) => {
+    // If this modal is being opened as part of a Calendly flow, do a lightweight warm
+    // (preconnect + preload) so the full Calendly script can load faster on click.
+    try {
+      const isCalendlyIntent = Boolean(
+        opts && (
+          (opts.origin && ['header', 'hero', 'package', 'finalcta'].includes(opts.origin)) ||
+          (opts.customUrl && typeof opts.customUrl === 'string' && opts.customUrl.includes('calendly')) ||
+          (opts.utmContent && String(opts.utmContent).toLowerCase().includes('calendly'))
+        )
+      );
+
+      if (isCalendlyIntent) warmCalendlyResources();
+    } catch (err) {
+      // warming is best-effort
+    }
+
     setOptions(opts);
     setIsOpen(true);
   };
 
   const closeModal = () => {
     setIsOpen(false);
-    setName('');
-    setEmail('');
     setError(null);
     setIsSubmitting(false);
     setOptions(undefined);
@@ -41,40 +60,128 @@ export const EmailCollectorProvider: React.FC<{ children: React.ReactNode }> = (
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     setError(null);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const email = String(formData.get('email') || '').trim();
+    const name = String(formData.get('name') || '').trim();
+
     if (!email) {
-      setError('Please provide an email address.');
+      setError('Please enter a valid email');
+      setIsSubmitting(false);
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      const res = await fetch('/api/brevo', {
+      // attach any captured UTM params to the subscribe request
+      const utm = getUtm();
+
+      const res = await fetch('/api/mailchimp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name || undefined, email }),
+        body: JSON.stringify({ email, name, utm }),
       });
 
+      // try to parse JSON (safe)
       const payload = await res.json().catch(() => ({}));
-      if (!res.ok || !payload?.success) {
-        const msg = payload?.message || payload?.details?.message || 'Failed to subscribe';
+
+      // Normalize success check: accept HTTP 2xx OR payload.success truthy
+      const ok = res.ok || Boolean(payload?.success) || Boolean(payload?.data);
+
+      if (!ok) {
+        const msg = payload?.message || payload?.error || payload?.details?.message || `Failed to subscribe (${res.status})`;
         throw new Error(msg);
       }
 
-      // After successful subscription, open Calendly (if provided)
-      await loadCalendlyScript().catch(() => {});
+      // On success: trigger analytics and then continue with UX flow.
+      // Emit a Mailchimp subscribe event so GA captures the conversion source (hero/header/package/download/finalcta)
+      try {
+        gtagEvent('mailchimp_subscribed', {
+          event_category: 'engagement',
+          event_label: options?.origin || options?.utmContent || utm?.utm_content || 'unknown',
+          origin: options?.origin || null,
+          utm_content: options?.utmContent || utm?.utm_content || null,
+          utm_source: utm?.utm_source || null,
+          utm_medium: utm?.utm_medium || null,
+          utm_campaign: utm?.utm_campaign || null,
+        });
+      } catch (e) {
+        // best-effort; don't block UX on analytics
+      }
+
+      // If modal was opened with a downloadUrl, show success UI and present in-modal download CTA
+      if (options?.downloadUrl) {
+        // keep the modal open and show a success state with download button
+        setSuccess(true);
+        // kick off a quick check to make sure the PDF exists (avoid browser downloading text)
+        try {
+          setDownloadCheckLoading(true);
+          fetch(`/api/download-check?url=${encodeURIComponent(options.downloadUrl)}`)
+            .then((r) => r.json().catch(() => ({})))
+            .then((p) => {
+              if (p && p.success) setDownloadAvailable(true);
+              else setDownloadAvailable(false);
+            })
+            .catch(() => setDownloadAvailable(false))
+            .finally(() => setDownloadCheckLoading(false));
+        } catch (err) {
+          setDownloadAvailable(false);
+          setDownloadCheckLoading(false);
+        }
+        // Also send a more specific event for downloads
+        try {
+          gtagEvent('lead_download_ready', {
+            event_category: 'engagement',
+            event_label: options?.origin || options?.utmContent || utm?.utm_content || 'download',
+            origin: options?.origin || null,
+            utm_content: options?.utmContent || utm?.utm_content || null,
+            utm_source: utm?.utm_source || null,
+            utm_medium: utm?.utm_medium || null,
+            utm_campaign: utm?.utm_campaign || null,
+            method: 'download'
+          });
+        } catch (e) {
+          // ignore
+        }
+
+        return;
+      }
+
+      // otherwise continue with existing flow (e.g. open calendly)
+      // `openCalendlyPopup` will load the full script if needed; avoid redundant eager loads here.
+      // Ensure Calendly receives a sensible utmContent (prefer explicit utmContent, otherwise use origin)
+  const calendlyUtmContent = options?.utmContent ?? options?.origin ?? utm?.utm_content;
+
+      try {
+        gtagEvent('mailchimp_subscribed_then_calendly', {
+          event_category: 'engagement',
+          event_label: calendlyUtmContent || 'calendly',
+          origin: options?.origin || null,
+          utm_content: options?.utmContent || utm?.utm_content || null,
+          utm_source: utm?.utm_source || null,
+          utm_medium: utm?.utm_medium || null,
+          utm_campaign: utm?.utm_campaign || null,
+          method: 'calendly'
+        });
+      } catch (e) {
+        // ignore
+      }
+
       await openCalendlyPopup({
-        utmContent: options?.utmContent,
-        utmTerm: options?.utmTerm,
+        utmContent: calendlyUtmContent,
+        utmTerm: options?.utmTerm ?? utm?.utm_term,
         customUrl: options?.customUrl,
         forceNewWindow: options?.forceNewWindow,
+        utmParams: utm,
       });
 
+      // close modal after successful flow
       closeModal();
     } catch (err: any) {
-      console.error('Brevo API error:', err);
-      setError(err?.message || String(err) || 'Subscription failed');
+      console.error('Subscription error:', err);
+      setError(String(err?.message || err || 'Subscription failed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -82,50 +189,111 @@ export const EmailCollectorProvider: React.FC<{ children: React.ReactNode }> = (
 
   return (
     <EmailModalContext.Provider value={{ openModal }}>
-      {children}
+      {props.children}
 
       {isOpen && (
         <div className="ec-overlay" role="dialog" aria-modal="true">
           <div className="ec-modal">
             <button className="ec-close" onClick={closeModal} aria-label="Close">×</button>
-            <h3 className="ec-title">Quick — before we book</h3>
-            <p className="ec-sub">Enter your name and email so we can send confirmation and reminders.</p>
+            {/* Render slightly different copy depending on how the modal was opened */}
+            {(() => {
+              const strategyOrigins = ['header', 'hero', 'package', 'finalcta'];
+              const variant = options?.downloadUrl
+                ? 'download'
+                : (options?.origin && strategyOrigins.includes(options.origin))
+                ? 'calendly'
+                : (options?.customUrl && typeof options.customUrl === 'string' && options.customUrl.includes('calendly')) || (options?.utmContent && String(options.utmContent).toLowerCase().includes('calendly'))
+                ? 'calendly'
+                : 'default';
 
-            <form className="ec-form" onSubmit={handleSubmit}>
-              <label className="ec-field">
-                <span className="ec-label">Name</span>
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  disabled={isSubmitting}
-                />
-              </label>
+              if (variant === 'calendly') {
+                return (
+                  <>
+                    <h3 className="typo-xl-responsive m-0">Let's personalize your strategy call</h3>
+                    <p className="typo-md-medium">Tell us who you are so we can prep a smarter session tailored to your goals.</p>
+                  </>
+                );
+              }
 
-              <label className="ec-field">
-                <span className="ec-label">Email</span>
-                <input
-                  type="email"
-                  placeholder="you@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={isSubmitting}
-                />
-              </label>
+              if (variant === 'download') {
+                return (
+                  <>
+                    <h3 className="typo-xl-responsive m-0">Grab your free guide — no email required</h3>
+                    <p className="typo-md-medium">Just tell us where to send future tips and free tools.</p>
+                  </>
+                );
+              }
 
-              {error && <div className="ec-error" role="alert">{error}</div>}
+              return (
+                <>
+                  <h3 className="typo-xl-responsive m-0">Quick — before we book</h3>
+                  <p className="typo-md-medium">Enter your name and email so we can send confirmation and reminders.</p>
+                </>
+              );
+            })()}
 
-              <div className="ec-actions">
-                <button type="button" className="btn btn-outline" onClick={closeModal} disabled={isSubmitting}>
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                  {isSubmitting ? 'Sending...' : 'Continue to booking'}
-                </button>
+            {success && options?.downloadUrl ? (
+              <div className="ec-success">
+                <p className="ec-success-msg">Thanks — your guide is ready for you.</p>
+                <div className="ec-success-actions">
+                  {downloadCheckLoading ? (
+                    <button className="btn btn-primary" disabled>Checking...</button>
+                  ) : downloadAvailable === true ? (
+                    <a href={options.downloadUrl ? `/api/download?url=${encodeURIComponent(options.downloadUrl)}` : '#'} className="btn btn-primary" download>
+                      Download the free guide
+                    </a>
+                  ) : downloadAvailable === false ? (
+                    <button className="btn btn-primary" disabled>Download unavailable</button>
+                  ) : (
+                    // null state (not checked) — show safe disabled state
+                    <button className="btn btn-primary" disabled>Preparing download...</button>
+                  )}
+                  <button className="btn btn-outline" onClick={closeModal}>
+                    Close
+                  </button>
+                </div>
+                {downloadAvailable === false && (
+                  <div className="form-error" style={{ marginTop: 12 }}>
+                    Sorry — we couldn't find the PDF on the source site. If this keeps happening, contact us at contact@magnetomarketing.co
+                  </div>
+                )}
               </div>
-            </form>
+            ) : (
+              <form onSubmit={handleSubmit} className="ec-form">
+                <div className="form-field">
+                  <label className="typo-md-bold" htmlFor="ec-name">Name</label>
+                  <input
+                    id="ec-name"
+                    className="form-field__control"
+                    type="text"
+                    name="name"
+                    placeholder="Your name"
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="form-field">
+                  <label className="typo-md-bold" htmlFor="ec-email">Email</label>
+                  <input
+                    id="ec-email"
+                    className="form-field__control"
+                    type="email"
+                    name="email"
+                    placeholder="you@company.com"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                {error && <div className="form-error">{error}</div>}
+
+                <div className="ec-actions">
+                  <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                    {isSubmitting ? 'Submitting...' : (options?.downloadUrl ? 'Continue to Download the Guide' : ((options?.origin && ['header','hero','package','finalcta'].includes(options.origin)) || (options?.customUrl && typeof options.customUrl === 'string' && options.customUrl.includes('calendly')) || (options?.utmContent && String(options.utmContent).toLowerCase().includes('calendly'))) ? 'Continue to Book Call' : 'Subscribe')}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}

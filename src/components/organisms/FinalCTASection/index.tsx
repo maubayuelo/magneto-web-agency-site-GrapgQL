@@ -5,7 +5,23 @@ import { useRouter, usePathname } from 'next/navigation';
 import { getHomePrefooter } from './api';
 import type { FinalCTASectionProps, FinalCTAData } from './types';
 import { CalendlyButton } from '@/components/atoms';
+import Image from 'next/image';
+import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
+import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
+import { gtagEvent } from '@/utils/analytics';
 import './FinalCTASection.scss';
+
+function FinalCTAInner({ ctaText, ctaHref }: { ctaText?: string | null; ctaHref?: string | null }) {
+  const { openModal } = useEmailModal();
+  return (
+    <button className="btn btn-primary mt-30 typo-uppercase typo-extrabold" onClick={() => {
+      try { gtagEvent('cta_clicked', { event_category: 'engagement', event_label: 'finalcta', utm_content: ctaHref || null }); } catch (e) {}
+      openModal({ origin: 'finalcta', utmContent: undefined, customUrl: ctaHref || undefined });
+    }}>
+      {ctaText || 'Request Free Quote'}
+    </button>
+  );
+}
 
 export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   className = '',
@@ -38,35 +54,41 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
 
   if (!shouldShow) return null;
 
+  // Use WpResponsiveImage to prefer CMS-provided sizes and render a positioned responsive image
+  const hasBg = !!(data?.bgimage?.node?.mediaDetails?.sizes?.length || data?.bgimage?.node?.sourceUrl);
+
   return (
     <section  className={`final-cta-section main mb-md-responsive typo-center ${className} `}>
-      <div style={{ backgroundImage: `url(${data?.bgimage?.node?.sourceUrl || ''})` }}   className="final-cta-section__container">
-        
-          
-            <h2 className="typo-center typo-3xl-extrabold m-0 typo-white">
-              {data?.title || "Stop losing leads. Start converting."}
-            </h2>
-            <p className="typo-center typo-xl-bold m-0 typo-white">
-              {data?.subtitle || "Request your free funnel quote today and find out what's holding you back."}
-            </p>
-
-          <div className="final-cta-section__button">
-            {/* 
-              If the CTA is for Calendly (either by explicit type or by matching the Calendly URL),
-              render the CalendlyButton which opens the modal.
-              Otherwise, render a normal link or button.
-            */}
+      <div className="final-cta-section__container">
+        {/* background image rendered with WpResponsiveImage (fills container and uses srcset/sizes) */}
+        {hasBg && (
+          <div className="final-cta-section__bg">
+            <WpResponsiveImage
+              image={data?.bgimage?.node as any}
+              alt={data?.title || 'Background'}
+              className="final-cta-section__bg-image"
+              omitSizeAttributes={false}
+              priority
+              fill
+            />
+            <div className="final-cta-section__overlay" />
           </div>
-            
+        )}
+
+          <h2 className="typo-center typo-3xl-extrabold m-0 typo-white">
+            {data?.title || "Stop losing leads. Start converting."}
+          </h2>
+          <p className="typo-center typo-xl-bold m-0 typo-white">
+            {data?.subtitle || "Request your free funnel quote today and find out what's holding you back."}
+          </p>
+
+        <div className="final-cta-section__button">
+          {/* CTA rendering handled below */}
+        </div>
+
       {(cta.type === 'calendly' || (data?.ctaLink && data?.ctaLink.includes('calendly'))) ? (
-      <CalendlyButton 
-        utmContent={cta.utmContent}
-        utmTerm={cta.utmTerm}
-        customUrl={cta.customUrl}
-        className="btn btn-primary mt-30 typo-uppercase typo-extrabold"
-      >
-        {data?.ctaText || "Request Free Quote"}
-      </CalendlyButton>
+        // open pre-CTA modal for final CTA strategy calls
+        <FinalCTAInner ctaText={data?.ctaText} ctaHref={cta.href} />
       ) : cta.href ? (
             // If CTA has an href and is not Calendly, render as a normal link
             <a href={cta.href} className="btn btn-primary typo-uppercase typo-extrabold">

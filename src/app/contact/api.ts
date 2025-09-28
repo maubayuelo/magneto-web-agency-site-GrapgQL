@@ -38,6 +38,18 @@ export async function getContactPageData() {
       ? {
           sourceUrl: featuredImage.sourceUrl || "",
           altText: featuredImage.altText || "",
+          // include mediaDetails.sizes so downstream image helpers can pick
+          // the most appropriate variant (width/height) instead of falling
+          // back to a loose/default measurement which can produce tiny
+          // variants during SSR.
+          mediaDetails: {
+            sizes: (featuredImage.mediaDetails?.sizes || []).map((s: any) => ({
+              sourceUrl: s.sourceUrl,
+              width: s.width,
+              height: s.height,
+              name: s.name,
+            })),
+          },
         }
       : null,
   };

@@ -1,0 +1,15 @@
+.fade-up {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeUpIn 420ms ease forwards;
+}
+
+@keyframes fadeUpIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { opacity: 0; animation: fadeIn 420ms ease forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
+
+.slide-in-left { opacity: 0; transform: translateX(-8px); animation: slideInLeft 420ms ease forwards; }
+@keyframes slideInLeft { to { opacity: 1; transform: translateX(0); } }

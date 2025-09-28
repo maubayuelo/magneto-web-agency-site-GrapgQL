@@ -104,10 +104,10 @@
             color: white;
             text-decoration: none;
             text-transform: uppercase;
-            @include font-style(sm, extrabold, sm);
+            @include font-style(lg, extrabold, sm);
 
             @media (min-width: $breakpoint-tablet) {
-                @include font-style(md, extrabold, md);
+                @include font-style(lg, extrabold, md);
             }
 
             &:hover {

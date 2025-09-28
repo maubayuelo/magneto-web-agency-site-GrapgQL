@@ -1,7 +1,66 @@
 import React from 'react';
 import { IconComponent, CalendlyButton } from '@/components/atoms';
-import Image from 'next/image';
+import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
+import { gtagEvent } from '@/utils/analytics';
 import './PackageCard.scss';
+
+type InternalCTAProps = {
+  ctaType?: 'link' | 'calendly' | string;
+  ctaHref?: string;
+  ctaText?: string;
+  utmContent?: string;
+};
+
+function PackageCardCTA({ ctaType, ctaHref, ctaText, utmContent }: InternalCTAProps) {
+  const emailModal = useEmailModal();
+
+  const isCalendly = ctaType === 'calendly' || (ctaHref && ctaHref.includes('calendly'));
+  const downloadUrl = ctaHref && ctaHref.endsWith('.pdf') ? ctaHref : undefined;
+  // For strategy call booking we open the pre-CTA modal (origin='package') so user fills form before Calendly
+  if (isCalendly) {
+    return (
+      <button
+        type="button"
+        className="btn btn-primary btn-medium"
+        onClick={() => {
+          try { gtagEvent('cta_clicked', { event_category: 'engagement', event_label: `package_${utmContent || 'package'}`, utm_content: utmContent || null }); } catch (e) {}
+          emailModal.openModal({ origin: 'package', utmContent });
+        }}
+      >
+        {ctaText}
+      </button>
+    );
+  }
+
+  if (downloadUrl) {
+    return (
+      <button
+        type="button"
+        className="btn btn-secondary btn-medium"
+        onClick={() => {
+          try { gtagEvent('cta_clicked_mailchimp', { event_category: 'engagement', event_label: `package_download_${utmContent || 'package'}`, utm_content: utmContent || null }); } catch (e) {}
+          emailModal.openModal({ downloadUrl, utmContent });
+        }}
+      >
+        {ctaText}
+      </button>
+    );
+  }
+
+  if (ctaHref) {
+    return (
+      <a href={ctaHref} className="btn btn-primary btn-medium">
+        {ctaText}
+      </a>
+    );
+  }
+
+  return (
+    <button type="button" className="btn btn-primary btn-medium">
+      {ctaText}
+    </button>
+  );
+}
 
 export interface PackageFeature {
   text: string;
@@ -61,19 +120,13 @@ const PackageCard: React.FC<PackageCardProps> = ({
         <p className="typo-md-medium m-0">{description}</p>
       </div>
       
-      {ctaType === 'calendly' ? (
-        <CalendlyButton 
-          className="btn btn-primary btn-medium"
-          utmContent={utmContent || `package_${title.toLowerCase()}`}
-          utmTerm="strategy_call"
-        >
-          {ctaText}
-        </CalendlyButton>
-      ) : (
-        <a href={ctaHref} className="btn btn-primary btn-medium">
-          {ctaText}
-        </a>
-      )}
+      {/* CTA behaviour mirrors HeroCTA / LeadMagnetSection: Calendly -> CalendlyButton; PDF/download -> open modal; href -> anchor; fallback -> button */}
+      <PackageCardCTA
+        ctaType={ctaType}
+        ctaHref={ctaHref}
+        ctaText={ctaText}
+        utmContent={utmContent || `package_${title.toLowerCase()}`}
+      />
       
       <div className="package-card__features">
         <h4 className="typo-md-extrabold m-0">What&apos;s included:</h4>
@@ -81,13 +134,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           {features.map((feature, index) => (
             <li key={index} className="package-card__feature-item">
               <div className="package-card__check-icon">
-                <Image
-                  src="/assets/images/ico-check.svg"
-                  alt="Check icon"
-                  width={18}
-                  height={18}
-                  className="package-card__check"
-                />
+                <IconComponent src="/assets/images/ico-check.svg" alt="Check icon" size="sm" className="package-card__check" />
               </div>
               <span className="typo-sm-medium">{feature.text}</span>
             </li>
