@@ -4,7 +4,7 @@
 
 // Base site URL for building absolute links. For local development, set
 // NEXT_PUBLIC_SITE_URL in `.env.local` so generated links point to your dev host.
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://magnetomktng.com';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.magnetomarketing.co';
 export const siteName = 'Magneto Marketing';
 
 // Default Open Graph image used when no page-specific image is available.
