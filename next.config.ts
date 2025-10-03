@@ -23,10 +23,23 @@ const nextConfig: NextConfig = {
         pathname: '/wp-content/uploads/**',
       },
       {
-        protocol: 'http', // <-- add this block for local HTTP
+        protocol: 'http',
         hostname: 'magneto-cms.local',
         port: '',
         pathname: '/wp-content/uploads/**',
+      },
+      // production media served from SiteGround
+      {
+        protocol: 'https',
+        hostname: 'magnetomarketing.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.magnetomarketing.co',
+        port: '',
+        pathname: '/**',
       },
     ],
     dangerouslyAllowSVG: true,
