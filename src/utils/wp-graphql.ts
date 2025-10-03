@@ -14,20 +14,65 @@ const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://magneto
  * - For Next.js, we pass `{ next: { revalidate: 60 } }` to the fetch options to
  *   enable simple incremental static regeneration (ISG) behavior. Adjust as needed.
  */
-export async function fetchWPGraphQL(query: string, variables: Record<string, any> = {}) {
-  const res = await fetch(WP_GRAPHQL_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ query, variables }),
-    // `next.revalidate` tells Next.js how long to cache the response before revalidating.
-    // Remove or change this if you don't want ISR behavior.
-    next: { revalidate: 60 },
-  });
+import { devConsoleError } from './dev-console';
 
-  const json = await res.json();
+export async function fetchWPGraphQL(query: string, variables: Record<string, any> = {}) {
+  let res;
+  try {
+    res = await fetch(WP_GRAPHQL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables }),
+      // `next.revalidate` tells Next.js how long to cache the response before revalidating.
+      // Remove or change this if you don't want ISR behavior.
+      next: { revalidate: 60 },
+    });
+  } catch (e) {
+    devConsoleError('WP GraphQL fetch failed to reach host', { url: WP_GRAPHQL_URL, error: e });
+    throw new Error(`WP GraphQL fetch failed: ${String(e)}`);
+  }
+
+  let json;
+  try {
+    json = await res.json();
+  } catch (e) {
+    // Attempt to get the raw text body for debug purposes
+    let textBody: string | undefined;
+    try {
+      textBody = await res.text();
+    } catch (_err) {
+      textBody = undefined;
+    }
+
+    devConsoleError('WP GraphQL invalid JSON response', { status: res.status, url: WP_GRAPHQL_URL, error: e, body: textBody });
+    throw new Error(`WP GraphQL returned invalid JSON (status: ${res.status})`);
+  }
 
   // If the GraphQL layer returned errors, throw them so callers can handle/log them.
-  if (json.errors) throw new Error(JSON.stringify(json.errors));
+  if (json.errors) {
+    // Build a readable message (used both for logging and the thrown Error)
+    const message = `WP GraphQL errors: ${Array.isArray(json.errors) ? json.errors.map((e: any) => e.message || JSON.stringify(e)).join(' | ') : JSON.stringify(json.errors)}`;
+    // Compose a compact payload string so client dev overlays (which may collapse
+    // object arguments) show readable information. Also keep a structured object
+    // in the log if the environment supports it.
+    const payload = { status: res.status, url: WP_GRAPHQL_URL, errors: json.errors };
+    try {
+      devConsoleError(`${message} | payload: ${JSON.stringify(payload)}`);
+    } catch (_e) {
+      // Fallback to structured log
+      devConsoleError(message, payload, json);
+    }
+    // Attach the errors to the thrown Error so callers can inspect them programmatically
+    const err = new Error(message);
+    // @ts-ignore - attach original payload for callers that may inspect it
+    err.graphQLErrors = json.errors;
+    throw err;
+  }
+
+  if (!json.data) {
+    devConsoleError('WP GraphQL response missing data', { json });
+    throw new Error('WP GraphQL response missing data');
+  }
 
   return json.data;
 }

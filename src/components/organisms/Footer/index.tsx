@@ -56,9 +56,14 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
         </div>
 
         {footerData && (
-          <p className="typo-md-medium typo-center mb-lg-responsive">
+          <>
+          <p className="typo-md-medium typo-center m-0">
             {footerData?.footerLine2 || 'Default Footer Line 2'}
           </p>
+            <p className="typo-md-medium typo-center mb-lg-responsive">
+            Magneto Marketing - All Rights Reserved, {new Date().getFullYear()}.
+            </p>
+          </>
         )}    
 
     </section>

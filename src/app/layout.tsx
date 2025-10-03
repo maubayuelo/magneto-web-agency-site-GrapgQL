@@ -11,6 +11,7 @@ import type { Metadata } from 'next';
 import { Header, FinalCTASection, LeadMagnetSection, Footer } from '@/components/organisms';
 import EmailCollectorProvider from '@/components/organisms/EmailCollectorProvider';
 import { SITE_URL, siteName, defaultOgImage, buildCanonical } from '@/utils/seo';
+import { devConsoleError } from '@/utils/dev-console';
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
 import { GET_SITE_METADATA } from '@/data/site';
 
@@ -78,9 +79,9 @@ export async function generateMetadata(): Promise<Metadata> {
       }
     };
   } catch (e) {
-    // If fetching fails, log the error and return a safe fallback set of metadata.
-    // This prevents build-time failures and keeps the site SEO-friendly.
-    console.error('Failed to fetch site metadata, using fallback', e);
+  // If fetching fails, log the error and return a safe fallback set of metadata.
+  // Use devConsoleError to provide richer context in development.
+  devConsoleError('Failed to fetch site metadata, using fallback', e);
     return {
       metadataBase: new URL(SITE_URL),
       title: FALLBACK_TITLE,

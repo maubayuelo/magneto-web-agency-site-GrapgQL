@@ -2,14 +2,15 @@
 @import "../../../styles/mixins";
 
 .hero {
+    background-color: $gray-90;
     position: relative;
     align-self: stretch;
     width: 100%;
     padding: 30px 15px 0 15px; // Mobile-first: start with mobile padding
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, $black 100%);
-    background-image: url("/assets/images/hero-background.png");
-    background-size: cover;
-    background-position: center;
+    //background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, $black 100%);
+    //background-image: url("/assets/images/hero-background.png");
+    //background-size: cover;
+    //background-position: center;
     overflow: hidden;
     @include responsive-border-radius;
     display: flex;
@@ -23,6 +24,25 @@
         inset: 0;
         z-index: 0;
         pointer-events: none;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    // When rendering a plain <img> for dynamic backgrounds we need to ensure
+    // it covers the wrapper as next/image would. Use object-fit to replicate
+    // background-size: cover behavior and keep the image non-interactive.
+    &__bg-image {
+        //position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        //object-fit: cover;
+        //object-position: center;
+        //pointer-events: none;
+        //z-index: 0;
     }
 
     &__overlay {
@@ -39,19 +59,20 @@
 
         @media (min-width: $breakpoint-phone) {
             padding: 45px 30px 0 30px;
+            max-height: 480px;
         }
 
         @media (min-width: $breakpoint-desktop) {
             padding: 60px 30px 0 30px;
-            max-height: 450px;
+            max-height: 510px;
         }
 
         @media (min-width: $breakpoint-desktop-lg) {
-            max-height: 480px;
+            max-height: 540px;
         }
 
         @media (min-width: $breakpoint-desktop-xl) {
-           max-height: 540px;
+           max-height: 590px;
         }
     }
 

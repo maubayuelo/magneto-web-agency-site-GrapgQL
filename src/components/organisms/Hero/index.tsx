@@ -66,7 +66,17 @@ export function Hero({
             render a positioned next/image with fill so it benefits from optimization. */}
         {!backgroundImageNode && backgroundImage && (
           <div className="hero__bg">
-            <Image src={backgroundImage} alt="" fill className="hero__bg-image" />
+            {/* When backgroundImage is a string (CMS URL or static path) prefer
+                WpResponsiveImage so the component can select the best variant
+                per-device and emit proper srcset/sizes. We create a minimal
+                `image` shape with `sourceUrl` to reuse existing logic. */}
+            <WpResponsiveImage
+              image={{ sourceUrl: backgroundImage }}
+              alt=""
+              className="hero__bg-image"
+              omitSizeAttributes={true}
+              priority
+            />
           </div>
         )}
         <div className="hero-content">
@@ -124,14 +134,7 @@ export async function loadHomeHero(): Promise<Partial<HeroProps>> {
 // helper as `HeroLoader` to avoid it being used as a JSX component.
 
 export default Hero;
-
-// Server component wrapper kept for backward compatibility with pages that
-// render <HeroLoader pageUri="..." variant="..." />. It fetches the same
-// home hero data and returns the Hero component.
-export async function HeroLoader({ pageUri, variant }: { pageUri?: string; variant?: HeroProps['variant'] }) {
-  // Currently this loader always uses the home hero content. If you need
-  // different behavior per pageUri, we can expand this to fetch page-specific
-  // hero data later.
-  const props = await loadHomeHero();
-  return <Hero {...(props as HeroProps)} variant={variant || (props as any)?.variant || 'default'} />;
-}
+// Re-export the server-side, page-aware HeroLoader kept in a separate file.
+// This loader fetches hero content for the provided `pageUri` so pages get
+// page-specific hero data (instead of always using the home hero).
+export { default as HeroLoader } from './HeroLoader';

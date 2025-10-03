@@ -62,13 +62,13 @@ export default async function Home() {
       {/* AboutSection, FeaturedServices and other page sections: usually composed from smaller components */}
       <AboutSection />
       <FeaturedServices />
-      <Testimonials testimonials={testimonials} />
-      <ProjectsGrid
+      {/* <Testimonials testimonials={testimonials} /> */}
+      {/* <ProjectsGrid
           projects={projects}
           maxProjects={3}
           title="Recent Projects"
           showButton={true}
-        />
+        /> */}
     </>
   );
 }
