@@ -1,7 +1,7 @@
 // Simple GraphQL helper for communicating with a WordPress GraphQL endpoint.
 // Beginners: put a .env variable for the CMS URL instead of hardcoding for production.
 //const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://magneto-cms.local/graphql';
-const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://www.magnetomarketing.co/graphql';
+const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://www.magnetomarketing.co/cms/graphql';
 
 /**
  * fetchWPGraphQL
