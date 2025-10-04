@@ -8,10 +8,18 @@ interface Service {
   pageintrotext: string;
 }
 
-const servicesPageData = await getServicesPageData();
-const introText = servicesPageData?.pageintrotext?.pageIntroText || '';
+// REMOVE top-level await usage and move fetching into the component
+export default async function ServicesPage() {
+  let introText = '';
+  try {
+    const servicesPageData = await getServicesPageData();
+    introText = servicesPageData?.pageintrotext?.pageIntroText || '';
+  } catch (err) {
+    // Don't crash the page if the CMS/API is unreachable; render fallbacks.
+    console.error('Failed to load services page data:', err);
+    introText = '';
+  }
 
-export default function ServicesPage() {
   return (
     <>
       {/* HeroLoader fetches and renders the Hero section for this page */}
