@@ -14,6 +14,8 @@ export default async function ServicesPage() {
   try {
     const servicesPageData = await getServicesPageData();
     introText = servicesPageData?.pageintrotext?.pageIntroText || '';
+    // Extract services list to pass to the server-rendered ServicesList component
+    var servicesArray = servicesPageData?.servicesServiceDetails?.services || [];
   } catch (err) {
     // Don't crash the page if the CMS/API is unreachable; render fallbacks.
     console.error('Failed to load services page data:', err);
@@ -33,7 +35,7 @@ export default async function ServicesPage() {
         </div>
       ) : null}
       <div className="main pb-md-responsive">
-        <ServicesList />
+        <ServicesList services={servicesArray} />
       </div>
     </>
   );
