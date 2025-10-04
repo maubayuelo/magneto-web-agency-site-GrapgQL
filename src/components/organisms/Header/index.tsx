@@ -28,7 +28,7 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
     async function fetchLogo() {
       try {
         const data: HomeHeader = await getHomeHeader();
-        const src = data?.logo?.sourceUrl;
+        const src = logoUrl || logo || '/assets/images/logo-magneto.svg';
         if (src) setLogoUrl(src);
       } catch (err) {
         // keep fallback
