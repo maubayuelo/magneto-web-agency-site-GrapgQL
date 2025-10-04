@@ -61,7 +61,13 @@ export default async function ServicesPage() {
 // generateMetadata will fetch a presumed endpoint at /api/pages/services.
 export async function generateMetadata() {
   try {
-    const res = await fetch(`${process.env.WP_API || ''}/pages/services`, { cache: 'no-store' });
+    // Avoid attempting a relative fetch when WP_API is not configured in production
+    const wpApiBase = process.env.WP_API;
+    if (!wpApiBase) {
+      throw new Error('WP_API not configured');
+    }
+
+    const res = await fetch(`${wpApiBase.replace(/\/+$/, '')}/pages/services`, { cache: 'no-store' });
     if (!res.ok) throw new Error('failed to fetch');
     const json = await res.json();
     const title = json.title ?? 'Services - Magneto Marketing';
