@@ -6,6 +6,12 @@
 const WP_GRAPHQL_URL =
   process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://cms.magnetomarketing.co/graphql/';
 
+// When running in the browser, route requests through our server-side proxy to
+// avoid CORS and to keep the CMS host hidden from client code. Server-side
+// (Node) will continue to call the external WP_GRAPHQL_URL directly.
+const IS_BROWSER = typeof window !== 'undefined';
+const CLIENT_PROXY_PATH = '/api/wp-graphql';
+
 /**
  * fetchWPGraphQL
  * @param query GraphQL query string
@@ -23,7 +29,8 @@ import { devConsoleError } from './dev-console';
 export async function fetchWPGraphQL(query: string, variables: Record<string, any> = {}) {
   let res;
   try {
-    res = await fetch(WP_GRAPHQL_URL, {
+    const url = IS_BROWSER ? CLIENT_PROXY_PATH : WP_GRAPHQL_URL;
+    res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, variables }),

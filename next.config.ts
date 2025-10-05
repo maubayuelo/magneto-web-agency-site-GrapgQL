@@ -8,13 +8,20 @@ const nextConfig: NextConfig = {
   },
   /* config options here */
   images: {
-    domains: ['magneto-cms.local'],
+  domains: ['magneto-cms.local', 'cms.magnetomarketing.co'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'placehold.co',
         port: '',
         pathname: '/**',
+      },
+      // external CMS host (full domain used by production media)
+      {
+        protocol: 'https',
+        hostname: 'cms.magnetomarketing.co',
+        port: '',
+        pathname: '/wp-content/uploads/**',
       },
       {
         protocol: 'https',
