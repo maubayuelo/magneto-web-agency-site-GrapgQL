@@ -4,7 +4,7 @@
 // NEXT_PUBLIC_WORDPRESS_URL for historical reasons. This makes the helper
 // resilient to small env var naming differences between local and Vercel.
 const WP_GRAPHQL_URL =
-  process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://www.magnetomarketing.co/cms/graphql';
+  process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://cms.magnetomarketing.co/graphql/';
 
 /**
  * fetchWPGraphQL
