@@ -70,3 +70,51 @@ export function devConsoleError(...args: any[]) {
     console.error(...args);
   }
 }
+
+// Non-fatal diagnostics that should not trigger the Next.js dev overlay.
+export function devConsoleWarn(...args: any[]) {
+  if (process.env.NODE_ENV === 'development') {
+    try {
+      const timestamp = new Date().toISOString();
+      const safeSerialize = (value: any) => {
+        if (value === null || value === undefined) return value;
+        const t = typeof value;
+        if (t === 'string' || t === 'number' || t === 'boolean') return value;
+        if (value instanceof Error) {
+          return { __error: true, name: value.name, message: value.message, stack: value.stack };
+        }
+        try {
+          const seen = new WeakSet();
+          const str = JSON.stringify(value, function (_key, val) {
+            if (val instanceof Error) {
+              return { __error: true, name: val.name, message: val.message, stack: val.stack };
+            }
+            if (typeof val === 'object' && val !== null) {
+              if (seen.has(val)) return '[Circular]';
+              seen.add(val);
+            }
+            return val;
+          });
+          try {
+            return JSON.parse(str);
+          } catch (_e) {
+            return str;
+          }
+        } catch (_err) {
+          try {
+            return String(value);
+          } catch (_e) {
+            return value;
+          }
+        }
+      };
+
+      const formatted = args.map(safeSerialize);
+      console.warn(`[dev-server-warn ${timestamp}]`, ...formatted);
+    } catch (e) {
+      console.warn(...args);
+    }
+  } else {
+    console.warn(...args);
+  }
+}

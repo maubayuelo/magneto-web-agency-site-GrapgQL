@@ -24,7 +24,7 @@ const CLIENT_PROXY_PATH = '/api/wp-graphql';
  * - For Next.js, we pass `{ next: { revalidate: 60 } }` to the fetch options to
  *   enable simple incremental static regeneration (ISG) behavior. Adjust as needed.
  */
-import { devConsoleError } from './dev-console';
+import { devConsoleError, devConsoleWarn } from './dev-console';
 
 export async function fetchWPGraphQL(query: string, variables: Record<string, any> = {}) {
   let res;
@@ -55,7 +55,7 @@ export async function fetchWPGraphQL(query: string, variables: Record<string, an
       textBody = undefined;
     }
 
-    devConsoleError('WP GraphQL invalid JSON response', { status: res.status, url: WP_GRAPHQL_URL, error: e, body: textBody });
+    devConsoleWarn('WP GraphQL invalid JSON response', { status: res.status, url: WP_GRAPHQL_URL, error: e, body: textBody });
     throw new Error(`WP GraphQL returned invalid JSON (status: ${res.status})`);
   }
 
@@ -68,10 +68,10 @@ export async function fetchWPGraphQL(query: string, variables: Record<string, an
     // in the log if the environment supports it.
     const payload = { status: res.status, url: WP_GRAPHQL_URL, errors: json.errors };
     try {
-      devConsoleError(`${message} | payload: ${JSON.stringify(payload)}`);
+      devConsoleWarn(`${message} | payload: ${JSON.stringify(payload)}`);
     } catch (_e) {
       // Fallback to structured log
-      devConsoleError(message, payload, json);
+      devConsoleWarn(message, payload, json);
     }
     // Attach the errors to the thrown Error so callers can inspect them programmatically
     const err = new Error(message);
@@ -81,8 +81,33 @@ export async function fetchWPGraphQL(query: string, variables: Record<string, an
   }
 
   if (!json.data) {
-    devConsoleError('WP GraphQL response missing data', { json });
-    throw new Error('WP GraphQL response missing data');
+    // Log extended diagnostics to help figure out why `data` is missing.
+    // Include response status, headers (if available), and the full parsed JSON.
+    const diag: any = { json, status: res?.status };
+    try {
+      // Some runtimes expose headers as an iterable; normalize to a plain object
+      const headersObj: Record<string, string> = {};
+      if (res?.headers && typeof res.headers.forEach === 'function') {
+        res.headers.forEach((value: string, key: string) => (headersObj[key] = value));
+        diag.headers = headersObj;
+      } else if (res?.headers && typeof Object.fromEntries === 'function') {
+        try {
+          // In some environments headers can be iterated
+          diag.headers = Object.fromEntries(res.headers as any);
+        } catch (_) {
+          // ignore
+        }
+      }
+    } catch (_e) {
+      // ignore header extraction errors
+    }
+
+  devConsoleWarn('WP GraphQL response missing data', diag);
+    // Attach the diagnostics to the thrown Error for programmatic inspection
+    const err = new Error('WP GraphQL response missing data');
+    // @ts-ignore
+    err.diagnostics = diag;
+    throw err;
   }
 
   return json.data;
