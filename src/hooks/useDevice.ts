@@ -30,7 +30,6 @@ export function useDevice(): DeviceType {
     return () => window.removeEventListener('resize', update)
   }, []);
 
-
   //console.log('Detected device:', device)
   // Debug: log device changes
   useEffect(() => {
