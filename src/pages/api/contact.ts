@@ -63,12 +63,27 @@ export async function sendEmail(payload: { name?: string; email: string; busines
       return { success: false, message: 'SMTP not configured', details: { SMTP_HOST: Boolean(SMTP_HOST), SMTP_USER: Boolean(SMTP_USER), SMTP_PASS: Boolean(SMTP_PASS), CONTACT_RECIPIENT } };
     }
 
-    const transporter = nodemailer.createTransport({
+    // Allow overriding the TLS servername used for certificate validation.
+    // This is helpful when the SMTP server is reachable at one hostname
+    // (e.g. mail.magnetomarketing.co) but the TLS certificate is issued for
+    // another name (e.g. magnetomarketing.co). Prefer fixing the certificate
+    // or using the provider's canonical SMTP hostname in production. Use
+    // SMTP_TLS_SERVERNAME only as a safe, minimal workaround that preserves
+    // certificate validation against the provided servername.
+    const SMTP_TLS_SERVERNAME = process.env.SMTP_TLS_SERVERNAME || undefined;
+
+    const transportOpts: any = {
       host: SMTP_HOST,
       port: SMTP_PORT,
       secure: SMTP_PORT === 465, // true for 465, false for other ports
       auth: { user: SMTP_USER, pass: SMTP_PASS },
-    });
+    };
+
+    if (SMTP_TLS_SERVERNAME) {
+      transportOpts.tls = { servername: SMTP_TLS_SERVERNAME };
+    }
+
+    const transporter = nodemailer.createTransport(transportOpts);
 
     const html = `
       <p>New contact form submission</p>
@@ -148,13 +163,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const overallSuccess = !DISABLE_SMTP ? Boolean(mailResult.success) : Boolean(mcResult.success);
 
     if (!overallSuccess) {
-      // If we're in development (or any non-production) allow the request to
-      // succeed so the contact form can be tested locally even when SMTP and
-      // Mailchimp are not configured. In production we keep the stricter
-      // behavior and return 500 to surface delivery issues.
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn('Delivery failed but returning success in non-production. Details:', { mailResult, mcResult, DISABLE_SMTP });
-        return res.status(200).json({ success: true, message: 'Contact submitted (dev-mode fallback)', details: { mailResult, mcResult, DISABLE_SMTP, devMode: true } });
+      // Allow an explicit fallback in production for temporary outages by
+      // setting ALLOW_CONTACT_FALLBACK=1 in the environment. This keeps the
+      // stricter behavior by default but avoids a hard 500 when you know it's
+      // safe to accept submissions without delivery.
+      const ALLOW_CONTACT_FALLBACK = String(process.env.ALLOW_CONTACT_FALLBACK || '').trim() === '1';
+
+      if (process.env.NODE_ENV !== 'production' || ALLOW_CONTACT_FALLBACK) {
+        console.warn('Delivery failed but returning success due to dev-mode or ALLOW_CONTACT_FALLBACK=1. Details:', { mailResult, mcResult, DISABLE_SMTP, allowFallback: ALLOW_CONTACT_FALLBACK });
+        return res.status(200).json({ success: true, message: 'Contact submitted (fallback)', details: { mailResult, mcResult, DISABLE_SMTP, allowFallback: ALLOW_CONTACT_FALLBACK } });
       }
 
       // Return 500 with details so callers and logs can show why
