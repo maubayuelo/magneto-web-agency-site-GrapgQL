@@ -48,11 +48,6 @@
 .ec-actions { display:flex; gap:$spacing-10; justify-content:flex-end; margin-top:$spacing-10; }
 .ec-error { color: #a11; font-size: 13px; }
 
-/* small adjustments for success state inside modal */
-.ec-success-msg {
-  @include font-style(md, medium, md);
-  margin-bottom: $spacing-10;
-}
 
 .ec-success-actions { display:flex; gap:$spacing-10; }
 

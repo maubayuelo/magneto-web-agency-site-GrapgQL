@@ -44,45 +44,60 @@ async function subscribeMailchimp(email: string, name?: string) {
   return { success: true, message: 'Subscribed (Mailchimp)', payload };
 }
 
-async function sendEmail(payload: { name?: string; email: string; businessType?: string; message?: string }) {
-  const SMTP_HOST = process.env.SMTP_HOST;
-  const SMTP_PORT = Number(process.env.SMTP_PORT || 587);
-  const SMTP_USER = process.env.SMTP_USER;
-  const SMTP_PASS = process.env.SMTP_PASS;
-  const CONTACT_RECIPIENT = process.env.CONTACT_RECIPIENT;
+export async function sendEmail(payload: { name?: string; email: string; businessType?: string; message?: string }) {
+  try {
+    const SMTP_HOST = process.env.SMTP_HOST;
+    const SMTP_PORT = Number(process.env.SMTP_PORT || 587);
+    const SMTP_USER = process.env.SMTP_USER;
+    const SMTP_PASS = process.env.SMTP_PASS;
+    // If CONTACT_RECIPIENT isn't configured, fall back to the public contact
+    // address so form submissions still reach the team. Log a server-side
+    // warning so deploying environments can be corrected later.
+    const CONTACT_RECIPIENT = process.env.CONTACT_RECIPIENT || 'contact@magnetomarketing.co';
 
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !CONTACT_RECIPIENT) {
-    return { success: false, message: 'SMTP or CONTACT_RECIPIENT not configured' };
+    if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+      // don't completely fail — return a clear error object so callers and
+      // logs can show what's missing. Upstream code will decide whether to
+      // treat this as fatal based on DISABLE_SMTP.
+      console.warn('SMTP configuration is incomplete. SMTP_HOST, SMTP_USER and SMTP_PASS are required to send email. Using CONTACT_RECIPIENT=%s', CONTACT_RECIPIENT);
+      return { success: false, message: 'SMTP not configured', details: { SMTP_HOST: Boolean(SMTP_HOST), SMTP_USER: Boolean(SMTP_USER), SMTP_PASS: Boolean(SMTP_PASS), CONTACT_RECIPIENT } };
+    }
+
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_PORT === 465, // true for 465, false for other ports
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
+    });
+
+    const html = `
+      <p>New contact form submission</p>
+      <ul>
+        <li><strong>Name:</strong> ${payload.name || '—'}</li>
+        <li><strong>Email:</strong> ${payload.email}</li>
+        <li><strong>Business Type:</strong> ${payload.businessType || '—'}</li>
+        <li><strong>Message:</strong> ${payload.message || '—'}</li>
+      </ul>
+    `;
+
+    const fromAddress = process.env.EMAIL_FROM || SMTP_USER;
+
+    const info = await transporter.sendMail({
+      from: fromAddress,
+      to: CONTACT_RECIPIENT,
+      subject: `New contact from ${payload.name || payload.email}`,
+      text: `Name: ${payload.name || ''}\nEmail: ${payload.email}\nBusiness: ${payload.businessType || ''}\nMessage: ${payload.message || ''}`,
+      html,
+    });
+
+    // Return info for debugging in server logs if needed
+    return { success: true, message: 'Email sent', info };
+  } catch (err: any) {
+    // more informative logging for server logs
+    console.error('nodemailer sendMail error:', err && (err.stack || err.message || err));
+    // Surface a readable error message for the API response & logs
+    return { success: false, message: `Failed to send email: ${String(err?.message || err)}` };
   }
-
-  const transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: SMTP_PORT,
-    secure: SMTP_PORT === 465, // true for 465, false for other ports
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
-  });
-
-  const html = `
-    <p>New contact form submission</p>
-    <ul>
-      <li><strong>Name:</strong> ${payload.name || '—'}</li>
-      <li><strong>Email:</strong> ${payload.email}</li>
-      <li><strong>Business Type:</strong> ${payload.businessType || '—'}</li>
-      <li><strong>Message:</strong> ${payload.message || '—'}</li>
-    </ul>
-  `;
-
-  const fromAddress = process.env.EMAIL_FROM || SMTP_USER;
-
-  const info = await transporter.sendMail({
-    from: fromAddress,
-    to: CONTACT_RECIPIENT,
-    subject: `New contact from ${payload.name || payload.email}`,
-    text: `Name: ${payload.name || ''}\nEmail: ${payload.email}\nBusiness: ${payload.businessType || ''}\nMessage: ${payload.message || ''}`,
-    html,
-  });
-
-  return { success: true, message: 'Email sent', info };
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -109,23 +124,44 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       mcResult = { success: false, message: msg };
     }
 
-    // 2) send email via SMTP
+    // 2) send email via SMTP unless explicitly disabled
+    const DISABLE_SMTP = String(process.env.DISABLE_SMTP || '').trim() === '1';
+
     let mailResult: { success: boolean; message?: string; info?: unknown } = { success: false, message: 'Not attempted' };
-    try {
-      mailResult = await sendEmail({ name, email, businessType, message });
-    } catch (err: unknown) {
-      // eslint-disable-next-line no-console
-      console.error('Send email error:', err);
-      const msg = err instanceof Error ? err.message : String(err);
-      mailResult = { success: false, message: msg };
+    if (!DISABLE_SMTP) {
+      try {
+        mailResult = await sendEmail({ name, email, businessType, message });
+      } catch (err: unknown) {
+        // eslint-disable-next-line no-console
+        console.error('Send email error:', err);
+        const msg = err instanceof Error ? err.message : String(err);
+        mailResult = { success: false, message: msg };
+      }
+    } else {
+      // In local/dev we may only want Mailchimp subscription — avoid failing the request when SMTP is disabled
+      mailResult = { success: false, message: 'SMTP disabled via DISABLE_SMTP=1' };
     }
 
-    // If both failed, return 500 with details; if at least email succeeded, return 200
-    if (!mailResult?.success) {
-      return res.status(500).json({ success: false, message: 'Failed to deliver contact message', details: { mailResult, mcResult } });
+    // Success criteria:
+    // - If SMTP is enabled, require mailResult.success
+    // - If SMTP disabled, accept Mailchimp success as overall success
+    const overallSuccess = !DISABLE_SMTP ? Boolean(mailResult.success) : Boolean(mcResult.success);
+
+    if (!overallSuccess) {
+      // If we're in development (or any non-production) allow the request to
+      // succeed so the contact form can be tested locally even when SMTP and
+      // Mailchimp are not configured. In production we keep the stricter
+      // behavior and return 500 to surface delivery issues.
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Delivery failed but returning success in non-production. Details:', { mailResult, mcResult, DISABLE_SMTP });
+        return res.status(200).json({ success: true, message: 'Contact submitted (dev-mode fallback)', details: { mailResult, mcResult, DISABLE_SMTP, devMode: true } });
+      }
+
+      // Return 500 with details so callers and logs can show why
+      return res.status(500).json({ success: false, message: 'Failed to deliver contact message', details: { mailResult, mcResult, DISABLE_SMTP } });
     }
 
-    return res.status(200).json({ success: true, message: 'Contact submitted', details: { mailResult, mcResult } });
+    return res.status(200).json({ success: true, message: 'Contact submitted', details: { mailResult, mcResult, DISABLE_SMTP } });
   } catch (err: unknown) {
     // eslint-disable-next-line no-console
     console.error('Contact handler error:', err);

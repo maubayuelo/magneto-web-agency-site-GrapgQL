@@ -31,10 +31,10 @@ export function useDevice(): DeviceType {
   }, []);
 
 
-  console.log('Detected device:', device)
+  //console.log('Detected device:', device)
   // Debug: log device changes
   useEffect(() => {
-    console.log('Detected device:', device)
+    //console.log('Detected device:', device)
   }, [device])
 
   return device

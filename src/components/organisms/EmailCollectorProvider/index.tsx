@@ -209,7 +209,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
               if (variant === 'calendly') {
                 return (
                   <>
-                    <h3 className="typo-xl-responsive m-0">Let's personalize your strategy call</h3>
+                   <h3 className="typo-xl-responsive m-0">Quick — before we book</h3>
                     <p className="typo-md-medium">Tell us who you are so we can prep a smarter session tailored to your goals.</p>
                   </>
                 );
@@ -218,8 +218,11 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
               if (variant === 'download') {
                 return (
                   <>
-                    <h3 className="typo-xl-responsive m-0">Grab your free guide — no email required</h3>
-                    <p className="typo-md-medium">Just tell us where to send future tips and free tools.</p>
+                    <h3 className="typo-xl-responsive m-0">Grab your free guide</h3>
+                    
+                    {success && options?.downloadUrl ? (
+                      <p className="typo-md-medium">Thanks — your guide is ready for you.</p>
+                    ) : <p className="typo-md-medium">Enter your name and email, so we can send marketing ideas and tips.</p>}
                   </>
                 );
               }
@@ -234,7 +237,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
 
             {success && options?.downloadUrl ? (
               <div className="ec-success">
-                <p className="ec-success-msg">Thanks — your guide is ready for you.</p>
+                
                 <div className="ec-success-actions">
                   {downloadCheckLoading ? (
                     <button className="btn btn-primary" disabled>Checking...</button>
