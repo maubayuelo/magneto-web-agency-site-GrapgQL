@@ -20,7 +20,7 @@ $gray-90: #606060;
 
 // Font variables
 $font-family: "DM Sans", sans-serif;
-$font-size-base: 16px;
+$font-size-base: 18px;
 $font-weight-regular: 500;
 $font-weight-bold: 700;
 $font-weight-black: 900;
@@ -46,8 +46,8 @@ $breakpoint-desktop-xl: 1600px;
 
 // Border radius variables (mobile-first)
 $border-radius-mobile: 15px;
-$border-radius-tablet: 24px;
-$border-radius-desktop: 30px;
+$border-radius-tablet: 18px;
+$border-radius-desktop: 24px;
 
 // Responsive border-radius mixin (mobile-first)
 @mixin responsive-border-radius {

@@ -8,6 +8,19 @@ html, body {
 	margin: 0;
 }
 
+// Prevent iOS from automatically resizing text and ensure form controls
+// have a computed font-size of at least 16px to avoid automatic zoom on focus
+html, body {
+	-webkit-text-size-adjust: 100%;
+}
+
+input,
+select,
+textarea,
+.form-field__control {
+	font-size: 16px;
+}
+
 // 2. Typography and Global Styles
 @import "./styles/typography";
 @import "./styles/globals";
