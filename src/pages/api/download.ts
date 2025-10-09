@@ -5,14 +5,24 @@ import { promisify } from 'util';
 const streamPipeline = promisify(pipeline);
 
 function getAllowedHost(): string | null {
-  const env = process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_API_URL;
-  if (!env) return null;
+  const raw = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL || process.env.WORDPRESS_URL || process.env.NEXT_PUBLIC_API_URL;
+  if (!raw) return null;
   try {
-    const u = new URL(env);
+    const cleaned = raw.replace(/\/(?:graphql|wp-json|graphql\/?)?$/i, '').replace(/\/$/, '');
+    const u = new URL(cleaned);
     return u.host;
   } catch (err) {
     return null;
   }
+}
+
+function hostsMatchLoosely(allowedHost: string, targetHost: string): boolean {
+  if (!allowedHost || !targetHost) return false;
+  const a = allowedHost.toLowerCase();
+  const t = targetHost.toLowerCase();
+  if (a === t) return true;
+  const strip = (h: string) => h.replace(/^(www\.|cms\.)/i, '');
+  return strip(a) === strip(t);
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -39,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Security: only allow downloads from configured WP host to avoid SSRF
   const allowedHost = getAllowedHost();
   if (allowedHost) {
-    if (target.host !== allowedHost) {
+    if (!hostsMatchLoosely(allowedHost, target.host)) {
       return res.status(400).json({ success: false, message: 'Target host not allowed' });
     }
   } else {
@@ -50,29 +60,38 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const r = await fetch(target.toString(), { method: 'GET' });
-    if (!r.ok || !r.body) {
+    // Try normal fetch first
+    const r = await fetch(target.toString(), { method: 'GET' }).catch(() => null);
+    // If remote returned a 403 or blocked non-browser clients, retry with browser-like headers
+    const browserHeaders = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36', Referer: target.origin };
+    let finalResp = r;
+    if ((!r || !r.ok || !r.body) && r?.status !== 404) {
+      finalResp = await fetch(target.toString(), { method: 'GET', headers: browserHeaders }).catch(() => null);
+    }
+    if (!finalResp || !finalResp.ok || !finalResp.body) {
       // Remote resource not available — return a clear 404/plain-text message so the browser shows it
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      return res.status(r.status || 404).send('File not found on the source server');
+      return res.status((finalResp && finalResp.status) || 404).send('File not found on the source server');
     }
 
-    // If remote returned a body, check content-type. If it's a PDF, stream it.
-    const contentType = r.headers.get('content-type') || '';
-    if (contentType.toLowerCase().includes('pdf')) {
-      res.setHeader('X-Download-Source', 'remote');
-      res.setHeader('X-Remote-Content-Type', contentType);
-      // Derive filename and force attachment
-  const pathname = target.pathname || '';
-  let name = pathname.split('/').pop() || 'download';
-  name = name.replace(/\.(jpg|jpeg|png|webp|gif)$/i, '');
-  // Ensure filename ends with .pdf when content-type is PDF
-  if (!name.toLowerCase().endsWith('.pdf')) name = `${name}.pdf`;
-  res.setHeader('Content-Type', contentType);
-  res.setHeader('Content-Disposition', `attachment; filename="${name.replace(/"/g, '')}"`);
-      res.setHeader('Cache-Control', 'private, max-age=60');
-      await streamPipeline((r.body as any), res as any);
-      return;
+  // If remote returned a body, check content-type. If it's a PDF, stream it.
+  if (finalResp) {
+      const contentType = finalResp.headers.get('content-type') || '';
+      if (contentType.toLowerCase().includes('pdf')) {
+        res.setHeader('X-Download-Source', 'remote');
+        res.setHeader('X-Remote-Content-Type', contentType);
+        // Derive filename and force attachment
+        const pathname = target.pathname || '';
+        let name = pathname.split('/').pop() || 'download';
+        name = name.replace(/\.(jpg|jpeg|png|webp|gif)$/i, '');
+        // Ensure filename ends with .pdf when content-type is PDF
+        if (!name.toLowerCase().endsWith('.pdf')) name = `${name}.pdf`;
+        res.setHeader('Content-Type', contentType);
+        res.setHeader('Content-Disposition', `attachment; filename="${name.replace(/"/g, '')}"`);
+        res.setHeader('Cache-Control', 'private, max-age=60');
+        await streamPipeline((finalResp.body as any), res as any);
+        return;
+      }
     }
 
     // If remote resource is not a PDF (maybe it's an image preview), attempt a .pdf sibling
@@ -98,6 +117,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               res.setHeader('Content-Disposition', `attachment; filename="${name.replace(/"/g, '')}"`);
               res.setHeader('Cache-Control', 'private, max-age=60');
               await streamPipeline((rc2.body as any), res as any);
+              return;
+            }
+          }
+          // If GET failed, try HEAD with browser headers in case server blocks non-browser UAs
+          const rc3 = await fetch(pdfCandidate, { method: 'HEAD', headers: browserHeaders }).catch(() => null);
+          if (rc3 && rc3.ok && (rc3.headers.get('content-type') || '').toLowerCase().includes('pdf')) {
+            const getResp = await fetch(pdfCandidate, { method: 'GET', headers: browserHeaders }).catch(() => null);
+            if (getResp && getResp.ok && getResp.body) {
+              const ct = getResp.headers.get('content-type') || '';
+              res.setHeader('X-Download-Source', 'remote-pdf-candidate');
+              res.setHeader('X-Remote-Content-Type', ct);
+              const pathname = new URL(pdfCandidate).pathname || '';
+              let name = pathname.split('/').pop() || 'download';
+              name = name.replace(/\.(jpg|jpeg|png|webp|gif)$/i, '');
+              if (!name.toLowerCase().endsWith('.pdf')) name = `${name}.pdf`;
+              res.setHeader('Content-Type', ct);
+              res.setHeader('Content-Disposition', `attachment; filename="${name.replace(/"/g, '')}"`);
+              res.setHeader('Cache-Control', 'private, max-age=60');
+              await streamPipeline((getResp.body as any), res as any);
               return;
             }
           }

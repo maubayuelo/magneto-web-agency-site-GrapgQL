@@ -41,8 +41,8 @@ export async function getLeadMagnetSection(): Promise<LeadMagnetSectionData> {
   const normalized: LeadMagnetSectionData = {
     ...raw,
     ctaLink: linkNode?.node?.url || linkNode?.node?.uri || undefined,
-    // If the CTA link resolves to a media item, normalize the media source URL as downloadUrl
-    downloadUrl: (linkNode?.node as any)?.sourceUrl || undefined,
+    // Start without trusting any provided sourceUrl; prefer REST lookup by databaseId below
+    downloadUrl: undefined,
   };
 
   // Prefer guid when MediaItem reports mimeType=application/pdf — guid usually points to the original file URL
@@ -70,14 +70,19 @@ export async function getLeadMagnetSection(): Promise<LeadMagnetSectionData> {
       }
 
       // REST fallback by databaseId
-      if (!normalized.downloadUrl && nodeAny?.databaseId) {
-        const restBase = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'http://magneto-cms.local';
+      // Prefer REST lookup before accepting non-cms sourceUrl values; REST will return canonical source_url
+      if (nodeAny?.databaseId) {
+        // Derive a sane REST base even if NEXT_PUBLIC_WORDPRESS_URL points to the GraphQL
+        // endpoint (e.g. https://cms.example.com/graphql). Strip known endpoint suffixes
+        // so we build: https://cms.example.com/wp-json/wp/v2/media/:id
         try {
-          const restUrl = `${restBase.replace(/\/$/, '')}/wp-json/wp/v2/media/${nodeAny.databaseId}`;
+          const rawRestBase = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://cms.magnetomarketing.co';
+          const restBase = rawRestBase.replace(/\/(?:graphql|wp-json)\/?$/i, '').replace(/\/$/, '');
+          const restUrl = `${restBase}/wp-json/wp/v2/media/${nodeAny.databaseId}`;
           const r = await fetch(restUrl).catch(() => null);
           if (r && r.ok) {
             const j = await r.json().catch(() => null);
-            const src = j?.source_url || (j?.media_details && j.media_details.file ? `${restBase.replace(/\/$/, '')}/wp-content/uploads/${j.media_details.file}` : null);
+            const src = j?.source_url || (j?.media_details && j.media_details.file ? `${restBase}/wp-content/uploads/${j.media_details.file}` : null);
             if (src && typeof src === 'string') normalized.downloadUrl = src;
           }
         } catch (err) {

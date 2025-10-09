@@ -29,6 +29,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
   const [options, setOptions] = useState<ModalOptions | undefined>(undefined);
   const [downloadAvailable, setDownloadAvailable] = useState<boolean | null>(null);
   const [downloadCheckLoading, setDownloadCheckLoading] = useState(false);
+  const [downloadChallengeUrl, setDownloadChallengeUrl] = useState<string | null>(null);
 
   const openModal = (opts?: ModalOptions) => {
     // If this modal is being opened as part of a Calendly flow, do a lightweight warm
@@ -112,20 +113,33 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
       }
 
       // If modal was opened with a downloadUrl, show success UI and present in-modal download CTA
-      if (options?.downloadUrl) {
+          if (options?.downloadUrl) {
         // keep the modal open and show a success state with download button
         setSuccess(true);
         // kick off a quick check to make sure the PDF exists (avoid browser downloading text)
         try {
           setDownloadCheckLoading(true);
-          fetch(`/api/download-check?url=${encodeURIComponent(options.downloadUrl)}`)
-            .then((r) => r.json().catch(() => ({})))
-            .then((p) => {
-              if (p && p.success) setDownloadAvailable(true);
-              else setDownloadAvailable(false);
-            })
-            .catch(() => setDownloadAvailable(false))
-            .finally(() => setDownloadCheckLoading(false));
+              setDownloadChallengeUrl(null);
+              fetch(`/api/download-check?url=${encodeURIComponent(options.downloadUrl)}`)
+                .then((r) => r.json().catch(() => ({})))
+                .then((p) => {
+                  if (p && p.success) {
+                    setDownloadAvailable(true);
+                    setDownloadChallengeUrl(null);
+                  } else if (p && p.challenge) {
+                    // remote requires browser challenge — offer a direct link that lets the browser handle it
+                    setDownloadAvailable(false);
+                    setDownloadChallengeUrl(options.downloadUrl || null);
+                  } else {
+                    setDownloadAvailable(false);
+                    setDownloadChallengeUrl(null);
+                  }
+                })
+                .catch(() => {
+                  setDownloadAvailable(false);
+                  setDownloadChallengeUrl(null);
+                })
+                .finally(() => setDownloadCheckLoading(false));
         } catch (err) {
           setDownloadAvailable(false);
           setDownloadCheckLoading(false);
@@ -245,6 +259,11 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
                     <a href={options.downloadUrl ? `/api/download?url=${encodeURIComponent(options.downloadUrl)}` : '#'} className="btn btn-primary" download>
                       Download the free guide
                     </a>
+                  ) : downloadChallengeUrl ? (
+                    // The server detected a challenge (e.g. Vercel bot protection). Let the browser handle it by opening the direct URL.
+                    <a href={downloadChallengeUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                      Open guide in new tab
+                    </a>
                   ) : downloadAvailable === false ? (
                     <button className="btn btn-primary" disabled>Download unavailable</button>
                   ) : (
@@ -255,9 +274,14 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
                     Close
                   </button>
                 </div>
-                {downloadAvailable === false && (
+                {downloadAvailable === false && !downloadChallengeUrl && (
                   <div className="form-error" style={{ marginTop: 12 }}>
                     Sorry — we couldn't find the PDF on the source site. If this keeps happening, contact us at contact@magnetomarketing.co
+                  </div>
+                )}
+                {downloadChallengeUrl && (
+                  <div className="form-error" style={{ marginTop: 12 }}>
+                    The file appears to be protected by the host (bot challenge). Click "Open guide in new tab" to let your browser complete the challenge and download the file.
                   </div>
                 )}
               </div>

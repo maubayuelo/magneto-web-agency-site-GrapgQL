@@ -90,20 +90,25 @@ export const loadCalendlyScript = (): Promise<void> => {
       }
 
       // Load CSS (best-effort; allow browser to cache)
-      const link = document.createElement('link');
-      link.href = CALENDLY_CSS;
-      link.rel = 'stylesheet';
-      link.crossOrigin = '';
-      document.head.appendChild(link);
+  const link = document.createElement('link');
+  link.href = CALENDLY_CSS;
+  link.rel = 'stylesheet';
+  // Explicitly set crossorigin so browser can match credentials mode with preloads
+  // and reuse the fetched resource when the script/style is later used.
+  link.crossOrigin = 'anonymous';
+  document.head.appendChild(link);
 
       // Create script but do not execute immediately where possible; mark as defer
-      const script = document.createElement('script');
-      script.src = CALENDLY_SCRIPT;
-      script.async = true;
-      // set defer as a hint that execution can be deferred until parser is idle
-      // note: for dynamically inserted scripts, defer has no effect in some browsers,
-      // but async=true keeps it non-blocking. We maintain idempotency via _loadPromise.
-      script.defer = true;
+  const script = document.createElement('script');
+  script.src = CALENDLY_SCRIPT;
+  script.async = true;
+  // set defer as a hint that execution can be deferred until parser is idle
+  // note: for dynamically inserted scripts, defer has no effect in some browsers,
+  // but async=true keeps it non-blocking. We maintain idempotency via _loadPromise.
+  script.defer = true;
+  // Ensure the credentials mode matches preloaded resources so the browser
+  // will reuse the preload instead of discarding it.
+  script.crossOrigin = 'anonymous';
 
       script.onload = () => {
         // Small grace period for the Calendly global to initialize
@@ -143,7 +148,8 @@ export const warmCalendlyResources = (): void => {
       const preconnect = document.createElement('link');
       preconnect.rel = 'preconnect';
       preconnect.href = href;
-      preconnect.crossOrigin = '';
+      // use anonymous to match the script/style crossOrigin, avoiding credential mismatches
+      preconnect.crossOrigin = 'anonymous';
       document.head.appendChild(preconnect);
 
       // dns-prefetch as a graceful fallback for older browsers
@@ -156,20 +162,23 @@ export const warmCalendlyResources = (): void => {
     // Preload the widget CSS and JS so the browser can fetch them earlier without
     // executing the script until we explicitly add it (loadCalendlyScript does that).
     const cssHref = 'https://assets.calendly.com/assets/external/widget.css';
-    const preloadCss = document.createElement('link');
-    preloadCss.rel = 'preload';
-    preloadCss.as = 'style';
-    preloadCss.href = cssHref;
-    document.head.appendChild(preloadCss);
+  const preloadCss = document.createElement('link');
+  preloadCss.rel = 'preload';
+  preloadCss.as = 'style';
+  preloadCss.href = cssHref;
+  // ensure credentials mode matches the later stylesheet load
+  preloadCss.crossOrigin = 'anonymous';
+  document.head.appendChild(preloadCss);
 
     const scriptHref = 'https://assets.calendly.com/assets/external/widget.js';
-    const preloadScript = document.createElement('link');
-    preloadScript.rel = 'preload';
-    preloadScript.as = 'script';
-    preloadScript.href = scriptHref;
-    // preload cross-origin script; the actual script node will be appended by loadCalendlyScript
-    preloadScript.crossOrigin = 'anonymous';
-    document.head.appendChild(preloadScript);
+  const preloadScript = document.createElement('link');
+  preloadScript.rel = 'preload';
+  preloadScript.as = 'script';
+  preloadScript.href = scriptHref;
+  // preload cross-origin script; the actual script node will be appended by loadCalendlyScript
+  // ensure anonymous so the browser can reuse this fetch when the script tag is added
+  preloadScript.crossOrigin = 'anonymous';
+  document.head.appendChild(preloadScript);
   } catch (e) {
     // swallow - warm-up should never throw
   }
@@ -251,11 +260,19 @@ export const openCalendlyPopup = async (options?: {
       // eslint-disable-next-line no-console
       console.error('Error opening Calendly popup:', error);
     }
-    // Final fallback: open Calendly in a new tab
+    // Final fallback: prefer showing an in-page embedded modal so we don't
+    // navigate users away from the site. Only open a new tab/window when the
+    // caller explicitly requested `forceNewWindow: true`.
     try {
-      window.open(calendlyConfig.url, '_blank', 'noopener,noreferrer');
+      openEmbeddedCalendlyModal(calendlyConfig.url, options?.utmContent);
     } catch (e) {
-      // swallow
+      // If creating the embedded modal somehow fails, as a last resort try
+      // opening a new tab (wrap in try/catch so errors don't bubble).
+      try {
+        window.open(calendlyConfig.url, '_blank', 'noopener,noreferrer');
+      } catch (ee) {
+        // swallow
+      }
     }
   }
 };
@@ -281,12 +298,20 @@ const openEmbeddedCalendlyModal = (url: string, label?: string) => {
     overlay.style.alignItems = 'center';
     overlay.style.justifyContent = 'center';
 
-    const container = document.createElement('div');
-    container.id = 'calendly-embedded-container';
-    container.style.width = '90%';
-    container.style.maxWidth = '980px';
-    container.style.height = '80%';
-    container.style.background = '#fff';
+  const container = document.createElement('div');
+  container.id = 'calendly-embedded-container';
+  // Keep inline sizing in sync with our stylesheet so the CSS isn't overridden
+  // by the element's inline styles (which take precedence). Match the compact
+  // layout used in the SCSS: max-width 800px and height 640px for desktop.
+  container.style.width = '100%';
+  container.style.maxWidth = '1000px';
+  container.style.marginTop= '15px';
+  container.style.marginBottom = '15px';
+  container.style.marginLeft = '15px';
+  container.style.marginRight = '15px';
+  container.style.height = '100vh';
+  container.style.maxHeight = '640px';
+  container.style.background = '#fff';
     container.style.borderRadius = '8px';
     container.style.overflow = 'hidden';
     container.style.position = 'relative';
@@ -306,6 +331,28 @@ const openEmbeddedCalendlyModal = (url: string, label?: string) => {
     closeBtn.style.cursor = 'pointer';
 
     const iframe = document.createElement('iframe');
+
+    // If the target is a Calendly URL, prefer adding embed query params so the
+    // embedded view behaves like an inline/modal embed and uses the embed layout
+    // (this is a safe, non-destructive addition—only add params when host is calendly.com).
+    try {
+      const parsed = new URL(url);
+      if (parsed.hostname && parsed.hostname.includes('calendly.com')) {
+        // Only set embed params if they're not already present
+        if (!parsed.searchParams.has('embed_domain')) {
+          parsed.searchParams.set('embed_domain', window.location.hostname);
+        }
+        if (!parsed.searchParams.has('embed_type')) {
+          // Request an inline/embed type; Calendly will often render the event
+          // details in a more compact layout for embedded contexts.
+          parsed.searchParams.set('embed_type', 'Inline');
+        }
+        url = parsed.toString();
+      }
+    } catch (e) {
+      // ignore URL parsing errors and fall back to provided url
+    }
+
     iframe.src = url;
     iframe.title = label || 'Calendly scheduling';
     iframe.style.width = '100%';

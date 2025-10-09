@@ -90,8 +90,13 @@
 
 #calendly-embedded-container {
   width: 90%;
-  max-width: 980px;
-  height: 80%;
+  /* Make the embedded modal more compact on desktop to avoid excessive whitespace.
+     Many Calendly embed UIs switch to a horizontal layout on large widths; limiting
+     the max-width keeps the widget in a more compact vertical layout similar to
+     the popup provided by Calendly's own initPopupWidget. */
+  max-width: 760px;
+  /* Use a fixed pixel height for desktop so the iframe can size appropriately. */
+  height: 640px;
   background: $white;
   border-radius: 8px;
   overflow: hidden;
@@ -116,4 +121,15 @@
     height: 100%;
     border-radius: 0;
   }
+}
+
+/* Ensure the iframe inside our embedded container fills the area and doesn't add
+   inner whitespace. Give it a neutral background so any Calendly margins are less
+   visually jarring. */
+#calendly-embedded-container iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #ffffff;
 }
