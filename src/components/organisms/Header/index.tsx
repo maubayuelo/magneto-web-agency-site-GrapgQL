@@ -123,7 +123,7 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
               <li><a href="/about-magneto/" className="typo-sm-bold">About</a></li>
               <li><a href="/services/" className="typo-sm-bold">Services</a></li>
               <li><a href="/packages/" className="typo-sm-bold">Packages</a></li>
-              {/* <li><a href="/projects/" className="typo-sm-bold">Projects</a></li> */}
+              <li><a href="/projects/" className="typo-sm-bold">Projects</a></li>
               <li><a href="/contact/" className="typo-sm-bold">Contact</a></li>
               <li>
                 <HeaderCTA
@@ -169,7 +169,7 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
         <li><a href="/about-magneto/" onClick={() => setMenuOpen(false)}>About</a></li>
         <li><a href="/services/" onClick={() => setMenuOpen(false)}>Services</a></li>
         <li><a href="/packages/" onClick={() => setMenuOpen(false)}>Packages</a></li>
-        {/* <li><a href="/projects/" onClick={() => setMenuOpen(false)}>Projects</a></li> */}
+        <li><a href="/projects/" onClick={() => setMenuOpen(false)}>Projects</a></li>
         <li><a href="/contact/" onClick={() => setMenuOpen(false)}>Contact</a></li>
         {/* <li><a href="#" onClick={() => setMenuOpen(false)}>FR</a></li>
         <li><a href="#" onClick={() => setMenuOpen(false)}>ES</a></li> */}

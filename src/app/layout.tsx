@@ -22,6 +22,8 @@ const FALLBACK_DESCRIPTION = 'A creative digital agency showcasing work and serv
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
+    const NO_INDEX =
+      process.env.NEXT_PUBLIC_NO_INDEX === 'true' || process.env.NO_INDEX === 'true';
     // Fetch site-level metadata from WordPress using a GraphQL query.
     // This runs on the server during build or at request-time depending on Next's settings.
     const data = await fetchWPGraphQL(GET_SITE_METADATA);
@@ -66,17 +68,29 @@ export async function generateMetadata(): Promise<Metadata> {
         description: siteDescription,
         images: [defaultOgImage],
       },
-      robots: {
-        index: true,
-        follow: true,
-        googleBot: {
-          index: true,
-          follow: true,
-          'max-video-preview': -1,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
-        }
-      }
+      robots: NO_INDEX
+        ? {
+            index: false,
+            follow: false,
+            googleBot: {
+              index: false,
+              follow: false,
+              'max-video-preview': -1,
+              'max-image-preview': 'large',
+              'max-snippet': -1,
+            },
+          }
+        : {
+            index: true,
+            follow: true,
+            googleBot: {
+              index: true,
+              follow: true,
+              'max-video-preview': -1,
+              'max-image-preview': 'large',
+              'max-snippet': -1,
+            },
+          },
     };
   } catch (e) {
   // If fetching fails, log the error and return a safe fallback set of metadata.

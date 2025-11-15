@@ -39,7 +39,7 @@
         }
 
         // ensure content sits above the background
-        h2, p, .final-cta-section__button, .btn {
+        h2, p, .btn {
             position: relative;
             z-index: 2;
         }

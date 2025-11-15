@@ -82,10 +82,6 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
             {data?.subtitle || "Request your free funnel quote today and find out what's holding you back."}
           </p>
 
-        <div className="final-cta-section__button">
-          {/* CTA rendering handled below */}
-        </div>
-
       {(cta.type === 'calendly' || (data?.ctaLink && data?.ctaLink.includes('calendly'))) ? (
         // open pre-CTA modal for final CTA strategy calls
         <FinalCTAInner ctaText={data?.ctaText} ctaHref={cta.href} />

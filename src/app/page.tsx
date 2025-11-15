@@ -63,12 +63,12 @@ export default async function Home() {
       <AboutSection />
       <FeaturedServices />
       {/* <Testimonials testimonials={testimonials} /> */}
-      {/* <ProjectsGrid
+      <ProjectsGrid
           projects={projects}
           maxProjects={3}
           title="Recent Projects"
           showButton={true}
-        /> */}
+        />
     </>
   );
 }

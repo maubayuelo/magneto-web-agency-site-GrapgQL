@@ -29,7 +29,7 @@ export default async function PortfolioPage() {
     <>
       {/* HeroLoader fetches and renders the Hero section for this page */}
   <HeroLoader pageUri="projects" variant="project" />
-  {introText ? (
+  {mappedProjects.length > 0 && introText ? (
         <div className="main typo-center pb-md-responsive">
           <h3
             className="typo-3xl-bold m-0"

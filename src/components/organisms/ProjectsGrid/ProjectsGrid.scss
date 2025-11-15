@@ -1,6 +1,8 @@
 @import "../../../styles/variables.scss";
 @import "../../../styles/mixins.scss";
-
+.projects-coming{
+    width: 100%;
+}
 .projects-grid {
     width: 100%;
     &__container {
