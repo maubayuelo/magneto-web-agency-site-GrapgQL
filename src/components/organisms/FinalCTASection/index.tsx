@@ -26,10 +26,12 @@ function FinalCTAInner({ ctaText, ctaHref }: { ctaText?: string | null; ctaHref?
 export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   className = '',
   show = true,
+  debugData = null,
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [data, setData] = useState<FinalCTAData | null>(null);
+  // Initialize with server-provided data (debugData) to avoid client fetch delay
+  const [data, setData] = useState<FinalCTAData | null>(debugData || null);
 
   // Derive CTA object from fetched data (keeps backward compatibility with existing props)
   const cta = {
@@ -44,13 +46,21 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   // Hide on contact page
   const shouldShow = show && pathname !== '/contact';
 
+  // Only fetch on the client if no data was provided by a server loader
   useEffect(() => {
-    async function fetchData() {
-      const prefooter: FinalCTAData = await getHomePrefooter();
-      setData(prefooter || null);
-    }
-    fetchData();
-  }, []);
+    if (debugData) return; // skip fetch when server data is available
+    let active = true;
+    (async () => {
+      try {
+        const prefooter: FinalCTAData = await getHomePrefooter();
+        if (active) setData(prefooter || null);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('FinalCTASection fetch error:', e);
+      }
+    })();
+    return () => { active = false; };
+  }, [debugData]);
 
   if (!shouldShow) return null;
 
@@ -58,7 +68,7 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   const hasBg = !!(data?.bgimage?.node?.mediaDetails?.sizes?.length || data?.bgimage?.node?.sourceUrl);
 
   return (
-    <section  className={`final-cta-section main mb-md-responsive typo-center ${className} `}>
+    <section className={`final-cta-section main mb-md-responsive typo-center ${className}`.trim()}>
       <div className="final-cta-section__container">
         {/* background image rendered with WpResponsiveImage (fills container and uses srcset/sizes) */}
         {hasBg && (
@@ -82,20 +92,17 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
             {data?.subtitle || "Request your free funnel quote today and find out what's holding you back."}
           </p>
 
-      {(cta.type === 'calendly' || (data?.ctaLink && data?.ctaLink.includes('calendly'))) ? (
-        // open pre-CTA modal for final CTA strategy calls
-        <FinalCTAInner ctaText={data?.ctaText} ctaHref={cta.href} />
-      ) : cta.href ? (
-            // If CTA has an href and is not Calendly, render as a normal link
+          {(cta.type === 'calendly' || (data?.ctaLink && data?.ctaLink.includes('calendly'))) ? (
+            <FinalCTAInner ctaText={data?.ctaText} ctaHref={cta.href} />
+          ) : cta.href ? (
             <a href={cta.href} className="btn btn-primary typo-uppercase typo-extrabold">
-                {data?.ctaText || "Request Free Quote"}
+              {data?.ctaText || 'Request Free Quote'}
             </a>
-            ) : (
-            // Otherwise, render as a button (e.g., for onClick actions)
+          ) : (
             <button onClick={cta.onClick} className="btn btn-primary typo-uppercase typo-extrabold">
-                {data?.ctaText || "Request Free Quote"}
+              {data?.ctaText || 'Request Free Quote'}
             </button>
-            )}
+          )}
 
         </div>
 
@@ -104,3 +111,5 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
 };
 
 export default FinalCTASection;
+// Server-side async loader (import { FinalCTASectionLoader } ...) for SSR prefetch
+export { default as FinalCTASectionLoader } from './FinalCTASectionLoader';
