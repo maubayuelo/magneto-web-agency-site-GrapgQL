@@ -38,6 +38,12 @@
             pointer-events: none;
         }
 
+        // Ensure aspect ratio is preserved if CSS modifies one dimension
+        &__bg-image {
+            width: auto;
+            height: auto;
+        }
+
         // ensure content sits above the background
         h2, p, .btn {
             position: relative;

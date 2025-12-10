@@ -1,4 +1,9 @@
 import { NextResponse } from 'next/server';
+// Ensure this API route runs on the Node.js runtime (not Edge),
+// because we rely on Node APIs and stable TLS behavior for upstream fetches.
+export const runtime = 'nodejs';
+// Avoid App Router caching on this proxy endpoint.
+export const dynamic = 'force-dynamic';
 
 // Simple server-side proxy for forwarding GraphQL requests to the WP GraphQL endpoint.
 // This avoids exposing the CMS host to client-side fetches and prevents CORS issues.

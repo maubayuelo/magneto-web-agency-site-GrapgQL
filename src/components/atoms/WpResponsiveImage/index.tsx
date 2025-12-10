@@ -221,11 +221,11 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
     // If we have intrinsic dimensions, prefer next/image with fill and aspect-ratio box
         if (resolvedWidth && resolvedHeight) { 
               if (className) {
-                return <Image src={resolvedSrc} alt={finalAlt} width={resolvedWidth} height={resolvedHeight} className={className} style={style as React.CSSProperties} sizes={sizes} />
+                return <Image src={resolvedSrc} alt={finalAlt} width={resolvedWidth} height={resolvedHeight} className={className} style={style as React.CSSProperties} sizes={sizes} priority={priority} />
               }
               return (
                 <div ref={containerRef}>
-                  <Image src={resolvedSrc} alt={finalAlt} width={resolvedWidth} height={resolvedHeight} className={className} style={style as React.CSSProperties} sizes={sizes} />
+                  <Image src={resolvedSrc} alt={finalAlt} width={resolvedWidth} height={resolvedHeight} className={className} style={style as React.CSSProperties} sizes={sizes} priority={priority} />
                 </div>
               )
     }
@@ -233,18 +233,18 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
     // Best-effort: render next/image with a loose width to let the optimizer handle resizing
     if (!finalWidth && !finalHeight) {
           if (className) {
-            return <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} />
+            return <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} priority={priority} />
           }
           return (
             <div ref={containerRef} style={{ display: 'inline-block' }}>
-              <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} />
+              <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} priority={priority} />
             </div>
           )
     }
 
     // Fallback to a sized next/image when possible to preserve CSS targeting.
     if (className) {
-      return <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} />
+      return <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizes} priority={priority} />
     }
 
     // Otherwise fall back to native <img> wrapped for layout safety
@@ -265,7 +265,7 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
     const { srcSet, sizesAttr } = deriveSrcSetAndSizes(image)
     return (
           <div ref={containerRef} style={{ display: 'inline-block' }}>
-            <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizesAttr} />
+            <Image src={resolvedSrc} alt={finalAlt} width={effectiveTarget} height={Math.round((effectiveTarget * 9) / 16)} className={className} style={style as React.CSSProperties} sizes={sizesAttr} priority={priority} />
           </div>
     )
   }
@@ -312,11 +312,11 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
       sizedProps.width = nextWidth
       sizedProps.height = nextHeight
             if (className) {
-              return <Image {...sizedProps} style={style as React.CSSProperties} />
+              return <Image {...sizedProps} style={style as React.CSSProperties} priority={priority} />
             }
             return (
               <div ref={containerRef}>
-                <Image {...sizedProps} style={style as React.CSSProperties} />
+                <Image {...sizedProps} style={style as React.CSSProperties} priority={priority} />
               </div>
             )
     }
