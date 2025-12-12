@@ -20,6 +20,3 @@ export interface FooterProps {
   className?: string;
   footerData?: FooterResponse | null;
 }
-  show?: boolean;
-  debugData?: FooterResponse | null;
-}
