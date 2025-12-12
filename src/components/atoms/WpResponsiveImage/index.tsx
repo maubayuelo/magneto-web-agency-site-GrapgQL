@@ -251,7 +251,15 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
     return (
       <div ref={containerRef} style={{ display: 'inline-block' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={resolvedSrc} alt={finalAlt} className={className} style={style as React.CSSProperties} loading="lazy" srcSet={srcSet} sizes={sizesAttr} />
+        <img
+          src={resolvedSrc}
+          alt={finalAlt}
+          className={className}
+          style={{ ...(style as React.CSSProperties), height: 'auto' }}
+          loading="lazy"
+          srcSet={srcSet}
+          sizes={sizesAttr}
+        />
       </div>
     )
   }
@@ -326,7 +334,15 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
     return (
       <div ref={containerRef}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={resolvedSrc} alt={finalAlt} className={className} style={style as React.CSSProperties} loading="lazy" srcSet={srcSet} sizes={sizesAttr} />
+        <img
+          src={resolvedSrc}
+          alt={finalAlt}
+          className={className}
+          style={{ ...(style as React.CSSProperties), height: 'auto' }}
+          loading="lazy"
+          srcSet={srcSet}
+          sizes={sizesAttr}
+        />
       </div>
     )
   }

@@ -159,26 +159,8 @@ export const warmCalendlyResources = (): void => {
       document.head.appendChild(dns);
     });
 
-    // Preload the widget CSS and JS so the browser can fetch them earlier without
-    // executing the script until we explicitly add it (loadCalendlyScript does that).
-    const cssHref = 'https://assets.calendly.com/assets/external/widget.css';
-  const preloadCss = document.createElement('link');
-  preloadCss.rel = 'preload';
-  preloadCss.as = 'style';
-  preloadCss.href = cssHref;
-  // ensure credentials mode matches the later stylesheet load
-  preloadCss.crossOrigin = 'anonymous';
-  document.head.appendChild(preloadCss);
-
-    const scriptHref = 'https://assets.calendly.com/assets/external/widget.js';
-  const preloadScript = document.createElement('link');
-  preloadScript.rel = 'preload';
-  preloadScript.as = 'script';
-  preloadScript.href = scriptHref;
-  // preload cross-origin script; the actual script node will be appended by loadCalendlyScript
-  // ensure anonymous so the browser can reuse this fetch when the script tag is added
-  preloadScript.crossOrigin = 'anonymous';
-  document.head.appendChild(preloadScript);
+    // Avoid preloading CSS/JS to prevent browser warnings when users don't
+    // open Calendly shortly after load. Keep only preconnect/dns-prefetch.
   } catch (e) {
     // swallow - warm-up should never throw
   }

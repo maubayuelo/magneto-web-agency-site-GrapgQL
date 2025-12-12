@@ -66,16 +66,15 @@ export function Hero({
             render a positioned next/image with fill so it benefits from optimization. */}
         {!backgroundImageNode && backgroundImage && (
           <div className="hero__bg">
-            {/* When backgroundImage is a string (CMS URL or static path) prefer
-                WpResponsiveImage so the component can select the best variant
-                per-device and emit proper srcset/sizes. We create a minimal
-                `image` shape with `sourceUrl` to reuse existing logic. */}
+            {/* Prefer fill + objectFit for robust background behavior */}
             <WpResponsiveImage
               image={{ sourceUrl: backgroundImage }}
               alt=""
               className="hero__bg-image"
-              omitSizeAttributes={true}
+              fill
+              omitSizeAttributes={false}
               priority
+              style={{ objectFit: 'cover', objectPosition: 'center' }}
             />
           </div>
         )}
