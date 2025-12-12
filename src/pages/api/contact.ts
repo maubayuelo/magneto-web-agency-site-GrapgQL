@@ -63,13 +63,12 @@ export async function sendEmail(payload: { name?: string; email: string; busines
       return { success: false, message: 'SMTP not configured', details: { SMTP_HOST: Boolean(SMTP_HOST), SMTP_USER: Boolean(SMTP_USER), SMTP_PASS: Boolean(SMTP_PASS), CONTACT_RECIPIENT } };
     }
 
-    // Allow overriding the TLS servername used for certificate validation.
-    // This is helpful when the SMTP server is reachable at one hostname
-    // (e.g. mail.magnetomarketing.co) but the TLS certificate is issued for
-    // another name (e.g. magnetomarketing.co). Prefer fixing the certificate
-    // or using the provider's canonical SMTP hostname in production. Use
-    // SMTP_TLS_SERVERNAME only as a safe, minimal workaround that preserves
-    // certificate validation against the provided servername.
+    // TLS: Do not disable certificate verification.
+    // If the SMTP server's certificate name differs from the connection
+    // hostname, set SMTP_TLS_SERVERNAME to the expected certificate name.
+    // Prefer fixing upstream certificates or using the provider's canonical
+    // SMTP hostname in production. This preserves verification while avoiding
+    // name mismatches.
     const SMTP_TLS_SERVERNAME = process.env.SMTP_TLS_SERVERNAME || undefined;
 
     const transportOpts: any = {

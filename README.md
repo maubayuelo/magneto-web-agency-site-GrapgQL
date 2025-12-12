@@ -131,6 +131,11 @@ The easiest way to deploy this Next.js app is using [Vercel](https://vercel.com/
 2. Import your repository on Vercel
 3. Deploy with zero configuration
 
+#### TLS and Certificate Verification
+- Do not set `NODE_TLS_REJECT_UNAUTHORIZED=0` in any environment (local, preview, or production). This disables TLS certificate verification and is insecure.
+- If you encounter TLS/certificate issues when calling the CMS, fix the certificate on the upstream host or use a proper proxy with valid certificates. The GraphQL proxy (`src/app/api/wp-graphql/route.ts`) uses standard `fetch` and expects valid TLS.
+- In Vercel, go to Project → Settings → Environment Variables and remove `NODE_TLS_REJECT_UNAUTHORIZED` if present, then redeploy.
+
 ### Other Platforms
 
 This project can be deployed on any platform that supports Node.js:
