@@ -26,13 +26,7 @@ export const warmResource = (href: string, as: LoadOptions['as'] = 'script') => 
     dns.href = href.replace(/(^https?:\/\/[^/]+).*/i, '$1');
     document.head.appendChild(dns);
 
-    // preload hint
-    const pl = document.createElement('link');
-    pl.rel = 'preload';
-    pl.as = as;
-    pl.href = href;
-    if (as === 'script') pl.crossOrigin = 'anonymous';
-    document.head.appendChild(pl);
+    // Avoid preload hints to prevent console warnings when assets are not used immediately
   } catch (e) {
     // swallow
   }

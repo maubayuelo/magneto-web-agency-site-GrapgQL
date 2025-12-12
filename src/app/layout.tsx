@@ -25,6 +25,7 @@ const FALLBACK_DESCRIPTION = 'A creative digital agency showcasing work and serv
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
+    const isProd = process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production';
     const NO_INDEX =
       process.env.NEXT_PUBLIC_NO_INDEX === 'true' || process.env.NO_INDEX === 'true';
     // Fetch site-level metadata from WordPress using a GraphQL query.
@@ -49,12 +50,14 @@ export async function generateMetadata(): Promise<Metadata> {
         apple: [
           { url: '/assets/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
         ],
-        other: [
-          {
-            rel: 'manifest',
-            url: '/assets/favicon/site.webmanifest',
-          }
-        ]
+        other: isProd
+          ? [
+              {
+                rel: 'manifest',
+                url: '/assets/favicon/site.webmanifest',
+              },
+            ]
+          : []
       },
       openGraph: {
         title: siteTitle,
