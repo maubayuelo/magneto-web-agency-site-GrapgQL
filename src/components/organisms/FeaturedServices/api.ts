@@ -25,9 +25,17 @@ export async function getHomeFeaturedServices(): Promise<FeaturedServicesRespons
   try {
     const data = await fetchWPGraphQL(SERVICE_SECTION_QUERY);
     //console.log("Fetched data from GraphQL:", data);
-    return (data?.page?.homeFeaturedServices as FeaturedServicesResponse) || {};
+    const result = data?.page?.homeFeaturedServices || {};
+    // Normalize the response to match expected structure
+    return {
+      sectionTitle: result.title,
+      service: result.service || []
+    };
   } catch (error) {
     //console.error("GraphQL fetch error:", error);
-    return {};
+    return {
+      sectionTitle: 'Featured Services',
+      service: []
+    };
   }
 }

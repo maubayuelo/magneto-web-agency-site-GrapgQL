@@ -1,23 +1,18 @@
-"use client";
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ServiceCard from '@/components/molecules/ServiceCard';
-import { getHomeFeaturedServices } from './api';
-import type { FeaturedServicesResponse, FeaturedServiceItem } from './types';
+import type { FeaturedServiceItem } from './types';
 import Link from 'next/link';
 import './FeaturedServices.scss';
 
-const HomeFeaturedServices: React.FC = () => {
-  const [sectionTitle, setSectionTitle] = useState<string>('');
-  const [services, setServices] = useState<FeaturedServiceItem[]>([]);
+interface FeaturedServicesProps {
+  sectionTitle?: string;
+  services?: FeaturedServiceItem[];
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      const data: FeaturedServicesResponse = await getHomeFeaturedServices();
-      setSectionTitle(data.sectionTitle || 'Featured Services');
-      setServices(data.service || []);
-    }
-    fetchData();
-  }, []);
+const FeaturedServices: React.FC<FeaturedServicesProps> = ({ 
+  sectionTitle = 'Featured Services', 
+  services = [] 
+}) => {
 
   return (
     <>
@@ -50,4 +45,4 @@ const HomeFeaturedServices: React.FC = () => {
   );
 };
 
-export default HomeFeaturedServices;
+export default FeaturedServices;

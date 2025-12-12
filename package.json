@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
   "prebuild": "node ./scripts/copy-jsdom-style.js",
-  "build": "NODE_TLS_REJECT_UNAUTHORIZED=0 next build",
+  "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest"

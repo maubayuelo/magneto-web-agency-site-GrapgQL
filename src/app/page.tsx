@@ -10,8 +10,9 @@ import { HeroLoader } from '@/components/organisms/Hero';
 import { GET_PROJECTS } from '@/data/projects';
 import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Centralized GraphQL fetch helper
 import { getHomeTestimonials } from '@/components/organisms/Testimonials/api';
-import { FeaturedServices, ProjectsGrid, Testimonials } from '@/components/organisms';
+import { ProjectsGrid } from '@/components/organisms';
 import AboutSection from '@/components/organisms/AboutSection';
+import FeaturedServicesLoader from '@/components/organisms/FeaturedServices/FeaturedServicesLoader';
 
 export default async function Home() {
   // Default values for the data we'll render
@@ -61,7 +62,7 @@ export default async function Home() {
       <HeroLoader pageUri="/" variant="home" />
       {/* AboutSection, FeaturedServices and other page sections: usually composed from smaller components */}
       <AboutSection />
-      <FeaturedServices />
+      <FeaturedServicesLoader />
       {/* <Testimonials testimonials={testimonials} /> */}
       <ProjectsGrid
           projects={projects}

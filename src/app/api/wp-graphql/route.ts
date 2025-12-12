@@ -13,64 +13,24 @@ export async function POST(request: Request) {
   try {
     const body = await request.text();
 
-    // Support a development-only fallback to ignore TLS verification when
-    // NODE_TLS_REJECT_UNAUTHORIZED=0 is set in the environment (commonly in
-    // `.env.local`). This is useful for local/dev when the CMS uses a
-    // self-signed or otherwise invalid certificate. Do NOT enable in prod.
+    // Configure fetch options for upstream GraphQL request
     let fetchOpts: any = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      // Send explicit headers to avoid upstream WAF heuristic blocks
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json, application/graphql-response+json;q=0.9, */*;q=0.1',
+        // Friendly UA string (some WAFs block unknown default UAs)
+        'User-Agent': 'MagnetoProxy/1.0 (+https://www.magnetomarketing.co)'
+      },
+      // Do not forward any cookies; this route is a pure server-side proxy
       body,
+      // Disable any implicit caching on the fetch call
+      cache: 'no-store',
     };
 
-    let res: any;
-
-    if (process.env.NODE_TLS_REJECT_UNAUTHORIZED === '0') {
-      // Use Node's https.request with rejectUnauthorized:false to bypass TLS
-      // checks in local development when requested. This is a clear, explicit
-      // dev-only fallback that works across Node runtimes.
-      const https = await import('https');
-      const url = new URL(WP_GRAPHQL_URL);
-
-      const reqOptions: any = {
-        hostname: url.hostname,
-        port: url.port || 443,
-        path: url.pathname + (url.search || ''),
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        rejectUnauthorized: false,
-      };
-
-      res = await new Promise((resolve, reject) => {
-        const req = https.request(reqOptions, (upstreamRes) => {
-          let chunks: Uint8Array[] = [];
-          upstreamRes.on('data', (c) => chunks.push(c));
-          upstreamRes.on('end', () => {
-            const body = Buffer.concat(chunks).toString('utf8');
-            // Build a small object that mimics fetch Response used later
-            resolve({
-              ok: upstreamRes.statusCode && upstreamRes.statusCode >= 200 && upstreamRes.statusCode < 300,
-              status: upstreamRes.statusCode,
-              headers: new Map(Object.entries(upstreamRes.headers || {})),
-              text: async () => body,
-              json: async () => {
-                try {
-                  return JSON.parse(body);
-                } catch (e) {
-                  throw e;
-                }
-              },
-            });
-          });
-        });
-
-        req.on('error', reject);
-        req.write(body);
-        req.end();
-      });
-    } else {
-      res = await fetch(WP_GRAPHQL_URL, fetchOpts);
-    }
+    // Make the upstream request using standard fetch
+    const res = await fetch(WP_GRAPHQL_URL, fetchOpts);
 
     const text = await res.text();
 
@@ -86,6 +46,7 @@ export async function POST(request: Request) {
         status: res.status,
         contentType,
         body: text,
+        upstream: WP_GRAPHQL_URL,
       };
 
       return new NextResponse(JSON.stringify(payload), {

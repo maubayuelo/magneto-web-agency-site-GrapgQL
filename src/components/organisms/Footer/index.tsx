@@ -1,22 +1,9 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { getHomeFooter } from "./api";
 import './Footer.scss';
 import type { FooterProps, FooterResponse, FooterSocialIcon } from './types';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
-  const [footerData, setFooterData] = useState<FooterResponse | null>(null);
-
-  useEffect(() => {
-    async function fetchFooter() {
-      const data = await getHomeFooter();
-      setFooterData(data || null);
-    }
-    fetchFooter();
-  }, []);
+export const Footer: React.FC<FooterProps> = ({ className = '', footerData = null }) => {
 
   return (
     <section className={`main footer pt-lg-responsive ${className}`}>

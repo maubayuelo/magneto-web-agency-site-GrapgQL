@@ -8,7 +8,10 @@
 // performs a GraphQL fetch to retrieve site metadata at build/time.
 import '@/main.scss'; // Import global styles at the root (use alias for consistency)
 import type { Metadata } from 'next';
-import { Header, FinalCTASection, LeadMagnetSection, Footer } from '@/components/organisms';
+import { Header } from '@/components/organisms';
+import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
+import { LeadMagnetSection } from '@/components/organisms';
+import FooterLoader from '@/components/organisms/Footer/FooterLoader';
 import EmailCollectorProvider from '@/components/organisms/EmailCollectorProvider';
 import { SITE_URL, siteName, defaultOgImage, buildCanonical } from '@/utils/seo';
 import { devConsoleError } from '@/utils/dev-console';
@@ -142,8 +145,8 @@ export default function RootLayout({
 
           {/* These are common marketing sections rendered on most pages: lead magnet, final CTA and footer. */}
           <LeadMagnetSection/>
-          <FinalCTASection/>
-          <Footer />
+          <FinalCTASectionLoader/>
+          <FooterLoader />
         </EmailCollectorProvider>
       </body>
     </html>
