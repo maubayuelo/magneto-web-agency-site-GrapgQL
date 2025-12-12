@@ -2,7 +2,7 @@
 @import "../../../styles/mixins";
 
 .hero {
-    background-color: $gray-90;
+    background-color: $black;;
     position: relative;
     align-self: stretch;
     width: 100%;
@@ -26,23 +26,21 @@
         pointer-events: none;
         width: 100%;
         height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: block;
     }
 
     // When rendering a plain <img> for dynamic backgrounds we need to ensure
     // it covers the wrapper as next/image would. Use object-fit to replicate
     // background-size: cover behavior and keep the image non-interactive.
     &__bg-image {
-        //position: absolute;
+        position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
-        //object-fit: cover;
-        //object-position: center;
-        //pointer-events: none;
-        //z-index: 0;
+        object-fit: cover;
+        object-position: center;
+        pointer-events: none;
+        z-index: 0;
     }
 
     &__overlay {

@@ -248,6 +248,7 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
     }
 
     // Otherwise fall back to native <img> wrapped for layout safety
+    const isHeroBg = typeof className === 'string' && className.includes('hero__bg-image');
     return (
       <div ref={containerRef} style={{ display: 'inline-block' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -255,7 +256,12 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
           src={resolvedSrc}
           alt={finalAlt}
           className={className}
-          style={{ ...(style as React.CSSProperties), height: 'auto' }}
+          style={{
+            ...(style as React.CSSProperties),
+            // For general images preserve aspect ratio with height:auto;
+            // for hero background, let CSS control full coverage via height:100%
+            ...(isHeroBg ? {} : { height: 'auto' })
+          }}
           loading="lazy"
           srcSet={srcSet}
           sizes={sizesAttr}
@@ -331,6 +337,7 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
 
     // If we don't have dimensions, fall back to native <img> (preserves CSS)
     const { srcSet, sizesAttr } = deriveSrcSetAndSizes(image)
+    const isHeroBg2 = typeof className === 'string' && className.includes('hero__bg-image');
     return (
       <div ref={containerRef}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -338,7 +345,10 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
           src={resolvedSrc}
           alt={finalAlt}
           className={className}
-          style={{ ...(style as React.CSSProperties), height: 'auto' }}
+          style={{
+            ...(style as React.CSSProperties),
+            ...(isHeroBg2 ? {} : { height: 'auto' })
+          }}
           loading="lazy"
           srcSet={srcSet}
           sizes={sizesAttr}
@@ -347,8 +357,13 @@ export default function WpResponsiveImage({ sources, image, alt, className, prio
     )
   }
 
+  // Default fill/non-fill rendering: ensure the parent is positioned for `fill`
+  const wrapperStyle: React.CSSProperties | undefined = imageProps.fill
+    ? { position: 'relative', width: '100%', height: '100%' }
+    : undefined
+
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} style={wrapperStyle}>
       <Image {...imageProps} />
     </div>
   )
