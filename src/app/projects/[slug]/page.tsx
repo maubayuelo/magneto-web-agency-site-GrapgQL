@@ -59,6 +59,7 @@ export default async function ProjectPage({ params }: PageProps) {
     gallery: images.map((img: any) => ({
       image: img.image?.node?.sourceUrl ?? null,
       footNote: img.footNote ?? "",
+      isMobileScreenshot: !!img.ismobilescreenshot,
     })),
     challenges: (acf.challenges || []).map((c: any) => c.item),
     solutions: (acf.solutions || []).map((s: any) => s.item),

@@ -99,21 +99,23 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
         {/* Gallery - Full width images */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="project-detail__gallery">
-            {project.gallery.map((img: any, i: number) => (
-              <div key={i} className="project-detail__image mb-md-responsive">
-                <Image
-                  src={typeof img === 'string' ? img : img.image}
-                  alt={typeof img === 'string' ? `Gallery image ${i + 1}` : (img.footNote || `Gallery image ${i + 1}`)}
-                  width={1200}
-                  height={600}
-                  className="project-detail__main-image"
-                />
-                <p>
-                {typeof img === 'string' ? '' : img.footNote}
-                </p>
-              </div>
-
-            ))}
+            {project.gallery.map((img: any, i: number) => {
+              const isMobileScreenshot = typeof img !== 'string' && !!img.isMobileScreenshot;
+              return (
+                <div key={i} className="project-detail__image mb-md-responsive">
+                  <Image
+                    src={typeof img === 'string' ? img : img.image}
+                    alt={typeof img === 'string' ? `Gallery image ${i + 1}` : (img.footNote || `Gallery image ${i + 1}`)}
+                    width={isMobileScreenshot ? 400 : 1200}
+                    height={isMobileScreenshot ? 866 : 600}
+                    className={`project-detail__main-image${isMobileScreenshot ? ' project-detail__main-image--mobile' : ''}`}
+                  />
+                  <p>
+                  {typeof img === 'string' ? '' : img.footNote}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         )}
 

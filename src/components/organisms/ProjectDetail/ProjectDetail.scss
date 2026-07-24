@@ -29,6 +29,7 @@
     p{
       //max-width: 1024px;
       margin: 15px auto 0 auto;
+      text-align: center;
     }
   }
 
@@ -38,6 +39,14 @@
     object-fit: cover;
     display: block;
     //max-width: 1024px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    border: 1px solid $gray-50;
+  }
+
+  &__main-image--mobile {
+    width: auto;
+    max-width: 390px;
     margin: 0 auto;
   }
 

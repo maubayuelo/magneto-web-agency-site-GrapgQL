@@ -74,6 +74,7 @@ export const GET_PROJECTS = gql`
               }
             }
             footNote
+            ismobilescreenshot
           }
         }
       }

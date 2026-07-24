@@ -40,7 +40,7 @@
           <div className="main">
             
 
-            {projects.length > 5 && (
+            {projects.length > 0 && (
               <section className="projects-grid pb-lg-responsive">
                 {title && (
                   <div className="projects-grid__header pb-15">
@@ -88,7 +88,7 @@
                     ))}
                   </div>
 
-                  {showButton && projects.length > 5 && (
+                  {showButton && projects.length > maxProjects && (
                     <Link href="/projects/" className="btn btn-secondary mt-15">
                       Check All Projects
                     </Link>
