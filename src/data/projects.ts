@@ -6,6 +6,7 @@ export interface ProjectData {
   description: string;
   image: string;
   gallery?: string[];
+  projectUrl?: string;
   client?: string;
   category?: string;
   year?: string;
@@ -48,6 +49,7 @@ export const GET_PROJECTS = gql`
           projectData {
             projectSubtitle
             projectDescription
+            projectUrl
             challenges {
               item
             }

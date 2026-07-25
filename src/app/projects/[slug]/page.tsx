@@ -55,6 +55,7 @@ export default async function ProjectPage({ params }: PageProps) {
     title: project.title,
     tagText: acf.projectSubtitle || "",
     description: acf.projectDescription || "",
+    projectUrl: acf.projectUrl || "",
     image: project.featuredImage?.node?.sourceUrl || "",
     gallery: images.map((img: any) => ({
       image: img.image?.node?.sourceUrl ?? null,

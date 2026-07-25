@@ -24,6 +24,16 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
             className="project-detail__description typo-xl-medium pb-30"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description || '') }}
           />
+          {project.projectUrl && (
+            <a
+              href={project.projectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-detail__external-link typo-sm-medium mb-30"
+            >
+              View live site ↗
+            </a>
+          )}
         </header>
 
         

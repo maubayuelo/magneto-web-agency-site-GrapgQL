@@ -15,6 +15,18 @@
     //max-width: 1024px;
   }
 
+  &__external-link {
+    display: block;
+    text-align: center;
+    color: $gray-80;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: $gray-90;
+    }
+  }
+
   &__image {
     overflow: hidden;
     img{
