@@ -16,8 +16,9 @@
   }
 
   &__external-link {
-    display: block;
-    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-5;
     color: $gray-80;
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -25,6 +26,10 @@
     &:hover {
       color: $gray-90;
     }
+  }
+
+  &__external-link-icon {
+    flex-shrink: 0;
   }
 
   &__image {
@@ -53,13 +58,28 @@
     //max-width: 1024px;
     margin: 0 auto;
     box-sizing: border-box;
-    border: 1px solid $gray-50;
+    border: 1px solid $gray-30;
   }
 
   &__main-image--mobile {
     width: auto;
     max-width: 390px;
     margin: 0 auto;
+  }
+
+  // Desktop-only "stage" panel behind mobile screenshots so they don't look
+  // orphaned next to full-width desktop shots. Mobile keeps the plain layout.
+  &__image--mobile-stage {
+    @include media-desktop-up {
+      background:
+        radial-gradient(ellipse 140% 65% at 50% 25%, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0.06) 35%, rgba(0, 0, 0, 0.02) 55%, rgba(0, 0, 0, 0) 75%),
+        $gray-10;
+      border-radius: $border-radius-desktop;
+      padding: $spacing-45 $spacing-30;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   &__columns {
@@ -139,6 +159,8 @@
 
   &__navigation {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-15;
   }
 }

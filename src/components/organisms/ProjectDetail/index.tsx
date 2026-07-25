@@ -20,35 +20,24 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
           {project.tagText && (
             <h2 className="typo-2xl-bold mt-15 typo-center">{project.tagText}</h2>
           )}
+
+          {/* Main Image */}
+          <div className="project-detail__image mb-md-responsive mt-15">
+            <Image
+              src={project.image}
+              alt={project.title}
+              width={1200}
+              height={600}
+              className="project-detail__main-image"
+              priority
+            />
+          </div>
+
           <div
             className="project-detail__description typo-xl-medium pb-30"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description || '') }}
           />
-          {project.projectUrl && (
-            <a
-              href={project.projectUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-detail__external-link typo-sm-medium mb-30"
-            >
-              View live site ↗
-            </a>
-          )}
         </header>
-
-        
-
-        {/* Main Image */}
-        <div className="project-detail__image mb-md-responsive">
-          <Image
-            src={project.image}
-            alt={project.title}
-            width={1200}
-            height={600}
-            className="project-detail__main-image"
-            priority
-          />
-        </div>
 
         {/* Challenges, Solutions, Results in columns */}
         <div className="project-detail__columns mb-md-responsive">
@@ -108,11 +97,11 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
 
         {/* Gallery - Full width images */}
         {project.gallery && project.gallery.length > 0 && (
-          <div className="project-detail__gallery">
+          <div className="project-detail__gallery typo-center pb-md">
             {project.gallery.map((img: any, i: number) => {
               const isMobileScreenshot = typeof img !== 'string' && !!img.isMobileScreenshot;
               return (
-                <div key={i} className="project-detail__image mb-md-responsive">
+                <div key={i} className={`project-detail__image mb-md-responsive${isMobileScreenshot ? ' project-detail__image--mobile-stage' : ''}`}>
                   <Image
                     src={typeof img === 'string' ? img : img.image}
                     alt={typeof img === 'string' ? `Gallery image ${i + 1}` : (img.footNote || `Gallery image ${i + 1}`)}
@@ -126,11 +115,37 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                 </div>
               );
             })}
+
+            {project.projectUrl && (
+            <a
+              href={project.projectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-detail__external-link typo-sm-medium mt-sm-responsive mb-lg-responsive"
+            >
+              View live site
+              <svg
+                className="project-detail__external-link-icon"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M7 17L17 7M17 7H7M17 7V17" />
+              </svg>
+            </a>
+          )}
           </div>
         )}
 
         {/* Back Button */}
-        <nav className="project-detail__navigation mt-sm">
+        <nav className="project-detail__navigation mt-sm pb-md">
+          
           <Link href="/projects" className="btn btn-secondary">
             ← Back to Projects
           </Link>
