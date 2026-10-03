@@ -52,3 +52,16 @@
 
 .ec-success-actions { display:flex; gap:$spacing-10; }
 
+
+/* Opt-in to the email list, shown in the booking flow */
+.ec-optin {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-10;
+  cursor: pointer;
+
+  input {
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+}

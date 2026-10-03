@@ -107,6 +107,8 @@ describe('EmailCollectorProvider analytics flows', () => {
 
     fireEvent.change(emailInput, { target: { value: 'test2@example.com' } });
     fireEvent.change(nameInput, { target: { value: 'Tester 2' } });
+    // joining the list is opt-in in the booking flow
+    fireEvent.click(screen.getByRole('checkbox', { name: /occasional tips from Magneto/i }));
 
     fireEvent.click(submit);
 
@@ -132,5 +134,59 @@ describe('EmailCollectorProvider analytics flows', () => {
     expect(lastCalendlyCall).toBeTruthy();
     expect(lastCalendlyCall.utmParams).toBeDefined();
     expect(lastCalendlyCall.utmParams.utm_source).toBe('newsletter');
+    // name and email typed in the modal are handed to Calendly
+    expect(lastCalendlyCall.prefill).toEqual({ name: 'Tester 2', email: 'test2@example.com' });
+  });
+
+  it('books without subscribing when the opt-in box is left unticked', async () => {
+    const fetchedUrls: string[] = [];
+    const baseFetch = global.fetch;
+    // @ts-ignore
+    global.fetch = (input: any, init?: any) => {
+      fetchedUrls.push(typeof input === 'string' ? input : String(input?.url || ''));
+      return baseFetch(input, init);
+    };
+
+    render(
+      <EmailCollectorProvider>
+        <TestTrigger opts={{ origin: 'hero', utmContent: 'hero_home' }} />
+      </EmailCollectorProvider>
+    );
+
+    fireEvent.click(screen.getByText('Open Modal'));
+
+    const emailInput = await screen.findByPlaceholderText('you@company.com');
+    const optIn = screen.getByRole('checkbox', { name: /occasional tips from Magneto/i }) as HTMLInputElement;
+    expect(optIn.checked).toBe(false);
+
+    fireEvent.change(emailInput, { target: { value: 'booker@example.com' } });
+    fireEvent.change(screen.getByPlaceholderText('Your name'), { target: { value: 'Booker' } });
+    fireEvent.click(screen.getByRole('button', { name: /Continue to Book Call/i }));
+
+    await waitFor(() => {
+      // @ts-ignore
+      expect(window.__lastCalendly).toBeTruthy();
+    });
+
+    // nobody is added to the list, and no subscribe conversion is reported
+    expect(fetchedUrls.some((u) => u.includes('/api/mailchimp'))).toBe(false);
+    // @ts-ignore
+    expect(window.__lastGtagEvent).toBeUndefined();
+
+    const call = (calendly.openCalendlyPopup as any).mock.calls[0][0];
+    expect(call.prefill).toEqual({ name: 'Booker', email: 'booker@example.com' });
+  });
+
+  it('does not show the opt-in box in the download flow, which always subscribes', async () => {
+    render(
+      <EmailCollectorProvider>
+        <TestTrigger opts={{ downloadUrl: '/assets/guides/free-guide.pdf' }} />
+      </EmailCollectorProvider>
+    );
+
+    fireEvent.click(screen.getByText('Open Modal'));
+    await screen.findByPlaceholderText('you@company.com');
+
+    expect(screen.queryByRole('checkbox')).toBeNull();
   });
 });
