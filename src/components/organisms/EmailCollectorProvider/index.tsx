@@ -75,41 +75,47 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
       return;
     }
 
+    // Download flow: the modal copy says the guide comes with marketing emails, so submitting subscribes.
+    // Booking flow: the visitor only asked for a call, so joining the list needs the opt-in box ticked.
+    const subscribe = Boolean(options?.downloadUrl) || formData.get('subscribe') === 'on';
+
     try {
       // attach any captured UTM params to the subscribe request
       const utm = getUtm();
 
-      const res = await fetch('/api/mailchimp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name, utm }),
-      });
-
-      // try to parse JSON (safe)
-      const payload = await res.json().catch(() => ({}));
-
-      // Normalize success check: accept HTTP 2xx OR payload.success truthy
-      const ok = res.ok || Boolean(payload?.success) || Boolean(payload?.data);
-
-      if (!ok) {
-        const msg = payload?.message || payload?.error || payload?.details?.message || `Failed to subscribe (${res.status})`;
-        throw new Error(msg);
-      }
-
-      // On success: trigger analytics and then continue with UX flow.
-      // Emit a Mailchimp subscribe event so GA captures the conversion source (hero/header/package/download/finalcta)
-      try {
-        gtagEvent('mailchimp_subscribed', {
-          event_category: 'engagement',
-          event_label: options?.origin || options?.utmContent || utm?.utm_content || 'unknown',
-          origin: options?.origin || null,
-          utm_content: options?.utmContent || utm?.utm_content || null,
-          utm_source: utm?.utm_source || null,
-          utm_medium: utm?.utm_medium || null,
-          utm_campaign: utm?.utm_campaign || null,
+      if (subscribe) {
+        const res = await fetch('/api/mailchimp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name, utm }),
         });
-      } catch (e) {
-        // best-effort; don't block UX on analytics
+
+        // try to parse JSON (safe)
+        const payload = await res.json().catch(() => ({}));
+
+        // Normalize success check: accept HTTP 2xx OR payload.success truthy
+        const ok = res.ok || Boolean(payload?.success) || Boolean(payload?.data);
+
+        if (!ok) {
+          const msg = payload?.message || payload?.error || payload?.details?.message || `Failed to subscribe (${res.status})`;
+          throw new Error(msg);
+        }
+
+        // On success: trigger analytics and then continue with UX flow.
+        // Emit a Mailchimp subscribe event so GA captures the conversion source (hero/header/package/download/finalcta)
+        try {
+          gtagEvent('mailchimp_subscribed', {
+            event_category: 'engagement',
+            event_label: options?.origin || options?.utmContent || utm?.utm_content || 'unknown',
+            origin: options?.origin || null,
+            utm_content: options?.utmContent || utm?.utm_content || null,
+            utm_source: utm?.utm_source || null,
+            utm_medium: utm?.utm_medium || null,
+            utm_campaign: utm?.utm_campaign || null,
+          });
+        } catch (e) {
+          // best-effort; don't block UX on analytics
+        }
       }
 
       // If modal was opened with a downloadUrl, show success UI and present in-modal download CTA
@@ -168,19 +174,22 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
       // Ensure Calendly receives a sensible utmContent (prefer explicit utmContent, otherwise use origin)
   const calendlyUtmContent = options?.utmContent ?? options?.origin ?? utm?.utm_content;
 
-      try {
-        gtagEvent('mailchimp_subscribed_then_calendly', {
-          event_category: 'engagement',
-          event_label: calendlyUtmContent || 'calendly',
-          origin: options?.origin || null,
-          utm_content: options?.utmContent || utm?.utm_content || null,
-          utm_source: utm?.utm_source || null,
-          utm_medium: utm?.utm_medium || null,
-          utm_campaign: utm?.utm_campaign || null,
-          method: 'calendly'
-        });
-      } catch (e) {
-        // ignore
+      // Only report the subscribe-then-book conversion when the visitor actually opted in.
+      if (subscribe) {
+        try {
+          gtagEvent('mailchimp_subscribed_then_calendly', {
+            event_category: 'engagement',
+            event_label: calendlyUtmContent || 'calendly',
+            origin: options?.origin || null,
+            utm_content: options?.utmContent || utm?.utm_content || null,
+            utm_source: utm?.utm_source || null,
+            utm_medium: utm?.utm_medium || null,
+            utm_campaign: utm?.utm_campaign || null,
+            method: 'calendly'
+          });
+        } catch (e) {
+          // ignore
+        }
       }
 
       await openCalendlyPopup({
@@ -189,6 +198,8 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
         customUrl: options?.customUrl,
         forceNewWindow: options?.forceNewWindow,
         utmParams: utm,
+        // carry the details just typed into Calendly's form so they are not asked twice
+        prefill: { name, email },
       });
 
       // close modal after successful flow
@@ -224,7 +235,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
                 return (
                   <>
                    <h3 className="typo-xl-responsive m-0">Quick — before we book</h3>
-                    <p className="typo-md-medium">Tell us who you are so we can prep a smarter session tailored to your goals.</p>
+                    <p className="typo-md-medium">Your name and email carry over to the booking form, so you only type them once.</p>
                   </>
                 );
               }
@@ -244,7 +255,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
               return (
                 <>
                   <h3 className="typo-xl-responsive m-0">Quick — before we book</h3>
-                  <p className="typo-md-medium">Enter your name and email so we can send confirmation and reminders.</p>
+                  <p className="typo-md-medium">Your name and email carry over to the booking form, so you only type them once.</p>
                 </>
               );
             })()}
@@ -312,11 +323,19 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
                   />
                 </div>
 
+                {/* Booking flow only: joining the email list is a separate, unticked choice. */}
+                {!options?.downloadUrl && (
+                  <label className="ec-optin typo-sm-medium" htmlFor="ec-subscribe">
+                    <input id="ec-subscribe" type="checkbox" name="subscribe" disabled={isSubmitting} />
+                    <span>Also email me occasional tips from Magneto. Unsubscribe any time.</span>
+                  </label>
+                )}
+
                 {error && <div className="form-error">{error}</div>}
 
                 <div className="ec-actions">
                   <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : (options?.downloadUrl ? 'Continue to Download the Guide' : ((options?.origin && ['header','hero','package','finalcta'].includes(options.origin)) || (options?.customUrl && typeof options.customUrl === 'string' && options.customUrl.includes('calendly')) || (options?.utmContent && String(options.utmContent).toLowerCase().includes('calendly'))) ? 'Continue to Book Call' : 'Subscribe')}
+                    {isSubmitting ? 'Submitting...' : (options?.downloadUrl ? 'Continue to Download the Guide' : 'Continue to Book Call')}
                   </button>
                 </div>
               </form>

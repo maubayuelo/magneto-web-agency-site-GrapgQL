@@ -43,9 +43,10 @@ export interface CalendlyConfig {
   preferNewWindow?: boolean;
 }
 
-// Calendly configuration - UPDATE THIS WITH YOUR ACTUAL CALENDLY URL
+// Calendly configuration. This is the fallback used by every CTA that does not
+// receive its own link from the CMS (header, package cards, About, empty projects grid).
 export const calendlyConfig: CalendlyConfig = {
-  url: 'https://calendly.com/magnetomarketing/free-strategy-call', // Replace with your actual Calendly URL
+  url: 'https://calendly.com/magnetomarketing/free-strategy-call',
   defaultUtm: {
     utmSource: 'website',
     utmMedium: 'cta',
@@ -177,6 +178,8 @@ export const openCalendlyPopup = async (options?: {
   forceNewWindow?: boolean;
   /** Optional map of utm_* params to append to the Calendly URL */
   utmParams?: Record<string, string | undefined>;
+  /** Details already collected on the site, so Calendly's form opens with them filled in. */
+  prefill?: { name?: string; email?: string };
 }) => {
   try {
     // If caller prefers a new window (avoids iframe/permission policies), open immediately
@@ -193,6 +196,11 @@ export const openCalendlyPopup = async (options?: {
         if (v) targetUrl.searchParams.set(k, v);
       });
     }
+
+    // Calendly reads `name` and `email` from the scheduling link and fills its form with them.
+    // Passing them on the URL covers the popup widget, the iframe fallback and the new-tab path.
+    if (options?.prefill?.name) targetUrl.searchParams.set('name', options.prefill.name);
+    if (options?.prefill?.email) targetUrl.searchParams.set('email', options.prefill.email);
 
     const useNewWindow = options?.forceNewWindow ?? calendlyConfig.preferNewWindow;
 
