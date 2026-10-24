@@ -23,6 +23,12 @@ should be indexed per language.
 4. **Every `api.ts` takes `locale` explicitly.**
 5. A locale appears in the switcher only when complete and QA-ready.
 
+### Translation workflow (Phase 1, 2026-10-24)
+
+FR/ES translations are created manually in the native WordPress editor, not in WPML's Translation
+Editor (ATE), and never with automatic translation ("Translate Everything Automatically" stays OFF).
+Phase 5 bulk-loads the approved FR/ES copy with WP-CLI. Settings: `docs/ai/WP-SETUP.md`.
+
 ## Consequences
 
 - + Same plugin stack as Dangel; known pitfalls are documented in `.claude/rules/`.
