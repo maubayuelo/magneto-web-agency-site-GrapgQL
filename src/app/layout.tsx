@@ -1,5 +1,5 @@
 // Root layout (fonts, global styles, SEO defaults)
-// src/app/[locale]/layout.tsx
+// src/app/layout.tsx
 
 // Root layout: this file defines the top-level HTML structure and metadata for the app.
 // Beginners: Next.js (app router) uses this component to wrap every page. Put global
@@ -17,8 +17,6 @@ import { SITE_URL, siteName, defaultOgImage, buildCanonical } from '@/utils/seo'
 import { devConsoleError } from '@/utils/dev-console';
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
 import { GET_SITE_METADATA } from '@/data/site';
-import { DEFAULT_LOCALE, HTML_LANG, getEnabledLocales, isLocale } from '@/i18n/config';
-import { LanguageSwitcher } from '@/components/molecules';
 
 
 
@@ -127,26 +125,14 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-// One prerender per enabled locale. dynamicParams is deliberately not set: it would cascade to
-// projects/[slug]. The middleware decides which locales are reachable.
-export function generateStaticParams() {
-  return getEnabledLocales().map((locale) => ({ locale }));
-}
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
 }) {
-  const { locale: rawLocale } = await params;
-  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  const enabledLocales = getEnabledLocales();
-
   return (
     <html
-      lang={HTML_LANG[locale]}
+      lang="en"
       {...({ 'data-lt-installed': 'true', suppressHydrationWarning: true } as any)}
     >
       <body>
@@ -155,11 +141,6 @@ export default async function RootLayout({
           <Header
             className="header"
             logo="/assets/images/logo-magneto.svg"
-            switcher={
-              enabledLocales.length > 1 ? (
-                <LanguageSwitcher locales={enabledLocales} currentLocale={locale} />
-              ) : undefined
-            }
           />
 
           {/* children is where page-specific content is rendered (each page's content). */}

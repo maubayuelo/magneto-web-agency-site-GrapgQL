@@ -22,6 +22,6 @@ CLAUDE.md → AGENTS.md import is active.
 
 ## Current phase
 
-Phase 2 — Locale routing: done (2026-10-24); merge after the Vercel preview check.
-Scope: `docs/specs/phase-2-locale-routing.md`. Report: `docs/reports/phase-2-locale-routing.md`.
+Phase 1 — WPML setup (local CMS).
+Scope: `docs/specs/phase-1-wpml-setup.md`.
 (Update this line when a phase closes.)

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { splitLocalePath } from '@/i18n/paths';
 import { getHomePrefooter } from './api';
 import type { FinalCTASectionProps, FinalCTAData } from './types';
 import { CalendlyButton } from '@/components/atoms';
@@ -45,7 +44,7 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   };
 
   // Hide on contact page
-  const shouldShow = show && splitLocalePath(pathname ?? '/').path !== '/contact';
+  const shouldShow = show && pathname !== '/contact';
 
   // Only fetch on the client if no data was provided by a server loader
   useEffect(() => {

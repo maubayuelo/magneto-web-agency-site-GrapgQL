@@ -60,13 +60,8 @@ npm run build        # next build
 
 ```
 src/
-├── app/
-│   ├── [locale]/        App Router pages (root layout here). Each route has page.tsx + api.ts (query + mapper)
-│   │   └── [...rest]/   notFound() catch-all: /carte, /en/*, disabled locales, unknown paths
-│   ├── api/wp-graphql/  Server proxy for browser GraphQL calls
-│   └── robots.txt/ sitemap.xml/   Route handlers, outside [locale]
-├── middleware.ts        Locale routing: EN unprefixed → internal /en; /fr /es only if enabled (ADR 0003)
-├── i18n/                config.ts (LOCALES, ENABLED_LOCALES reader), paths.ts (the only locale-path mapping), routing.ts
+├── app/                 App Router pages. Each route has page.tsx + api.ts (query + mapper)
+│   └── api/wp-graphql/  Server proxy for browser GraphQL calls
 ├── pages/api/           API routes only: contact, mailchimp, download, download-check
 ├── components/
 │   ├── atoms/ molecules/ organisms/   Atomic design. Each: index.tsx, api.ts, types.ts, .scss
@@ -76,9 +71,6 @@ src/
 ```
 
 ### Where text lives today
-
-Routes live under `src/app/[locale]/` (EN served unprefixed via the middleware). Pages don't read
-`params.locale` yet (Phase 3).
 
 | Route | Source |
 |---|---|
@@ -138,9 +130,7 @@ Verified in the Phase 0 baseline (`docs/specs/phase-0-baseline.md`, 2026-10-24).
 Toolchain / repo
 - `.npmrc` and `vercel.json` use `legacy-peer-deps`.
 - postcss 8.4.31 pinned inside next@15.5.28 — high advisory, fixed only by next@16 (future phase).
-- `eslint.ignoreDuringBuilds: true`; lint baseline 164 errors / 118 warnings (after Phase 2).
-- `@next/next/no-html-link-for-pages` counts each Header nav `<a>` once per `[locale]` variant (+28 errors,
-  lint baseline now 164 / 118 warnings as measured); resolved in Phase 4 when nav links move to localized `next/link`.
+- `eslint.ignoreDuringBuilds: true`; lint baseline 136 errors / 118 warnings (after Phase 0.5b).
 - `README.md` structure outdated (`about/`, `portfolio/`).
 
 Code
@@ -151,10 +141,6 @@ Code
   don't exist in the schema. Both are dead code: `PackagesGrid` is rendered by `/packages` with props from
   `app/packages/api.ts`, and `getHomePackages` is only called by `PackagesGridWithData`, which nothing
   imports; `PreFooter/api.ts` is never imported (`FinalCTASection` has its own `api.ts`). Phase 3.
-- Sanitizer crash in the server bundle: on-demand `projects/[slug]` renders that load `ProjectDetail`
-  (`isomorphic-dompurify` / `jsdom`) throw `Right-hand side of 'instanceof' is not an object` under
-  `next start` → 500 (live: `/projects/no-existe`). Phase 2 fixes the unknown-slug case (404); prerendered
-  slugs are unaffected; a project rendered on demand (e.g. the 13th) may still 500. Check on a Vercel preview.
 - `images.domains` (deprecated) duplicates `images.remotePatterns` in `next.config.ts`.
 - `ProjectData` type doesn't match the real CMS data (`id` is a string, gallery items are
   objects); `projects/[slug]/page.tsx` uses a commented `as unknown as ProjectData` cast. Fix
@@ -167,7 +153,7 @@ Code
 - `@apollo/client` used only in `src/data/projects.ts`; `graphql-request` unused.
 - 6 files use `dangerouslySetInnerHTML`; only `ProjectDetail` sanitizes with DOMPurify.
 - 122 `no-explicit-any` (102 outside test files).
-- `openGraph.locale` hardcoded `'en_US'` in `app/[locale]/layout.tsx` `generateMetadata` (Phase 7).
+- Locale hardcoded `en_US` / `lang="en"` in `app/layout.tsx` (replaced by i18n work).
 - Mailchimp integration (`pages/api/mailchimp.ts` + 4 components + 1 test) is to be replaced
   by Brevo — see `docs/adr/0002-brevo-replaces-mailchimp.md`. Do not extend it.
 
