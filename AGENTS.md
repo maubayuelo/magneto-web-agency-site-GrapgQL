@@ -104,9 +104,9 @@ src/
 
 Do not, without an explicit instruction saying so:
 
-1. **Point at production.** `.env.local` must target the local CMS. `wp-graphql.ts`
-   and `app/api/wp-graphql/route.ts` silently fall back to production if the env var
-   is missing — confirm the target before any data work.
+1. **Point at production.** `.env.local` must target the local CMS. The WordPress
+   helpers in `utils/wordpress.ts` throw if `NEXT_PUBLIC_WORDPRESS_API_URL` is
+   missing — confirm the target before any data work.
 2. **Write to production** WordPress, Vercel, DNS, Calendly, Mailchimp, Brevo or SMTP.
    Locally `.env.local` must have `DISABLE_SMTP=1` (the code checks `'1'`, not `'true'`)
    and empty `MAILCHIMP_*`, `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_GTM_ID`. If not, never
@@ -128,23 +128,27 @@ Do not, without an explicit instruction saying so:
 Verified in the Phase 0 baseline (`docs/specs/phase-0-baseline.md`, 2026-10-24).
 
 Toolchain / repo
-- `node_modules` installed for x64 while Node runs arm64 → `vitest` cannot start
-  (missing `@rollup/rollup-darwin-arm64`).
 - `.npmrc` and `vercel.json` use `legacy-peer-deps`.
 - postcss 8.4.31 pinned inside next@15.5.28 — high advisory, fixed only by next@16 (future phase).
-- `eslint.ignoreDuringBuilds: true`; lint baseline 146 errors / 119 warnings.
+- `eslint.ignoreDuringBuilds: true`; lint baseline 136 errors / 118 warnings (after Phase 0.5b).
 - `README.md` structure outdated (`about/`, `portfolio/`).
 
 Code
-- `react-hooks/rules-of-hooks` error: `CalendlyButton/index.tsx:44` calls `useEmailModal`
-  conditionally — real bug risk.
-- Hardcoded production CMS fallback in 3 files: `utils/wp-graphql.ts`,
-  `app/api/wp-graphql/route.ts`, `LeadMagnetSection/api.ts`.
+- `projects(first: 12)` (`GET_PROJECTS`) still used by `sitemap.xml/route.ts`, `projects/page.tsx`
+  (grid), `app/page.tsx` (home) and `projects/[slug]` `generateStaticParams`. Projects past 12
+  are missing from the sitemap and the grid.
 - `images.domains` (deprecated) duplicates `images.remotePatterns` in `next.config.ts`.
+- `ProjectData` type doesn't match the real CMS data (`id` is a string, gallery items are
+  objects); `projects/[slug]/page.tsx` uses a commented `as unknown as ProjectData` cast. Fix
+  the type when Phase 3 touches the project `api.ts`.
+- `LeadMagnetSection/api.ts`: an outer try/catch swallows the missing-env-var error, so the
+  section silently renders nothing instead of failing loudly. Accepted while the lead magnet
+  stays hidden (pending new guide copy); fix when the section is rebuilt.
+- Vitest uses the classic JSX runtime; `CalendlyButton.test.tsx` sets `globalThis.React`. Fix
+  with an automatic-JSX setting in `vitest.config.ts` in a tooling phase.
 - `@apollo/client` used only in `src/data/projects.ts`; `graphql-request` unused.
 - 6 files use `dangerouslySetInnerHTML`; only `ProjectDetail` sanitizes with DOMPurify.
 - 122 `no-explicit-any` (102 outside test files).
-- Leftovers: `Hero/index.tsx.bak`, `FinalCTASection/types.ts.new`.
 - Locale hardcoded `en_US` / `lang="en"` in `app/layout.tsx` (replaced by i18n work).
 - Mailchimp integration (`pages/api/mailchimp.ts` + 4 components + 1 test) is to be replaced
   by Brevo — see `docs/adr/0002-brevo-replaces-mailchimp.md`. Do not extend it.
@@ -167,3 +171,7 @@ READ → PROPOSE → approval → IMPLEMENT → VERIFY → REPORT.
 - Ambiguous? Ask one question instead of producing a large diff to throw away.
 - Smallest change that satisfies the spec.
 - Comment only non-obvious constraints (WPML quirks, proxy, hydration), not the obvious.
+- **Dev servers:** Mauricio often runs `npm run dev` on port 3000. Agents start their own
+  server on a fixed port (`PORT=3100 npm run dev` or `next start -p 3100`), never build while
+  someone else's dev server uses the same `.next`, and stop **only the PID they started** —
+  never kill by port. If 3100 is busy, stop and ask.
