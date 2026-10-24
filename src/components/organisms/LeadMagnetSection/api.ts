@@ -1,4 +1,5 @@
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
+import { getWpBaseUrl } from '@/utils/wordpress';
 import type { LeadMagnetSectionData, LinkNode } from './types';
 
 export const LEAD_MAGNET_SECTION_QUERY = `
@@ -75,9 +76,10 @@ export async function getLeadMagnetSection(): Promise<LeadMagnetSectionData> {
         // Derive a sane REST base even if NEXT_PUBLIC_WORDPRESS_URL points to the GraphQL
         // endpoint (e.g. https://cms.example.com/graphql). Strip known endpoint suffixes
         // so we build: https://cms.example.com/wp-json/wp/v2/media/:id
+        // Outside the inner try, but the outer try/catch above still swallows a missing-env error
+        // here (no production fallback either way; the download link falls back to possibleUrl).
+        const restBase = getWpBaseUrl();
         try {
-          const rawRestBase = process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://cms.magnetomarketing.co';
-          const restBase = rawRestBase.replace(/\/(?:graphql|wp-json)\/?$/i, '').replace(/\/$/, '');
           const restUrl = `${restBase}/wp-json/wp/v2/media/${nodeAny.databaseId}`;
           const r = await fetch(restUrl).catch(() => null);
           if (r && r.ok) {

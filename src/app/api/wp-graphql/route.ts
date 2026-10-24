@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getWpGraphqlUrl } from '@/utils/wordpress';
 // Ensure this API route runs on the Node.js runtime (not Edge),
 // because we rely on Node APIs and stable TLS behavior for upstream fetches.
 export const runtime = 'nodejs';
@@ -7,10 +8,12 @@ export const dynamic = 'force-dynamic';
 
 // Simple server-side proxy for forwarding GraphQL requests to the WP GraphQL endpoint.
 // This avoids exposing the CMS host to client-side fetches and prevents CORS issues.
-const WP_GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://cms.magnetomarketing.co/graphql';
 
 export async function POST(request: Request) {
   try {
+    // Resolved per request (inside the try): a missing env var returns 500 with a clear
+    // message instead of breaking `next build` at import time.
+    const wpGraphqlUrl = getWpGraphqlUrl();
     const body = await request.text();
 
     // Configure fetch options for upstream GraphQL request
@@ -30,7 +33,7 @@ export async function POST(request: Request) {
     };
 
     // Make the upstream request using standard fetch
-    const res = await fetch(WP_GRAPHQL_URL, fetchOpts);
+    const res = await fetch(wpGraphqlUrl, fetchOpts);
 
     const text = await res.text();
 
@@ -46,7 +49,7 @@ export async function POST(request: Request) {
         status: res.status,
         contentType,
         body: text,
-        upstream: WP_GRAPHQL_URL,
+        upstream: wpGraphqlUrl,
       };
 
       return new NextResponse(JSON.stringify(payload), {

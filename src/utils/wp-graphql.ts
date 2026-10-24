@@ -1,14 +1,11 @@
 // Simple GraphQL helper for communicating with a WordPress GraphQL endpoint.
 // Beginners: put a .env variable for the CMS URL instead of hardcoding for production.
-// Accept either NEXT_PUBLIC_WORDPRESS_API_URL (commonly used in this repo) or
-// NEXT_PUBLIC_WORDPRESS_URL for historical reasons. This makes the helper
-// resilient to small env var naming differences between local and Vercel.
-const WP_GRAPHQL_URL =
-  process.env.NEXT_PUBLIC_WORDPRESS_API_URL || process.env.NEXT_PUBLIC_WORDPRESS_URL || 'https://cms.magnetomarketing.co/graphql/';
+// The CMS URL comes from getWpGraphqlUrl() (src/utils/wordpress.ts), which throws if the
+// env var is missing — there is no production fallback.
 
 // When running in the browser, route requests through our server-side proxy to
 // avoid CORS and to keep the CMS host hidden from client code. Server-side
-// (Node) will continue to call the external WP_GRAPHQL_URL directly.
+// (Node) will continue to call the external getWpGraphqlUrl() directly.
 const IS_BROWSER = typeof window !== 'undefined';
 const CLIENT_PROXY_PATH = '/api/wp-graphql';
 
@@ -25,11 +22,14 @@ const CLIENT_PROXY_PATH = '/api/wp-graphql';
  *   enable simple incremental static regeneration (ISG) behavior. Adjust as needed.
  */
 import { devConsoleError, devConsoleWarn } from './dev-console';
+import { getWpGraphqlUrl } from './wordpress';
 
 export async function fetchWPGraphQL(query: string, variables: Record<string, any> = {}) {
+  // Resolved before the try so a missing env var surfaces as itself, not as "fetch failed".
+  // In the browser only the proxy path is used, so the env var is never read there.
+  const url = IS_BROWSER ? CLIENT_PROXY_PATH : getWpGraphqlUrl();
   let res;
   try {
-    const url = IS_BROWSER ? CLIENT_PROXY_PATH : WP_GRAPHQL_URL;
     res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,7 +39,7 @@ export async function fetchWPGraphQL(query: string, variables: Record<string, an
       next: { revalidate: 60 },
     });
   } catch (e) {
-    devConsoleError('WP GraphQL fetch failed to reach host', { url: WP_GRAPHQL_URL, error: e });
+    devConsoleError('WP GraphQL fetch failed to reach host', { url, error: e });
     throw new Error(`WP GraphQL fetch failed: ${String(e)}`);
   }
 
@@ -55,7 +55,7 @@ export async function fetchWPGraphQL(query: string, variables: Record<string, an
       textBody = undefined;
     }
 
-    devConsoleWarn('WP GraphQL invalid JSON response', { status: res.status, url: WP_GRAPHQL_URL, error: e, body: textBody });
+    devConsoleWarn('WP GraphQL invalid JSON response', { status: res.status, url, error: e, body: textBody });
     throw new Error(`WP GraphQL returned invalid JSON (status: ${res.status})`);
   }
 
@@ -66,7 +66,7 @@ export async function fetchWPGraphQL(query: string, variables: Record<string, an
     // Compose a compact payload string so client dev overlays (which may collapse
     // object arguments) show readable information. Also keep a structured object
     // in the log if the environment supports it.
-    const payload = { status: res.status, url: WP_GRAPHQL_URL, errors: json.errors };
+    const payload = { status: res.status, url, errors: json.errors };
     try {
       devConsoleWarn(`${message} | payload: ${JSON.stringify(payload)}`);
     } catch (_e) {
