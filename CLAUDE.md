@@ -22,6 +22,6 @@ CLAUDE.md → AGENTS.md import is active.
 
 ## Current phase
 
-Phase 0.5b — code hygiene.
-Scope: `docs/specs/phase-0-5b-code-hygiene.md`.
+Phase 1 — WPML setup (local CMS).
+Scope: `docs/specs/phase-1-wpml-setup.md`.
 (Update this line when a phase closes.)
