@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { openCalendlyPopup, loadCalendlyScript, warmCalendlyResources } from '@/utils/calendly';
 import { gtagEvent } from '@/utils/analytics';
-import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
+import { useOptionalEmailModal } from '@/components/organisms/EmailCollectorProvider';
 export interface CalendlyButtonProps {
   children: React.ReactNode;
   className?: string;
@@ -38,13 +38,8 @@ export function CalendlyButton({
   ,skipCollector = false
 }: CalendlyButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
-  let openModal: ((opts?: any) => void) | undefined;
-  try {
-    // Attempt to read email modal; guard for usage outside provider
-    openModal = useEmailModal().openModal;
-  } catch (e) {
-    openModal = undefined;
-  }
+  // undefined outside EmailCollectorProvider → the click opens Calendly directly
+  const openModal = useOptionalEmailModal()?.openModal;
 
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
