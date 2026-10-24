@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import IconComponent from '@/components/atoms/IconComponent';
+import IconComponent from '../../components/atoms/IconComponent';
 
 // Service data structure (matches GraphQL shape returned by the CMS)
 interface Service {
