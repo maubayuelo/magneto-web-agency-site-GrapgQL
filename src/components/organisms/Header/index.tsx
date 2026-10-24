@@ -8,7 +8,16 @@ import "./Header.scss";
 import { getHomeHeader } from "./api";
 import { HomeHeader } from './types';
 
-export const Header = ({ className = "", logo }: { className?: string; logo?: string }) => {
+export const Header = ({
+  className = "",
+  logo,
+  switcher,
+}: {
+  className?: string;
+  logo?: string;
+  /** Language switcher, rendered only when set (layout passes it when 2+ locales are enabled). */
+  switcher?: React.ReactNode;
+}) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -132,8 +141,7 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
                   text="Free Schedule Call"
                 />
               </li>
-              {/* <li><a href="#" className="typo-sm-bold">FR</a></li>
-              <li><a href="#" className="typo-sm-bold">ES</a></li> */}
+              {switcher && <li className="nav__lang">{switcher}</li>}
             </ul>
             <ul className="nav_mobile">
               <li>
@@ -171,8 +179,7 @@ export const Header = ({ className = "", logo }: { className?: string; logo?: st
         <li><a href="/packages/" onClick={() => setMenuOpen(false)}>Packages</a></li>
         <li><a href="/projects/" onClick={() => setMenuOpen(false)}>Projects</a></li>
         <li><a href="/contact/" onClick={() => setMenuOpen(false)}>Contact</a></li>
-        {/* <li><a href="#" onClick={() => setMenuOpen(false)}>FR</a></li>
-        <li><a href="#" onClick={() => setMenuOpen(false)}>ES</a></li> */}
+        {switcher && <li>{switcher}</li>}
       </ul>
     </>
   );

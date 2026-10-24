@@ -7,6 +7,7 @@
   import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
   import Link from 'next/link';
     import { usePathname } from 'next/navigation';
+    import { splitLocalePath } from '@/i18n/paths';
   import type { ProjectItem } from './types';
   import { CalendlyButton } from '@/components/atoms';
 
@@ -19,7 +20,8 @@
   }: { projects: ProjectItem[]; maxProjects?: number; showButton?: boolean; title?: string }) => {
     const displayedProjects = projects.slice(0, maxProjects);
       const pathname = usePathname();
-      const isProjectsRoot = pathname === '/projects' || pathname === '/projects/';
+      const path = splitLocalePath(pathname ?? '/').path;
+      const isProjectsRoot = path === '/projects' || path === '/projects/';
 
     return (
       <>

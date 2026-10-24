@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { splitLocalePath } from '@/i18n/paths';
 import { getLeadMagnetSection } from './api';
 import type { LeadMagnetSectionProps, LeadMagnetSectionData, LinkNode } from './types';
 import { CalendlyButton } from '../../atoms';
@@ -42,7 +43,7 @@ export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
   };
 
   // Hide on contact page
-  const shouldShow = show && pathname !== '/contact';
+  const shouldShow = show && splitLocalePath(pathname ?? '/').path !== '/contact';
 
   useEffect(() => {
     async function fetchData() {
