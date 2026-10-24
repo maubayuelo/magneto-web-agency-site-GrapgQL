@@ -137,6 +137,10 @@ Code
 - `projects(first: 12)` (`GET_PROJECTS`) still used by `sitemap.xml/route.ts`, `projects/page.tsx`
   (grid), `app/page.tsx` (home) and `projects/[slug]` `generateStaticParams`. Projects past 12
   are missing from the sitemap and the grid.
+- `PackagesGrid/api.ts` (`homePackages`) and `PreFooter/api.ts` (`homePrefooter`) query ACF groups that
+  don't exist in the schema. Both are dead code: `PackagesGrid` is rendered by `/packages` with props from
+  `app/packages/api.ts`, and `getHomePackages` is only called by `PackagesGridWithData`, which nothing
+  imports; `PreFooter/api.ts` is never imported (`FinalCTASection` has its own `api.ts`). Phase 3.
 - `images.domains` (deprecated) duplicates `images.remotePatterns` in `next.config.ts`.
 - `ProjectData` type doesn't match the real CMS data (`id` is a string, gallery items are
   objects); `projects/[slug]/page.tsx` uses a commented `as unknown as ProjectData` cast. Fix
