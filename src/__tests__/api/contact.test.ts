@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import * as contactApi from '../contact';
+import * as contactApi from '../../pages/api/contact';
 
 describe('contact API sendEmail fallback', () => {
   const OLD_ENV = { ...process.env };
