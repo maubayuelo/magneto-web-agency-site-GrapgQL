@@ -22,5 +22,6 @@ CLAUDE.md → AGENTS.md import is active.
 
 ## Current phase
 
-Phase 0 — baseline. No code changes until the Phase 0 report is reviewed.
+Phase 0.5a — security & toolchain.
+Scope: `docs/specs/phase-0-5a-security-toolchain.md`.
 (Update this line when a phase closes.)

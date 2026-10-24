@@ -39,12 +39,12 @@ Exact versions live in `package.json`. Read it rather than trusting a number her
 ```bash
 npm run dev          # localhost:3000 — requires Local WP running
 npm run lint         # next lint
-npx tsc --noEmit     # typecheck (no script yet)
+npm run typecheck    # tsc --noEmit
 npm test -- --run    # vitest, single run
 npm run build        # next build
 ```
 
-**Completion gate:** `npm run lint && npx tsc --noEmit && npm test -- --run && npm run build`.
+**Completion gate:** `npm run lint && npm run typecheck && npm test -- --run && npm run build`.
 
 - `next.config.ts` sets `eslint.ignoreDuringBuilds: true` → a green build does
   **not** mean lint passes. Always run lint separately.
@@ -62,7 +62,7 @@ npm run build        # next build
 src/
 ├── app/                 App Router pages. Each route has page.tsx + api.ts (query + mapper)
 │   └── api/wp-graphql/  Server proxy for browser GraphQL calls
-├── pages/api/           API routes only: contact, mailchimp, download, download-check, ping-cms
+├── pages/api/           API routes only: contact, mailchimp, download, download-check
 ├── components/
 │   ├── atoms/ molecules/ organisms/   Atomic design. Each: index.tsx, api.ts, types.ts, .scss
 ├── hooks/  utils/       utils/wp-graphql.ts = the only GraphQL helper (fetchWPGraphQL)
@@ -130,16 +130,14 @@ Verified in the Phase 0 baseline (`docs/specs/phase-0-baseline.md`, 2026-10-24).
 Toolchain / repo
 - `node_modules` installed for x64 while Node runs arm64 → `vitest` cannot start
   (missing `@rollup/rollup-darwin-arm64`).
-- No CI, no `.nvmrc`, no `typecheck` script. `.npmrc` and `vercel.json` use `legacy-peer-deps`.
-- `package-lock.json` is tracked, but `.gitignore` also lists it (dead rule, misleading).
+- `.npmrc` and `vercel.json` use `legacy-peer-deps`.
+- postcss 8.4.31 pinned inside next@15.5.28 — high advisory, fixed only by next@16 (future phase).
 - `eslint.ignoreDuringBuilds: true`; lint baseline 146 errors / 119 warnings.
 - `README.md` structure outdated (`about/`, `portfolio/`).
 
 Code
 - `react-hooks/rules-of-hooks` error: `CalendlyButton/index.tsx:44` calls `useEmailModal`
   conditionally — real bug risk.
-- `src/pages/api/ping-cms.ts` is empty (0 bytes) → `/api/ping-cms` returns 500.
-- `src/pages/api/__tests__/contact.test.ts` is built and served as a public API route.
 - Hardcoded production CMS fallback in 3 files: `utils/wp-graphql.ts`,
   `app/api/wp-graphql/route.ts`, `LeadMagnetSection/api.ts`.
 - `images.domains` (deprecated) duplicates `images.remotePatterns` in `next.config.ts`.
