@@ -9,7 +9,6 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
@@ -279,3 +278,10 @@ $RECYCLE.BIN/
 # Temporary files
 *.tmp
 *.temp
+
+# WordPress backups / DB dumps — never commit
+*.wpress
+*.sql
+*.sql.gz
+/backups/
+/wp-backups/
