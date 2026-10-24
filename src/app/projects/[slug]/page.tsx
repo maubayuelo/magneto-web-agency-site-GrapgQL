@@ -2,7 +2,9 @@ import { Metadata } from 'next';
 import { ProjectDetail } from '@/components/organisms';
 import { notFound } from 'next/navigation';
 import { GET_PROJECTS } from '@/data/projects';
+import type { ProjectData } from '@/data/projects';
 import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Your custom fetcher
+import { getProjectBySlug } from './api';
 
 interface PageProps {
   params: Promise<{
@@ -11,16 +13,9 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-
-  const data = await fetchWPGraphQL(
-    typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || ''
-  );
-  const projects = data?.projects?.nodes || [];
-
-
   const { slug } = await params;
-  const project = (projects as any[]).find((p: any) => p.slug === slug);
-  
+  const project = await getProjectBySlug(slug);
+
   if (!project) {
     return {
       title: 'Project Not Found',
@@ -29,47 +24,46 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${project.title} | Magneto Projects`,
-    description: project.description,
+    // Not queried (always undefined, as before). Project meta descriptions are Phase 7 (SEO).
+    description: undefined,
   };
 }
 
 export default async function ProjectPage({ params }: PageProps) {
-  const data = await fetchWPGraphQL(
-    typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || ''
-  );
-  const projects = data?.projects?.nodes || [];
   const { slug } = await params;
-  const project = (projects as any[]).find((p: any) => p.slug === slug);
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     notFound();
   }
 
   // Map GraphQL project node to ProjectData shape
-  const acf = project.projectsProjectData?.projectData || {};
+  const acf = project.projectsProjectData?.projectData;
   const images = project.projectsProjectData?.images || [];
 
   const mappedProject = {
     id: project.id,
     slug: project.slug,
     title: project.title,
-    tagText: acf.projectSubtitle || "",
-    description: acf.projectDescription || "",
-    projectUrl: acf.projectUrl || "",
+    tagText: acf?.projectSubtitle || "",
+    description: acf?.projectDescription || "",
+    projectUrl: acf?.projectUrl || "",
     image: project.featuredImage?.node?.sourceUrl || "",
-    gallery: images.map((img: any) => ({
+    gallery: images.map((img) => ({
       image: img.image?.node?.sourceUrl ?? null,
       footNote: img.footNote ?? "",
       isMobileScreenshot: !!img.ismobilescreenshot,
     })),
-    challenges: (acf.challenges || []).map((c: any) => c.item),
-    solutions: (acf.solutions || []).map((s: any) => s.item),
-    results: (acf.results || []).map((r: any) => r.item),
+    challenges: (acf?.challenges || []).map((c) => c.item),
+    solutions: (acf?.solutions || []).map((s) => s.item),
+    results: (acf?.results || []).map((r) => r.item),
     // Add more fields as needed
   };
 
   return (
-    <ProjectDetail project={mappedProject} />
+    // ProjectData (src/data/projects.ts) does not match the real shape (id is a string, gallery
+    // items are objects); the old `any`s hid this. Cast until that type is fixed (out of scope).
+    <ProjectDetail project={mappedProject as unknown as ProjectData} />
   );
 }
 

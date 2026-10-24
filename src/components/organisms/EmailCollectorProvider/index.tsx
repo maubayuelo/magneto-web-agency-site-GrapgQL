@@ -334,4 +334,7 @@ export const useEmailModal = () => {
   return ctx;
 };
 
+/** Like useEmailModal, but returns undefined outside EmailCollectorProvider instead of throwing. */
+export const useOptionalEmailModal = () => useContext(EmailModalContext);
+
 export default EmailCollectorProvider;

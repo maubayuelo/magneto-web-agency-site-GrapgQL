@@ -22,6 +22,6 @@ CLAUDE.md → AGENTS.md import is active.
 
 ## Current phase
 
-Phase 0.5a — security & toolchain.
-Scope: `docs/specs/phase-0-5a-security-toolchain.md`.
+Phase 0.5b — code hygiene.
+Scope: `docs/specs/phase-0-5b-code-hygiene.md`.
 (Update this line when a phase closes.)
