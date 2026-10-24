@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   },
   /* config options here */
   images: {
-  domains: ['magneto-cms.local', 'cms.magnetomarketing.co'],
+  domains: ['magneto-cms.local', 'magneto-cms-2.local', 'cms.magnetomarketing.co'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -37,6 +37,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http',
         hostname: 'magneto-cms.local',
+        port: '',
+        pathname: '/wp-content/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'magneto-cms-2.local',
         port: '',
         pathname: '/wp-content/uploads/**',
       },
