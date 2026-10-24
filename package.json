@@ -8,6 +8,7 @@
   "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "test": "vitest"
   },
   "dependencies": {
@@ -16,7 +17,7 @@
     "graphql-request": "^7.2.0",
     "gtag": "^1.0.1",
     "isomorphic-dompurify": "^2.28.0",
-    "next": "15.4.8",
+    "next": "15.5.28",
     "nodemailer": "^7.0.6",
     "react": "19.1.2",
     "react-dom": "19.1.2",
@@ -30,7 +31,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.4.8",
+    "eslint-config-next": "15.5.28",
     "jsdom": "^21.1.2",
     "sass": "^1.89.2",
     "typescript": "^5",
