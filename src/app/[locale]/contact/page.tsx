@@ -1,6 +1,6 @@
 import { HeroLoader } from "@/components/organisms/Hero";
 import { ContactForm } from '@/components/organisms';
-import {getContactPageData} from '@/app/contact/api'; 
+import {getContactPageData} from '@/app/[locale]/contact/api'; 
 import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 
 export default async function ContactPage() {
