@@ -105,6 +105,38 @@ confirm the group keys match and take a backup; run the verification command aft
 Known limitation: `cta_link_LeadMagnetSection` (file) is Copy → FR/ES cannot have their own guide PDF.
 Revisit when the lead magnet is rebuilt (Copy once / Expert).
 
+## Production — cms.magnetomarketing.co (Phase 3b, 2026-10-25)
+
+Runbook `docs/specs/phase-3b-production-wpml-runbook.md`, report `docs/reports/phase-3b-production-wpml-runbook.md`.
+All production writes were made by Mauricio (WP admin + SSH); agents only ran read-only checks. Rows marked
+"(prod)" in the change log below.
+
+| Plugin | Version | State (after Phase 3b) | Note |
+|---|---|---|---|
+| WPGraphQL | 2.25.0 | active | = local |
+| WPGraphQL for ACF | 3.0.0 | active | = local |
+| Advanced Custom Fields PRO | 6.8.10 | active | = local |
+| WPML Multilingual CMS (`sitepress-multilingual-cms`) | 4.7.6 | active | installed in Phase 3b; registered with an inherited **Development** key — Production key pending (open item) |
+| Advanced Custom Fields Multilingual (ACFML) | 2.1.5 | active | installed in Phase 3b |
+| WPML GraphQL | 1.1.3 | active | was already active before Phase 3b (inert without core) |
+| WPML String Translation | — | not installed | as local (inactive) |
+| Add WPGraphQL SEO · Yoast SEO · WPGraphQL IDE · All-in-One WP Migration | 5.1.0 · 28.7 · 5.7.0 · 7.112 | state not recorded | listed in the step 1 inventory |
+| AI Agent by SiteGround (`sg-ai-studio`) | 1.3.1 | active | separate security decision, not part of Phase 3b |
+
+Only the rows above were inventoried; the full production plugin list is not recorded here yet.
+
+Settings now equal to local (table above): default `en`, active `en, fr, es`, directories, browser redirect off,
+`fr_CA`, `es_ES`, Translate Everything Automatically OFF, Translation Editor untouched (ATE),
+`custom_posts_sync_option` `post` 1 · `page` 1 · `project` 1 · `attachment` 1 (left as found) · `acf-field-group` "0".
+ACFML: all 13 groups `mode=translation`, field preferences identical to local (`diff` of the dump above: empty).
+
+Open: WPML cannot connect to wpml.org from SiteGround (outbound); needed before switching to a Production key.
+
+Backups (local copies in `~/Documents/projects/magneto/backups/phase-3b/`):
+- SiteGround manual backups `phase3b-before` (13:31) and `phase-3b-before-20261025` (13:33).
+- `phase-3b-before-20261025-1708.sql` (13:08 EDT), `phase-3b-after-20261025-1909.sql` (15:09 EDT, after step 6),
+  `phase-3b-after-20261025-2309.sql` (19:09 EDT, after the frontend promote). File names use server time (UTC).
+
 ## Change log
 
 | Date | Change | By |
@@ -123,3 +155,12 @@ Revisit when the lead magnet is rebuilt (Copy once / Expert).
 | 2026-10-24 | Phase 1 step 7: EN home duplicated to FR (535) and ES (536), "Translate independently", `heroTitle` test strings | Mauricio |
 | 2026-10-24 17:45 | Phase 1 step 8: backup `magneto-cms-2_phase1-after_20261024-1745.sql`; `custom_posts_sync_option` page 1, project 1 | Mauricio |
 | 2026-10-24 | Phase 1 verified read-only through GraphQL (V1–V7) | Claude Code (Dev) |
+| 2026-10-25 13:08–13:33 | (prod) Phase 3b step 1–2: SSH set up; inventory (WPML core + ACFML not installed, WPML GraphQL 1.1.3 active, old WPML settings present); backups `phase-3b-before-20261025-1708.sql`, SiteGround `phase3b-before`, `phase-3b-before-20261025` | Mauricio |
+| 2026-10-25 ≈13:56 | (prod) Phase 3b D-1: WPML GraphQL deactivated before step 3 (Senior Architect decision) | Mauricio |
+| 2026-10-25 ≤14:04 | (prod) Phase 3b step 3: WPML 4.7.6, ACFML 2.1.5 installed (zip, `unzip -o`); WPML core activated (during a multi-command paste, D-2). Registration: inherited Development key; "cannot connect to wpml.org" | Mauricio |
+| 2026-10-25 ≤14:42 | (prod) Phase 3b step 4: French locale `fr_FR` → `fr_CA`; Projects `2` → `1` (only show translated items); everything else already equal to local; Media `1` left as found | Mauricio |
+| 2026-10-25 ≤14:46 | (prod) Phase 3b step 5a: ACFML activated | Mauricio |
+| 2026-10-25 ≤15:01 | (prod) Phase 3b step 5c: "Projects - Project Data" → "Same fields across languages" (only group not in `translation` mode); 5d dump = local | Mauricio |
+| 2026-10-25 ≤15:06 | (prod) Phase 3b step 6: WPML GraphQL reactivated; `wp cache flush` + SiteGround dynamic cache flushed; backup `phase-3b-after-20261025-1909.sql` | Mauricio |
+| 2026-10-25 | (prod) Phase 3b verified read-only: Appendix A hash `b0517e27…aaa4` unchanged at 7 checkpoints; schema checks; live site and PR #10 preview/production routes | Claude Code (Dev) |
+| 2026-10-25 19:09 | (prod) Backup `phase-3b-after-20261025-2309.sql` after the PR #10 promote | Mauricio |
