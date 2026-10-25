@@ -34,17 +34,34 @@ Rules:
 
 | # | Phase | Notes |
 |---|---|---|
-| 0 | Baseline | install, lint, typecheck, test, build, run; record failures. No changes. |
-| 1 | WP i18n setup (local) | WPML + ACFML activated and configured per `WP-SETUP.md`; schema evidence of language args |
-| 2 | Locale routing + switcher | EN unprefixed, `/fr`, `/es`; switcher hidden until a locale is ready |
+| 0 | Baseline | install, lint, typecheck, test, build, run; record failures. No changes. ✅ |
+| 0.5a / 0.5b | Security & toolchain / code hygiene | next 15.5.28, CI, prod-fallback removal, project by slug ✅ |
+| 1 | WP i18n setup (local) | WPML + ACFML activated and configured per `WP-SETUP.md`; schema evidence of language args ✅ |
+| 2 | Locale routing + switcher | EN unprefixed, `/fr`, `/es`; switcher hidden until a locale is ready. Reverted (PR #8): on-demand 404s return 500 on Vercel (HTML sanitizer in the server bundle). Re-land after the fix, verified on the Vercel preview. |
 | 3 | Locale-aware data | `locale` threaded through every `api.ts` |
 | 4 | UI microcopy dictionaries | extract hardcoded strings; EN values unchanged |
 | 5 | Content load FR-CA / ES | WP-CLI script preferred; browser for spot checks; DB backup first |
 | 6 | Multilingual QA script | LLM + structured output; flags only, never retranslates |
 | 7 | SEO i18n | localized meta, canonical, hreflang, sitemap |
+| 8 | Graphics | inventory from the new copy (Phase 5): new Home hero illustration, service images, check whether new icons are needed; design (Design artifact), export, upload to WP media and set in ACF (image fields are "Copy" → one upload serves EN/FR/ES); verify on all routes and viewports |
+| Launch | Release | replicate Phase 1 in production WP (ACF JSON import + WPML settings, backup first), privacy/consent EN → FR-CA → ES, enable `ENABLED_LOCALES` in Vercel, release process below |
 
-Later (separate scope): Calendly modal A/B, Project Inquiry form, Brevo (ADR 0002),
-privacy/consent EN → FR-CA → ES, deploy candidate, production.
+Later (separate scope): Calendly modal A/B + canonical event, Project Inquiry form, Brevo (ADR 0002),
+custom 404 page, lead-magnet guide with new copy, `/carte` route (QR gate), `fashion-company-ecommerce` slug.
+
+## Release process (production deploys are manual)
+
+Merging to `master` does **not** publish. Vercel builds `master` as a preview; production is promoted by hand.
+
+1. **Before merging a PR:** its Vercel preview must be checked and pass: main routes 200, an unknown URL
+   (e.g. `/esto-no-existe`) 404 — not 500 —, one project page 200, plus the phase's own checks.
+   CI does not build and agents test locally, so the preview is the only test of the real Vercel runtime.
+2. Merge → Vercel creates the `master` deployment (preview).
+3. Re-check that deployment with the same list.
+4. Vercel → Deployments → that deployment → **⋯ → Promote to Production**.
+5. Verify production. If anything is wrong: **Instant Rollback** to the previous deployment, then revert the PR.
+6. Never assume a merge is live: check production (e.g. a route that changed in the release).
+
 
 ## Canonical copy (Notion)
 
