@@ -1,8 +1,9 @@
 import "./AboutSection.scss";
 import { getHomeAboutSection } from "./api";
+import type { Locale } from "@/i18n/config";
 
-export default async function AboutSection() {
-  const { aboutSectionTitle, description } = await getHomeAboutSection();
+export default async function AboutSection({ locale }: { locale: Locale }) {
+  const { aboutSectionTitle, description } = await getHomeAboutSection(locale);
 
   if (!aboutSectionTitle && !description) return null;
 

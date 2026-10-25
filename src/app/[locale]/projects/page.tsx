@@ -1,34 +1,21 @@
 import { HeroLoader } from '@/components/organisms/Hero';
-
-import { GET_PROJECTS } from '@/data/projects';
-import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Your custom fetcher
+import { notFound } from 'next/navigation';
 import { ProjectsGrid } from '@/components/organisms';
-import { getProjectsPageData } from './api';
+import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
+import { getProjects, getProjectsPageData } from './api';
 
-export default async function PortfolioPage() {
-  const projectsData = await fetchWPGraphQL(
-    typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || ''
-  );
-  const introTextData = await getProjectsPageData();
-  const introText = introTextData?.introText || "";
-  
-  const projects = projectsData?.projects?.nodes || [];
-  // Normalize projects into the shape ProjectsGrid expects (id, slug, title, featuredImage, solutions, results)
-  const mappedProjects = projects.map((project: any) => ({
-    id: project.id,
-    slug: project.slug,
-    title: project.title,
-    featuredImage: project.featuredImage,
-    solutions: (project.projectsProjectData?.projectData?.solutions || []).map((s: any) => s.item),
-    results: (project.projectsProjectData?.projectData?.results || []).map((r: any) => r.item),
-  }));
-  
-  
+export default async function PortfolioPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: rawLocale } = await params;
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const mappedProjects = await getProjects(locale);
+  const introTextData = await getProjectsPageData(locale);
+  if (!introTextData) notFound();
+  const introText = introTextData.introText || "";
 
   return (
     <>
       {/* HeroLoader fetches and renders the Hero section for this page */}
-  <HeroLoader pageUri="projects" variant="project" />
+  <HeroLoader pageUri="projects" variant="project" locale={locale} />
   {mappedProjects.length > 0 && introText ? (
         <div className="main typo-center pb-md-responsive">
           <h3

@@ -3,8 +3,6 @@ import Image from 'next/image';
 import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 import HeroCTA from './HeroCTA';
 import './Hero.scss';
-import { getHomeHero } from './api';
-import type { HomeHero } from './types';
 
 export interface HeroProps {
   variant?: 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'packages' | 'default';
@@ -100,31 +98,6 @@ export function Hero({
       </section>
     </div>
   );
-}
-
-export async function loadHomeHero(): Promise<Partial<HeroProps>> {
-  try {
-    const hero: HomeHero = await getHomeHero();
-    const imageNode = (hero as any)?.heroImage || undefined;
-    const image = imageNode && (imageNode as any).sourceUrl ? { src: (imageNode as any).sourceUrl, alt: (imageNode as any).altText || '', width: (imageNode as any).mediaDetails?.sizes?.[0]?.width || undefined, height: (imageNode as any).mediaDetails?.sizes?.[0]?.height || undefined } : undefined;
-    const cta = hero?.cta ? { text: hero.cta.text || '', href: hero.cta.href || undefined, type: hero.cta.type || undefined, utmContent: hero.cta.utmContent || undefined, utmTerm: hero.cta.utmTerm || undefined } : null;
-
-    return {
-      title: hero?.title || '',
-      subtitle: hero?.subtitle || '',
-      image,
-      imageNode,
-      cta,
-      backgroundImage: (hero as any)?.backgroundImage?.sourceUrl || undefined,
-      // Do NOT force a variant here; the caller (pages or HeroLoader) should
-      // decide which variant to render. Forcing 'home' caused the hero image
-      // to appear on other pages that used the home loader.
-    };
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error('loadHomeHero error:', e);
-    return {};
-  }
 }
 
 // Backwards-compatibility: pages import { HeroLoader } from this module.

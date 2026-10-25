@@ -5,42 +5,41 @@
 // sections of the homepage. In Next.js app router, async server components can
 // fetch data directly. Client-only behavior should be placed in components with
 // "use client" at the top.
+import { notFound } from 'next/navigation';
 import { HeroLoader } from '@/components/organisms/Hero';
-// `GET_PROJECTS` is a GraphQL query string defined in `src/data/projects` that asks the CMS for project posts.
-import { GET_PROJECTS } from '@/data/projects';
-import { fetchWPGraphQL } from '@/utils/wp-graphql'; // Centralized GraphQL fetch helper
-import { getHomeTestimonials } from '@/components/organisms/Testimonials/api';
+import { getHomeTestimonials, type Testimonial } from '@/components/organisms/Testimonials/api';
 import { ProjectsGrid } from '@/components/organisms';
+import type { ProjectItem } from '@/components/organisms/ProjectsGrid/types';
 import AboutSection from '@/components/organisms/AboutSection';
 import FeaturedServicesLoader from '@/components/organisms/FeaturedServices/FeaturedServicesLoader';
+import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
+import { getPageExists } from '@/utils/wp-page';
+import { getProjects } from './projects/api';
 
-export default async function Home() {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: rawLocale } = await params;
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+
+  // Missing translation → 404 (ADR 0004, D2). A CMS error is not a 404: render the fallbacks as before.
+  let homeExists = true;
+  try {
+    homeExists = await getPageExists('home', locale);
+  } catch (e) {
+    console.error('Error checking the home page:', e);
+  }
+  if (!homeExists) notFound();
+
   // Default values for the data we'll render
-  let projects = [];
+  let projects: ProjectItem[] = [];
   let fetchError = false;
-  let testimonialData = [];
+  let testimonialData: Testimonial[] = [];
 
   try {
-    // Fetch projects using the GraphQL helper. `GET_PROJECTS` is a string query.
-    const data = await fetchWPGraphQL(typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || '');
-
-    // The CMS response format depends on your GraphQL schema. Here we expect
-    // `data.projects.nodes` to be an array of project nodes.
-    const projectsRaw = data?.projects?.nodes || [];
-
-    // Normalize the CMS project objects into the shape the React components expect.
-    projects = projectsRaw.map((project: any) => ({
-      id: project.id,
-      slug: project.slug,
-      title: project.title,
-      featuredImage: project.featuredImage,
-      // Example of mapping nested ACF fields if present
-      solutions: (project.projectsProjectData?.projectData?.solutions || []).map((s: any) => s.item),
-      results: (project.projectsProjectData?.projectData?.results || []).map((r: any) => r.item),
-    }));
+    // Projects in the request locale, already mapped to the ProjectsGrid shape.
+    projects = await getProjects(locale);
 
     // Fetch testimonials from a helper; this might call the CMS or return static data.
-    testimonialData = await getHomeTestimonials();
+    testimonialData = await getHomeTestimonials(locale);
   } catch (e) {
     // If any fetch fails, set a flag and continue rendering fallbacks.
     console.error('Error fetching projects:', e);
@@ -59,10 +58,10 @@ export default async function Home() {
   return (
     <>
       {/* HeroLoader: server component that renders the hero for the page */}
-      <HeroLoader pageUri="/" variant="home" />
+      <HeroLoader pageUri="/" variant="home" locale={locale} />
       {/* AboutSection, FeaturedServices and other page sections: usually composed from smaller components */}
-      <AboutSection />
-      <FeaturedServicesLoader />
+      <AboutSection locale={locale} />
+      <FeaturedServicesLoader locale={locale} />
       {/* <Testimonials testimonials={testimonials} /> */}
       <ProjectsGrid
           projects={projects}

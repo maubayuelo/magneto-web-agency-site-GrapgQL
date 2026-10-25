@@ -1,61 +1,18 @@
 import { Hero } from './index';
-import { fetchWPGraphQL } from '@/utils/wp-graphql';
+import type { Locale } from '@/i18n/config';
+import { getPageHero, heroPageName, type PageHero } from './api';
 
 
 interface HeroLoaderProps {
   pageUri: string;
+  locale: Locale;
   variant?: 'default' | 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'packages';
 }
 
-export default async function HeroLoader({ pageUri, variant = 'default' }: HeroLoaderProps) {
-  let about = null;
+export default async function HeroLoader({ pageUri, locale, variant = 'default' }: HeroLoaderProps) {
+  let about: PageHero | null = null;
   try {
-    const data = await fetchWPGraphQL(`
-      query GetHeroContent {
-        pageBy(uri: "${pageUri}") {
-          title
-          heroContent {
-            heroTitle
-            subtitleHero
-            ctaTextHero
-            ctaLinkHero
-            image {
-              node {
-                id
-                sourceUrl
-                mediaDetails {
-                  width
-                  height
-                  sizes {
-                    name
-                    width
-                    height
-                    sourceUrl
-                  }
-                }
-              }
-            }
-            backgroundImage {
-              node {
-                id
-                sourceUrl
-                mediaDetails {
-                  width
-                  height
-                  sizes {
-                    name
-                    width
-                    height
-                    sourceUrl
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `);
-    about = data.pageBy;
+    about = await getPageHero(heroPageName(pageUri), locale);
   } catch (e) {
     console.error('GraphQL fetch error:', e);
   }

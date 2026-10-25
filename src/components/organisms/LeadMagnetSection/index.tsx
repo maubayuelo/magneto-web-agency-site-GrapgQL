@@ -12,6 +12,7 @@ import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
   className = '',
   show = true,
+  locale,
 }) => {
   const { openModal } = useEmailModal();
   const router = useRouter();
@@ -47,11 +48,11 @@ export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
 
   useEffect(() => {
     async function fetchData() {
-      const section: LeadMagnetSectionData = await getLeadMagnetSection();
+      const section: LeadMagnetSectionData = await getLeadMagnetSection(locale);
       setDataLeadMagnetSection(section || null);
     }
     fetchData();
-  }, []);
+  }, [locale]);
 
   if (!shouldShow) return null;
 

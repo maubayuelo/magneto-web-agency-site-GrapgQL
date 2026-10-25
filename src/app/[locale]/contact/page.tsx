@@ -2,10 +2,16 @@ import { HeroLoader } from "@/components/organisms/Hero";
 import { ContactForm } from '@/components/organisms';
 import {getContactPageData} from '@/app/[locale]/contact/api'; 
 import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
+import { notFound } from 'next/navigation';
+import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
 
-export default async function ContactPage() {
+type ContactPageProps = { params: Promise<{ locale: string }> };
 
-  const contactData = await getContactPageData();
+export default async function ContactPage({ params }: ContactPageProps) {
+  const { locale: rawLocale } = await params;
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const contactData = await getContactPageData(locale);
+  if (!contactData) notFound();
   // Preserve the full featuredImage object coming from the API (including
   // mediaDetails.sizes). Earlier we narrowed this to only sourceUrl/altText
   // which dropped the size metadata WpResponsiveImage needs to pick the
@@ -18,7 +24,7 @@ export default async function ContactPage() {
   return (
     <>
       {/* HeroLoader fetches and renders the Hero section for this page */}
-      <HeroLoader pageUri="contact" variant="contact" />
+      <HeroLoader pageUri="contact" variant="contact" locale={locale} />
 
       <div className="main">
         <div className="contact-form-container" id="contact-area">
@@ -47,9 +53,10 @@ export default async function ContactPage() {
   );
 }
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: ContactPageProps) {
   try {
-  await getContactPageData();
+  const { locale: rawLocale } = await params;
+  await getContactPageData(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
   const title = 'Contact - Magneto Marketing';
   const desc = 'Get in touch with Magneto Marketing to book a strategy call or ask about services.';
   return { title, description: desc, openGraph: { title, description: desc }, twitter: { title, description: desc } };

@@ -1,11 +1,18 @@
 import { cache } from 'react';
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
+import type { Locale } from '@/i18n/config';
+import { wpLocaleVars } from '@/i18n/wp';
+import { mediaOriginalFields, resolveMediaWrapper, type WpMediaNode } from '@/utils/wp-media';
 
-// Single project by slug. The node selection is identical to GET_PROJECTS (src/data/projects.ts)
-// because page.tsx maps these exact fields. WPML note: `project` takes no language argument.
+const PROJECT_MEDIA_FIELDS = `sourceUrl altText mediaDetails { sizes { sourceUrl width height name } }`;
+
+// Single project by slug in one language (ADR 0004, D1: P-B). `project(id, SLUG)` takes no language
+// argument, so the connection's `where: { language, name }` is used; a missing translation gives [].
+// The node selection is identical to GET_PROJECTS (src/data/projects.ts) because page.tsx maps these fields.
 export const GET_PROJECT_BY_SLUG_QUERY = `
-  query GetProjectBySlug($slug: ID!) {
-    project(id: $slug, idType: SLUG) {
+  query GetProjectBySlug($slug: String, $language: String, $mediaOriginal: Boolean!) {
+    projects(first: 1, where: { language: $language, name: $slug }) {
+      nodes {
       id
       slug
       title
@@ -21,6 +28,7 @@ export const GET_PROJECT_BY_SLUG_QUERY = `
               name
             }
           }
+          ${mediaOriginalFields(PROJECT_MEDIA_FIELDS)}
         }
       }
       projectsProjectData {
@@ -51,11 +59,13 @@ export const GET_PROJECT_BY_SLUG_QUERY = `
                   name
                 }
               }
+              ${mediaOriginalFields(PROJECT_MEDIA_FIELDS)}
             }
           }
           footNote
           ismobilescreenshot
         }
+      }
       }
     }
   }
@@ -105,14 +115,29 @@ export interface ProjectNode {
 }
 
 export interface GetProjectBySlugResponse {
-  project: ProjectNode | null;
+  projects: { nodes: ProjectNode[] | null } | null;
 }
 
+const resolveImage = (wrapper: { node: MediaNode | null } | null) =>
+  resolveMediaWrapper(wrapper as { node: (MediaNode & WpMediaNode) | null } | null) as { node: MediaNode | null } | null;
+
 /**
- * Loads one project by slug, or null if WordPress has none. Wrapped in React `cache` so
- * generateMetadata and the page share one request per render.
+ * Loads one project by slug in `locale` (images from the EN original), or null if that language has none.
+ * Wrapped in React `cache` (keyed by slug and locale) so generateMetadata and the page share one request.
  */
-export const getProjectBySlug = cache(async (slug: string): Promise<ProjectNode | null> => {
-  const data: GetProjectBySlugResponse | undefined = await fetchWPGraphQL(GET_PROJECT_BY_SLUG_QUERY, { slug });
-  return data?.project ?? null;
+export const getProjectBySlug = cache(async (slug: string, locale: Locale): Promise<ProjectNode | null> => {
+  const data: GetProjectBySlugResponse | undefined = await fetchWPGraphQL(GET_PROJECT_BY_SLUG_QUERY, {
+    slug,
+    ...wpLocaleVars(locale),
+  });
+  const project = data?.projects?.nodes?.[0];
+  if (!project) return null;
+  const acf = project.projectsProjectData;
+  return {
+    ...project,
+    featuredImage: resolveImage(project.featuredImage),
+    projectsProjectData: acf
+      ? { ...acf, images: acf.images ? acf.images.map((img) => ({ ...img, image: resolveImage(img.image) })) : acf.images }
+      : acf,
+  };
 });
