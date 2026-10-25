@@ -53,6 +53,15 @@ custom 404 page, lead-magnet guide with new copy, `/carte` route (QR gate), `fas
 
 Merging to `master` does **not** publish. Vercel builds `master` as a preview; production is promoted by hand.
 
+**CMS first, frontend second.** Vercel previews and production build against the **production** WordPress.
+- If a PR needs a CMS change (plugin, GraphQL schema, ACF field group, WPML setting), apply it to production
+  WordPress **first**, then redeploy the PR's preview.
+- The CMS change follows a runbook spec in `docs/specs/`. It covers a backup, a before/after capture proving
+  the live site is unaffected, and a rollback.
+- A frontend that queries a field production doesn't have fails the preview build. Example: PR #10,
+  2026-10-25, runbook `docs/specs/phase-3b-production-wpml-runbook.md`.
+- Agents never write to production.
+
 1. **Before merging a PR:** its Vercel preview must be checked and pass: main routes 200, an unknown URL
    (e.g. `/esto-no-existe`) 404 — not 500 —, one project page 200, plus the phase's own checks.
    CI does not build and agents test locally, so the preview is the only test of the real Vercel runtime.
