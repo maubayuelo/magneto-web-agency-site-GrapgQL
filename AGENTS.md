@@ -53,6 +53,8 @@ npm run build        # next build
   375 / 768 / 1440 px, in EN (no regressions) and in every enabled locale.
 - Report honestly: passed / failed / not run. Pre-existing failures recorded in the
   Phase 0 baseline are not caused by your change — but say which ones you saw.
+- **Release process:** merging does not publish, and the PR's Vercel preview check is a merge precondition.
+  See `docs/ai/WORKFLOW.md` → "Release process".
 
 ---
 
@@ -151,10 +153,6 @@ Code
   don't exist in the schema. Both are dead code: `PackagesGrid` is rendered by `/packages` with props from
   `app/packages/api.ts`, and `getHomePackages` is only called by `PackagesGridWithData`, which nothing
   imports; `PreFooter/api.ts` is never imported (`FinalCTASection` has its own `api.ts`). Phase 3.
-- Sanitizer crash in the server bundle: on-demand `projects/[slug]` renders that load `ProjectDetail`
-  (`isomorphic-dompurify` / `jsdom`) throw `Right-hand side of 'instanceof' is not an object` under
-  `next start` → 500 (live: `/projects/no-existe`). Phase 2 fixes the unknown-slug case (404); prerendered
-  slugs are unaffected; a project rendered on demand (e.g. the 13th) may still 500. Check on a Vercel preview.
 - `images.domains` (deprecated) duplicates `images.remotePatterns` in `next.config.ts`.
 - `ProjectData` type doesn't match the real CMS data (`id` is a string, gallery items are
   objects); `projects/[slug]/page.tsx` uses a commented `as unknown as ProjectData` cast. Fix

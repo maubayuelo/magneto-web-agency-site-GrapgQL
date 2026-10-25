@@ -2,6 +2,103 @@
 
 - Spec: `docs/specs/phase-2-locale-routing.md` (Approved — 2026-10-24)
 - Author: Dev · Date: 2026-10-24 · Branch: `feat/phase-2-locale-routing` (HEAD `22ab3f4`, **nothing staged**)
+- Amendment A2 (re-land): branch `feat/phase-2-locale-routing-v2`, see the next section.
+
+## Amendment A2 — jsdom stylesheet on Vercel (2026-10-24, approved by the Senior Architect)
+
+Branch `feat/phase-2-locale-routing-v2` at `3b89cc5` (Phase 2 restored by reverting the revert `42e6e9f`).
+**Nothing staged.** No questions; no deviations from the A2 scope.
+
+**Result: done locally.** Merge precondition (Mauricio's): the PR's Vercel preview must return 404 on
+`/esto-no-existe` and `/projects/no-existe`, and 200 on a project page, before merging.
+
+### Change
+- `next.config.ts`: added `serverExternalPackages: ['isomorphic-dompurify', 'jsdom']`, with a 3-line comment.
+  Removed the webpack block that copied `default-stylesheet.css` into `.next/browser`; the dev `watchOptions`
+  part of the webpack hook is kept.
+- `package.json`: removed the `"prebuild"` script.
+- `scripts/copy-jsdom-style.js`: deleted with `rm`. `scripts/` is now empty and removed; nothing else referenced it.
+
+Why it works: `isomorphic-dompurify` 2.28.0 uses its own nested `jsdom` 27.0.0, which reads
+`lib/jsdom/browser/default-stylesheet.css` relative to its own files. When bundled, that path resolves into
+`.next/`, and the file only existed there because of the copy workaround, which Vercel's `/var/task` bundle
+lacks. When externalized, the package is `require`d from `node_modules`, and Next's file tracing (nft) adds the CSS
+to every route that needs it.
+
+### Order of proof (each from `rm -rf .next`, `next build` + `next start -p 3100`, EN-only `ENABLED_LOCALES=`)
+| Step | Setup | `/esto-no-existe` | `/projects/no-existe` | `/carte` | project | Server log |
+|---|---|---|---|---|---|---|
+| 0 HEAD | workaround, CSS present | 404 | 404 | 404 | 200 | clean |
+| 0' HEAD, Vercel simulated | `.next/browser` deleted | **500** | **500** | **500** | 200 | `ENOENT … .next/browser/default-stylesheet.css` (Vercel's error) |
+| 1 fix + workaround | `.next/browser` deleted | 404 | 404 | 404 | 200 | 0 errors |
+| 2 fix, workaround removed | no `.next/browser` at all | 404 | 404 | 404 | 200 ×3 | 0 errors |
+
+Step 0' reproduces the Vercel failure locally. Step 1 shows that the fix works without the copy, and only then was
+the workaround removed (step 2).
+
+### Trace / bundle checks (step 2 build)
+- `.next/browser` does not exist.
+- 0 `.js` files under `.next/server` mention `default-stylesheet`. The 8 `[locale]` page bundles now
+  `require("isomorphic-dompurify")` at runtime instead of inlining it.
+- 8 of 19 `.nft.json` files list
+  `node_modules/isomorphic-dompurify/node_modules/jsdom/lib/jsdom/browser/default-stylesheet.css`. These are all 8
+  `app/[locale]/**/page.js` routes, including `[...rest]` (404s) and `projects/[slug]`. The path resolves to a
+  real file (11 707 B). The other 11 are route handlers, API routes and the like, which don't load the sanitizer.
+
+### Sanitized HTML on a real runtime render
+- Prerendered `/projects/trepied-trepied-ca`: the normalized HTML is identical to HEAD, as are the other two projects' title and description.
+- Runtime render: after the ISR window (`revalidate` 1 min), the same page went `x-nextjs-cache: STALE`, was
+  regenerated in the background and then served `HIT`, with 0 server errors. The regenerated HTML is identical to HEAD
+  (normalized), so DOMPurify ran at request time without the copied CSS.
+
+### Pre-Phase-2 code (master `7f95998`, throwaway worktree, removed)
+- As is (with the workaround): `/projects/no-existe` → **500** (`TypeError: i is not a function`, the bundled-jsdom
+  crash; production's 500).
+- With only the `serverExternalPackages` line added: → **404**, 0 errors. So the fix also clears the older crash
+  that the Known-debt line described (`Right-hand side of 'instanceof'…` in the Phase 2 round-1 build).
+
+### Gate and Phase 2 acceptance checks again
+| Check | Result |
+|---|---|
+| Lint | failed as before: 164 errors / 118 warnings / 46 files, identical to the accepted baseline |
+| Typecheck | passed |
+| Tests | passed, 9 files / 77 tests |
+| Build, clean, `.env.local` (`en,fr,es`) | passed, 32/32, no `prebuild` step, no `.next/browser` |
+| Build, `ENABLED_LOCALES=` | passed, 14/14; Middleware 34.2 kB (unchanged) |
+| Build, `=en,fr` | passed, 23/23 |
+| EN status (27 URLs incl. redirects, `/en*`, disabled locales, proxy) vs HEAD | identical |
+| EN SSR HTML (8 routes, normalized) + project meta + proxy body vs HEAD | identical |
+| EN screenshots 375/768/1440 × 8 routes (incl. `/carte`) vs HEAD | 24/24 pixel-identical |
+| `=en,fr,es`: statuses vs round 2 | identical; `/fr/esto-no-existe`, `/fr/projects/no-existe`, `/es/projects/no-existe` → 404; FR/ES project → 200 |
+| `=en,fr,es`: EN HTML vs round-2 capture | 8/8 identical (switcher present, `/carte` without it, as before) |
+| `=en,fr,es`: `lang` | `fr-CA` on `/fr`, `/fr/contact`, `/fr/projects/…`; `es` on `/es/services` |
+| `=en,fr` | `/fr/services` 200 with `hrefLang` en + fr-CA only; `/es`, `/es/services` 404 |
+
+Evidence: `<scratchpad>/p2/a2/` (status/HTML captures `head/`, `a2en/`, `a2all/`; screenshots `shots-head/`,
+`shots-a2en/`, `shots-a2all/` (FR, for reference); `pngdiff-en.txt`, `trace-check.txt`, `nft-with-css.txt`,
+`isr.txt`, `wt-results.txt`, build/start logs). All servers were mine on port 3100 and stopped by PID. Port 3000 was never touched.
+
+### Docs
+- `AGENTS.md`: the sanitizer-crash Known-debt line is removed (fixed, see above). Added a "Release process" pointer
+  under the completion gate, pointing to `docs/ai/WORKFLOW.md`. 193 lines.
+- `CLAUDE.md` unchanged. It already says "merge after the Vercel preview check".
+
+### Issues found (not fixed)
+- None new. Unrelated: an on-demand project page (e.g. the 13th) is no longer expected to 500, but `projects(first: 12)`
+  is still Known debt.
+
+### Proposed commits (A2 only; nothing staged)
+1. `fix(build): load isomorphic-dompurify and jsdom from node_modules on the server`
+   - `next.config.ts`, `package.json`, `scripts/copy-jsdom-style.js` (deleted).
+   - Body: "Vercel's bundle lacked jsdom's default-stylesheet.css (ENOENT → 500 on every on-demand render).
+     serverExternalPackages lets nft trace the file; the prebuild/webpack copy workaround is removed."
+   - (`git add -A next.config.ts package.json scripts` stages the deletion.)
+2. `docs(phase-2): amendment A2 report, known debt and release pointer`
+   - `AGENTS.md`, `docs/reports/phase-2-locale-routing.md`
+
+Time (Dev, A2): ≈ 20 min of active work (from file timestamps), most of it builds.
+
+---
 
 ## Status after the Senior Architect decisions (2026-10-24, round 2)
 
@@ -215,7 +312,7 @@ Not yet reviewed (reported in round 1):
    `git diff --cached` is empty.
 
 ## Issues found (not fixed)
-- **Sanitizer crash in the server bundle**:
+- **Sanitizer crash in the server bundle** (resolved by Amendment A2, see above):
   - It is live in production (confirmed: `www.magnetomarketing.co/projects/no-existe` → 500). In HEAD it shows under
     `next start` as `TypeError: Right-hand side of 'instanceof' is not an object` from the chunk with `jsdom` /
     `isomorphic-dompurify` (`ProjectDetail`).
