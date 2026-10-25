@@ -267,14 +267,14 @@ console.log("rest equal (ignoring modified + ACFML keys):",JSON.stringify(strip(
    ```bash
    for q in '{projects(first:3,where:{language:"en"}){nodes{slug languageCode}}}' \
             '{mediaItems(first:1){nodes{languageCode translations{databaseId}}}}' \
-            '{languages{code locale default}}' '{projects(first:1,where:{language:"fr"}){nodes{slug}}}'; do
+            '{languages{code default_locale} defaultLanguage{code default_locale}}' '{projects(first:1,where:{language:"fr"}){nodes{slug}}}'; do
      curl -s -X POST -H 'Content-Type: application/json' -d "{\"query\":$(node -e 'console.log(JSON.stringify(process.argv[1]))' "$q")}" \
        https://cms.magnetomarketing.co/graphql; echo; done
    ```
    Expected:
    - the 3 EN projects, all with `languageCode "en"`
    - a media node with `languageCode` and `translations` and **no errors**
-   - `languages` = en `en_US` default, fr `fr_CA`, es `es_ES`
+   - `languages` = en `en_US`, fr `fr_CA`, es `es_ES`; `defaultLanguage` = en `en_US`
    - FR projects `[]` ("only show translated")
 3. **Live site unaffected** (Dev, read-only):
    ```bash

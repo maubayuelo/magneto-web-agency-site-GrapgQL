@@ -22,6 +22,8 @@ CLAUDE.md → AGENTS.md import is active.
 
 ## Current phase
 
-Phase 3 — Locale-aware data: done (2026-10-24); merge after the Vercel preview check.
-Scope: `docs/specs/phase-3-localized-data.md`. Report: `docs/reports/phase-3-localized-data.md`.
+Phase 3 — Locale-aware data: closed. 3 merged (2026-10-24); 3b done in production (2026-10-25).
+Scope: `docs/specs/phase-3-localized-data.md`, `docs/specs/phase-3b-production-wpml-runbook.md`.
+Reports: `docs/reports/phase-3-localized-data.md`, `docs/reports/phase-3b-production-wpml-runbook.md`.
+Next: Phase 4 (no spec yet).
 (Update this line when a phase closes.)
