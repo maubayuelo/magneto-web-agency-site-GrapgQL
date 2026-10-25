@@ -166,9 +166,9 @@ export default async function RootLayout({
           {children}
 
           {/* These are common marketing sections rendered on most pages: lead magnet, final CTA and footer. */}
-          <LeadMagnetSection/>
-          <FinalCTASectionLoader/>
-          <FooterLoader />
+          <LeadMagnetSection locale={locale} />
+          <FinalCTASectionLoader locale={locale} />
+          <FooterLoader locale={locale} />
         </EmailCollectorProvider>
       </body>
     </html>

@@ -79,15 +79,17 @@ src/
 
 ### Where text lives today
 
-Routes live under `src/app/[locale]/` (EN served unprefixed via the middleware). Pages don't read
-`params.locale` yet (Phase 3).
+Routes live under `src/app/[locale]/` (EN served unprefixed via the middleware). Every CMS read takes the
+request `locale` and filters by language + slug (ADR 0004): `pages(first: 1, where: { language, name })`,
+`projects(where: { language, name })`; never `page(id, URI)` / `pageBy` / `project(id, SLUG)` (they fall back
+to EN). Missing translation → `notFound()`. Images come from the EN original (`src/utils/wp-media.ts`).
 
-| Route | Source |
+| Route | Source (WP page `name`, in the request language) |
 |---|---|
-| `/` | `pageBy(uri: "home")` — ACF groups `heroContent`, `homeAboutSection`, `homeTestimonialsSection`, `leadMagnetSection`, `finalCtaSection` |
-| `/services` `/packages` `/projects` `/about-magneto` `/contact` | `page(id: "<slug>", idType: URI)` + ACF |
-| `/projects/[slug]` | projects CPT |
-| Header / Footer | their own `api.ts` |
+| `/` | `home` — ACF groups `heroContent`, `homeAboutSection`, `homeFeaturedServices`, `homeTestimonialsSection` |
+| `/services` `/packages` `/projects` `/about-magneto` `/contact` | the page with that slug + ACF (hero via `Hero/api.ts`) |
+| `/projects/[slug]` | projects CPT, same slug in every language |
+| Lead magnet / final CTA / footer (layout) | the locale's `home` page, their own `api.ts` |
 | UI microcopy (buttons, labels, form errors, aria-labels) | hardcoded in components — to be extracted |
 
 ---
@@ -149,14 +151,10 @@ Code
 - `projects(first: 12)` (`GET_PROJECTS`) still used by `sitemap.xml/route.ts`, `projects/page.tsx`
   (grid), `app/page.tsx` (home) and `projects/[slug]` `generateStaticParams`. Projects past 12
   are missing from the sitemap and the grid.
-- `PackagesGrid/api.ts` (`homePackages`) and `PreFooter/api.ts` (`homePrefooter`) query ACF groups that
-  don't exist in the schema. Both are dead code: `PackagesGrid` is rendered by `/packages` with props from
-  `app/packages/api.ts`, and `getHomePackages` is only called by `PackagesGridWithData`, which nothing
-  imports; `PreFooter/api.ts` is never imported (`FinalCTASection` has its own `api.ts`). Phase 3.
+- With ENABLED_LOCALES on, if any locale has 0 projects, Next 15.5 prerenders no project pages for any locale
+  (on-demand still works). Resolves in Phase 5 when every locale has projects; Phase 5 acceptance must verify
+  prerendered project paths per locale.
 - `images.domains` (deprecated) duplicates `images.remotePatterns` in `next.config.ts`.
-- `ProjectData` type doesn't match the real CMS data (`id` is a string, gallery items are
-  objects); `projects/[slug]/page.tsx` uses a commented `as unknown as ProjectData` cast. Fix
-  the type when Phase 3 touches the project `api.ts`.
 - `LeadMagnetSection/api.ts`: an outer try/catch swallows the missing-env-var error, so the
   section silently renders nothing instead of failing loudly. Accepted while the lead magnet
   stays hidden (pending new guide copy); fix when the section is rebuilt.

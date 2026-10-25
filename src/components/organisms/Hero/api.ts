@@ -1,45 +1,31 @@
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
-import type { HomeHero } from './types';
+import type { Locale } from '@/i18n/config';
+import { wpLocaleVars } from '@/i18n/wp';
+import { mediaOriginalFields, resolveMediaWrapper } from '@/utils/wp-media';
+import type { ImageNode } from './types';
 
-export const HOME_HERO_QUERY = `
-  query GetHeroContent {
-    pageBy(uri: "home") {
-      title
-      heroContent {
-        heroTitle
-        subtitleHero
-        ctaTextHero
-        ctaLinkHero
-        image {
-          node {
-            id
-            sourceUrl
-            altText
-            mediaDetails {
-              width
-              height
-              sizes {
-                name
-                width
-                height
-                sourceUrl
-              }
+const HERO_IMAGE_FIELDS = `id sourceUrl mediaDetails { width height sizes { name width height sourceUrl } }`;
+
+export const PAGE_HERO_QUERY = `
+  query GetHeroContent($language: String, $name: String, $mediaOriginal: Boolean!) {
+    pages(first: 1, where: { language: $language, name: $name }) {
+      nodes {
+        title
+        heroContent {
+          heroTitle
+          subtitleHero
+          ctaTextHero
+          ctaLinkHero
+          image {
+            node {
+              ${HERO_IMAGE_FIELDS}
+              ${mediaOriginalFields(HERO_IMAGE_FIELDS)}
             }
           }
-        }
-        backgroundImage {
-          node {
-            id
-            sourceUrl
-            mediaDetails {
-              width
-              height
-              sizes {
-                name
-                width
-                height
-                sourceUrl
-              }
+          backgroundImage {
+            node {
+              ${HERO_IMAGE_FIELDS}
+              ${mediaOriginalFields(HERO_IMAGE_FIELDS)}
             }
           }
         }
@@ -48,35 +34,40 @@ export const HOME_HERO_QUERY = `
   }
 `;
 
-export async function getHomeHero(): Promise<HomeHero> {
-  const data = await fetchWPGraphQL(HOME_HERO_QUERY);
-  const page = data?.pageBy;
-  const hc = page?.heroContent;
+export interface PageHero {
+  title: string | null;
+  heroContent: {
+    heroTitle: string | null;
+    subtitleHero: string | null;
+    ctaTextHero: string | null;
+    ctaLinkHero: string | null;
+    image: { node: (ImageNode & { id?: string }) | null } | null;
+    backgroundImage: { node: (ImageNode & { id?: string }) | null } | null;
+  } | null;
+}
 
-  // Map CMS shape (heroContent) to our HomeHero type
-  const hero: HomeHero = {
-    title: hc?.heroTitle || page?.title || undefined,
-    subtitle: hc?.subtitleHero || undefined,
-    heroImage: hc?.image?.node
-      ? {
-          sourceUrl: hc.image.node.sourceUrl || undefined,
-          altText: hc.image.node.altText || undefined,
-          mediaDetails: hc.image.node.mediaDetails || undefined,
-        }
-      : undefined,
-    backgroundImage: hc?.backgroundImage?.node
-      ? {
-          sourceUrl: hc.backgroundImage.node.sourceUrl || undefined,
-          mediaDetails: hc.backgroundImage.node.mediaDetails || undefined,
-        }
-      : undefined,
-    cta: hc?.ctaTextHero
-      ? {
-          text: hc.ctaTextHero || undefined,
-          href: hc.ctaLinkHero || undefined,
-        }
-      : null,
+interface PageHeroResponse {
+  pages: { nodes: PageHero[] | null } | null;
+}
+
+/** Page name (slug) for a HeroLoader `pageUri`: '/' is the home page, anything else is used as is. */
+export function heroPageName(pageUri: string): string {
+  return pageUri === '/' ? 'home' : pageUri;
+}
+
+/** Hero fields of the WordPress page `name` in `locale` (images from the EN original), or null if missing. */
+export async function getPageHero(name: string, locale: Locale): Promise<PageHero | null> {
+  const data: PageHeroResponse | undefined = await fetchWPGraphQL(PAGE_HERO_QUERY, { ...wpLocaleVars(locale), name });
+  const page = data?.pages?.nodes?.[0];
+  if (!page) return null;
+  const hero = page.heroContent;
+  if (!hero) return page;
+  return {
+    ...page,
+    heroContent: {
+      ...hero,
+      image: resolveMediaWrapper(hero.image) as NonNullable<PageHero['heroContent']>['image'],
+      backgroundImage: resolveMediaWrapper(hero.backgroundImage) as NonNullable<PageHero['heroContent']>['backgroundImage'],
+    },
   };
-
-  return hero || {};
 }

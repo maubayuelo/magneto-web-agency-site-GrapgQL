@@ -1,3 +1,5 @@
+import type { Locale } from '@/i18n/config';
+
 export interface LinkNode {
   node?: {
     id?: string | number;
@@ -24,6 +26,8 @@ export interface LeadMagnetSectionData {
 export interface LeadMagnetSectionProps {
   className?: string;
   show?: boolean;
+  /** Request locale; the section reads this locale's home page. */
+  locale: Locale;
 }
 
 export default LeadMagnetSectionProps;

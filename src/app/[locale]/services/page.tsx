@@ -1,6 +1,8 @@
 import { HeroLoader } from '@/components/organisms/Hero';
 import ServicesList from './ServicesList';
 import './Services.scss';
+import { notFound } from 'next/navigation';
+import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
 import { getServicesPageData } from './api';
 
 // Service data structure
@@ -8,27 +10,35 @@ interface Service {
   pageintrotext: string;
 }
 
-// REMOVE top-level await usage and move fetching into the component
-export default async function ServicesPage() {
-  try {
-    let introText = '';
-    let servicesArray: any[] = [];
-    try {
-      const servicesPageData = await getServicesPageData();
-      introText = servicesPageData?.pageintrotext?.pageIntroText || '';
-      // Extract services list to pass to the server-rendered ServicesList component
-      servicesArray = servicesPageData?.servicesServiceDetails?.services || [];
-    } catch (err) {
-      // Don't crash the page if the CMS/API is unreachable; render fallbacks.
-      console.error('Failed to load services page data:', err);
-      introText = '';
-      servicesArray = [];
-    }
+type ServicesPageProps = { params: Promise<{ locale: string }> };
 
+// REMOVE top-level await usage and move fetching into the component
+export default async function ServicesPage({ params }: ServicesPageProps) {
+  const { locale: rawLocale } = await params;
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  let introText = '';
+  let servicesArray: any[] = [];
+  let pageMissing = false;
+  try {
+    const servicesPageData = await getServicesPageData(locale);
+    pageMissing = servicesPageData === null;
+    introText = servicesPageData?.pageintrotext?.pageIntroText || '';
+    // Extract services list to pass to the server-rendered ServicesList component
+    servicesArray = servicesPageData?.servicesServiceDetails?.services || [];
+  } catch (err) {
+    // Don't crash the page if the CMS/API is unreachable; render fallbacks.
+    console.error('Failed to load services page data:', err);
+    introText = '';
+    servicesArray = [];
+  }
+  // Missing translation → 404 (ADR 0004, D2); outside the try below so its catch can't swallow it.
+  if (pageMissing) notFound();
+
+  try {
     return (
       <>
         {/* HeroLoader fetches and renders the Hero section for this page */}
-        <HeroLoader pageUri="services" variant="services" />
+        <HeroLoader pageUri="services" variant="services" locale={locale} />
         {introText ? (
           <div className="main typo-center pb-md-responsive">
             <h3

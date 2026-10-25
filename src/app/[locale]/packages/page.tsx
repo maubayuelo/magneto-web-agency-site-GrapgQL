@@ -1,14 +1,22 @@
 import React from "react";
 import { HeroLoader } from "@/components/organisms/Hero";
 import { PackagesGrid } from "@/components/organisms";
+import { notFound } from "next/navigation";
+import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
 import { getPackagesPageData } from "./api";
 
-export default async function PackagesPage() {
-  const { introText, packages } = await getPackagesPageData();
+type PackagesPageProps = { params: Promise<{ locale: string }> };
+
+export default async function PackagesPage({ params }: PackagesPageProps) {
+  const { locale: rawLocale } = await params;
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const pageData = await getPackagesPageData(locale);
+  if (!pageData) notFound();
+  const { introText, packages } = pageData;
 
   return (
     <>
-      <HeroLoader pageUri="packages" variant="packages" />
+      <HeroLoader pageUri="packages" variant="packages" locale={locale} />
       {introText ? (
         <div className="main typo-center">
           <h3
@@ -26,9 +34,10 @@ export default async function PackagesPage() {
   );
 }
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: PackagesPageProps) {
   try {
-    await getPackagesPageData();
+    const { locale: rawLocale } = await params;
+    await getPackagesPageData(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
     const title = "Packages - Magneto Marketing";
     const desc = "Browse service packages and pricing for Magneto Marketing.";
     return {

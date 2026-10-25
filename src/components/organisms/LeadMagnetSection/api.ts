@@ -1,10 +1,13 @@
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
 import { getWpBaseUrl } from '@/utils/wordpress';
+import type { Locale } from '@/i18n/config';
+import { wpLocaleVars } from '@/i18n/wp';
 import type { LeadMagnetSectionData, LinkNode } from './types';
 
 export const LEAD_MAGNET_SECTION_QUERY = `
-  query LeadMagnetSection {
-    page(id: "home", idType: URI) {
+  query LeadMagnetSection($language: String) {
+    pages(first: 1, where: { language: $language, name: "home" }) {
+      nodes {
       leadMagnetSection {
         overTitleLeadMagnetSection
         titleLeadMagnetSection
@@ -30,13 +33,15 @@ export const LEAD_MAGNET_SECTION_QUERY = `
           }
         }
       }
+      }
     }
   }
 `;
 
-export async function getLeadMagnetSection(): Promise<LeadMagnetSectionData> {
-  const data = await fetchWPGraphQL(LEAD_MAGNET_SECTION_QUERY);
-  const raw = (data?.page?.leadMagnetSection as LeadMagnetSectionData) || {};
+// The lead-magnet link is a file, not an image: its guid/REST URL is already the shared uploads file (ADR 0004, D3).
+export async function getLeadMagnetSection(locale: Locale): Promise<LeadMagnetSectionData> {
+  const data = await fetchWPGraphQL(LEAD_MAGNET_SECTION_QUERY, wpLocaleVars(locale));
+  const raw = (data?.pages?.nodes?.[0]?.leadMagnetSection as LeadMagnetSectionData) || {};
   // Provide a normalized alias ctaLink to keep consuming code compatible
   const linkNode = raw.ctaLinkLeadMagnetSection as LinkNode | undefined | null;
   const normalized: LeadMagnetSectionData = {

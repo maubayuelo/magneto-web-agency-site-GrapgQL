@@ -1,8 +1,14 @@
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
+import type { Locale } from '@/i18n/config';
+import { wpLocaleVars } from '@/i18n/wp';
+import { mediaOriginalFields, resolveOriginalMedia } from '@/utils/wp-media';
+
+const FEATURED_FIELDS = `sourceUrl altText mediaDetails { sizes { sourceUrl width height name } }`;
 
 const CONTACT_PAGE_QUERY = `
-  query GetContactPageData {
-    page(id: "contact", idType: URI) {
+  query GetContactPageData($language: String, $mediaOriginal: Boolean!) {
+    pages(first: 1, where: { language: $language, name: "contact" }) {
+      nodes {
       contactContactTexts {
         mainCopy
         tagText
@@ -20,16 +26,21 @@ const CONTACT_PAGE_QUERY = `
               name
             }
           }
+          ${mediaOriginalFields(FEATURED_FIELDS)}
         }
+      }
       }
     }
   }
 `;
 
-export async function getContactPageData() {
-  const data = await fetchWPGraphQL(CONTACT_PAGE_QUERY);
-  const contact = data?.page?.contactContactTexts;
-  const featuredImage = data?.page?.featuredImage?.node;
+/** The `contact` page in `locale`, or null when it has no translation (→ 404). */
+export async function getContactPageData(locale: Locale) {
+  const data = await fetchWPGraphQL(CONTACT_PAGE_QUERY, wpLocaleVars(locale));
+  const page = data?.pages?.nodes?.[0];
+  if (!page) return null;
+  const contact = page.contactContactTexts;
+  const featuredImage = resolveOriginalMedia(page.featuredImage?.node);
   return {
     mainCopy: contact?.mainCopy || "",
     tagText: contact?.tagText || "",

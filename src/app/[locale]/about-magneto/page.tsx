@@ -3,11 +3,16 @@ import { CalendlyButton } from '@/components/atoms';
 import Image from 'next/image';
 import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 import '@/styles/pages/about.scss';
+import { notFound } from 'next/navigation';
+import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
 import { getAboutPageData } from './api';
 
-export async function generateMetadata() {
+type AboutPageProps = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: AboutPageProps) {
   try {
-    const data = await getAboutPageData();
+    const { locale: rawLocale } = await params;
+    const data = await getAboutPageData(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
     const title = data?.title ?? 'About Magneto - About the Agency';
     const desc = data?.meta_description ?? 'Meet Magneto Marketing \u2014 a solo web agency focused on strategy, design and web development.';
     return {
@@ -34,14 +39,17 @@ export async function generateMetadata() {
   }
 }
 
-export default async function AboutPage() {
-  const aboutData = await getAboutPageData();
+export default async function AboutPage({ params }: AboutPageProps) {
+  const { locale: rawLocale } = await params;
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const aboutData = await getAboutPageData(locale);
+  if (!aboutData) notFound();
   //console.log('About page data from CMS:', aboutData);
 
   return (
     <>
       {/* HeroLoader fetches and renders the Hero section for this page */}
-      <HeroLoader pageUri="about-magneto" variant="about" />
+      <HeroLoader pageUri="about-magneto" variant="about" locale={locale} />
 
       <div className="main">
         <div className="about-content pb-lg-responsive">

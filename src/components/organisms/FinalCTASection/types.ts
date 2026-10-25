@@ -1,3 +1,5 @@
+import type { Locale } from '@/i18n/config';
+
 export interface ImageNode {
   node?: {
     sourceUrl?: string | null;
@@ -28,6 +30,8 @@ export interface FinalCTASectionProps {
   className?: string;
   show?: boolean;
   debugData?: FinalCTAData | null;
+  /** Request locale; the client fallback fetch reads this locale's home page. */
+  locale: Locale;
 }
 
 export default FinalCTASectionProps;

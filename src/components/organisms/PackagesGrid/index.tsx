@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PackageCard, { PackageCardProps } from '../../molecules/PackageCard';
 import type { PackageItem } from './types';
 import './PackagesGrid.scss';
-import { getHomePackages } from './api';
 
 export interface PackagesGridProps {
   packages: PackageItem[] | PackageCardProps[];
@@ -33,20 +32,3 @@ export default PackagesGrid;
 
 // Named export for compatibility
 export { PackagesGrid };
-
-export function PackagesGridWithData() {
-  const [packages, setPackages] = useState<PackageItem[]>([]);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getHomePackages();
-        setPackages(data || []);
-      } catch (err) {
-        // ignore and keep empty
-      }
-    }
-    fetchData();
-  }, []);
-
-  return <PackagesGrid packages={packages} />;
-}

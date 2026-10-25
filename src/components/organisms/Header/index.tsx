@@ -5,8 +5,6 @@ import Image from "next/image";
 import { CalendlyButton } from "../../atoms";
 import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 import "./Header.scss";
-import { getHomeHeader } from "./api";
-import { HomeHeader } from './types';
 
 export const Header = ({
   className = "",
@@ -21,7 +19,7 @@ export const Header = ({
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [logoUrl, setLogoUrl] = useState<string | undefined>(logo);
+  const [logoUrl] = useState<string | undefined>(logo);
   const [useImgFallback, setUseImgFallback] = useState(false);
 
   useEffect(() => {
@@ -31,19 +29,6 @@ export const Header = ({
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    async function fetchLogo() {
-      try {
-        const data: HomeHeader = await getHomeHeader();
-        const src = logoUrl || logo || '/assets/images/logo-magneto.svg';
-        if (src) setLogoUrl(src);
-      } catch (err) {
-        // keep fallback
-      }
-    }
-    fetchLogo();
   }, []);
 
   // Render the header content (same for both mounted states to ensure consistency)

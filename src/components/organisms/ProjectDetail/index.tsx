@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import DOMPurify from 'isomorphic-dompurify';
-import { ProjectData } from '@/data/projects';
+import type { ProjectData, ProjectGalleryItem } from '@/data/projects';
 import './ProjectDetail.scss';
 
 interface ProjectDetailProps {
@@ -98,19 +98,20 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
         {/* Gallery - Full width images */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="project-detail__gallery typo-center pb-md">
-            {project.gallery.map((img: any, i: number) => {
-              const isMobileScreenshot = typeof img !== 'string' && !!img.isMobileScreenshot;
+            {project.gallery.map((img: ProjectGalleryItem, i: number) => {
+              const isMobileScreenshot = img.isMobileScreenshot;
               return (
                 <div key={i} className={`project-detail__image mb-md-responsive${isMobileScreenshot ? ' project-detail__image--mobile-stage' : ''}`}>
                   <Image
-                    src={typeof img === 'string' ? img : img.image}
-                    alt={typeof img === 'string' ? `Gallery image ${i + 1}` : (img.footNote || `Gallery image ${i + 1}`)}
+                    // An item without an image passes null through, as before (every gallery item has one today).
+                    src={img.image as string}
+                    alt={img.footNote || `Gallery image ${i + 1}`}
                     width={isMobileScreenshot ? 400 : 1200}
                     height={isMobileScreenshot ? 866 : 600}
                     className={`project-detail__main-image${isMobileScreenshot ? ' project-detail__main-image--mobile' : ''}`}
                   />
                   <p>
-                  {typeof img === 'string' ? '' : img.footNote}
+                  {img.footNote}
                   </p>
                 </div>
               );

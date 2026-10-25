@@ -7,9 +7,10 @@ import type { FinalCTASectionProps, FinalCTAData } from './types';
 // pre-fetches data so the client component can render immediately
 // without a client-side fetch + layout shift.
 export default async function FinalCTASectionLoader(props: Omit<FinalCTASectionProps, 'debugData'>) {
+  const { locale } = props;
   let data: FinalCTAData | null = null;
   try {
-    data = await getHomePrefooter();
+    data = await getHomePrefooter(locale);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error('FinalCTASectionLoader error:', e);

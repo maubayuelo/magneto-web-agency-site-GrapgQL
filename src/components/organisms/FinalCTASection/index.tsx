@@ -28,6 +28,7 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   className = '',
   show = true,
   debugData = null,
+  locale,
 }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -53,7 +54,7 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
     let active = true;
     (async () => {
       try {
-        const prefooter: FinalCTAData = await getHomePrefooter();
+        const prefooter: FinalCTAData = await getHomePrefooter(locale);
         if (active) setData(prefooter || null);
       } catch (e) {
         // eslint-disable-next-line no-console
@@ -61,7 +62,7 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
       }
     })();
     return () => { active = false; };
-  }, [debugData]);
+  }, [debugData, locale]);
 
   if (!shouldShow) return null;
 
