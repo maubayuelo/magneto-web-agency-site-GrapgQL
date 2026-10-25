@@ -67,6 +67,10 @@ const nextConfig: NextConfig = {
   experimental: {
     forceSwcTransforms: false,
   },
+  // jsdom (via isomorphic-dompurify) reads lib/jsdom/browser/default-stylesheet.css next to its own
+  // files at runtime. Bundled, that path points into .next/ and is missing on Vercel → 500.
+  // Required from node_modules instead, the file is traced into the serverless bundle.
+  serverExternalPackages: ['isomorphic-dompurify', 'jsdom'],
   // Add HTTP headers. If NO_INDEX is enabled, add X-Robots-Tag globally to
   // discourage search engine indexing for all routes.
   async headers() {
@@ -81,31 +85,6 @@ const nextConfig: NextConfig = {
     ];
   },
   webpack: (config, { dev }) => {
-    // Ensure jsdom's default stylesheet is available in the .next/browser path
-    // so server-side code that reads it at runtime can find it after bundling.
-    try {
-      const fs = require('fs');
-      const path = require('path');
-      const src = path.resolve(
-        __dirname,
-        'node_modules',
-        'isomorphic-dompurify',
-        'node_modules',
-        'jsdom',
-        'lib',
-        'jsdom',
-        'browser',
-        'default-stylesheet.css'
-      );
-      const destDir = path.resolve(__dirname, '.next', 'browser');
-      const dest = path.join(destDir, 'default-stylesheet.css');
-      if (fs.existsSync(src)) {
-        fs.mkdirSync(destDir, { recursive: true });
-        fs.copyFileSync(src, dest);
-      }
-    } catch (err) {
-      // ignore — best-effort copy
-    }
     if (dev) {
       config.watchOptions = {
         poll: 1000,
