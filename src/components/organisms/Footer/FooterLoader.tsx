@@ -12,5 +12,5 @@ export default async function FooterLoader({ locale }: { locale: Locale }) {
   } catch (e) {
     console.error('FooterLoader error:', e);
   }
-  return <Footer footerData={footerData} />;
+  return <Footer footerData={footerData} locale={locale} />;
 }

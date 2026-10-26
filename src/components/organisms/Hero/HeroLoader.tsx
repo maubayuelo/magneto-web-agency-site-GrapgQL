@@ -1,5 +1,6 @@
 import { Hero } from './index';
 import type { Locale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/dictionary';
 import { getPageHero, heroPageName, type PageHero } from './api';
 
 
@@ -30,7 +31,7 @@ export default async function HeroLoader({ pageUri, locale, variant = 'default' 
       showImage={variant === 'home' ? !!hero?.image?.node?.sourceUrl : false}
       image={
         variant === 'home' && hero?.image?.node?.sourceUrl
-          ? { src: hero.image.node.sourceUrl, alt: about?.title || 'Hero Image' }
+          ? { src: hero.image.node.sourceUrl, alt: about?.title || getDictionary(locale).cmsFallback.heroImageAlt }
           : undefined
       }
       imageNode={variant === 'home' ? hero?.image?.node : undefined}

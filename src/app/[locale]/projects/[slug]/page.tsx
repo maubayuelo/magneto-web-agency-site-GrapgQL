@@ -3,6 +3,7 @@ import { ProjectDetail } from '@/components/organisms';
 import { notFound } from 'next/navigation';
 import type { ProjectData } from '@/data/projects';
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
+import { format, getDictionary } from '@/i18n/dictionary';
 import { getProjects } from '../api';
 import { getProjectBySlug } from './api';
 
@@ -15,16 +16,18 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale: rawLocale, slug } = await params;
-  const project = await getProjectBySlug(slug, isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
+  const project = await getProjectBySlug(slug, locale);
 
   if (!project) {
     return {
-      title: 'Project Not Found',
+      title: t.projectNotFound.metaTitle,
     };
   }
 
   return {
-    title: `${project.title} | Magneto Projects`,
+    title: format(t.meta.project.title, { title: project.title }),
     // Not queried (always undefined, as before). Project meta descriptions are Phase 7 (SEO).
     description: undefined,
   };
@@ -32,7 +35,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProjectPage({ params }: PageProps) {
   const { locale: rawLocale, slug } = await params;
-  const project = await getProjectBySlug(slug, isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const project = await getProjectBySlug(slug, locale);
 
   if (!project) {
     notFound();
@@ -62,7 +66,7 @@ export default async function ProjectPage({ params }: PageProps) {
     // Add more fields as needed
   };
 
-  return <ProjectDetail project={mappedProject} />;
+  return <ProjectDetail project={mappedProject} locale={locale} />;
 }
 
 // Only the slugs that exist in this locale (ADR 0004): a locale without translations prerenders none, and an

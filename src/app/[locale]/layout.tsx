@@ -18,14 +18,15 @@ import { devConsoleError } from '@/utils/dev-console';
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
 import { GET_SITE_METADATA } from '@/data/site';
 import { DEFAULT_LOCALE, HTML_LANG, getEnabledLocales, isLocale } from '@/i18n/config';
+import { assertLocalesReady, getDictionary } from '@/i18n/dictionary';
+import { I18nProvider } from '@/i18n/I18nProvider';
 import { LanguageSwitcher } from '@/components/molecules';
 
-
-
-const FALLBACK_TITLE = 'Magneto Marketing - Web Solo Agency Portfolio and Services';
-const FALLBACK_DESCRIPTION = 'A creative digital agency showcasing work and services.';
-
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const t = getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
+  const FALLBACK_TITLE = t.meta.site.fallbackTitle;
+  const FALLBACK_DESCRIPTION = t.meta.site.fallbackDescription;
   try {
     const isProd = process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production';
     const NO_INDEX =
@@ -130,6 +131,11 @@ export async function generateMetadata(): Promise<Metadata> {
 // One prerender per enabled locale. dynamicParams is deliberately not set: it would cascade to
 // projects/[slug]. The middleware decides which locales are reachable.
 export function generateStaticParams() {
+  // Readiness guard (ADR 0005): Next calls this once during `next build`, which is the only step Vercel runs.
+  // Fails the build if an enabled locale still has [FR TODO]/[ES TODO] dictionary values. `next dev` is unaffected.
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    assertLocalesReady(getEnabledLocales(), { allowUntranslated: process.env.ALLOW_UNTRANSLATED_LOCALES === '1' });
+  }
   return getEnabledLocales().map((locale) => ({ locale }));
 }
 
@@ -143,6 +149,7 @@ export default async function RootLayout({
   const { locale: rawLocale } = await params;
   const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const enabledLocales = getEnabledLocales();
+  const t = getDictionary(locale);
 
   return (
     <html
@@ -150,6 +157,8 @@ export default async function RootLayout({
       {...({ 'data-lt-installed': 'true', suppressHydrationWarning: true } as any)}
     >
       <body>
+        {/* Only this locale's dictionary reaches the client (ADR 0005). Renders no DOM. */}
+        <I18nProvider locale={locale} dictionary={t}>
         {/* Header: site navigation and branding. This is a shared component used across pages. */}
         <EmailCollectorProvider>
           <Header
@@ -157,7 +166,7 @@ export default async function RootLayout({
             logo="/assets/images/logo-magneto.svg"
             switcher={
               enabledLocales.length > 1 ? (
-                <LanguageSwitcher locales={enabledLocales} currentLocale={locale} />
+                <LanguageSwitcher locales={enabledLocales} currentLocale={locale} label={t.header.languageSwitcher} />
               ) : undefined
             }
           />
@@ -170,6 +179,7 @@ export default async function RootLayout({
           <FinalCTASectionLoader locale={locale} />
           <FooterLoader locale={locale} />
         </EmailCollectorProvider>
+        </I18nProvider>
       </body>
     </html>
   );

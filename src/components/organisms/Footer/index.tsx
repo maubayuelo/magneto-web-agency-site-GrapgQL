@@ -2,8 +2,10 @@ import './Footer.scss';
 import type { FooterProps, FooterResponse, FooterSocialIcon } from './types';
 import Link from 'next/link';
 import Image from 'next/image';
+import { formatParts, getDictionary } from '@/i18n/dictionary';
 
-export const Footer: React.FC<FooterProps> = ({ className = '', footerData = null }) => {
+export const Footer: React.FC<FooterProps> = ({ className = '', footerData = null, locale }) => {
+  const t = getDictionary(locale);
 
   return (
     <section className={`main footer pt-lg-responsive ${className}`}>
@@ -31,7 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ className = '', footerData = nul
                 {src ? (
                   <Image
                     src={src}
-                    alt={(icon && (icon as any).alt) || 'Social Icon'}
+                    alt={(icon && (icon as any).alt) || t.cmsFallback.socialIconAlt}
                     className="footer__icon"
                     width={24}
                     height={24}
@@ -48,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ className = '', footerData = nul
             {footerData?.footerLine2 || 'Default Footer Line 2'}
           </p>
             <p className="typo-md-medium typo-center mb-lg-responsive">
-            Magneto Marketing - All Rights Reserved, {new Date().getFullYear()}.
+            {formatParts(t.footer.copyright, { year: new Date().getFullYear() })}
             </p>
           </>
         )}    
