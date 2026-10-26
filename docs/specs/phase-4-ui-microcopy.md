@@ -1,9 +1,10 @@
 # Phase 4 — UI microcopy dictionaries
 
-- Status: Draft
+- Status: Approved (2026-10-25: Mauricio; Senior Architect, with amendments 1–3, applied below)
 - Author: Architect · Reviewed by: Mauricio (+ Senior Architect)
-- Date: 2026-10-25 · Decisions A–F recorded 2026-10-25 (Mauricio); waiting for the Senior Architect's read
+- Date: 2026-10-25 · Decisions A–F recorded 2026-10-25 (Mauricio); Senior Architect read: approved with amendments
 - Branch: `spec/phase-4-ui-microcopy` (from `master` `8065eae`)
+- ADR: `docs/adr/0005-ui-dictionaries.md`
 - Depends on: `docs/reports/phase-3-localized-data.md`, `docs/reports/phase-3b-production-wpml-runbook.md`
   ("Issues found": raw 404 HTML, lead-magnet fallback), ADR 0001 §3, ADR 0003, ADR 0004
 
@@ -258,8 +259,10 @@ These are the EN fallbacks for ACF / WP fields. Policy: Decision E.
   (already approved, from the project 404). Any new wording comes from Mauricio (hard rule 4).
 - **Assumption A3:** No CMS change: no new GraphQL field or ACF group. So no production runbook is needed, and the
   Vercel preview builds against production as is.
-- **Open O1:** `Real State` (should be "Real Estate") is EN copy. I keep it byte-exact. Fix it? (Mauricio, a separate copy change.)
-- **Open O2:** Should the FR/ES email placeholder (`you@company.com`) be localized (e.g. `vous@entreprise.com`), or stay as is? A copy decision.
+- **O1, decided (Senior Architect):** `Real State` stays **byte-exact** in Phase 4. Mauricio fixes it in a separate
+  copy PR after the phase. The Dev must not change it, and the EN fingerprint (AC-4) keeps `Real State`.
+- **O2, decided (Senior Architect):** Mauricio decides the FR/ES email placeholder when he writes the FR/ES values.
+  No spec change: in Phase 4, `forms.emailPlaceholder` is `[FR TODO] you@company.com` / `[ES TODO] you@company.com` like every other key.
 
 ---
 
@@ -483,7 +486,19 @@ and `.next` untouched, two builds as in Phase 3: `ENABLED_LOCALES=` and `ENABLED
   `/fr/esto-no-existe`, `/fr/projects/no-existe`, `/es/esto-no-existe`, `/de/x`.
 - (e) Screenshots 375 / 768 / 1440 of the 7 routes and of `/projects/no-existe` and `/esto-no-existe` (locales off).
 
-**Then:**
+**Checkpoint C1 (Senior Architect amendment 1): after T0–T3, stop.**
+- Done at this point: V0, the dictionaries + guard + provider (T1), the layout + all `generateMetadata` (T2), and
+  the server components (T3). No client component, not-found page or link has been touched yet.
+- The Dev runs and reports:
+  - **AC-2:** the 130 existing tests unmodified, plus the T1 tests;
+  - **AC-3**, in **both** builds (`ENABLED_LOCALES=` and `=en,fr,es` with `ALLOW_UNTRANSLATED_LOCALES=1`):
+    normalized HTML, metadata extract, statuses and screenshots vs V0, for the 7 routes + the 2 other project pages;
+  - `npm run lint` and `npm run typecheck` results, for information.
+- The results go into `docs/reports/phase-4-ui-microcopy.md` under a "Checkpoint C1" heading. Nothing is staged.
+- Then the Dev **stops** and waits for an explicit OK from Mauricio + Senior Architect before T4–T8.
+- If AC-3 fails, the Dev reports the diff and does not continue or "fix forward".
+
+**Then (after the C1 OK):**
 - [ ] **AC-1 Gate:** `npm run lint && npm run typecheck && npm test -- --run && npm run build` passes.
   - Run it with the locales the Dev's `.env.local` has (`en,fr,es`), and with `ALLOW_UNTRANSLATED_LOCALES=1` on the
     command line because placeholders exist. The report states the exact command.
@@ -554,11 +569,11 @@ and `.next` untouched, two builds as in Phase 3: `ENABLED_LOCALES=` and `ENABLED
 
 ---
 
-## Decisions (recorded 2026-10-25, Mauricio; pending the Senior Architect's read)
+## Decisions (recorded 2026-10-25, Mauricio; approved by the Senior Architect)
 
 | | Decision | Consequence in this spec |
 |---|---|---|
-| **A** | **Native typed dictionaries.** No library, **no ADR** (ADR 0001 §3 covers it). | §2.1 |
+| **A** | **Native typed dictionaries.** No library. Recorded in **ADR 0005** (Senior Architect amendment 2), together with the provider / `formatParts` pattern and the raw-404 limit. | §2.1, ADR 0005 |
 | **B** | **`[FR TODO]` / `[ES TODO]` placeholders**, real FR/ES values from Mauricio later. **Plus a guard:** a build fails if `ENABLED_LOCALES` enables a locale whose dictionary still has markers. | §2.1, §2.1a, AC-1b |
 | **C** | **Strings-only exception to ADR 0002** for the Mailchimp modal (`EmailCollectorProvider`), and the string edits in `PackageCard` / `LeadMagnetSection`. No logic, prop or flow change. | §2.2, Files, R5 |
 | **D** | **Locale-prefixed plain `<a>`** (D1): `localizePath` on the existing elements. It returns unprefixed paths for EN (`paths.ts:20`), so the EN output stays byte-identical. Header nav stays `<a>`. | §2.2, AC-3, AC-10 |
@@ -575,8 +590,7 @@ Rejected alternatives, kept for the record:
 - E2 (keep EN literals) shows EN UI text under `/fr`.
 - F2 (unmatched-route 404 with `globalNotFound`) needs a routing ADR and covers only part of the 404s.
 
-Still open for the Senior Architect / Mauricio: O1 (`Real State`), O2 (localized email placeholder). Optionally, a short ADR
-0005 recording the provider / `formatParts` / not-found approach (not required by A).
+O1 and O2 are decided (see "Assumptions and open questions"). Nothing is open.
 
 ---
 
@@ -587,15 +601,17 @@ Still open for the Senior Architect / Mauricio: O1 (`Real State`), O2 (localized
 | T1 | `dictionary.ts`, `I18nProvider.tsx`, `en.ts` + `fr`/`es` placeholders, readiness guard (§2.1a) + `.env.local.example`, parity/format/guard/provider tests, EN fingerprint table | 60–75 min |
 | T2 | Layout provider + LanguageSwitcher label + all `generateMetadata` (7 files) | 30–40 min |
 | T3 | Server components: Footer(+Loader), FeaturedServices(+Loader, api), ServiceCard, ServicesList, ProjectDetail, services error fallback, HeroLoader alt | 40–60 min |
+| **C1** | **Checkpoint:** AC-2 + AC-3 (both builds), interim report, **stop** for the Mauricio + Senior Architect OK | 30–45 min + review wait |
 | T4 | Client components: Header, CalendlyButton + `calendly.ts`, ContactForm (+ FR test), ProjectsGrid, PackageCard, LeadMagnetSection, FinalCTASection, EmailCollectorProvider | 60–90 min |
 | T5 | NotFound component + both `not-found.tsx` + tests | 30–45 min |
 | T6 | Links (D1) | 15–25 min |
 | T7 | Verification AC-1…AC-13 (both builds, 3 guard builds, screenshots, hydration console, bundle grep) | 75–105 min |
 | T8 | AGENTS.md lines (baseline, D1 note, raw-404 debt, I-9, override rule) + report | 25–35 min |
-| | **Total (agent)** | **≈ 6–8.5 h** |
+| | **Total (agent)** | **≈ 6.5–9 h** (plus the C1 wait) |
 
 **Mauricio (by hand):**
-- Spec review and decisions A–F: done (2026-10-25); the Senior Architect's read is pending.
+- Spec review and decisions A–F: done (2026-10-25), approved by the Senior Architect with amendments.
+- Checkpoint C1 review with the Senior Architect: 15–20 min.
 - Approve the new `/esto-no-existe` look from screenshots: 10 min.
 - Vercel preview check (AC-11): 15 min.
 - Later, outside this phase (Decision B): FR/ES values ≈ 1–2 h. Until then the guard blocks enabling FR/ES.
