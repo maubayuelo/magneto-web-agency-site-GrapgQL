@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / EN
 URL: https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f
-Notion page last edited: 2026-10-17T20:11:25.730Z
+Notion page last edited: 2026-10-26T19:06:18.138Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -88,12 +88,18 @@ Magneto's own project: an online shop and blog combined in one website, with sha
 “Very professional. Mauricio understood my work from the start and knew how to create what I need. The result exceeds my expectations, and working with him was simple and very satisfying.”
 
 
-**Dangel · Holistic and intuitive therapist · Montreal**  
+**Dangel Manik · Holistic therapist · Montreal**  
 
 
 *Translated from Spanish.*
 
-**Implementation note:** the testimonial block already exists in the current site and is hidden. Reuse / unhide that block during the website update; do not build a new testimonial component. Add a real Trépied testimonial later if Isra provides one. The absence of a Trépied testimonial does not block the website build.
+**Implementation note:** the testimonial block already exists in the current site and is hidden. Reuse / unhide that block during the website update; do not build a new testimonial component. The block shows 2 testimonials: Dangel (verified, original Spanish email 2026-08-20) and Isra / TRÉPIED (DRAFT below).
+
+“Great experience working with Mauricio (Magneto). He understood our needs and turned them into an attractive, functional and professional website. We highly recommend Magneto!”
+
+**Israel Valencia Vázquez · Founder & video producer · TRÉPIED**
+
+*DRAFT — not publishable yet. Wording adjusted from singular/plural in Isra's original (WhatsApp, 2026-10-23: "Great experience working with this Mauricio! They understood our needs… Highly recommended!"); waiting for Isra's approval of this version and of the attribution line. If he declines, use his original text verbatim (fix only "this Mauricio").*
 
 ### 6. Lead Magnet
 
