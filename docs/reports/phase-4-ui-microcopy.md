@@ -5,9 +5,10 @@
 - Evidence: `<scratchpad>/p4/` =
   `/private/tmp/claude-501/-Users-maubayuelo-Documents-projects-magneto-web-app-GrapgQL/3f8144d7-33fc-47ed-9d3a-a358d2067960/scratchpad/p4/`
 
-**Status: T0–T8 done; AC-11 passed on the PR preview (2026-10-25).** C1 was approved on 2026-10-25 by Mauricio and the Senior Architect,
+**Status: T0–T8 done; AC-11 passed on the PR preview; merged, promoted and verified on production (2026-10-25).** C1 was approved on 2026-10-25 by Mauricio and the Senior Architect,
 with decisions: `format.ts` (a), required `locale` props, the Footer prop in `types.ts`.
 - AC-11 (Vercel preview) **passed**, 11/11 URLs (details under AC-11 below).
+- Live production after the promote **passed**, 11/11 URLs, and the new build is confirmed ("Production verification" below).
 - The new `/esto-no-existe` look was **approved by Mauricio on 2026-10-25** (AC-5).
 - Deviations 1–3 were accepted on 2026-10-25. The FR/ES-only popup labels (deviation 2) are recorded as minor debt.
 - Nothing is staged or committed.
@@ -377,6 +378,36 @@ never touched (BUILD_ID `GdgelMczjUyCIzua04nkq` before and after).
 | `/projects/no-existe` | 404 | raw `<title>Project Not Found</title>`, same robots. After load: custom project 404 (h1, body, `View All Projects` → `/projects`, `Go Home` → `/`), header and footer present | pass |
 | `/fr` | 404 | custom 404 (h1 `404`), `lang="en"` (locale disabled), no `TODO]` text on the page | pass |
 | `/es` | 404 | same as `/fr` | pass |
+
+### Production verification (after merge and promote, 2026-10-25 22:45 EDT)
+- **Request:** Mauricio merged Phase 4 and promoted it; the Production rebuild was Ready.
+- **Method:** plain HTTP `GET` of the same 11 URLs on `https://www.magnetomarketing.co`, no Chrome.
+- **Evidence:** raw HTML + headers in `<scratchpad>/p4/prod-20261025-2245/`; log in `<scratchpad>/p4/prod-commands.log`.
+- **Only reads:** no other request went to production.
+
+| URL | Status | Raw HTML | Result |
+|---|---|---|---|
+| `/` | 200 | `<html lang="en">`, title `Magneto Marketing - Home`, nav `About` `Services` `Packages` `Projects` `Contact` (unprefixed hrefs, e.g. `/about-magneto/`), `Free Schedule Call` ×2, footer `Magneto Marketing - All Rights Reserved, <!-- -->2026<!-- -->.`, no `TODO]` | pass |
+| `/services` | 200 | title `Services - Magneto Marketing`; same EN nav, CTA and footer | pass |
+| `/packages` | 200 | title `Packages - Magneto Marketing`; same | pass |
+| `/projects` | 200 | title `Projects - Magneto Marketing`; same | pass |
+| `/about-magneto` | 200 | title `About Magneto - About the Agency`; same | pass |
+| `/contact` | 200 | title `Contact - Magneto Marketing`; same | pass |
+| `/projects/trepied-trepied-ca` | 200 | title `TRÉPIED — trepied.ca \| Magneto Projects`; same | pass |
+| `/esto-no-existe` | 404 | `<html id="__next_error__">` shell; `<title>404: This page could not be found.</title>`; robots `noindex` + `noindex, nofollow` only (no `index, follow`); the payload carries the custom 404 (`Go Home`, `.not-found`) | pass |
+| `/projects/no-existe` | 404 | same shell; `<title>Project Not Found</title>`; robots noindex only | pass |
+| `/fr` | 404 | same shell; `<title>404: This page could not be found.</title>`; robots noindex only; no `TODO]` | pass |
+| `/es` | 404 | same as `/fr` | pass |
+
+**It is the new build.**
+- The live RSC payload of `/` and of `/esto-no-existe` contains the dictionary keys `bookStrategyCall`,
+  `cmsFallback`, `languageSwitcher` and `projectNotFound`, serialized by the `I18nProvider` prop. They exist only
+  in the Phase 4 build.
+- On the 404s, the raw `<title>` is the dictionary value instead of `Magneto CMS`, and the layout's
+  `index, follow` meta is gone. Both were the pre-Phase-4 behaviour (spec E2, Phase 3b report).
+- Headers: `/` → `x-vercel-cache: PRERENDER`, `age: 0`; `/esto-no-existe` → `MISS`, `age: 0`.
+- The after-load rendering of the custom 404 (Chrome) was checked on the preview (AC-11); here it is visible only in
+  the payload, by request.
 
 ### AGENTS.md diff (AC-12)
 - **Commands:** + `ALLOW_UNTRANSLATED_LOCALES=1` is for local builds only; never set it in Vercel (and what the
