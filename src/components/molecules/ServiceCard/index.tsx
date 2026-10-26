@@ -1,5 +1,8 @@
 import React from 'react';
 import ServiceIcon from '@/components/atoms/ServiceIcon';
+import type { Locale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/dictionary';
+import { localizePath } from '@/i18n/paths';
 import './ServiceCard.scss';
 
 interface ServiceCardProps {
@@ -7,9 +10,11 @@ interface ServiceCardProps {
   description: string;
   icon: string;
   anchorLink?: string;
+  locale: Locale;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon,  anchorLink  }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon,  anchorLink, locale }) => {
+  const t = getDictionary(locale);
   return (
     <div className="service-card">
       <div className="service-card__icon">
@@ -21,10 +26,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon,  an
       </div>
       {anchorLink ? (
         <a
-          href={`/services#${anchorLink.toLowerCase().replace(/\s+/g, '-')}`}
+          href={`${localizePath('/services', locale)}#${anchorLink.toLowerCase().replace(/\s+/g, '-')}`}
           className="service-card__link typo-xl-extrabold typo-color-primary"
         >
-          Learn More
+          {t.featuredServices.learnMore}
         </a>
       ) : null}
     </div>

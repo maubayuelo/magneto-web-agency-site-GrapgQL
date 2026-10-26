@@ -5,6 +5,9 @@ import '@/styles/components/email-collector.scss';
 import { openCalendlyPopup, warmCalendlyResources } from '@/utils/calendly';
 import { gtagEvent } from '@/utils/analytics';
 import { getUtm } from '@/utils/utm';
+import { useI18n } from '@/i18n/I18nProvider';
+import { DEFAULT_LOCALE } from '@/i18n/config';
+import { format } from '@/i18n/format';
 
 type ModalOptions = {
   utmContent?: string;
@@ -22,6 +25,9 @@ interface EmailModalContextValue {
 const EmailModalContext = createContext<EmailModalContextValue | undefined>(undefined);
 
 export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
+  // Strings only (Phase 4, Decision C: ADR 0002 exception). No logic or flow change.
+  const { t, locale } = useI18n();
+  const tm = t.emailModal;
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -70,7 +76,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
     const name = String(formData.get('name') || '').trim();
 
     if (!email) {
-      setError('Please enter a valid email');
+      setError(tm.errors.emailInvalid);
       setIsSubmitting(false);
       return;
     }
@@ -92,7 +98,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
       const ok = res.ok || Boolean(payload?.success) || Boolean(payload?.data);
 
       if (!ok) {
-        const msg = payload?.message || payload?.error || payload?.details?.message || `Failed to subscribe (${res.status})`;
+        const msg = payload?.message || payload?.error || payload?.details?.message || format(tm.errors.subscribeFailed, { status: res.status });
         throw new Error(msg);
       }
 
@@ -189,13 +195,15 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
         customUrl: options?.customUrl,
         forceNewWindow: options?.forceNewWindow,
         utmParams: utm,
+        // EN uses calendly.ts's defaults (the same EN dictionary values).
+        ...(locale === DEFAULT_LOCALE ? {} : { labels: t.calendly }),
       });
 
       // close modal after successful flow
       closeModal();
     } catch (err: any) {
       console.error('Subscription error:', err);
-      setError(String(err?.message || err || 'Subscription failed'));
+      setError(String(err?.message || err || tm.errors.unknown));
     } finally {
       setIsSubmitting(false);
     }
@@ -208,7 +216,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
       {isOpen && (
         <div className="ec-overlay" role="dialog" aria-modal="true">
           <div className="ec-modal">
-            <button className="ec-close" onClick={closeModal} aria-label="Close">×</button>
+            <button className="ec-close" onClick={closeModal} aria-label={t.common.close}>×</button>
             {/* Render slightly different copy depending on how the modal was opened */}
             {(() => {
               const strategyOrigins = ['header', 'hero', 'package', 'finalcta'];
@@ -223,8 +231,8 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
               if (variant === 'calendly') {
                 return (
                   <>
-                   <h3 className="typo-xl-responsive m-0">Quick — before we book</h3>
-                    <p className="typo-md-medium">Tell us who you are so we can prep a smarter session tailored to your goals.</p>
+                   <h3 className="typo-xl-responsive m-0">{tm.bookingTitle}</h3>
+                    <p className="typo-md-medium">{tm.calendlyBody}</p>
                   </>
                 );
               }
@@ -232,19 +240,19 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
               if (variant === 'download') {
                 return (
                   <>
-                    <h3 className="typo-xl-responsive m-0">Grab your free guide</h3>
+                    <h3 className="typo-xl-responsive m-0">{tm.downloadTitle}</h3>
                     
                     {success && options?.downloadUrl ? (
-                      <p className="typo-md-medium">Thanks — your guide is ready for you.</p>
-                    ) : <p className="typo-md-medium">Enter your name and email, so we can send marketing ideas and tips.</p>}
+                      <p className="typo-md-medium">{tm.downloadReady}</p>
+                    ) : <p className="typo-md-medium">{tm.downloadBody}</p>}
                   </>
                 );
               }
 
               return (
                 <>
-                  <h3 className="typo-xl-responsive m-0">Quick — before we book</h3>
-                  <p className="typo-md-medium">Enter your name and email so we can send confirmation and reminders.</p>
+                  <h3 className="typo-xl-responsive m-0">{tm.bookingTitle}</h3>
+                  <p className="typo-md-medium">{tm.defaultBody}</p>
                 </>
               );
             })()}
@@ -254,59 +262,59 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
                 
                 <div className="ec-success-actions">
                   {downloadCheckLoading ? (
-                    <button className="btn btn-primary" disabled>Checking...</button>
+                    <button className="btn btn-primary" disabled>{tm.checking}</button>
                   ) : downloadAvailable === true ? (
                     <a href={options.downloadUrl ? `/api/download?url=${encodeURIComponent(options.downloadUrl)}` : '#'} className="btn btn-primary" download>
-                      Download the free guide
+                      {tm.download}
                     </a>
                   ) : downloadChallengeUrl ? (
                     // The server detected a challenge (e.g. Vercel bot protection). Let the browser handle it by opening the direct URL.
                     <a href={downloadChallengeUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                      Open guide in new tab
+                      {tm.openInNewTab}
                     </a>
                   ) : downloadAvailable === false ? (
-                    <button className="btn btn-primary" disabled>Download unavailable</button>
+                    <button className="btn btn-primary" disabled>{tm.downloadUnavailable}</button>
                   ) : (
                     // null state (not checked) — show safe disabled state
-                    <button className="btn btn-primary" disabled>Preparing download...</button>
+                    <button className="btn btn-primary" disabled>{tm.preparing}</button>
                   )}
                   <button className="btn btn-outline" onClick={closeModal}>
-                    Close
+                    {t.common.close}
                   </button>
                 </div>
                 {downloadAvailable === false && !downloadChallengeUrl && (
                   <div className="form-error" style={{ marginTop: 12 }}>
-                    Sorry — we couldn't find the PDF on the source site. If this keeps happening, contact us at contact@magnetomarketing.co
+                    {tm.pdfNotFound}
                   </div>
                 )}
                 {downloadChallengeUrl && (
                   <div className="form-error" style={{ marginTop: 12 }}>
-                    The file appears to be protected by the host (bot challenge). Click "Open guide in new tab" to let your browser complete the challenge and download the file.
+                    {tm.botChallenge}
                   </div>
                 )}
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="ec-form">
                 <div className="form-field">
-                  <label className="typo-md-bold" htmlFor="ec-name">Name</label>
+                  <label className="typo-md-bold" htmlFor="ec-name">{tm.nameLabel}</label>
                   <input
                     id="ec-name"
                     className="form-field__control"
                     type="text"
                     name="name"
-                    placeholder="Your name"
+                    placeholder={t.forms.namePlaceholder}
                     disabled={isSubmitting}
                   />
                 </div>
 
                 <div className="form-field">
-                  <label className="typo-md-bold" htmlFor="ec-email">Email</label>
+                  <label className="typo-md-bold" htmlFor="ec-email">{tm.emailLabel}</label>
                   <input
                     id="ec-email"
                     className="form-field__control"
                     type="email"
                     name="email"
-                    placeholder="you@company.com"
+                    placeholder={t.forms.emailPlaceholder}
                     required
                     disabled={isSubmitting}
                   />
@@ -316,7 +324,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
 
                 <div className="ec-actions">
                   <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : (options?.downloadUrl ? 'Continue to Download the Guide' : ((options?.origin && ['header','hero','package','finalcta'].includes(options.origin)) || (options?.customUrl && typeof options.customUrl === 'string' && options.customUrl.includes('calendly')) || (options?.utmContent && String(options.utmContent).toLowerCase().includes('calendly'))) ? 'Continue to Book Call' : 'Subscribe')}
+                    {isSubmitting ? tm.submitting : (options?.downloadUrl ? tm.continueDownload : ((options?.origin && ['header','hero','package','finalcta'].includes(options.origin)) || (options?.customUrl && typeof options.customUrl === 'string' && options.customUrl.includes('calendly')) || (options?.utmContent && String(options.utmContent).toLowerCase().includes('calendly'))) ? tm.continueBooking : tm.subscribe)}
                   </button>
                 </div>
               </form>

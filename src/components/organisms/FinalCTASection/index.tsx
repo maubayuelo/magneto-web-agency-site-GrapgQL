@@ -10,16 +10,18 @@ import Image from 'next/image';
 import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 import { gtagEvent } from '@/utils/analytics';
+import { useI18n } from '@/i18n/I18nProvider';
 import './FinalCTASection.scss';
 
 function FinalCTAInner({ ctaText, ctaHref }: { ctaText?: string | null; ctaHref?: string | null }) {
   const { openModal } = useEmailModal();
+  const { t } = useI18n();
   return (
     <button className="btn btn-primary mt-30 typo-uppercase typo-extrabold" onClick={() => {
       try { gtagEvent('cta_clicked', { event_category: 'engagement', event_label: 'finalcta', utm_content: ctaHref || null }); } catch (e) {}
       openModal({ origin: 'finalcta', utmContent: undefined, customUrl: ctaHref || undefined });
     }}>
-      {ctaText || 'Request Free Quote'}
+      {ctaText || t.cmsFallback.requestQuote}
     </button>
   );
 }
@@ -32,6 +34,7 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useI18n();
   // Initialize with server-provided data (debugData) to avoid client fetch delay
   const [data, setData] = useState<FinalCTAData | null>(debugData || null);
 
@@ -77,7 +80,7 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
           <div className="final-cta-section__bg">
             <WpResponsiveImage
               image={data?.bgimage?.node as any}
-              alt={data?.title || 'Background'}
+              alt={data?.title || t.cmsFallback.finalCta.bgAlt}
               className="final-cta-section__bg-image"
               omitSizeAttributes={false}
               priority
@@ -88,21 +91,21 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
         )}
 
           <h2 className="typo-center typo-3xl-extrabold m-0 typo-white">
-            {data?.title || "Stop losing leads. Start converting."}
+            {data?.title || t.cmsFallback.finalCta.title}
           </h2>
           <p className="typo-center typo-xl-bold m-0 typo-white">
-            {data?.subtitle || "Request your free funnel quote today and find out what's holding you back."}
+            {data?.subtitle || t.cmsFallback.finalCta.subtitle}
           </p>
 
           {(cta.type === 'calendly' || (data?.ctaLink && data?.ctaLink.includes('calendly'))) ? (
             <FinalCTAInner ctaText={data?.ctaText} ctaHref={cta.href} />
           ) : cta.href ? (
             <a href={cta.href} className="btn btn-primary typo-uppercase typo-extrabold">
-              {data?.ctaText || 'Request Free Quote'}
+              {data?.ctaText || t.cmsFallback.requestQuote}
             </a>
           ) : (
             <button onClick={cta.onClick} className="btn btn-primary typo-uppercase typo-extrabold">
-              {data?.ctaText || 'Request Free Quote'}
+              {data?.ctaText || t.cmsFallback.requestQuote}
             </button>
           )}
 

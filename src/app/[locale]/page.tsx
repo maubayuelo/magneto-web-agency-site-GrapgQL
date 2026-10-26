@@ -13,6 +13,7 @@ import type { ProjectItem } from '@/components/organisms/ProjectsGrid/types';
 import AboutSection from '@/components/organisms/AboutSection';
 import FeaturedServicesLoader from '@/components/organisms/FeaturedServices/FeaturedServicesLoader';
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/dictionary';
 import { getPageExists } from '@/utils/wp-page';
 import { getProjects } from './projects/api';
 
@@ -66,20 +67,22 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <ProjectsGrid
           projects={projects}
           maxProjects={3}
-          title="Recent Projects"
+          title={getDictionary(locale).home.recentProjects}
           showButton={true}
         />
     </>
   );
 }
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: rawLocale } = await params;
+  const t = getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
   // This function can run server-side to provide page-specific metadata.
   // For the homepage we return a short title and description. If you need
   // dynamic metadata based on CMS content, you can fetch it here similarly
   // to the approach used in `layout.tsx`.
   return {
-    title: 'Magneto Marketing - Home',
-    description: 'Magneto Marketing — strategy, web development and UX services for solo founders and small teams.',
+    title: t.meta.home.title,
+    description: t.meta.home.description,
   };
 }

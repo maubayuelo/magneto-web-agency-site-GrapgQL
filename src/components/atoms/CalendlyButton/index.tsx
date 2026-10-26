@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { openCalendlyPopup, loadCalendlyScript, warmCalendlyResources } from '@/utils/calendly';
 import { gtagEvent } from '@/utils/analytics';
 import { useOptionalEmailModal } from '@/components/organisms/EmailCollectorProvider';
+import { useI18n } from '@/i18n/I18nProvider';
+import { DEFAULT_LOCALE } from '@/i18n/config';
 export interface CalendlyButtonProps {
   children: React.ReactNode;
   className?: string;
@@ -38,6 +40,9 @@ export function CalendlyButton({
   ,skipCollector = false
 }: CalendlyButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { t, locale } = useI18n();
+  // EN uses calendly.ts's defaults (the same EN dictionary values), so EN calls keep their exact arguments.
+  const calendlyLabels = locale === DEFAULT_LOCALE ? {} : { labels: t.calendly };
   // undefined outside EmailCollectorProvider → the click opens Calendly directly
   const openModal = useOptionalEmailModal()?.openModal;
 
@@ -62,7 +67,7 @@ export function CalendlyButton({
     if (forceNewWindow || skipCollector || !openModal) {
       setIsLoading(true);
       try {
-        await openCalendlyPopup({ utmContent, utmTerm, customUrl, forceNewWindow });
+        await openCalendlyPopup({ utmContent, utmTerm, customUrl, forceNewWindow, ...calendlyLabels });
       } finally {
         setIsLoading(false);
       }
@@ -76,7 +81,7 @@ export function CalendlyButton({
       // fallback to direct open
       setIsLoading(true);
       try {
-        await openCalendlyPopup({ utmContent, utmTerm, customUrl, forceNewWindow });
+        await openCalendlyPopup({ utmContent, utmTerm, customUrl, forceNewWindow, ...calendlyLabels });
       } finally {
         setIsLoading(false);
       }
@@ -118,7 +123,7 @@ export function CalendlyButton({
       aria-busy={isLoading}
       type="button"
     >
-      {isLoading ? 'Loading...' : children}
+      {isLoading ? t.common.loading : children}
     </button>
   );
 }

@@ -5,7 +5,7 @@ export interface LanguageSwitcherProps {
   locales: Locale[];
   /** From the route params, not from the pathname (the server may see the internal /en path). */
   currentLocale: Locale;
-  /** Accessible name of the group. TODO(phase-4): take it from the UI dictionary. */
+  /** Accessible name of the group. */
   label?: string;
   className?: string;
 }

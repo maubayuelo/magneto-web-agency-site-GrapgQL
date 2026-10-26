@@ -5,16 +5,19 @@ import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 import '@/styles/pages/about.scss';
 import { notFound } from 'next/navigation';
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/dictionary';
 import { getAboutPageData } from './api';
 
 type AboutPageProps = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: AboutPageProps) {
+  const { locale: rawLocale } = await params;
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   try {
-    const { locale: rawLocale } = await params;
-    const data = await getAboutPageData(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
-    const title = data?.title ?? 'About Magneto - About the Agency';
-    const desc = data?.meta_description ?? 'Meet Magneto Marketing \u2014 a solo web agency focused on strategy, design and web development.';
+    const data = await getAboutPageData(locale);
+    const title = data?.title ?? t.meta.about.title;
+    const desc = data?.meta_description ?? t.meta.about.description;
     return {
       title,
       description: desc,
@@ -28,8 +31,8 @@ export async function generateMetadata({ params }: AboutPageProps) {
       },
     };
   } catch (e) {
-    const title = 'About Magneto - About the Agency';
-    const desc = 'Meet Magneto Marketing \u2014 a solo web agency focused on strategy, design and web development.';
+    const title = t.meta.about.title;
+    const desc = t.meta.about.description;
     return {
       title,
       description: desc,
@@ -44,6 +47,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const aboutData = await getAboutPageData(locale);
   if (!aboutData) notFound();
+  const t = getDictionary(locale);
   //console.log('About page data from CMS:', aboutData);
 
   return (
@@ -77,7 +81,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
                   <span className="typo-lg-bold typo-primary-color">{aboutData.aboutData.linkText}</span>
                   <Image
                     src="/assets/images/ico-arrow-up-right.svg"
-                    alt="LinkedIn Icon"
+                    alt={t.about.linkedinIconAlt}
                     className="about-linkedin-icon"
                     width={24}
                     height={24}
@@ -89,7 +93,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
               <div className="about-section">
                 <CalendlyButton variant="secondary" utmContent="about_bottom" utmTerm="strategy_call">
-                  Book a Free Strategy Call
+                  {t.common.bookStrategyCall}
                 </CalendlyButton>
               </div>
             </div>

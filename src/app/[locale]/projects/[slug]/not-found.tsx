@@ -1,31 +1,16 @@
-import Link from 'next/link';
+// Project 404 (unknown slug or missing translation), driven by the UI dictionary (ADR 0005).
+// See [locale]/not-found.tsx for the raw-HTML limit of runtime notFound() on Next 15.5.
+import type { Metadata } from 'next';
+import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/dictionary';
+import NotFoundContent from '@/components/organisms/NotFound';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale?: string }> }): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const t = getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
+  return { title: t.projectNotFound.metaTitle, robots: { index: false, follow: false } };
+}
 
 export default function NotFound() {
-  return (
-    <div className="main">
-      <section className="not-found" style={{ 
-        padding: '60px 15px', 
-        textAlign: 'center',
-        minHeight: '400px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '20px'
-      }}>
-        <h1 className="typo-4xl-extrabold">Project Not Found</h1>
-        <p className="typo-xl-medium">
-          The project you&apos;re looking for doesn&apos;t exist or may have been moved.
-        </p>
-        <div style={{ display: 'flex', gap: '15px', marginTop: '30px' }}>
-          <Link href="/portfolio" className="btn btn-primary">
-            View All Projects
-          </Link>
-          <Link href="/" className="btn btn-secondary">
-            Go Home
-          </Link>
-        </div>
-      </section>
-    </div>
-  );
+  return <NotFoundContent variant="project" />;
 }

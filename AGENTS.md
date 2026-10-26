@@ -53,6 +53,8 @@ npm run build        # next build
   375 / 768 / 1440 px, in EN (no regressions) and in every enabled locale.
 - Report honestly: passed / failed / not run. Pre-existing failures recorded in the
   Phase 0 baseline are not caused by your change — but say which ones you saw.
+- `ALLOW_UNTRANSLATED_LOCALES=1` is for local builds only; never set it in Vercel. Without it, `next build` fails
+  when `ENABLED_LOCALES` enables a locale whose dictionary still has `[FR TODO]` / `[ES TODO]` values (ADR 0005).
 - **Release process:** merging does not publish, and the PR's Vercel preview check is a merge precondition.
   See `docs/ai/WORKFLOW.md` → "Release process".
 
@@ -90,7 +92,7 @@ to EN). Missing translation → `notFound()`. Images come from the EN original (
 | `/services` `/packages` `/projects` `/about-magneto` `/contact` | the page with that slug + ACF (hero via `Hero/api.ts`) |
 | `/projects/[slug]` | projects CPT, same slug in every language |
 | Lead magnet / final CTA / footer (layout) | the locale's `home` page, their own `api.ts` |
-| UI microcopy (buttons, labels, form errors, aria-labels) | hardcoded in components — to be extracted |
+| UI microcopy (buttons, labels, form errors, aria-labels) | `src/i18n/dictionaries/{en,fr,es}.ts`, read with `getDictionary(locale)` (server) / `useI18n()` (client) — ADR 0005 |
 
 ---
 
@@ -142,9 +144,11 @@ Verified in the Phase 0 baseline (`docs/specs/phase-0-baseline.md`, 2026-10-24).
 Toolchain / repo
 - `.npmrc` and `vercel.json` use `legacy-peer-deps`.
 - postcss 8.4.31 pinned inside next@15.5.28 — high advisory, fixed only by next@16 (future phase).
-- `eslint.ignoreDuringBuilds: true`; lint baseline 164 errors / 118 warnings (after Phase 2).
-- `@next/next/no-html-link-for-pages` counts each Header nav `<a>` once per `[locale]` variant (+28 errors,
-  lint baseline now 164 / 118 warnings as measured); resolved in Phase 4 when nav links move to localized `next/link`.
+- `eslint.ignoreDuringBuilds: true`; lint baseline 115 errors / 110 warnings (measured 2026-10-25, after Phase 4; 149 / 110 before it).
+- `@next/next/no-html-link-for-pages` counted each Header nav `<a>` once per `[locale]` variant (30 errors before Phase 4).
+  The hrefs are now `localizePath(…)` expressions, which the rule can't analyse, so lint reports 0 — the plain `<a>` remain.
+  Phase 4 kept plain `<a>` with `localizePath` (Decision D1); resolved when nav links move to `next/link` in a phase that
+  verifies analytics with soft navigation.
 - `README.md` structure outdated (`about/`, `portfolio/`).
 
 Code
@@ -164,6 +168,12 @@ Code
 - 6 files use `dangerouslySetInnerHTML`; only `ProjectDetail` sanitizes with DOMPurify.
 - 122 `no-explicit-any` (102 outside test files).
 - `openGraph.locale` hardcoded `'en_US'` in `app/[locale]/layout.tsx` `generateMetadata` (Phase 7).
+- Raw 404 HTML is Next 15.5's `<html id="__next_error__">` shell (no `lang`, no layout) for every runtime `notFound()`.
+  The `<title>` is localized via `not-found.tsx` `generateMetadata`; `lang`, header and content arrive with hydration.
+  Framework limit (Phase 4 spec E3); revisit with next@16.
+- `LeadMagnetSection` is a client component rendered by the layout without a server loader and fetches in `useEffect`,
+  so every SSR page ships its hardcoded fallback copy (`cmsFallback.leadMagnet.*`) and swaps in the CMS copy after
+  load (Phase 4 I-9). Fix with a server loader, as for the Final CTA, when the lead magnet is rebuilt.
 - Mailchimp integration (`pages/api/mailchimp.ts` + 4 components + 1 test) is to be replaced
   by Brevo — see `docs/adr/0002-brevo-replaces-mailchimp.md`. Do not extend it.
 

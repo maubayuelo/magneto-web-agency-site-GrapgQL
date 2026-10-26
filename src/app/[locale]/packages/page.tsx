@@ -3,6 +3,7 @@ import { HeroLoader } from "@/components/organisms/Hero";
 import { PackagesGrid } from "@/components/organisms";
 import { notFound } from "next/navigation";
 import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionary";
 import { getPackagesPageData } from "./api";
 
 type PackagesPageProps = { params: Promise<{ locale: string }> };
@@ -35,11 +36,13 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
 }
 
 export async function generateMetadata({ params }: PackagesPageProps) {
+  const { locale: rawLocale } = await params;
+  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
+  const t = getDictionary(locale);
   try {
-    const { locale: rawLocale } = await params;
-    await getPackagesPageData(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
-    const title = "Packages - Magneto Marketing";
-    const desc = "Browse service packages and pricing for Magneto Marketing.";
+    await getPackagesPageData(locale);
+    const title = t.meta.packages.title;
+    const desc = t.meta.packages.description;
     return {
       title,
       description: desc,
@@ -47,8 +50,8 @@ export async function generateMetadata({ params }: PackagesPageProps) {
       twitter: { title, description: desc },
     };
   } catch (e) {
-    const title = "Packages - Magneto Marketing";
-    const desc = "Browse service packages and pricing for Magneto Marketing.";
+    const title = t.meta.packages.title;
+    const desc = t.meta.packages.description;
     return {
       title,
       description: desc,

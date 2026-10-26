@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import IconComponent from '@/components/atoms/IconComponent';
+import type { Locale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/dictionary';
 
 // Service data structure (matches GraphQL shape returned by the CMS)
 interface Service {
@@ -16,9 +18,10 @@ interface Service {
 interface ServiceItemProps {
   service: Service;
   variant: 'left' | 'right';
+  featuredBadge: string;
 }
 
-function ServiceItem({ service, variant }: ServiceItemProps) {
+function ServiceItem({ service, variant, featuredBadge }: ServiceItemProps) {
   const isRight = variant === 'right';
 
   // Ensure icon is always a string path
@@ -48,7 +51,7 @@ function ServiceItem({ service, variant }: ServiceItemProps) {
         </h3>
         {service.featuredService && (
           <div className="badge">
-            <span className="typo-sm-bold">Featured Service</span>
+            <span className="typo-sm-bold">{featuredBadge}</span>
           </div>
         )}
         <p className={`typo-paragraph-medium m-0 ${isRight ? 'service-description--right' : ''}`}>
@@ -60,7 +63,8 @@ function ServiceItem({ service, variant }: ServiceItemProps) {
 }
 
 // Main Services List Component
-export default function ServicesList({ services = [] }: { services?: Service[] }) {
+export default function ServicesList({ services = [], locale }: { services?: Service[]; locale: Locale }) {
+  const t = getDictionary(locale);
   return (
     <div className="">
       {services.map((service, index) => (
@@ -68,6 +72,7 @@ export default function ServicesList({ services = [] }: { services?: Service[] }
           key={service.id || service.title || index}
           service={service}
           variant={index % 2 === 0 ? 'left' : 'right'}
+          featuredBadge={t.services.featuredBadge}
         />
       ))}
     </div>

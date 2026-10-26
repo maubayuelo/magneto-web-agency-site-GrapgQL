@@ -3,13 +3,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import DOMPurify from 'isomorphic-dompurify';
 import type { ProjectData, ProjectGalleryItem } from '@/data/projects';
+import type { Locale } from '@/i18n/config';
+import { format, getDictionary } from '@/i18n/dictionary';
+import { localizePath } from '@/i18n/paths';
 import './ProjectDetail.scss';
 
 interface ProjectDetailProps {
   project: ProjectData;
+  locale: Locale;
 }
 
-export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
+export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, locale }) => {
+  const t = getDictionary(locale);
   return (
     <div className="main project-detail pt-sm-responsive pb-lg-responsive">
       <div className="project-detail__container">
@@ -44,7 +49,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
           {/* Challenges */}
           {project.challenges && project.challenges.length > 0 && (
             <div className="project-detail__column">
-              <h3 className="project-detail__column-title typo-2xl-extrabold">Challenges</h3>
+              <h3 className="project-detail__column-title typo-2xl-extrabold">{t.projectDetail.challenges}</h3>
               <ul className="project-detail__list">
                 {project.challenges.map((challenge, index) => (
                   <li key={index} className="typo-lg-medium">
@@ -58,7 +63,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
           {/* Solutions */}
           {project.solutions && project.solutions.length > 0 && (
             <div className="project-detail__column">
-              <h3 className="project-detail__column-title typo-2xl-extrabold">Solutions</h3>
+              <h3 className="project-detail__column-title typo-2xl-extrabold">{t.projectDetail.solutions}</h3>
               <ul className="project-detail__list">
                 {project.solutions.map((solution, index) => (
                   <li key={index} className="typo-lg-medium">
@@ -72,7 +77,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
           {/* Results */}
           {project.results && project.results.length > 0 && (
             <div className="project-detail__column">
-              <h3 className="project-detail__column-title typo-2xl-extrabold">Results</h3>
+              <h3 className="project-detail__column-title typo-2xl-extrabold">{t.projectDetail.results}</h3>
               <ul className="project-detail__list">
                 {project.results.map((result, index) => (
                   <li key={index} className="typo-lg-medium">
@@ -80,7 +85,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                       <div className="project-detail__check-icon">
                         <Image
                           src="/assets/images/ico-check.svg"
-                          alt="Check icon"
+                          alt={t.common.checkIconAlt}
                           width={18}
                           height={18}
                           className="project-detail__check"
@@ -105,7 +110,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                   <Image
                     // An item without an image passes null through, as before (every gallery item has one today).
                     src={img.image as string}
-                    alt={img.footNote || `Gallery image ${i + 1}`}
+                    alt={img.footNote || format(t.cmsFallback.galleryImageAlt, { n: i + 1 })}
                     width={isMobileScreenshot ? 400 : 1200}
                     height={isMobileScreenshot ? 866 : 600}
                     className={`project-detail__main-image${isMobileScreenshot ? ' project-detail__main-image--mobile' : ''}`}
@@ -124,7 +129,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
               rel="noopener noreferrer"
               className="project-detail__external-link typo-sm-medium mt-sm-responsive mb-lg-responsive"
             >
-              View live site
+              {t.projectDetail.viewLiveSite}
               <svg
                 className="project-detail__external-link-icon"
                 width="12"
@@ -147,8 +152,8 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
         {/* Back Button */}
         <nav className="project-detail__navigation mt-sm pb-md">
           
-          <Link href="/projects" className="btn btn-secondary">
-            ← Back to Projects
+          <Link href={localizePath('/projects', locale)} className="btn btn-secondary">
+            {t.projectDetail.backToProjects}
           </Link>
         </nav>
 

@@ -2,6 +2,7 @@ import { HeroLoader } from '@/components/organisms/Hero';
 import { notFound } from 'next/navigation';
 import { ProjectsGrid } from '@/components/organisms';
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
+import { getDictionary } from '@/i18n/dictionary';
 import { getProjects, getProjectsPageData } from './api';
 
 export default async function PortfolioPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -36,8 +37,10 @@ export default async function PortfolioPage({ params }: { params: Promise<{ loca
   );
 }
 
-export async function generateMetadata() {
-  const title = 'Projects - Magneto Marketing';
-  const desc = 'A curated selection of recent projects and case studies by Magneto Marketing.';
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: rawLocale } = await params;
+  const t = getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
+  const title = t.meta.projects.title;
+  const desc = t.meta.projects.description;
   return { title, description: desc, openGraph: { title, description: desc }, twitter: { title, description: desc } };
 }

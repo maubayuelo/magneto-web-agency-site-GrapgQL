@@ -1,3 +1,5 @@
+import type { Locale } from '@/i18n/config';
+
 export interface FooterSocialIconNode {
   node?: {
     sourceUrl?: string | null;
@@ -19,4 +21,5 @@ export interface FooterResponse {
 export interface FooterProps {
   className?: string;
   footerData?: FooterResponse | null;
+  locale: Locale;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { IconComponent, CalendlyButton } from '@/components/atoms';
 import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 import { gtagEvent } from '@/utils/analytics';
+import { useI18n } from '@/i18n/I18nProvider';
 import './PackageCard.scss';
 
 type InternalCTAProps = {
@@ -88,13 +89,15 @@ const PackageCard: React.FC<PackageCardProps> = ({
   description,
   features,
   isPopular = false,
-  ctaText = 'Book a Free Strategy Call',
+  ctaText: ctaTextProp,
   ctaHref = '/contact',
   ctaType = 'calendly',
   utmContent,
   variant = 'default',
   icon = '/assets/images/ico-services-web-dev.svg'
 }) => {
+  const { t } = useI18n();
+  const ctaText = ctaTextProp ?? t.common.bookStrategyCall;
   return (
     <div className={`package-card p-15 ${variant === 'popular' ? 'package-card--popular' : ''}`}>
       <div className="package-card__header background-white p-15">
@@ -103,7 +106,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <div className="package-card__icon">
             {isPopular && (
               <div className="badge">
-                <span className="typo-sm-bold">Popular</span>
+                <span className="typo-sm-bold">{t.packages.popularBadge}</span>
               </div>
             )}
             <IconComponent 
@@ -129,12 +132,12 @@ const PackageCard: React.FC<PackageCardProps> = ({
       />
       
       <div className="package-card__features">
-        <h4 className="typo-md-extrabold m-0">What&apos;s included:</h4>
+        <h4 className="typo-md-extrabold m-0">{t.packages.included}</h4>
         <ul className="package-card__features-list">
           {features.map((feature, index) => (
             <li key={index} className="package-card__feature-item">
               <div className="package-card__check-icon">
-                <IconComponent src="/assets/images/ico-check.svg" alt="Check icon" size="sm" className="package-card__check" />
+                <IconComponent src="/assets/images/ico-check.svg" alt={t.common.checkIconAlt} size="sm" className="package-card__check" />
               </div>
               <span className="typo-sm-medium">{feature.text}</span>
             </li>

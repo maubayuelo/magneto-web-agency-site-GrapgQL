@@ -1,0 +1,17 @@
+// Same values as the former inline styles of projects/[slug]/not-found.tsx, so the project 404 looks the same.
+.not-found {
+  padding: 60px 15px;
+  text-align: center;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  &__actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+  }
+}
