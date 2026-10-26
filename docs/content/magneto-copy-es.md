@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / ES
 URL: https://app.notion.com/p/3fc702393b5e81abaf9af4c499daab27
-Notion page last edited: 2026-10-26T19:06:27.869Z
+Notion page last edited: 2026-10-26T20:10:17.122Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -81,7 +81,7 @@ Un sitio web para un estudio de producción de video de Montreal, diseñado para
 
 Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda en línea y un blog integrados en un mismo sitio web, con un buscador común y suscripción al boletín informativo.
 
-## 5. Testimonios de clientes — Dangel verificado; Isra en borrador
+## 5. Testimonios de clientes — Dangel e Isra verificados
 
 ### Opinión de clientes
 
@@ -95,7 +95,7 @@ Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda 
 
 **Israel Valencia Vázquez · Fundador y productor de video · TRÉPIED**
 
-*BORRADOR — no publicable. Ajuste de plural a singular sobre el original de Isra (WhatsApp, 2026-10-23: «Supieron entender… ¡Los recomendamos ampliamente!»); pendiente de su aprobación del texto y la firma. Si no lo aprueba, usar su original tal cual.*
+*Aprobado por Isra por WhatsApp (2026-10-26): texto en ES/EN/FR y firma. Ajuste de plural a singular sobre su original del 2026-10-23, con su visto bueno.*
 
 ## 6. Guía gratuita — BLOQUE OCULTO HASTA SU ACTIVACIÓN
 

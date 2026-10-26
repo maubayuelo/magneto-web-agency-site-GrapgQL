@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / EN
 URL: https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f
-Notion page last edited: 2026-10-26T19:06:18.138Z
+Notion page last edited: 2026-10-26T20:10:12.454Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -93,13 +93,13 @@ Magneto's own project: an online shop and blog combined in one website, with sha
 
 *Translated from Spanish.*
 
-**Implementation note:** the testimonial block already exists in the current site and is hidden. Reuse / unhide that block during the website update; do not build a new testimonial component. The block shows 2 testimonials: Dangel (verified, original Spanish email 2026-08-20) and Isra / TRÉPIED (DRAFT below).
+**Implementation note:** the testimonial block already exists in the current site and is hidden. Reuse / unhide that block during the website update; do not build a new testimonial component. The block shows 2 testimonials: Dangel (verified, original Spanish email 2026-08-20) and Isra / TRÉPIED (approved 2026-10-26).
 
 “Great experience working with Mauricio (Magneto). He understood our needs and turned them into an attractive, functional and professional website. We highly recommend Magneto!”
 
 **Israel Valencia Vázquez · Founder & video producer · TRÉPIED**
 
-*DRAFT — not publishable yet. Wording adjusted from singular/plural in Isra's original (WhatsApp, 2026-10-23: "Great experience working with this Mauricio! They understood our needs… Highly recommended!"); waiting for Isra's approval of this version and of the attribution line. If he declines, use his original text verbatim (fix only "this Mauricio").*
+*Approved by Isra on WhatsApp (2026-10-26): text in EN/FR/ES and attribution line. Adjusted from his original (2026-10-23, plural "They understood…") to singular, with his OK. Client-written languages: ES, EN, FR.*
 
 ### 6. Lead Magnet
 
