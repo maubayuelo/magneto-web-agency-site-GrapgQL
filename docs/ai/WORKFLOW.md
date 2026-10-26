@@ -45,6 +45,7 @@ Rules:
 | 7 | SEO i18n | localized meta, canonical, hreflang, sitemap |
 | 8 | Graphics | inventory from the new copy (Phase 5): new Home hero illustration, service images, check whether new icons are needed; design (Design artifact), export, upload to WP media and set in ACF (image fields are "Copy" → one upload serves EN/FR/ES); verify on all routes and viewports |
 | Launch | Release | replicate Phase 1 in production WP (ACF JSON import + WPML settings, backup first), privacy/consent EN → FR-CA → ES, enable `ENABLED_LOCALES` in Vercel, release process below |
+| Cleanup | Contract (ADR 0006) | after R3 (ES live): remove the superseded ACF fields, the `new \|\| old` fallbacks and their tests, the old defaults, and the `LeadMagnetSection` legacy code unless the lead magnet was rebuilt; one ACF JSON that only removes fields, with its own production runbook (removing fields deletes their meta: backup, dry-run listing of affected meta, read-back) |
 
 Later (separate scope): Calendly modal A/B + canonical event, Project Inquiry form, Brevo (ADR 0002),
 custom 404 page, lead-magnet guide with new copy, `/carte` route (QR gate), `fashion-company-ecommerce` slug.

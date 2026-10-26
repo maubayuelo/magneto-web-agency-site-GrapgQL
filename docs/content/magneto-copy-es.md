@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / ES
 URL: https://app.notion.com/p/3fc702393b5e81abaf9af4c499daab27
-Notion page last edited: 2026-10-26T20:10:17.122Z
+Notion page last edited: 2026-10-26T21:41:11.268Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -67,11 +67,13 @@ CARE se ocupa de actualizar, supervisar y dar soporte a un sitio web estable, pa
 
 ### Proyectos web destacados
 
+**Orden de visualización (decidido por Mauricio, 2026-10-26):** Dangel Wellness · Shamanicca · TRÉPIED (campo displayOrder 10 / 20 / 40; el 30 queda reservado para KineLibelula, que no se publica hasta terminar el proyecto).
+
 Experiencias web para el sector del bienestar, los servicios profesionales y el comercio digital, desarrolladas según las necesidades de cada negocio.
 
 ### Dangel Wellness
 
-Un sitio web en español, francés e inglés para una profesional del bienestar en Montreal. El sitio presenta claramente sus diferentes servicios y ofrece opciones directas para comunicarse o reservar una cita.
+Un sitio web en español, francés e inglés para un profesional del bienestar en Montreal. El sitio presenta claramente sus diferentes servicios y ofrece opciones directas para comunicarse o reservar una cita.
 
 ### TRÉPIED
 
@@ -502,13 +504,13 @@ Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 
 #### Dangel Wellness
 
-Un sitio web en español, francés e inglés para una profesional del bienestar en Montreal, desarrollado para presentar claramente sus diferentes servicios y ofrecer formas directas de comunicarse o reservar una cita.
+Un sitio web en español, francés e inglés para un profesional del bienestar en Montreal, desarrollado para presentar claramente sus diferentes servicios y ofrecer formas directas de comunicarse o reservar una cita.
 
 **Sitio web:** [dangelwellness.ca](https://dangelwellness.ca)
 
 ### Presentación
 
-Dangel es una terapeuta holística e intuitiva de Montreal que atiende a su clientela en español, francés e inglés.
+Dangel es un terapeuta holístico e intuitivo de Montreal que atiende a su clientela en español, francés e inglés.
 
 Su sitio necesitaba presentar varios servicios terapéuticos sin abrumar al visitante, ofrecer una experiencia clara en tres idiomas y permitir que la propietaria actualizara el contenido por su cuenta.
 
@@ -565,7 +567,7 @@ Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nue
 
 **Título SEO:** Dangel Wellness — Sitio web trilingüe | Magneto
 
-**Metadescripción:** Sitio web en español, francés e inglés para una profesional del bienestar en Montreal: servicios claros, reservas, contacto y contenido editable.
+**Metadescripción:** Sitio web en español, francés e inglés para un profesional del bienestar en Montreal: servicios claros, reservas, contacto y contenido editable.
 
 ---
 

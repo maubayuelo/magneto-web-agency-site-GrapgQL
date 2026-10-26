@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / EN
 URL: https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f
-Notion page last edited: 2026-10-26T20:10:12.454Z
+Notion page last edited: 2026-10-26T21:41:01.863Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -68,6 +68,8 @@ CARE keeps a stable website updated, monitored and supported so you do not have 
 Web experiences for wellness, professional services and digital commerce — built around the needs of each business.
 
 **Project card structure stays exactly:** Project thumbnail · Project title · Project description.
+
+**Display order (decided by Mauricio, 2026-10-26):** Dangel Wellness · Shamanicca · TRÉPIED. Implemented with a displayOrder number field (10 / 20 / 40). 30 is reserved for KineLibelula, not published until the project is complete.
 
 #### Dangel Wellness — [dangelwellness.ca](http://dangelwellness.ca)
 
