@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / FR-CA
 URL: https://app.notion.com/p/3fc702393b5e8195a8c1eeede1910b62
-Notion page last edited: 2026-10-26T20:10:14.878Z
+Notion page last edited: 2026-10-26T21:04:52.793Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -85,7 +85,7 @@ Projet de Magneto, et non un projet client : une boutique en ligne et un blogue 
 
 **Dangel Manik · Thérapeute holistique · Montréal**
 
-*Traduit de l'espagnol (original : courriel du 2026-08-20, vérifié). Traduction proposée — à valider par Mauricio.*
+*Traduit de l'espagnol (original : courriel du 2026-08-20, vérifié). Traduction validée par Mauricio (2026-10-26).*
 
 « Excellente expérience avec Mauricio (Magneto) ! Il a su comprendre nos besoins et les transformer en un site web attrayant, fonctionnel et professionnel. Nous recommandons Magneto sans hésitation ! »
 
