@@ -1,6 +1,6 @@
 # ADR 0006 — Phase 5 content model: expand/contract ACF fields, per-page final CTA, release-day content load
 
-- Status: Proposed
+- Status: Accepted (2026-10-26, Senior Architect, with amendments: schema as code, project order 10/20/40)
 - Date: 2026-10-26
 - Deciders: Mauricio (lead), Senior Architect
 - Spec: `docs/specs/phase-5a-structure-shared-home-about-cases.md` (first consumer).
@@ -49,6 +49,7 @@ Other facts used:
 - Empty text fields return ACF **defaults** (old EN funnel copy).
 - Repeater structure is Copy (1), so row counts are shared across languages.
 - There's no `acf-json` folder, so groups move between environments by ACF → Tools export/import (`WP-SETUP.md`).
+  Decision 2 keeps that mechanism but makes the imported file a reviewed, committed artifact.
 - The WPML Language-box "Duplicate" is unreliable (Phase 3 report).
 
 ## Decision
@@ -63,11 +64,18 @@ Other facts used:
      where step 0 of the runbook proves every live read of that field has a saved value (decision 3).
    - A **cleanup phase** after the last Phase 5 release (R3) removes the old fields, the fallbacks and the old defaults
      ("contract").
-2. **One ACF export for all of Phase 5.**
-   - Every field in the table below is created locally in Phase 5a part 1, exported once (ACF → Tools → Export,
-     including ACFML settings) and committed as `docs/acf/phase-5-field-groups.json`.
-   - It's imported into production **before** the 5a PR preview, following a runbook (backup, before/after capture,
-     rollback).
+2. **One ACF schema file for all of Phase 5, written as code.**
+   - Mauricio exports the current 13 groups (ACF → Tools → Export) to `docs/acf/phase-5-before.json` (never edited).
+   - The Dev writes `docs/acf/phase-5-field-groups.json` = that export + every field in the table below: new unique
+     keys, existing keys and values untouched, `finalCtaSection` defaults removed and location widened, ACF
+     *Instructions* "(legacy — do not edit; replaced by X)" on superseded fields, and the new `packagesContentSections`
+     group. ACFML settings travel in the JSON.
+   - A key-by-key diff before → after must show only additions, the 3 default removals, the location change and the
+     legacy instructions (5a spec AC-7b).
+   - Mauricio imports it locally; the ACFML dump and GraphQL introspection verify it. The **same file** is imported
+     into production **before** the 5a PR preview, following a runbook (backup, a production export diffed against
+     `phase-5-before.json`, before/after capture, rollback).
+   - No fields are created by hand in WP admin.
    - Fields for 5b, 5d-lite and later are added now and stay unused until their phase. If a later phase needs one
      more field, it's another **additive** export with its own runbook. Never a retype.
 3. **Per-page final CTA.**
@@ -87,7 +95,9 @@ Other facts used:
    - Values for **new** fields may be loaded earlier, because the current frontend doesn't read them.
    - FR/ES content may be loaded whenever ready, because disabled locales 404 at the middleware (ADR 0003).
 5. **Ordering:** projects get `displayOrder` (number, Copy). The frontend sorts ascending, missing values last, with
-   the GraphQL order as the tie-breaker. Post dates, Post Types Order and `menu_order` are not used for display order:
+   the GraphQL order as the tie-breaker. Values go in steps of 10 so a project can be inserted without renumbering:
+   Dangel 10, Shamanicca 20, Trépied 40; 30 is reserved for KineLibelula, unpublished until its case study is complete
+   (Mauricio, 2026-10-26). Post dates, Post Types Order and `menu_order` are not used for display order:
    `orderby: MENU_ORDER` didn't change the GraphQL order (gap analysis E1c).
 6. **Testimonials render only rows that have a `role`.**
    - The 4 placeholder rows (Elena M., Marcus T., Sarah K., David R.) have no `role`, so the unhidden block can never
@@ -144,6 +154,11 @@ cleanup phase.
 - − A cleanup phase is required after R3. It carries its own runbook (removing fields deletes their meta).
 - − Release day carries a production content write with a dry-run, backups and read-back. Mauricio runs it; agents
   never write to production.
+- \+ The schema change is reviewable in a PR (a JSON diff), and local and production import byte-identical input.
+- − The Dev hand-writes ACF JSON. Mitigated by the before → after diff check and the local import + dump before
+  production.
+- − Brand: WP `generalSettings.title` is read before the code fallback (`layout.tsx:37`), so the brand rename in
+  code (5a) shows only where WP has no title; the WP title changes in the release-day runbook.
 - − `displayOrder` must be written in every language (Copy only copies on a WPML translation save, not via
   `update_field`).
 
