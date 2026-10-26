@@ -1,16 +1,20 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useI18n } from '@/i18n/I18nProvider';
 
+// Values stay EN: they are sent to the contact email. Only the labels are localized.
 const BUSINESS_OPTIONS = [
-  { value: 'Coach', label: 'Coach' },
-  { value: 'Therapist', label: 'Therapist' },
-  { value: 'Ecommerce', label: 'Ecommerce' },
-  { value: 'Real State', label: 'Real State' },
-  { value: 'Other', label: 'Other' },
-];
+  { value: 'Coach', key: 'coach' },
+  { value: 'Therapist', key: 'therapist' },
+  { value: 'Ecommerce', key: 'ecommerce' },
+  { value: 'Real State', key: 'realEstate' },
+  { value: 'Other', key: 'other' },
+] as const;
 
 export const ContactForm: React.FC = () => {
+  const { t } = useI18n();
+  const tf = t.contactForm;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [businessType, setBusinessType] = useState('');
@@ -26,9 +30,9 @@ export const ContactForm: React.FC = () => {
     setError(null);
     setSuccess(null);
 
-    if (!name.trim()) return setError('Please enter your name.');
-    if (!validateEmail(email.trim())) return setError('Please enter a valid email address.');
-    if (!businessType) return setError('Please select a business type.');
+    if (!name.trim()) return setError(tf.errors.nameRequired);
+    if (!validateEmail(email.trim())) return setError(tf.errors.emailInvalid);
+    if (!businessType) return setError(tf.errors.businessTypeRequired);
 
     setIsSubmitting(true);
 
@@ -45,19 +49,19 @@ export const ContactForm: React.FC = () => {
       });
 
       const payload = await res.json().catch(() => ({}));
-      const msg = payload?.message || (payload && typeof payload === 'object' && 'details' in payload ? (payload as { details?: { message?: string } }).details?.message : undefined) || 'Failed to submit form';
+      const msg = payload?.message || (payload && typeof payload === 'object' && 'details' in payload ? (payload as { details?: { message?: string } }).details?.message : undefined) || tf.errors.submitFailed;
       if (!res.ok || !payload?.success) {
         throw new Error(msg);
       }
 
-      setSuccess("Thanks! We'll get back to you within 24–48 hours.");
+      setSuccess(tf.success);
       setName('');
       setEmail('');
       setBusinessType('');
       setMessage('');
     } catch (err: unknown) {
   console.error('ContactForm submit error:', err);
-      const msg = err instanceof Error ? err.message : String(err || 'Submission failed');
+      const msg = err instanceof Error ? err.message : String(err || tf.errors.unknown);
       setError(msg);
     } finally {
       setIsSubmitting(false);
@@ -65,37 +69,37 @@ export const ContactForm: React.FC = () => {
   };
 
   return (
-    <form className="contact-form" onSubmit={handleSubmit} aria-label="Contact form">
+    <form className="contact-form" onSubmit={handleSubmit} aria-label={tf.ariaLabel}>
       <div className="form-field">
-        <label className="form-field__label" htmlFor="scf-name">Name<span className="form-field__required">*</span></label>
-        <input id="scf-name" name="name" className="form-field__control" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required />
+        <label className="form-field__label" htmlFor="scf-name">{tf.nameLabel}<span className="form-field__required">*</span></label>
+        <input id="scf-name" name="name" className="form-field__control" placeholder={t.forms.namePlaceholder} value={name} onChange={(e) => setName(e.target.value)} required />
       </div>
 
       <div className="form-field">
-        <label className="form-field__label" htmlFor="scf-email">Email Address<span className="form-field__required">*</span></label>
-        <input id="scf-email" name="email" type="email" className="form-field__control" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <label className="form-field__label" htmlFor="scf-email">{tf.emailLabel}<span className="form-field__required">*</span></label>
+        <input id="scf-email" name="email" type="email" className="form-field__control" placeholder={t.forms.emailPlaceholder} value={email} onChange={(e) => setEmail(e.target.value)} required />
       </div>
 
       <div className="form-field">
-        <label className="form-field__label" htmlFor="scf-business">Business Type<span className="form-field__required">*</span></label>
+        <label className="form-field__label" htmlFor="scf-business">{tf.businessTypeLabel}<span className="form-field__required">*</span></label>
         <select id="scf-business" name="businessType" className="form-field__control form-field__select" value={businessType} onChange={(e) => setBusinessType(e.target.value)} required>
-          <option value="" disabled>Choose an option</option>
+          <option value="" disabled>{tf.businessTypePlaceholder}</option>
           {BUSINESS_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>{o.label}</option>
+            <option key={o.value} value={o.value}>{tf.businessTypes[o.key]}</option>
           ))}
         </select>
       </div>
 
       <div className="form-field">
-        <label className="form-field__label" htmlFor="scf-message">Message (optional)</label>
-        <textarea id="scf-message" name="message" className="form-field__control" rows={4} placeholder="A short note about your project" value={message} onChange={(e) => setMessage(e.target.value)} />
+        <label className="form-field__label" htmlFor="scf-message">{tf.messageLabel}</label>
+        <textarea id="scf-message" name="message" className="form-field__control" rows={4} placeholder={tf.messagePlaceholder} value={message} onChange={(e) => setMessage(e.target.value)} />
       </div>
 
       {error && <div className="form-error" role="alert">{error}</div>}
       {success && <div className="form-success" role="status">{success}</div>}
 
       <button type="submit" className="btn btn-primary contact-form-submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Sending...' : 'Send'}
+        {isSubmitting ? tf.sending : tf.send}
       </button>
     </form>
   );

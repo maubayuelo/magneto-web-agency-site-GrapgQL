@@ -8,6 +8,7 @@ import type { LeadMagnetSectionProps, LeadMagnetSectionData, LinkNode } from './
 import { CalendlyButton } from '../../atoms';
 import './LeadMagnetSection.scss';
 import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
+import { useI18n } from '@/i18n/I18nProvider';
 
 export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
   className = '',
@@ -15,6 +16,7 @@ export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
   locale,
 }) => {
   const { openModal } = useEmailModal();
+  const { t } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
   const [dataLeadMagnetSection, setDataLeadMagnetSection] = useState<LeadMagnetSectionData | null>(null);
@@ -62,13 +64,13 @@ export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
         <div className="lead-magnet-section__content">
           <div className="lead-magnet-section__text">
             <p className="typo-center typo-xl-extrabold m-0">
-              {dataLeadMagnetSection?.overTitleLeadMagnetSection || "Not ready to book a call?"}
+              {dataLeadMagnetSection?.overTitleLeadMagnetSection || t.cmsFallback.leadMagnet.overTitle}
             </p>
             <h2 className="typo-center typo-3xl-extrabold m-0 typo-primary-color">
-              {dataLeadMagnetSection?.titleLeadMagnetSection || "Download our free guide:"}
+              {dataLeadMagnetSection?.titleLeadMagnetSection || t.cmsFallback.leadMagnet.title}
             </h2>
             <p className="typo-center typo-xl-bold m-0">
-              {dataLeadMagnetSection?.subtitleLeadMagnetSection || "5 Mistakes That Kill Funnel Conversions"}
+              {dataLeadMagnetSection?.subtitleLeadMagnetSection || t.cmsFallback.leadMagnet.subtitle}
             </p>
           </div>
           
@@ -85,7 +87,7 @@ export const LeadMagnetSection: React.FC<LeadMagnetSectionProps> = ({
             }
             className="btn btn-secondary typo-extrabold"
           >
-            {dataLeadMagnetSection?.ctaTextLeadMagnetSection || "Request Free Quote"}
+            {dataLeadMagnetSection?.ctaTextLeadMagnetSection || t.cmsFallback.requestQuote}
           </button>
 
         </div>

@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { CalendlyButton } from "../../atoms";
 import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
+import { useI18n } from '@/i18n/I18nProvider';
+import { localizePath } from '@/i18n/paths';
 import "./Header.scss";
 
 export const Header = ({
@@ -16,6 +18,7 @@ export const Header = ({
   /** Language switcher, rendered only when set (layout passes it when 2+ locales are enabled). */
   switcher?: React.ReactNode;
 }) => {
+  const { t, locale } = useI18n();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -74,7 +77,7 @@ export const Header = ({
       <section className={`header ${className} ${scrolled ? "scrolled" : ""}`}>
         <header className={`${className} ${scrolled ? "scrolled" : ""}`}>
           <div className="main">
-              <Link className="logo" href="/">
+              <Link className="logo" href={localizePath('/', locale)}>
               {(() => {
                 const src = logoUrl || logo || '/logo.png';
                 const isSvg = typeof src === 'string' && src.toLowerCase().endsWith('.svg');
@@ -82,13 +85,13 @@ export const Header = ({
                 // Use <img> for SVGs (external or local). Use next/image for raster local images.
                 if (isSvg) {
                   // eslint-disable-next-line @next/next/no-img-element
-                  return <img src={src} alt="Logo" width={120} height={43} />;
+                  return <img src={src} alt={t.header.logoAlt} width={120} height={43} />;
                 }
 
                 // For external raster images, use plain img to avoid next/image domain config issues
                 if (isExternal) {
                   // eslint-disable-next-line @next/next/no-img-element
-                  return <img src={src} alt="Logo" width={120} height={43} />;
+                  return <img src={src} alt={t.header.logoAlt} width={120} height={43} />;
                 }
 
                 // For local raster images, prefer Next/Image for performance. However, sometimes
@@ -96,13 +99,13 @@ export const Header = ({
                 // Use onError to gracefully fall back to a plain <img> when that happens.
                 if (useImgFallback) {
                   // eslint-disable-next-line @next/next/no-img-element
-                  return <img src={src} alt="Logo" width={120} height={43} />;
+                  return <img src={src} alt={t.header.logoAlt} width={120} height={43} />;
                 }
 
                 return (
                   <Image
                     src={src}
-                    alt="Logo"
+                    alt={t.header.logoAlt}
                     width={120}
                     height={43}
                     // When a dynamic/local image fails to load in Next Image, fall back to plain img
@@ -114,16 +117,16 @@ export const Header = ({
               })()}
             </Link>
             <ul className="nav">
-              <li><a href="/about-magneto/" className="typo-sm-bold">About</a></li>
-              <li><a href="/services/" className="typo-sm-bold">Services</a></li>
-              <li><a href="/packages/" className="typo-sm-bold">Packages</a></li>
-              <li><a href="/projects/" className="typo-sm-bold">Projects</a></li>
-              <li><a href="/contact/" className="typo-sm-bold">Contact</a></li>
+              <li><a href={localizePath('/about-magneto/', locale)} className="typo-sm-bold">{t.nav.about}</a></li>
+              <li><a href={localizePath('/services/', locale)} className="typo-sm-bold">{t.nav.services}</a></li>
+              <li><a href={localizePath('/packages/', locale)} className="typo-sm-bold">{t.nav.packages}</a></li>
+              <li><a href={localizePath('/projects/', locale)} className="typo-sm-bold">{t.nav.projects}</a></li>
+              <li><a href={localizePath('/contact/', locale)} className="typo-sm-bold">{t.nav.contact}</a></li>
               <li>
                 <HeaderCTA
                   utmContent="header_desktop"
                   utmTerm="schedule_call"
-                  text="Free Schedule Call"
+                  text={t.header.scheduleCall}
                 />
               </li>
               {switcher && <li className="nav__lang">{switcher}</li>}
@@ -133,7 +136,7 @@ export const Header = ({
                 <HeaderCTA
                   utmContent="header_mobile"
                   utmTerm="schedule_call"
-                  text="Free Schedule Call"
+                  text={t.header.scheduleCall}
                 />
               </li>
               <li>
@@ -148,7 +151,7 @@ export const Header = ({
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={menuOpen ? "/assets/images/ico-close.svg" : "/assets/images/ico-ham.svg"}
-                    alt={menuOpen ? "Close" : "Menu"}
+                    alt={menuOpen ? t.header.menuClose : t.header.menuOpen}
                     width={24}
                     height={24}
                   />
@@ -159,11 +162,11 @@ export const Header = ({
         </header>
       </section>
       <ul className="nav_mobile__menu" style={{ display: menuOpen ? "flex" : "none" }}>
-        <li><a href="/about-magneto/" onClick={() => setMenuOpen(false)}>About</a></li>
-        <li><a href="/services/" onClick={() => setMenuOpen(false)}>Services</a></li>
-        <li><a href="/packages/" onClick={() => setMenuOpen(false)}>Packages</a></li>
-        <li><a href="/projects/" onClick={() => setMenuOpen(false)}>Projects</a></li>
-        <li><a href="/contact/" onClick={() => setMenuOpen(false)}>Contact</a></li>
+        <li><a href={localizePath('/about-magneto/', locale)} onClick={() => setMenuOpen(false)}>{t.nav.about}</a></li>
+        <li><a href={localizePath('/services/', locale)} onClick={() => setMenuOpen(false)}>{t.nav.services}</a></li>
+        <li><a href={localizePath('/packages/', locale)} onClick={() => setMenuOpen(false)}>{t.nav.packages}</a></li>
+        <li><a href={localizePath('/projects/', locale)} onClick={() => setMenuOpen(false)}>{t.nav.projects}</a></li>
+        <li><a href={localizePath('/contact/', locale)} onClick={() => setMenuOpen(false)}>{t.nav.contact}</a></li>
         {switcher && <li>{switcher}</li>}
       </ul>
     </>

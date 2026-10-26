@@ -1,6 +1,9 @@
 // Calendly integration utilities
 // src/lib/calendly.ts
 
+// EN only (the defaults); never import the FR/ES dictionaries in client code (ADR 0005).
+import { en } from '@/i18n/dictionaries/en';
+
 declare global {
   interface Window {
     Calendly: {
@@ -169,6 +172,12 @@ export const warmCalendlyResources = (): void => {
 /**
  * Open Calendly popup with tracking
  */
+/** Strings of the fallback iframe modal. Built with DOM APIs, so they are passed in rather than read from React. */
+export interface CalendlyLabels {
+  closeDialog: string;
+  frameTitle: string;
+}
+
 export const openCalendlyPopup = async (options?: {
   utmContent?: string;
   utmTerm?: string;
@@ -177,6 +186,8 @@ export const openCalendlyPopup = async (options?: {
   forceNewWindow?: boolean;
   /** Optional map of utm_* params to append to the Calendly URL */
   utmParams?: Record<string, string | undefined>;
+  /** Localized strings for the fallback iframe modal (ADR 0005); EN dictionary values when omitted. */
+  labels?: CalendlyLabels;
 }) => {
   try {
     // If caller prefers a new window (avoids iframe/permission policies), open immediately
@@ -235,7 +246,7 @@ export const openCalendlyPopup = async (options?: {
     }
 
     // Final fallback: create an in-page iframe modal so the user stays on the site
-    openEmbeddedCalendlyModal(targetUrl.toString(), options?.utmContent);
+    openEmbeddedCalendlyModal(targetUrl.toString(), options?.utmContent, options?.labels);
   } catch (error) {
     // Avoid noisy errors in console; log only in development
     if (process.env.NODE_ENV === 'development') {
@@ -246,7 +257,7 @@ export const openCalendlyPopup = async (options?: {
     // navigate users away from the site. Only open a new tab/window when the
     // caller explicitly requested `forceNewWindow: true`.
     try {
-      openEmbeddedCalendlyModal(calendlyConfig.url, options?.utmContent);
+      openEmbeddedCalendlyModal(calendlyConfig.url, options?.utmContent, options?.labels);
     } catch (e) {
       // If creating the embedded modal somehow fails, as a last resort try
       // opening a new tab (wrap in try/catch so errors don't bubble).
@@ -263,7 +274,7 @@ export const openCalendlyPopup = async (options?: {
  * Create a simple in-page modal overlay that embeds Calendly via iframe.
  * This avoids opening a new browser tab and preserves user context on the site.
  */
-const openEmbeddedCalendlyModal = (url: string, label?: string) => {
+const openEmbeddedCalendlyModal = (url: string, label?: string, labels: CalendlyLabels = en.calendly) => {
   try {
     // Avoid creating multiple overlays
     if (document.getElementById('calendly-embedded-overlay')) return;
@@ -301,7 +312,7 @@ const openEmbeddedCalendlyModal = (url: string, label?: string) => {
     const closeBtn = document.createElement('button');
     closeBtn.id = 'calendly-embedded-close';
     closeBtn.type = 'button';
-    closeBtn.setAttribute('aria-label', 'Close scheduling dialog');
+    closeBtn.setAttribute('aria-label', labels.closeDialog);
     closeBtn.innerText = '✕';
     closeBtn.style.position = 'absolute';
     closeBtn.style.top = '8px';
@@ -336,7 +347,8 @@ const openEmbeddedCalendlyModal = (url: string, label?: string) => {
     }
 
     iframe.src = url;
-    iframe.title = label || 'Calendly scheduling';
+    // utmContent wins over the dictionary title, as before (Phase 4 spec I-7).
+    iframe.title = label || labels.frameTitle;
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = '0';
