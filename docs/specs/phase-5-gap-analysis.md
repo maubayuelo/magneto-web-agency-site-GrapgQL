@@ -5,8 +5,11 @@
 - Date: 2026-10-26
 - Branch: `spec/phase-5-gap-analysis` (cut from `master` at `b1e9fb8`, fast-forwarded to `d12dc9d` on 2026-10-26 after
   PR #18 "Isra testimonial approved"). Nothing staged.
-- Revision 2026-10-26: both testimonials approved (PR #18). §T, Content not ready, R4, Decisions and Estimate updated.
-  PR #18 edits lines in place, so the copy line numbers below are unchanged.
+- Revision 1 (2026-10-26): both testimonials approved (PR #18). §T, Content not ready, R4, Decisions and Estimate
+  updated. PR #18 edits lines in place, so the copy line numbers below are unchanged.
+- Revision 2 (2026-10-26, evening): **local CMS live.** Appendix A ran read-only (GraphQL + WP-CLI). E0/E1 now hold live
+  evidence, and E1b/E1c are new. Page maps, §T, the design direction, Risks and AC-3 are corrected where the live data
+  differed.
 - Depends on: `docs/reports/phase-4-ui-microcopy.md` (Phase 4 closed); the copy files
   `docs/content/magneto-copy-{en,fr-CA,es}.md` (import `35c4870`, testimonials `b1e9fb8`, Isra approved `d12dc9d`;
   Notion last edited 2026-10-26T20:10Z).
@@ -31,39 +34,50 @@ phase split, a launch order, and the decisions that need an ADR.
     shows no `POLÍTICA` heading). ES line 10 lists the finished sections, and Privacy is not one of them.
 - `.env.local` targets the local CMS: `NEXT_PUBLIC_WORDPRESS_API_URL=…magneto-cms-2.local/graphql`,
   `ENABLED_LOCALES=en,fr,es`, `DISABLE_SMTP=1` (values checked with `grep`; secrets not printed).
-- **The local CMS was not running during this analysis.**
-  `curl http://magneto-cms-2.local/graphql` → `Failed to connect to magneto-cms-2.local port 80 … Connection refused`.
-  `wp` is not on PATH outside Local's site shell. So this document has **no live schema query and no WP-CLI dump
-  from today.** The ACF model below comes from:
-  - the Phase 1 schema evidence (`docs/specs/phase-1-wpml-setup.md` E3/E5, `55cc16e`, 2026-10-24);
-  - the Phase 3b ACFML dump, local = production, `diff` empty (`docs/reports/phase-3b-production-wpml-runbook.md`
-    line 117, 2026-10-25).
+- **Local CMS: live** (Local "Magneto CMS 2", site id `TYauNf9Ot`, status `running`). On the first attempt the router
+  on port 80 refused connections; after Mauricio restarted the site, `http://magneto-cms-2.local/graphql` → 200.
+  `generalSettings` → `{"title":"Magneto CMS","url":"http://magneto-cms-2.local"}`.
+- Read-only method:
+  - GraphQL: a helper that refuses any `mutation` (scratchpad `p5/gq.py`).
+  - WP-CLI: Local's own binaries, without the site shell:
+    `PHPRC=<Local>/run/TYauNf9Ot/conf/php <Local>/lightning-services/php-8.2.23+0/…/php …/wp-cli.phar eval-file
+    acf-dump.php`, run from `~/Local Sites/magneto-cms-2/app/public`.
+  - Commands used: only `eval`/`eval-file` that read (`acf_get_field_groups`, `acf_get_fields`, `get_option`),
+    `post list`, `theme list` and `plugin list`. **No writes**, no `db` commands.
+- Previous evidence: the Phase 1 schema (E5, 2026-10-24) and the Phase 3b local = production ACFML dump (2026-10-25).
+  Both are **confirmed** by today's run (E1).
 
-  Nothing in `docs/ai/WP-SETUP.md`'s change log after 2026-10-25 touches ACF. Re-running the read-only checks in
-  Appendix A before the Phase 5 spec is **required** (AC-3).
+### E1. CMS content model (live 2026-10-26; 13 ACF groups, same as Phase 1 E5)
+Query: `{ __type(name:"AcfFieldGroup"){ possibleTypes{ name } } }` → the same 13 group types (+ 11 repeater/sub
+types). Field-by-field introspection of every type (`__type(name:…){ fields{ name type{…} } }`) matches the table below
+exactly. No CPTs for services, packages or testimonials. No WP menus. No options page. Shared sections read the
+**locale's `home` page**.
 
-### E1. CMS content model (Phase 1 E5, 13 ACF groups; all content is ACF on pages + the `project` CPT)
-No CPTs for services, packages or testimonials. No WP menus. No options page (Phase 1 E3/E4). Shared sections read
-the **locale's `home` page**.
-
-| # | Group / GraphQL field | On | Fields (GraphQL types) |
+| # | Group / GraphQL field | Location rule (live) | Fields (GraphQL types) |
 |---|---|---|---|
-| 1 | `heroContent` | every route page | heroTitle, subtitleHero, ctaTextHero: String · ctaLinkHero: String (URL) · image, backgroundImage: Media |
-| 2 | `homeAboutSection` | home | aboutSectionTitle, description: String (rendered as HTML) |
-| 3 | `homeFeaturedServices` | home | title · service[]: serviceTitle, serviceDescription, anchorLink, serviceIcon |
-| 4 | `homeTestimonialsSection` | home | testimonials[]: author, testimonial: String · thumb: Media |
-| 5 | `leadMagnetSection` | home | overTitle…, title…, subtitle…, ctaText… · ctaLink…: Media (PDF) |
-| 6 | `finalCtaSection` | home | title, subtitle, ctaText · ctaLink (URL) · bgimage |
-| 7 | `homeFooter` | home | footerLine1, footerLine2 · footerSocialIcons[]: iconUrl, iconSvg |
-| 8 | `aboutData` | about-magneto | sectionTitle, description, generalText, calendlyText, linkText · calendlyUrl, linkUrl |
-| 9 | `contactContactTexts` | contact | tagText, mainCopy, bodytext |
-| 10 | `packagesPackageFeatures` | packages | packagesElements[]: name, description, price: String · popularChoise · icon · features[]: feature |
-| 11 | `pageintrotext` | services, packages, projects | pageIntroText: String |
-| 12 | `servicesServiceDetails` | services | services[]: title, description · featuredService · icon, image |
-| 13 | `projectsProjectData` | project | projectData: projectSubtitle, projectDescription, projectUrl, challenges[]/solutions[]/results[] › item · images[]: image, footNote, ismobilescreenshot |
+| 1 | `heroContent` | `post_type==page` (all pages, **not** `project`) | heroTitle, subtitleHero, ctaTextHero: String · ctaLinkHero: String (URL) · image, backgroundImage: Media |
+| 2 | `homeAboutSection` | page==2 (home) | aboutSectionTitle, description: String (rendered as HTML) |
+| 3 | `homeFeaturedServices` | page==2 | title · service[]: serviceTitle, serviceDescription, anchorLink, serviceIcon |
+| 4 | `homeTestimonialsSection` | page==2 | testimonials[]: author, testimonial: String · thumb: Media |
+| 5 | `leadMagnetSection` | page==2 | overTitle…, title…, subtitle…, ctaText… · ctaLink…: Media (PDF) |
+| 6 | `finalCtaSection` | page==2 **only** | title, subtitle, ctaText · ctaLink (URL) · bgimage |
+| 7 | `homeFooter` | page==2 | footerLine1, footerLine2 · footerSocialIcons[]: iconUrl, iconSvg |
+| 8 | `aboutData` | page==32 | sectionTitle, description, generalText, calendlyText, linkText · calendlyUrl, linkUrl |
+| 9 | `contactContactTexts` | page==41 | tagText, mainCopy, bodytext |
+| 10 | `packagesPackageFeatures` | page==36 | packagesElements[]: name, description, price: String · popularChoise · icon · features[]: feature |
+| 11 | `pageintrotext` | page==34 OR 38 OR 36 | pageIntroText: String |
+| 12 | `servicesServiceDetails` | page==34 | services[]: title, description · featuredService · icon, image |
+| 13 | `projectsProjectData` | `post_type==project` | projectData: projectSubtitle, projectDescription, projectUrl, challenges[]/solutions[]/results[] › item · images[]: image, footNote, ismobilescreenshot |
 
-ACFML: all 13 groups `mode=translation` ("Same fields across languages"). Text fields are Translate (2). Images, URLs,
-true/false and **repeater structure** are Copy (1). Package `price` is Translate (`WP-SETUP.md`, Phase 3b).
+Location rules are by EN page ID (all `post_type==page AND page==<id>`, read with `acf_get_field_groups()`).
+Translations get the same groups through WPML's ID mapping. `acf_get_field_groups(['post_id'=>…])`:
+- FR home 535 = EN home 2 (7 groups);
+- FR projects 558 = EN 38 (`heroContent`, `pageintrotext`);
+- FR project 550 = EN 498 (`projectsProjectData`).
+
+ACFML (live dump): all 13 groups `mode=translation` ("Same fields across languages"), and **no `pref=-`**. Text, textarea
+and wysiwyg are Translate (2). Image, url, file, true_false, group and **repeater structure** are Copy (1). Note that
+`cta_link_hero` and `anchor_link` are `text`, so they are Translate (2), not Copy once.
 Consequence: **every language has the same number of repeater rows** (testimonials, services, packages, project
 lists).
 
@@ -71,9 +85,77 @@ Known CMS facts that affect Phase 5:
 - **Empty text fields return the ACF default value**, which is EN text (Phase 1 E5). A FR/ES field left empty shows EN
   silently.
 - The WPML Language-box "Duplicate" is unreliable. It failed silently twice in Phase 3 (report, "Note for Phase 5").
-- Local FR/ES fixtures exist from Phases 1–3: FR home 535 and ES home 536 (test `heroTitle`), FR `projects` page 558,
-  FR project #550 (Trépied), and the ES Trépied translation. The loader must **update** these, not duplicate them.
+- Local FR/ES fixtures (live):
+  - pages FR = {home 535, projects 558}, ES = {home 536};
+  - projects FR = {550 Trépied}, ES = {541 Trépied}.
+
+  FR/ES home differ from EN only in `heroTitle` (`[FR TEST] …` / `[ES TEST] …`) and the hero image ID (464/465 =
+  translated media copies). **37 text fields are identical to EN.** FR 558, FR 550 and ES 541 are EN copies with
+  `[FR TEST]`/`[ES TEST]` markers. The loader must **update** these, not duplicate them.
+- No Privacy page: `get_option('wp_page_for_privacy_policy')` → `0`, and the EN page list (`wp post list --post_type=page
+  --post_status=any`) is only 533 carte, 41 contact, 38 projects, 36 packages, 34 services, 32 about-magneto, 2 home.
+- No `acf-json` folder in the active theme (`intentionally-blank` 3.1.1). Field groups live only in the DB. Moving them
+  to production means ACF → Tools export/import (as in `WP-SETUP.md`).
+- Active plugins = `WP-SETUP.md` (same versions). `sg-ai-studio` 1.3.1 is still active locally (WP-SETUP says
+  "delete locally"; not in scope, reported).
 - EN projects: `trepied-trepied-ca` (498), `shamaniccas-ecommerce` (224), `fashion-company-ecommerce` (270 = Dangel).
+
+### E1b. Field types and defaults that matter (live WP-CLI dump)
+| Field (ACF name → GraphQL) | Type | Default (truncated) | Phase 5 impact |
+|---|---|---|---|
+| `homeAboutSection.description` | **text** (single line) | "Magneto is a solo web agency helping experts and s…" | 3 paragraphs in the copy |
+| `aboutData.description` | **text** | "I'm Mauricio Bayuelo — designer, developer, and st…" | 2 paragraphs + bold |
+| `aboutData.general_text` | wysiwyg | "Why Magneto?⏎You're not just getting a website — …" | fits |
+| `servicesServiceDetails.services › description` | **text** | — | paragraphs + lists |
+| `packagesPackageFeatures.packages_elements › description` | **text** | — | paragraphs |
+| `pageintrotext` | text | "Lorem ipsum dolor sit amet…" | heading + body |
+| `contactContactTexts.bodytext` | textarea | "Whether you need a high-converting website…" | fits |
+| `homeTestimonialsSection.testimonials › testimonial` | text | — | fits (one paragraph) |
+| `projectsProjectData.project_description` | wysiwyg | "Comprehensive design UX-UI and full-stack…" | fits |
+| `project_data › challenges/solutions/results › item` | text | "Creating an authentic mystical brand experience" | fits |
+| `finalCtaSection` title / subtitle / cta text | text | "Stop losing leads. Start converting." / … / "Request Free Quote" | leak risk on new pages |
+| `heroContent.cta_text_hero` / `cta_link_hero` | text / **text** | "Book a Free Strategy Call" / `…/mauriciobayuelo/free-discovery-call` | the default link is the 2nd Calendly event |
+
+A `text` field can store an HTML string when written with `update_field`, but editors then see raw HTML in a one-line
+input. Changing `text` → `wysiwyg`/`textarea` keeps the stored values (same meta key) and is an ACF definition change,
+so it goes through the production runbook.
+
+### E1c. Current EN content (live) vs the copy
+- Home:
+  - hero "Attract More Aligned Clients Online", CTA → `magnetomarketing/free-strategy-call`;
+  - `homeFeaturedServices` has **2 rows** (Sales Funnel Development, Website & E-Commerce Development), both with
+    `anchorLink: null` → `ServiceCard` renders **no link at all** today;
+  - `homeTestimonialsSection` has **4 placeholder rows** (Elena M., Marcus T., Sarah K., David R.) with claims like "3x
+    more leads". The copy forbids fake testimonials and unsupported claims (EN 151, 1089). They're hidden only because
+    `page.tsx:66` is commented out;
+  - `leadMagnetSection` "6 Online Strategies To Get Clients As Therapist";
+  - final CTA "Ready to stop guessing and start converting?";
+  - footer: line 1 "Follows and Updates in", line 2 "Based in Montreal | Serving clients worldwide", 1 social row
+    (LinkedIn `…/in/maubayuelo/`).
+- About: hero "About Magneto Web Agency". `generalText` holds HTML with theme classes
+  (`<h3 class="typo-2xl-extrabold hero-title m-0">What Magneto delivers?</h3><ul>…`, 1 393 chars).
+- Services: **7 rows** (Sales Funnel, Website & E-Commerce, UX/UI, Email, Branding, Content, Ads). Copy: 3 core +
+  4 supporting.
+- Packages: **3 rows** (Funnel Launch "From $950", Funnel + Website "From $2,400" `popularChoise=true`, Growth Stack
+  "From $4,500"), with 7–8 features each. Copy: BUILD / FIX / CARE.
+- Contact: `mainCopy` "Request Free Quote", `tagText` "Let's Build Something Powerful Together".
+- Heroes on About/Services/Packages/Contact/Projects link to `mauriciobayuelo/free-discovery-call`; Home links to
+  `magnetomarketing/free-strategy-call` (Known debt, confirmed).
+- Projects (EN):
+
+  | Project | Title (post) | Challenges / Solutions / Results | Images (mobile) | Copy needs |
+  |---|---|---|---|---|
+  | 270 `fashion-company-ecommerce` | "Dangel Wellness — dangelwellness.ca" | 3 / 4 / 3 | **5** (1) | 3 / 4 / **6 delivered** · **6 captions** (+1 optional) · title "Dangel Wellness" |
+  | 498 `trepied-trepied-ca` | "TRÉPIED — trepied.ca" | 3 / 4 / 4 | 7 (2) | 3 / 4 / **6** · 7 captions · title "Trépied" |
+  | 224 `shamaniccas-ecommerce` | "Shamanicca’s Ecommerce" | 3 / **3** / 3 | 7 (2) | 3 / **4** / **6** · 7 captions · title "Shamanicca" |
+
+  Row counts change in all three languages together (repeater structure = Copy). Current captions and subtitles carry
+  claims the copy forbids (e.g. "42 verified reviews", "built for paid traffic", "Built mobile-first for Meta Ads
+  traffic").
+- Project order: GraphQL returns Trépied → Shamanicca → Dangel with the default order (date DESC: 2026-07-24,
+  2025-11-15, 2025-11-15) **and** with `orderby:{field:MENU_ORDER, order:ASC}`. `wp post list --orderby=menu_order` shows
+  `menu_order` Dangel 0, Shamanicca 1, Trépied 2. The copy's Home order is Dangel → Trépied → Shamanicca (EN 72-82).
+  How the order is driven (Post Types Order vs date) is **open** (Q9).
 
 ### E2. Code facts (file:line on `d12dc9d`; PRs #17–#18 changed only `docs/content/`)
 Shared / layout
@@ -180,7 +262,7 @@ i18n
 - Assumption A2: italic lines in the copy are editorial/implementation notes, not public text. Examples: "Translated
   from Spanish." is public, but "Links to Mauricio's personal professional profile…" (EN 173) has no FR/ES
   counterpart, so it's treated as a note. **Confirm** (Q8).
-- Assumption A3: the ACF model is unchanged since 2026-10-25 (E0). To be re-verified (Appendix A).
+- ~~Assumption A3~~ **Resolved (revision 2):** the live schema and ACFML dump match Phase 1 E5 / Phase 3b (E1).
 - Q1: Is the lead magnet visible in production right now? The code renders it on every route except `/contact`.
 - Q2: What do the package-card CTAs ("Discuss a BUILD project", "Discuss a FIX project", "Ask about CARE") link to:
   `/contact`, or the strategy-call modal? And the Services CTAs ("See BUILD pricing", "See how FIX works", "Compare CARE
@@ -196,6 +278,9 @@ i18n
 - Q7: Hero CTA → Calendly direct (no modal) vs header/package CTA → modal. Should all "Book a Strategy Call" CTAs go
   through the new modal?
 - Q8: Assumption A2 (italic notes).
+- Q9: Project order on Home and `/projects`. The copy wants Dangel → Trépied → Shamanicca. GraphQL returns Trépied →
+  Shamanicca → Dangel, even with `orderby: MENU_ORDER` (E1c). Change the post dates, the Post Types Order order,
+  or the query?
 
 ## Page maps
 
@@ -217,8 +302,8 @@ Legend for **Fit**:
 | Copy section (EN line) | Holder today | Fit | Note |
 |---|---|---|---|
 | 1 Hero title, subtitle, CTA (20-26) | `heroContent` heroTitle / subtitleHero / ctaTextHero | A | Image → Phase 8 (147-148) |
-| 2 Meet Magneto: heading + 3 paragraphs (28-36) | `homeAboutSection` title + description (HTML) | A\* | `AboutSection` renders unsanitized HTML; sanitize (convention) |
-| 3 Featured Services: BUILD / FIX / CARE, each name + **bold tagline** + description + CTA "Explore X" (38-62) | `homeFeaturedServices.service[]` serviceTitle / serviceDescription; CTA = "Learn More" for all | **B** | No tagline field. The CTA text is fixed. The anchor target has no `id`. The 2-col grid already gives BUILD+FIX on top, CARE below (149) |
+| 2 Meet Magneto: heading + 3 paragraphs (28-36) | `homeAboutSection` title + description (**text**, single line; rendered as HTML) | A\* / B | 3 paragraphs: change the field type to wysiwyg (E1b) or store an HTML string in `text`. `AboutSection` renders unsanitized HTML; sanitize |
+| 3 Featured Services: BUILD / FIX / CARE, each name + **bold tagline** + description + CTA "Explore X" (38-62) | `homeFeaturedServices.service[]` serviceTitle / serviceDescription; CTA = "Learn More" for all | **B** | No tagline field. The CTA text is fixed. The anchor target has no `id`. **Live: 2 rows, `anchorLink: null` → no link rendered today**; needs 3 rows. The 2-col grid already gives BUILD+FIX on top, CARE below (149) |
 | 3 section heading | `homeFeaturedServices.title` | NR | The copy has no heading for this section (Q3) |
 | 4 Selected Projects: heading + intro (64-68) | heading = `home.recentProjects` (dict); intro: none | **B** | Needs an intro field (or a dictionary key) |
 | 4 Project cards: thumbnail · title · description (70-82) | `ProjectsGrid` shows Solution/Outcome lines | **B** | Card text ≠ case-study hero line (e.g. Dangel 74 vs 902) → new project field, e.g. `cardDescription` |
@@ -232,7 +317,7 @@ Legend for **Fit**:
 | Copy section | Holder today | Fit | Note |
 |---|---|---|---|
 | 1 Hero (155-161) | `heroContent` | A | |
-| 2 The Founder: title + 2 paragraphs with **bold name** + CTA "View Mauricio's LinkedIn" (163-171) | `aboutData.sectionTitle` / `description` (plain `<p>`) / `linkText` + `linkUrl` | A\* | 2 paragraphs + bold need HTML rendering of `description` (sanitized) |
+| 2 The Founder: title + 2 paragraphs with **bold name** + CTA "View Mauricio's LinkedIn" (163-171) | `aboutData.sectionTitle` / `description` (**text**, plain `<p>`) / `linkText` + `linkUrl` | **B** | 2 paragraphs + bold: field type change text → wysiwyg (E1b) and HTML rendering (sanitized) |
 | 3 What Magneto delivers (list) + Who Magneto works best with (175-189) | `aboutData.generalText` (HTML) | A\* | Sanitize. Headings + list fit in HTML |
 | 4 Recommend first. Build second. (191-204) | `generalText` (same HTML) | A\* | |
 | 5 Internal CTA: heading + body + "Tell me about your project" → Contact (206-212) | heading/body: `generalText`; button: page renders `CalendlyButton` + `common.bookStrategyCall` | **B** | Use the unused `calendlyText`/`calendlyUrl` as text + link (→ `/contact`), or new `ctaText`/`ctaLink` fields |
@@ -246,7 +331,7 @@ Legend for **Fit**:
 | 1 Hero (261-267) | `heroContent` | A | |
 | 2 Intro: heading + 3 paragraphs (269-277) | `pageintrotext.pageIntroText` rendered inside one `<h3>` | **B** | Heading + body don't fit one h3. Split heading/body, or render the body as HTML |
 | "Core Services" group heading (279) | — | **B** | No grouping today |
-| 3–5 BUILD / FIX / CARE: label ("BUILD — Website Build / Rebuild"), heading, paragraphs, bullet list, investment / process line, CTA (281-342) | `servicesServiceDetails.services[]` title + `description` (plain `<p>`) + icon + image | **B** | Needs a heading/subtitle field, `description` as sanitized HTML (lists, bold, several paragraphs), CTA text + link |
+| 3–5 BUILD / FIX / CARE: label ("BUILD — Website Build / Rebuild"), heading, paragraphs, bullet list, investment / process line, CTA (281-342) | `servicesServiceDetails.services[]` title + `description` (**text**, plain `<p>`) + icon + image | **B** | Needs a heading/subtitle field, `description` text → wysiwyg + sanitized HTML (lists, bold, several paragraphs), CTA text + link. Live: 7 rows → 3 + 4 |
 | "Included Where Your Project Needs It" heading + intro (344-346) | — | **B** | Grouping: a `group` select on each service row or a second repeater. Supporting rows have no price and no CTA (429) |
 | 6–9 four supporting capabilities (348-384) | same repeater | **B** | Same field changes. Subordinate styling (428) |
 | Old services (Branding, Content, Email, Ads) | current rows | — | Replaced (432). With repeater structure Copy, the row count must change in all 3 languages together |
@@ -283,7 +368,7 @@ Legend for **Fit**:
 | Challenges ×3 (916-920) | `challenges[]` | A | |
 | Solutions ×4 (922-927) | `solutions[]` | A | |
 | What Was Delivered (929-936) | `results[]`, heading "Results" | A (dict) | `projectDetail.results` → "What Was Delivered" / "Livrables" / "Entregables" |
-| Screenshot captions (938-948; Trépied/Shamanicca: 7 slots) | `images[].footNote` | A / NR | Screenshots must be retaken from production (Mauricio / Phase 8). Slot count not verified (CMS down) |
+| Screenshot captions (938-948; Trépied/Shamanicca: 7 slots) | `images[].footNote` | A / NR | Screenshots must be retaken from production (Mauricio / Phase 8). Live slots: Dangel **5** (copy: 6 captions + 1 optional), Trépied 7, Shamanicca 7 (E1c) |
 | Final CTA, **title different per project** (954-960) | layout home final CTA | **B** | Per-page final CTA on the `project` type |
 | Home card description (72-82) | — | **B** | New project field (see Home) |
 | SEO "Final EN" (962-966) | `meta.project.title` template; no description | A / Phase 7 | |
@@ -308,7 +393,7 @@ Legend for **Fit**:
 ### Privacy Policy — class **NEW**
 | Copy | Holder today | Fit | Note |
 |---|---|---|---|
-| EN policy (704-830), FR policy (887-1011) | no route, no WP page known to the frontend | **NEW** | Route `[locale]/privacy-policy` reading the WP page `content` (sanitized). No ACF needed. WP may already have its default draft "Privacy Policy" page: check (Appendix A) |
+| EN policy (704-830), FR policy (887-1011) | no route, no WP page known to the frontend | **NEW** | Route `[locale]/privacy-policy` reading the WP page `content` (sanitized). No ACF needed. **Live: no privacy page exists** (`wp_page_for_privacy_policy` = 0) → create EN + FR pages |
 | ES policy | — | **NR** | Missing in the copy |
 | Consent banner "Privacy choices" + Accept / Reject (834-840; FR 1015-1021) | none; no analytics loads today (E2) | **NEW** / decision | ES banner copy missing |
 | Publication gates: providers §4, consent behaviour §5, retention §7, dates, registered-name check (706, 782; FR 1061-1068) | — | **NR** | EN and FR are editorially frozen but **not publishable** until verified |
@@ -345,7 +430,10 @@ company/city, and a per-locale "translated from" note. They render on Home in ev
 - **2+ items: supported.** `Testimonials` maps any array into `testimonials__grid` (index.tsx:36-47). The ACF repeater
   holds any number of rows.
 - **Fields: not supported.**
-  - ACF has `author`, `testimonial` and `thumb` only (E1 #4). There's no role, company, city or note.
+  - ACF has `author`, `testimonial` and `thumb` only (E1 #4, live). There's no role, company, city or note.
+  - Live content: **4 placeholder rows** (Elena M., Marcus T., Sarah K., David R.) with unsupported claims ("3x more
+    leads"). They must be replaced by the 2 approved rows **before** the block is unhidden. With repeater structure =
+    Copy, the FR/ES home pages carry the same 4 rows (E1: 37 fields equal to EN).
   - `TestimonialCard` renders `{author}, {role}`. With `role: ''` (page.tsx:56) that's a trailing comma.
   - `company` exists in the type but isn't rendered.
 - **Blocking defects of the hidden component:**
@@ -456,8 +544,11 @@ Smallest set of model changes. All of them go in **one ACF JSON export**, so one
 first, per WORKFLOW "Release process"):
 
 1. **Per-page final CTA.**
-   - Extend the `finalCtaSection` location to all route pages and `project`. Add `secondaryCtaText` /
-     `secondaryCtaLink`.
+   - Extend the `finalCtaSection` location to all route pages and `project`. **Live: today it's `post_type==page AND
+     page==2`** (home only, E1). Add `secondaryCtaText` / `secondaryCtaLink`.
+   - **Defaults:** once the group is on every page, an empty page returns the ACF defaults ("Stop losing leads. Start
+     converting." / "Request Free Quote", E1b) instead of falling back to home. Either remove the defaults in the same
+     JSON change, or the loader must fill every page's CTA (preferred: both).
    - Move `FinalCTASectionLoader` out of the layout and into each page, with the page name. Fallback: the home group.
    - The layout keeps the footer.
 2. **Featured services row:** add `serviceTagline` (Translate) and `ctaText` (Translate), or the dictionary template
@@ -480,7 +571,14 @@ first, per WORKFLOW "Release process"):
    `iconUrl` or a new `linkedinUrl`, plus `mailto:` and Privacy links.
 9. **Lead magnet:** don't render it (layout or a `show` flag) until the rebuild phase. Update the `cmsFallback`
    strings.
-10. **Privacy:** a new route reading WP page `content`, sanitized. It goes in the sitemap at Phase 7.
+10. **Privacy:** a new route reading WP page `content`, sanitized. It goes in the sitemap at Phase 7. No page exists;
+    the loader creates `privacy-policy` in EN + FR (ES when its copy exists).
+11. **Field types** (E1b): `homeAboutSection.description`, `aboutData.description`, `services › description`,
+    `packages_elements › description` and `pageintrotext` go from `text` → `wysiwyg` (or `textarea` + paragraphs).
+    Same meta keys, so existing values stay. Remove the EN defaults that would leak into FR/ES (`pageintrotext`
+    "Lorem ipsum…", the old funnel defaults), or have the loader write every field.
+12. **Project order** (Q9) and **project titles** ("Dangel Wellness", "Trépied", "Shamanicca" instead of the current
+    post titles; slugs unchanged).
 
 Every new HTML render uses `isomorphic-dompurify` (AGENTS convention). The existing unsanitized `AboutSection`,
 `about-magneto` `generalText` and the intro `dangerouslySetInnerHTML` are touched anyway, so sanitizing them is in
@@ -533,7 +631,11 @@ Recommendation: **EN + FR first, ES when its Privacy copy exists and passes QA.*
   dictionary meta and OG. SEO impact → coordinate with Phase 7.
 - R11 Prices are locale-formatted strings in a Translate field. Wrong formats are easy to load (ES/FR checks ask for
   non-breaking spaces).
-- R12 This analysis used dated ACF evidence (CMS down). A schema drift since 2026-10-25 would change the field map.
+- ~~R12~~ Resolved: the live run matches the dated evidence (E1).
+- R13 **Unsupported claims sit in the CMS today:** 4 placeholder testimonials, the old project captions/subtitles
+  ("42 verified reviews", "built for paid traffic"), funnel copy in the lead magnet and final CTA (E1c). Unhiding or
+  reusing a block before its content is replaced would publish them. The loader replaces them in all 3 languages.
+- R14 Extending `finalCtaSection` to all pages exposes its EN **defaults** on every page without values (design item 1).
 
 ## Decisions needed
 - D1 Accept that Phase 5 changes EN on purpose. Define the new EN acceptance as "matches `docs/content/magneto-copy-en.md`
@@ -570,8 +672,8 @@ For planning, the Phase 5 spec(s) will most likely list:
 - [ ] AC-1 Every `##`/`###` section of the EN copy for Home, About, Services, Packages, Contact, modal, Privacy, the
   three case studies and the footer appears in exactly one page-map row (reviewer spot check against E0 line ranges).
 - [ ] AC-2 Every page has a class (A / B / NEW / NR) with a reason.
-- [ ] AC-3 Before the Phase 5 spec is approved, Appendix A is re-run with Local up, and its output matches E1 (or this
-  doc is amended).
+- [x] AC-3 Appendix A re-run with Local up (revision 2, 2026-10-26). The output matches the Phase 1 E5 model; the
+  differences that matter for Phase 5 are recorded in E1, E1b and E1c, and the affected sections are amended.
 - [ ] AC-4 `git status` shows only `docs/specs/phase-5-gap-analysis.md` (untracked). Nothing staged.
 
 ## Estimate (ranges; agent = Dev wall-clock incl. verification at 375/768/1440 × enabled locales)
@@ -587,21 +689,27 @@ For planning, the Phase 5 spec(s) will most likely list:
 
 Not included: Notion copy for the NR items, screenshots, Phase 6–8, and the production release.
 
-## Appendix A — read-only re-checks to run when Local is up
+## Appendix A — read-only checks (run 2026-10-26, revision 2)
+Outputs are kept in the session scratchpad `p5/` (`schema.json`, `home-{en,fr,es}.json`, `pages-en.json`,
+`projects-en.json`, `fixtures.json`, `acf-dump.txt`). In `acf-dump.txt`, the `loc=` column joins AND rules with "OR";
+the correct grouping is the location column in E1.
+
 ```bash
-# 1. Schema still matches E1 (local GraphQL, read-only)
-curl -s http://magneto-cms-2.local/graphql -H 'Content-Type: application/json' \
-  -d '{"query":"{ __type(name:\"HomeTestimonialsSectionTestimonials\"){ fields { name } } }"}'
-# 2. ACFML dump (WP-SETUP.md, unchanged) — compare with the Phase 3b dump
-#    (run inside Local's "Open site shell")
-wp eval 'foreach ( acf_get_field_groups() as $g ) { echo "== ".$g["title"]." | mode=".($g["acfml_field_group_mode"]??"-").PHP_EOL;
-  $w=function($f,$p="") use (&$w){ echo "   ".$p.$f["name"]." [".$f["type"]."] pref=".($f["wpml_cf_preferences"]??"-").PHP_EOL;
-  foreach(($f["sub_fields"]??[]) as $s){ $w($s,$p.$f["name"]." > "); } }; foreach ( acf_get_fields($g["key"]) as $f ) { $w($f); } }'
-# 3. ACF field *types* (text vs textarea vs wysiwyg) — not visible in GraphQL; the dump above shows them
-# 4. Pages and translations per language (incl. a WP "privacy-policy" draft), projects per language
-wp post list --post_type=page,project --post_status=any --fields=ID,post_name,post_status --format=table
-wp eval 'foreach (["en","fr","es"] as $l){ do_action("wpml_switch_language",$l); echo $l.": "; foreach (get_posts(["post_type"=>["page","project"],"post_status"=>"any","numberposts"=>-1,"suppress_filters"=>false]) as $p) echo $p->post_name."(".$p->ID.") "; echo PHP_EOL; }'
-# 5. Current testimonial rows, service rows, package rows and project image counts (EN)
-wp eval '$h=get_page_by_path("home"); var_export(get_field("homeTestimonialsSection",$h->ID) ?: get_field("testimonials",$h->ID));'
+# GraphQL (read-only; the helper refuses mutations)
+python3 -I gq.py '{ __type(name:"AcfFieldGroup"){ possibleTypes{ name } } }'
+python3 -I gq.py '{ <Type>: __type(name:"<Type>"){ fields{ name type{ name kind ofType{ name } } } } … }'   # 21 types
+python3 -I gq.py '{ en: pages(first:20, where:{language:"en"}){nodes{databaseId slug}} … projects per language }'
+python3 -I gq.py '<home / route pages / projects content queries, language = en|fr|es>'
+
+# WP-CLI with Local's binaries (no site shell needed), from ~/Local Sites/magneto-cms-2/app/public
+PHP="$HOME/Library/Application Support/Local/lightning-services/php-8.2.23+0/bin/darwin-arm64/bin/php"
+WPCLI=/Applications/Local.app/Contents/Resources/extraResources/bin/wp-cli/wp-cli.phar
+export PHPRC="$HOME/Library/Application Support/Local/run/TYauNf9Ot/conf/php"   # sets the MySQL socket
+"$PHP" "$WPCLI" eval-file acf-dump.php          # groups: mode, location; fields: type, pref, default
+"$PHP" "$WPCLI" eval 'foreach (acf_get_field_groups() as $g) { /* location with AND/OR grouping */ }'
+"$PHP" "$WPCLI" eval 'acf_get_field_groups(["post_id"=>535]) …'   # groups seen on translations
+"$PHP" "$WPCLI" eval 'echo get_option("wp_page_for_privacy_policy");'
+"$PHP" "$WPCLI" post list --post_type=page --post_status=any --fields=ID,post_name,post_status --format=csv
+"$PHP" "$WPCLI" post list --post_type=project --orderby=menu_order --order=ASC --fields=ID,post_name,menu_order --format=csv
+"$PHP" "$WPCLI" theme list --status=active ; "$PHP" "$WPCLI" plugin list --status=active
 ```
-Field names in item 5 must be taken from the dump in item 2. ACF `get_field` uses field **names**, not GraphQL names.
