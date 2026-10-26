@@ -22,8 +22,8 @@ CLAUDE.md → AGENTS.md import is active.
 
 ## Current phase
 
-Phase 3 — Locale-aware data: closed. 3 merged (2026-10-24); 3b done in production (2026-10-25).
-Scope: `docs/specs/phase-3-localized-data.md`, `docs/specs/phase-3b-production-wpml-runbook.md`.
-Reports: `docs/reports/phase-3-localized-data.md`, `docs/reports/phase-3b-production-wpml-runbook.md`.
-Next: Phase 4 (no spec yet).
+Phase 4 — UI microcopy dictionaries: closed. Merged and in production (2026-10-25).
+Scope: `docs/specs/phase-4-ui-microcopy.md`, ADR 0005.
+Report: `docs/reports/phase-4-ui-microcopy.md`.
+Next: Phase 5 (no spec yet; gap analysis of the 2026 Notion copy vs ACF/components first).
 (Update this line when a phase closes.)
