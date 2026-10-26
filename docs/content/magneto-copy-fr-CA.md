@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / FR-CA
 URL: https://app.notion.com/p/3fc702393b5e8195a8c1eeede1910b62
-Notion page last edited: 2026-10-26T21:04:52.793Z
+Notion page last edited: 2026-10-26T21:41:07.682Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -65,11 +65,13 @@ CARE assure la mise à jour, la surveillance et le soutien d'un site déjà stab
 
 ### Réalisations web
 
+**Ordre d'affichage (décidé par Mauricio, 2026-10-26) :** Dangel Wellness · Shamanicca · TRÉPIED (champ displayOrder 10 / 20 / 40; 30 réservé à KineLibelula, non publié avant la fin du projet).
+
 Des expériences web pour le bien-être, les services professionnels et le commerce en ligne, adaptées aux besoins de chaque entreprise.
 
 ### [Dangel Wellness](https://dangelwellness.ca)
 
-Un site web en français, en anglais et en espagnol pour une professionnelle du bien-être de Montréal. Il présente clairement plusieurs services et offre des moyens directs de prendre contact ou de réserver.
+Un site web en français, en anglais et en espagnol pour un professionnel du bien-être de Montréal. Il présente clairement plusieurs services et offre des moyens directs de prendre contact ou de réserver.
 
 ### [TRÉPIED](https://trepied.ca)
 
@@ -492,15 +494,15 @@ Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@ma
 
 #### Dangel Wellness
 
-Un site web en français, en anglais et en espagnol pour une professionnelle du bien-être à Montréal, conçu pour présenter clairement plusieurs services et permettre aux visiteurs de prendre contact ou de réserver directement.
+Un site web en français, en anglais et en espagnol pour un professionnel du bien-être à Montréal, conçu pour présenter clairement plusieurs services et permettre aux visiteurs de prendre contact ou de réserver directement.
 
 **Site web :** [dangelwellness.ca](https://dangelwellness.ca)
 
 ### Présentation
 
-Dangel est une thérapeute holistique et intuitive établie à Montréal qui accompagne sa clientèle en français, en anglais et en espagnol.
+Dangel est un thérapeute holistique et intuitif établi à Montréal qui accompagne sa clientèle en français, en anglais et en espagnol.
 
-Son site web devait présenter plusieurs services thérapeutiques sans surcharger les visiteurs, offrir une expérience claire dans les trois langues et permettre à la propriétaire de modifier elle-même son contenu.
+Son site web devait présenter plusieurs services thérapeutiques sans surcharger les visiteurs, offrir une expérience claire dans les trois langues et permettre au propriétaire de modifier lui-même son contenu.
 
 Magneto a pris en charge le projet, de la stratégie à la mise en ligne : conception UX/UI, développement, mise en œuvre multilingue, parcours de prise de rendez-vous et de contact, outils de consentement aux témoins, mesure des envois de formulaires et des clics sur les liens de réservation, ainsi qu'un guide d'administration écrit.
 
@@ -524,7 +526,7 @@ Magneto a pris en charge le projet, de la stratégie à la mise en ligne : conce
 - Un site web en ligne en français, en anglais et en espagnol
 - Une présentation des services et une navigation adaptées aux différents écrans
 - Des parcours de réservation et de contact
-- Du contenu modifiable par la propriétaire, accompagné d'un guide d'administration écrit
+- Du contenu modifiable par le propriétaire, accompagné d'un guide d'administration écrit
 - Des outils de consentement aux témoins
 - La mesure des envois de formulaires et des clics sur les liens de réservation
 
@@ -553,7 +555,7 @@ Magneto peut vous aider à déterminer si la prochaine étape est un nouveau sit
 
 **Balise titre :** Dangel Wellness — Site web trilingue | Magneto
 
-**Méta-description :** Un site web en français, en anglais et en espagnol pour une professionnelle du bien-être à Montréal : services clairs, réservation, contact et contenu modifiable par la propriétaire.
+**Méta-description :** Un site web en français, en anglais et en espagnol pour un professionnel du bien-être à Montréal : services clairs, réservation, contact et contenu modifiable par le propriétaire.
 
 ---
 
