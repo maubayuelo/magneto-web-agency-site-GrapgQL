@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / FR-CA
 URL: https://app.notion.com/p/3fc702393b5e8195a8c1eeede1910b62
-Notion page last edited: 2026-10-26T19:06:23.941Z
+Notion page last edited: 2026-10-26T20:10:14.878Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -91,7 +91,7 @@ Projet de Magneto, et non un projet client : une boutique en ligne et un blogue 
 
 **Israel Valencia Vázquez · Fondateur et producteur vidéo · TRÉPIED**
 
-*BROUILLON — non publiable. Formulation ajustée (pluriel → singulier) à partir de la version française d'Isra (WhatsApp, 2026-10-23); en attente de son approbation du texte et de la signature.*
+*Approuvé par Isra sur WhatsApp (2026-10-26) : texte et signature. Formulation ajustée (pluriel → singulier) à partir de sa version française du 2026-10-23, avec son accord.*
 
 ## 6. Guide gratuit
 
