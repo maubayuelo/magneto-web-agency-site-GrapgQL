@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / FR-CA
 URL: https://app.notion.com/p/3fc702393b5e8195a8c1eeede1910b62
-Notion page last edited: 2026-10-17T21:00:58.459Z
+Notion page last edited: 2026-10-26T19:06:23.941Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -81,9 +81,17 @@ Projet de Magneto, et non un projet client : une boutique en ligne et un blogue 
 
 ## 5. Témoignage client
 
-**Dangel · Thérapeute holistique et intuitive · Montréal**
+« Très professionnel. Mauricio a compris mon travail dès le départ et a su créer ce dont j'ai besoin. Le résultat dépasse mes attentes, et travailler avec lui a été simple et très satisfaisant. »
 
-*Citation française à compléter directement à partir de l'avis original en espagnol. Ce bloc doit demeurer masqué tant que le texte n'a pas été vérifié.*
+**Dangel Manik · Thérapeute holistique · Montréal**
+
+*Traduit de l'espagnol (original : courriel du 2026-08-20, vérifié). Traduction proposée — à valider par Mauricio.*
+
+« Excellente expérience avec Mauricio (Magneto) ! Il a su comprendre nos besoins et les transformer en un site web attrayant, fonctionnel et professionnel. Nous recommandons Magneto sans hésitation ! »
+
+**Israel Valencia Vázquez · Fondateur et producteur vidéo · TRÉPIED**
+
+*BROUILLON — non publiable. Formulation ajustée (pluriel → singulier) à partir de la version française d'Isra (WhatsApp, 2026-10-23); en attente de son approbation du texte et de la signature.*
 
 ## 6. Guide gratuit
 

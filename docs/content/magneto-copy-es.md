@@ -1,7 +1,7 @@
 <!--
 Source: Notion — Magneto's Page Copy / ES
 URL: https://app.notion.com/p/3fc702393b5e81abaf9af4c499daab27
-Notion page last edited: 2026-10-17T22:29:30.464Z
+Notion page last edited: 2026-10-26T19:06:27.869Z
 Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
@@ -81,13 +81,21 @@ Un sitio web para un estudio de producción de video de Montreal, diseñado para
 
 Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda en línea y un blog integrados en un mismo sitio web, con un buscador común y suscripción al boletín informativo.
 
-## 5. Testimonio de cliente — BLOQUE OCULTO HASTA VERIFICAR EL ORIGINAL
+## 5. Testimonios de clientes — Dangel verificado; Isra en borrador
 
-### Opinión de una clienta
+### Opinión de clientes
 
-*El testimonio debe obtenerse del original español de Dangel y verificarse antes de mostrarse. No reconstruirlo a partir de la versión traducida al inglés. Reutilizar el componente testimonial existente, actualmente oculto.*
+“Mauricio es muy profesional, entendió desde el principio mi trabajo y supo crear lo que yo necesito, el resultado supera mis expectativas, trabajar con él fue sencillo y muy satisfactorio.”
 
-**Atribución prevista (pendiente de verificar con el original):** Dangel · Terapeuta holística e intuitiva · Montreal
+**Dangel Manik · Terapeuta holístico · Montreal**
+
+*Original en español, verificado contra el correo del 2026-08-20; solo se corrigió el acento de «él». Reutilizar el componente testimonial existente, actualmente oculto.*
+
+“Excelente experiencia trabajando con Mauricio (Magneto). Supo entender nuestras necesidades y transformarlas en un sitio web atractivo, funcional y profesional. ¡Recomendamos Magneto ampliamente!”
+
+**Israel Valencia Vázquez · Fundador y productor de video · TRÉPIED**
+
+*BORRADOR — no publicable. Ajuste de plural a singular sobre el original de Isra (WhatsApp, 2026-10-23: «Supieron entender… ¡Los recomendamos ampliamente!»); pendiente de su aprobación del texto y la firma. Si no lo aprueba, usar su original tal cual.*
 
 ## 6. Guía gratuita — BLOQUE OCULTO HASTA SU ACTIVACIÓN
 
