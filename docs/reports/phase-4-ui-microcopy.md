@@ -5,9 +5,9 @@
 - Evidence: `<scratchpad>/p4/` =
   `/private/tmp/claude-501/-Users-maubayuelo-Documents-projects-magneto-web-app-GrapgQL/3f8144d7-33fc-47ed-9d3a-a358d2067960/scratchpad/p4/`
 
-**Status: T0–T8 done; stopped for review.** C1 was approved on 2026-10-25 by Mauricio and the Senior Architect,
+**Status: T0–T8 done; AC-11 passed on the PR preview (2026-10-25).** C1 was approved on 2026-10-25 by Mauricio and the Senior Architect,
 with decisions: `format.ts` (a), required `locale` props, the Footer prop in `types.ts`.
-- AC-11 (Vercel preview) is open; it needs the PR.
+- AC-11 (Vercel preview) **passed**, 11/11 URLs (details under AC-11 below).
 - The new `/esto-no-existe` look was **approved by Mauricio on 2026-10-25** (AC-5).
 - Deviations 1–3 were accepted on 2026-10-25. The FR/ES-only popup labels (deviation 2) are recorded as minor debt.
 - Nothing is staged or committed.
@@ -253,10 +253,10 @@ report (measured from command timestamps; review wait not included).
 - The 404s are custom, dictionary-driven, and have a localized raw `<title>`.
 - `next build` refuses an enabled locale that still has `[FR TODO]` / `[ES TODO]` values.
 
-**Open:**
-- AC-11, the Vercel preview: needs the pushed PR, so it's Mauricio's.
+**Open:** none.
 
 **Closed after the report (2026-10-25):**
+- AC-11: the Vercel preview passed, 11/11 URLs (see "AC-11, Vercel preview" below).
 - AC-5: the new `/esto-no-existe` look was approved by Mauricio (screenshots below).
 
 **Deviations:** three, all accepted on 2026-10-25 (see "Deviations from the spec").
@@ -339,7 +339,7 @@ never touched (BUILD_ID `GdgelMczjUyCIzua04nkq` before and after).
 | **AC-8** hydration | **passed** | Headless Chrome, both builds: 7 EN routes + `/esto-no-existe` + `/projects/no-existe` (+ `/fr`, `/es` with locales on): **0** hydration warnings; no console message except the 404 document's own `Failed to load resource … 404`, same as V0. Mobile toggle at 375: alt `Menu` → `Close` → `Menu`, menu `none` → `flex` → `none` |
 | **AC-9** bundle | **passed** | `grep -rlF "[FR TODO]" .next/static` → 0 files; `[ES TODO]` → 0 (locales-on build and gate build) |
 | **AC-10** links | **passed** | EN hrefs: covered by AC-3. `/fr`, `/fr/projects`, `/fr/projects/trepied-trepied-ca`, `/es`: every internal link outside the switcher starts with the locale (logo, nav, "Check All Services", project cards, "Back to Projects"); `/`: none prefixed. Nav elements are still `<a>`. Switcher maps the same page (`/projects` ↔ `/fr/projects` ↔ `/es/projects`, …). "Learn More" isn't rendered on `/fr`: the local FR home's featured services have no `anchorLink`, so it's EN-only locally (covered by AC-3) |
-| **AC-11** Vercel preview | **not run** | Needs the PR pushed (agents don't push). Checklist for Mauricio is in the spec (AC-11); Vercel must not have `ALLOW_UNTRANSLATED_LOCALES` |
+| **AC-11** Vercel preview | **passed** (2026-10-25) | PR preview, 11/11 URLs as expected; details in "AC-11, Vercel preview" below |
 | **AC-12** AGENTS.md | **passed** | Exactly the listed lines (diff below); lint baseline = measured 115 / 110 (149 / 110 at V0) |
 | **AC-13** I-9 | **passed** | Recorded below and in AGENTS.md Known debt. `LeadMagnetSection` logic unchanged; SSR covered by AC-3, and post-hydration CMS text identical to V0 (hydrated 404 DOM text: "Not sure where to start? Download our free guide: 6 Online Strategies…") |
 
@@ -354,6 +354,29 @@ never touched (BUILD_ID `GdgelMczjUyCIzua04nkq` before and after).
 | `src/components/organisms/NotFound/NotFound.test.tsx` | 4 |
 | `src/components/organisms/ContactForm.test.tsx` | 2 |
 | **Total** | **29 files, 273** |
+
+### AC-11, Vercel preview (2026-10-25)
+- **Preview:** `https://magneto-web-agency-site-git-f61273-mauricios-projects-73547468.vercel.app/` (Ready).
+- **Vercel env, checked by Mauricio:** `ALLOW_UNTRANSLATED_LOCALES` absent, `ENABLED_LOCALES` unset (EN only, so the
+  guard can't trip).
+- **Method:** Claude in Chrome in Mauricio's session (Vercel Deployment Protection), in a new tab.
+  - URL navigation only: no clicks, no forms, no Vercel dashboard. The tab was closed afterwards.
+  - Status is the Navigation Timing `responseStatus`.
+  - Raw HTML comes from a same-origin `GET` of the page's own URL; content is read from the DOM after load.
+
+| URL | Status | Checked | Result |
+|---|---|---|---|
+| `/` | 200 | `lang="en"`, raw and DOM title `Magneto Marketing - Home`, h1 "Attract More Aligned Clients Online", nav `About` `Services` `Packages` `Projects` `Contact` (hrefs `/about-magneto/` … unprefixed), CTA `Free Schedule Call`, footer `Magneto Marketing - All Rights Reserved, 2026.` | pass |
+| `/services` | 200 | title `Services - Magneto Marketing`; same EN nav and footer | pass |
+| `/packages` | 200 | title `Packages - Magneto Marketing`; same EN nav and footer | pass |
+| `/projects` | 200 | title `Projects - Magneto Marketing`; same EN nav and footer | pass |
+| `/about-magneto` | 200 | title `About Magneto - About the Agency`; same EN nav and footer | pass |
+| `/contact` | 200 | title `Contact - Magneto Marketing`; same EN nav and footer | pass |
+| `/projects/trepied-trepied-ca` | 200 | title `TRÉPIED — trepied.ca \| Magneto Projects`, h1 `TRÉPIED — trepied.ca`, headings `Challenges` `Solutions` `Results`, "Back to Projects" → `/projects`; same EN nav and footer | pass |
+| `/esto-no-existe` | 404 | raw: `<html id="__next_error__">`, `<title>404: This page could not be found.</title>`, robots `noindex` + `noindex, nofollow` (no `index, follow`). After load: custom 404 (h1 `404`, `This page could not be found.`, `Go Home` → `/`), header and footer present, `lang="en"`, title unchanged | pass |
+| `/projects/no-existe` | 404 | raw `<title>Project Not Found</title>`, same robots. After load: custom project 404 (h1, body, `View All Projects` → `/projects`, `Go Home` → `/`), header and footer present | pass |
+| `/fr` | 404 | custom 404 (h1 `404`), `lang="en"` (locale disabled), no `TODO]` text on the page | pass |
+| `/es` | 404 | same as `/fr` | pass |
 
 ### AGENTS.md diff (AC-12)
 - **Commands:** + `ALLOW_UNTRANSLATED_LOCALES=1` is for local builds only; never set it in Vercel (and what the
