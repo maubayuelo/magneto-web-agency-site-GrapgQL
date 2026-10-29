@@ -3224,6 +3224,32 @@
                 "mime_types": "",
                 "allow_in_bindings": 0,
                 "preview_size": "medium"
+            },
+            {
+                "key": "field_p5_herocontent_hero_cta_path",
+                "label": "CTA Path",
+                "name": "hero_cta_path",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Internal path. Only \/contact is used (Packages). The site adds the language prefix. Empty: the CTA keeps the CTA Link behavior.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaPath",
+                "graphql_non_null": 0
             }
         ],
         "location": [
