@@ -1,6 +1,15 @@
 # Phase 5a — Production ACF import (runbook)
 
-- Status: Draft (rev 2: D-a/D-b decided, SSH values filled in, step 4.2 expectation measured)
+- Status: Draft
+  - rev 2: D-a/D-b decided, SSH values filled in, step 4.2 expectation measured;
+  - rev 3: imports the corrected JSON (Dev report F-1..F-3: `aboutData` fields renamed `about_cta_path` /
+    `about_cta_text`); the 0.8 orphan check covers and classifies every `finalCtaSection` field name; P1 runs
+    `acf-json-diff.mjs` with the duplicate-name check and requires it to pass;
+  - rev 4 (2026-10-27, Senior Architect, approved by Mauricio): the JSON gains **one** field for 5b,
+    `heroContent.hero_cta_path` (GraphQL `ctaPath`, text, pref 2, blank default, key
+    `field_p5_herocontent_hero_cta_path`), as a 5a amendment (ADR 0006 amendment 1), so this single import carries it.
+    Expected counts move by one (Added 36, dump 121 lines, schema 38/38); hashes are re-measured at P1/P3. New step
+    0.3b: ACF PRO license active on production (Mauricio's note in the 5a report).
 - Author: Architect · Reviewed by: Mauricio (+ Senior Architect) · **Executed by: Mauricio** (agents never write to production)
 - Date: 2026-10-26
 - Branch: `spec/phase-5a-runbook` (from `master` at `5d4c90f`). Nothing staged.
@@ -8,14 +17,17 @@
   - `docs/specs/phase-5a-structure-shared-home-about-cases.md` (Approved): "Production ACF runbook — outline", AC-22, AC-23;
   - `docs/adr/0006-phase-5-content-model.md` (Accepted), decision 2;
   - the 5a Dev report, checkpoint section (`docs/reports/phase-5a-structure-shared-home-about-cases.md` on
-    `feat/phase-5a`): D1 (CPT excluded), I-1 (orphan `subtitle` meta), checkpoint decisions 1–4;
+    `feat/phase-5a`): D1 (CPT excluded), I-1 (orphan `subtitle` meta), checkpoint decisions 1–4, and the fixtures-run
+    section F-1 (field-name collision `cta_path` on page 32), F-2 (scans), F-3 (fix: rename, plus an optional duplicate-name
+    guard in `acf-json-diff.mjs`);
   - the Phase 3b runbook and report (format, SSH access, Appendix A pattern).
 - Must be done **before** the 5a PR's Vercel preview is checked (5a AC-22). "CMS first, frontend second"
   (`docs/ai/WORKFLOW.md`, Release process).
 
 ## Goal
 Production WordPress (`cms.magnetomarketing.co`) gets the Phase 5 ACF schema by importing the **same reviewed file** that
-was imported locally: `docs/acf/phase-5-field-groups.json` (field groups only). Afterwards:
+was imported locally: `docs/acf/phase-5-field-groups.json` (field groups only), **in its F-3 corrected version** (no two
+fields with the same name apply to the same post). Afterwards:
 - the 13 existing groups are updated in place, and `packagesContentSections` is created (14 groups);
 - the ACFML dump equals the local post-import dump;
 - introspection shows every Phase 5 field;
@@ -27,18 +39,40 @@ exposes is **reported, not fixed**.
 ## Evidence (facts verified now, 2026-10-26, local and repo, read-only)
 No production request was made to write this spec. Production facts are collected by step 0.
 
-**E1. Import artifacts** (Dev working tree on `feat/phase-5a`, untracked until the Dev's commit 1):
+**E1. Import artifacts** (Dev working tree on `feat/phase-5a`, still untracked; measured 2026-10-26 after the F-3 rename):
 ```
-0477e8c9b6f07904683b36abbc5a0839e2159d6f99ee2ba894e12c4c8f6ed201  docs/acf/phase-5-before.json
-690e734e59f8d6a49fc16ea8607317c9e97833f7af5c3e83411d17d7579c27bb  docs/acf/phase-5-field-groups.json
-050c519005a5df475fc5bce1588f357f306c046b77a87ce66697a602b93c8e09  scripts/phase-5a/acf-json-diff.mjs
+0477e8c9b6f07904683b36abbc5a0839e2159d6f99ee2ba894e12c4c8f6ed201  docs/acf/phase-5-before.json         (unchanged)
+4847b1eb687806127555c2ae28c0f972e59a4d384c1902cd608669b183a803f3  docs/acf/phase-5-field-groups.json   (rev 3, corrected; was 690e734e… in rev 2)
+<measured at P1>                                                  docs/acf/phase-5-field-groups.json   (rev 4, + hero_cta_path; 5b spec S1)
+050c519005a5df475fc5bce1588f357f306c046b77a87ce66697a602b93c8e09  scripts/phase-5a/acf-json-diff.mjs   (no duplicate-name check yet)
 ```
+- The script hash **will change** when the Dev adds the duplicate-name check (P1). The JSON hash changes once more with
+  the rev 4 field (S1) and is then final unless P1 finds a problem. P1 records the committed hashes; 0.1 checks against
+  **those**.
+- Rev 4 field, checked read-only in the rev 3 JSON (2026-10-27): no field named `hero_cta_path` exists in any group;
+  `heroContent` (`group_689a2d99bc46f`, `post_type==page`) is the last group in the file; the field is appended at the
+  end of its `fields`, so no existing key is reordered. GraphQL `HeroContent.ctaPath` doesn't clash with
+  `FinalCtaSection.ctaPath` (different types) and the meta name `hero_cta_path` doesn't clash with `cta_path` (F-1).
 - `phase-5-before.json`: 14 entries = 13 field groups + the ACF post type `post_type_689bb2945f206` ("Projects",
   `post_type: project`, `modified: null`, `import_date: ""`).
 - `phase-5-field-groups.json`: 14 field groups, no post type (D1).
-- AC-7b diff before → field groups (Dev report E1): 35 added (34 fields + 1 group), removed 0, 10 changed keys (3 default
-  removals, the `finalCtaSection` location + `graphql_types`, 6 legacy `instructions`), reordered 0. Approved at the
-  checkpoint (decision 1).
+- AC-7b diff before → corrected field groups (rerun now, exit 0): 35 added (34 fields + 1 group), removed 0, 10 changed
+  keys (3 default removals, the `finalCtaSection` location + `graphql_types`, 6 legacy `instructions`), reordered 0. Same
+  counts as the checkpoint (decision 1); only two added names differ.
+- **Rev 4 expectation:** 36 added (35 fields + 1 group, including `hero_cta_path`), removed 0, changed 10, reordered 0,
+  duplicates 0.
+
+**E1b. The F-3 correction, checked in the corrected JSON:**
+- `About - Data`: `field_p5_aboutdata_cta_text` → name `about_cta_text`, `field_p5_aboutdata_cta_path` → name
+  `about_cta_path`. Keys, `graphql_field_name` (`ctaText` / `ctaPath`) and type `text` are unchanged, so the frontend,
+  the tests and the fixtures script (it writes by key) don't change.
+- Duplicate top-level field names per post, computed from each group's location rules (read-only `node`, same logic as
+  the guard P1 requires), for home 2, about 32, services 34, packages 36, projects 38, contact 41, any other page, and
+  the project post type: **0 duplicates** in the corrected JSON, and 0 in `phase-5-before.json`.
+- Negative test: with `about_cta_path` renamed back to `cta_path` in memory, page 32 reports
+  `cta_path: [About - Data, finalCtaSection]`, which is F-1.
+- Why it matters: ACF stores and reads a top-level value by **name** in postmeta, and doesn't check the `_name` key
+  reference on read (F-1). Two fields with one name on one post share one value.
 - `acf-json-diff.mjs` self-test: `phase-5-before.json` against itself → `groups: 13 → 13`, the CPT listed under
   "Excluded by design" on both sides, Added 0, Removed 0, Changed 0, Reordered 0, exit 0. Step 0.6 expects exactly
   this output.
@@ -54,15 +88,24 @@ No production request was made to write this spec. Production facts are collecte
 - Deleting or adding a field definition never deletes post meta.
 
 **E3. Local post-import state** (the target production must match):
-- Extended ACFML dump (Appendix C) on local: 120 lines, 14 groups, all `mode=translation`, 0 × `pref=-`,
-  sha256 `c2b12bcd…a27c12164`. `finalCtaSection`:
+- Extended ACFML dump (Appendix C) on local **with the rev-2 JSON** (local hasn't re-imported the corrected JSON yet;
+  rechecked now): 120 lines, 14 groups, all `mode=translation`, 0 × `pref=-`, sha256 `c2b12bcd…a27c12164`.
+- **Rev 4:** after P0's re-import of the amended JSON, the dump gains one line under `heroContent`,
+  `hero_cta_path [text] pref=2`: **121 lines**. Its sha256 is measured at P3 and replaces the `6ef380c9…` reference
+  below everywhere in this runbook.
+- **Expected after the corrected local import (F-3 step 3), derived (rev 3):** the same dump with only the two `About - Data`
+  lines renamed, `cta_text [text] pref=2` → `about_cta_text [text] pref=2` and `cta_path` → `about_cta_path`: 120 lines,
+  sha256 `6ef380c9…242fc4d` (`6ef380c98e2e143e0cdfa3c5e5f26928e00def27a268c7fef908759f5aa9b258`). P3 measures it; a
+  different hash is read line by line before going on.
+- `finalCtaSection` (unchanged by F-3):
   ```
   == finalCtaSection | key=group_689a58f582e2e | mode=translation | types=["Page","Project"] | loc=post_type==page OR post_type==project
      title [text] pref=2 · subtitle [text] pref=2 · prefooter_cta_text [text] pref=2 · prefooter_cta_link [url] pref=1
      cta_path [text] pref=2 · secondary_cta_text [text] pref=2 · secondary_cta_path [text] pref=2 · bgimage [image] pref=1
   ```
   (no `default=` on any `finalCtaSection` field; one line per field in the real output.)
-- Schema check (Appendix B) on local: `schema checks 37/37 OK`.
+- Schema check (Appendix B) on local: `schema checks 37/37 OK` (rev 3 checks). Rev 4 adds `HeroContent.ctaPath`:
+  expected 38/38 after P0b (37/38 before it, `MISSING: HeroContent.ctaPath`).
 
 **E3b. Before → after, measured on local** (step 4.2's expectation):
 - Pre-import dump: `~/Documents/projects/magneto/backups/phase-3b/acfml-local.txt` (2026-10-25 14:49, 85 lines,
@@ -72,10 +115,15 @@ No production request was made to write this spec. Production facts are collecte
   the field defaults are removed):
   `sed -E 's/ \| key=[^|]* \|/ |/; s/ \| types=.*$//; s/ default=.*$//'`
   Checked: today's local extended dump, filtered = today's local `WP-SETUP.md`-format dump (`diff` empty).
-- `diff acfml-local.txt <filtered post-import local dump>`: **0 lines removed, 35 added**, in 15 hunks, all
-  additions (`3a4 8a10,11 12a16 17a22,24 36a44,47 39a51 43a56 55a69 59a74,75 61a78,80 63a83 74a95,96 79a102,104 81a107
-  85a112,120`). The 35 lines = the 34 new fields + the `Packages - Content Sections` header. sha256 of the diff
-  `6136656a…3916e`.
+- `diff acfml-local.txt <filtered post-import local dump>` (rev-2 JSON, measured): **0 lines removed, 35 added**, in 15
+  hunks, all additions (`3a4 8a10,11 12a16 17a22,24 36a44,47 39a51 43a56 55a69 59a74,75 61a78,80 63a83 74a95,96
+  79a102,104 81a107 85a112,120`). The 35 lines = the 34 new fields + the `Packages - Content Sections` header.
+- With the corrected JSON (derived from the expected dump above): the **same** counts and hunk positions; the two
+  `About - Data` added lines read `about_cta_text` / `about_cta_path`. sha256 of that diff `80526616…0242fc4d`
+  (`8052661631c102dc7701c3c94de6c7828b18a39b3c6a6e4cfc01b5870242fc4d`), replacing rev 2's `6136656a…`.
+- **Rev 4:** **0 removed, 36 added** (the `hero_cta_path` line under `heroContent`; one more hunk unless it is adjacent
+  to an existing one). P3 measures the hunk list and the sha256; that measured diff, not the numbers above, is step
+  4.2's reference.
 - This filtered format can't show the `finalCtaSection` location, types and defaults. Those are covered by step 4.1
   (the full extended dump must equal local).
 
@@ -93,6 +141,8 @@ No production request was made to write this spec. Production facts are collecte
   request is `200 ok` except `GetAboutTexts` (`ERR`).
 - `GetAboutTexts` (`src/data/about.ts`) has no importer at `55d4350`: dead code that queries a non-existent root field.
   It is expected to be `ERR` before and after, with the same hash.
+- None of the live queries selects `heroContent.ctaPath` either (rev 4): `PAGE_HERO_QUERY` at `55d4350` selects
+  `heroTitle subtitleHero ctaTextHero ctaLinkHero image backgroundImage` only.
 - The live code reads `finalCtaSection` only on the home page (`FinalCTASection/api.ts`), and none of its queries
   select a Phase 5 field. So the widened location and the new fields can't change any live response, and the home
   values can't change because the home page has saved values (step 0.8).
@@ -118,12 +168,31 @@ posts 15 · rows 27
   them, because it falls back to the home values as a whole when the page's `title` is empty (unit-tested, Dev E8).
 - **An orphan `title` with a value would not be hidden:** the 5a frontend would render that page's own final CTA. Locally
   every orphan `title` is empty. Step 0.8 checks production.
+- That snapshot predates the fixtures run. Appendix D already checks **all eight** `finalCtaSection` names (`title`,
+  `subtitle`, `prefooter_cta_text`, `prefooter_cta_link`, `bgimage`, `cta_path`, `secondary_cta_text`,
+  `secondary_cta_path`) on **every** page and project, every language and status except auto-draft/trash/revision.
+  Re-run now on local (after the fixtures, before the corrected re-import): 15 posts, 57 rows. Besides the expected
+  `OWN` rows written by the fixtures, it lists:
+  ```
+  ORPHAN 32 page about-magneto/en cta_path="/contact" ref=field_p5_aboutdata_cta_path      ← F-1, caught by the check
+  ORPHAN 38 page projects/en title=(empty) ref=field_689a2d9a6031f
+  ORPHAN 38 page projects/en subtitle="Funnels and sites that solved real problems and drove client…" ref=field_689a2dbb60320
+  ORPHAN 41 page contact/en title=(empty) ref=field_689ba94785963
+  ORPHAN 41 page contact/en subtitle="Send a quick message or book a free call — we're here to hel…" ref=field_689a2dbb60320
+  ORPHAN 558 page projects/fr title=(empty) · subtitle=<same as 38>
+  ```
+  These are the Dev's F-2 data-scan rows. On 32/34/36 the fixtures wrote real final-CTA values, so the I-1 rows there
+  are gone.
+- Production has never had the new names (`cta_path`, `secondary_cta_text`, `secondary_cta_path`) as fields, so **any**
+  production row with those names before the import is stale meta from something else. It would surface through the new
+  fields after the import.
 
 **E6. Access** (Phase 3b report; values from Mauricio, 2026-10-26): SSH works on SiteGround, `wp` is available, and `wp
 db export` worked.
 - SSH: `u3112-w527ltde781s@giowm1219.siteground.biz`, port `18765`, key `~/.ssh/siteground_magneto_v2`.
-- WordPress root: `~/www/cms.magnetomarketing.co/public_html`. `wp eval-file -` (PHP from stdin) works with the local WP-CLI;
-every PHP check below uses it, so nothing is uploaded to the server.
+- WordPress root: `~/www/cms.magnetomarketing.co/public_html`.
+- `wp eval-file -` (PHP from stdin) works with the local WP-CLI. Every PHP check below uses it, so nothing is uploaded
+  to the server.
 
 ## Assumptions and open questions
 - **A1:** `~/.ssh/siteground_magneto_v2.pub` is registered in Site Tools → Devs → SSH Keys Manager for the user in E6.
@@ -154,18 +223,44 @@ every PHP check below uses it, so nothing is uploaded to the server.
 - Keep notes (times, anything unexpected) in `$RB/notes.md`. The Dev turns them into the report.
 
 ### Preparation (before the window)
-- **P1 (Dev):** the Dev's commit 1 (`feat(acf): …`) is pushed on `feat/phase-5a`. Note its short SHA in the notes. The
-  runbook runs from a checkout of that commit (`$REPO`).
+- **P0 (Mauricio, local, F-3 step 3):** `wp db export`, re-import the corrected `phase-5-field-groups.json` locally, then
+  re-run the fixtures. P3 depends on it. (Done 2026-10-26 ~22:20, 5a report.)
+- **P0b (rev 4, Mauricio, local):** after the Dev's S1 edit (5b spec), `wp db export`, re-import the **amended** JSON,
+  re-export (the Dev diffs it: 0 changes). No fixtures re-run: the new field has no value. P3 depends on it.
+- **P1 (Dev) — the import file passes the gate, including the duplicate-name check:**
+  - `acf-json-diff.mjs` has the duplicate-name guard (F-3 item 5, approved with this runbook). For **each** of the two
+    files it lists, per post the locations can reach (every page ID named in a location rule, "any other page", and each
+    post type named), the top-level field names that two or more groups place on that post. It prints them in a section
+    `== Duplicate field names per post (N) ==` with `(none)` when empty, and **exits non-zero** when N > 0. The existing
+    exit codes stay (0 ok, 1 removed, 2 bad input); use a new one for duplicates (e.g. 3).
+  - The Dev proves the guard fails: run it on a scratch copy of the JSON with `about_cta_path` renamed back to
+    `cta_path` → non-zero exit, listing `cta_path` on page 32 (`About - Data`, `finalCtaSection`). Paste the output in
+    the notes.
+  - Commit 1 (`feat(acf): …`, with the corrected JSON and the updated script) is pushed on `feat/phase-5a`. Note its
+    short SHA. The runbook runs from a checkout of that commit (`$REPO`).
+  - Then, from `$REPO`:
+    ```bash
+    node scripts/phase-5a/acf-json-diff.mjs docs/acf/phase-5-before.json docs/acf/phase-5-field-groups.json > "$RB/P1-diff.txt"; echo "exit $?"; cat "$RB/P1-diff.txt"; shasum -a 256 docs/acf/phase-5-before.json docs/acf/phase-5-field-groups.json scripts/phase-5a/acf-json-diff.mjs | tee "$RB/P1-hashes.txt"
+    ```
+    **Required (else STOP, no production step):**
+    - `exit 0`;
+    - `groups: 13 → 14`; Added (36), including `about_cta_text`, `about_cta_path` and `hero_cta_path`; `Removed (0)`;
+      Changed settings (10 keys), exactly the E1 list; `Existing keys reordered (0)`;
+    - the duplicate-name section is `(none)` for both files;
+    - the hash of `phase-5-before.json` = `0477e8c9…` (E1); the hash of the amended `phase-5-field-groups.json` (rev 4)
+      and the script's hash are recorded in `P1-hashes.txt` and become the reference for 0.1.
 - **P2 (Dev):** save Appendix A as `$RB/live-capture.mjs`, Appendix B as `$RB/schema.mjs`, Appendix C as
   `$RB/acfml-dump.php` and Appendix D as `$RB/orphans.php`. They live outside the repo.
 - **P3 (Dev, local, read-only):**
-  - run Appendices C and D against **local** with Local's WP-CLI (as in the Dev report) into
-    `$RB/acfml-local-after.txt` and `$RB/orphans-local.txt`. Expected: E3 (120 lines, sha256 `c2b12bcd…`) and E5;
+  - after P0b, run Appendices C and D against **local** with Local's WP-CLI (as in the Dev report) into
+    `$RB/acfml-local-after.txt` and `$RB/orphans-local.txt`. Expected: the rev 4 E3 dump (121 lines: the corrected
+    dump + `hero_cta_path [text] pref=2` under `heroContent`; record its sha256), and no `ORPHAN … cta_path` row on 32
+    (the fixtures re-run rewrote it with the final CTA's key);
   - write the measured local before → after diff (E3b) as step 4.2's reference:
     ```bash
     diff ~/Documents/projects/magneto/backups/phase-3b/acfml-local.txt <(sed -E 's/ \| key=[^|]* \|/ |/; s/ \| types=.*$//; s/ default=.*$//' "$RB/acfml-local-after.txt") > "$RB/4.2-local.diff"; shasum -a 256 "$RB/4.2-local.diff"
     ```
-    Expected: `6136656a…3916e`.
+    Expected: 0 removed, 36 added (E3b rev 4). Record the sha256; it replaces `80526616…` (rev 3).
 - **P4 (Mauricio, every new terminal):** one line:
   ```bash
   export SG_HOST='u3112-w527ltde781s@giowm1219.siteground.biz' WP_ROOT='~/www/cms.magnetomarketing.co/public_html' RB="$HOME/Documents/projects/magneto/backups/phase-5a-prod" REPO="$HOME/Documents/projects/magneto/web-app-GrapgQL"; mkdir -p "$RB"
@@ -180,8 +275,8 @@ every PHP check below uses it, so nothing is uploaded to the server.
 ```bash
 cd "$REPO" && git status --short docs/acf scripts/phase-5a/acf-json-diff.mjs && shasum -a 256 docs/acf/phase-5-before.json docs/acf/phase-5-field-groups.json scripts/phase-5a/acf-json-diff.mjs
 ```
-Expected: no `git status` lines (committed) and the three hashes of E1. Otherwise STOP: the file to import isn't the
-approved one.
+Expected: no `git status` lines (committed) and the three hashes in `$RB/P1-hashes.txt` (P1). Otherwise STOP: the file
+to import isn't the one that passed P1.
 
 **0.2 (Mauricio, admin) Live frontend commit.** Vercel → Project → Deployments → the **Production** deployment → its
 commit. Expected: `55d4350`, or a later commit for which `git log 55d4350..<sha> -- src` is empty. Otherwise STOP and
@@ -192,6 +287,10 @@ tell the Dev (Appendix A's commit must change).
 ssh -i ~/.ssh/siteground_magneto_v2 -p 18765 "$SG_HOST" "cd $WP_ROOT && wp option get siteurl && wp plugin list --fields=name,status,version --format=csv" | tee "$RB/0.3-inventory.txt"
 ```
 Expected: a `cms.magnetomarketing.co` URL, and the A2 plugins `active` at those versions. A version difference → STOP.
+
+**0.3b (Mauricio, admin) ACF PRO license.** ACF → Updates (license box). Expected: the license is **active** for
+`cms.magnetomarketing.co`. Inactive, expired or not verifiable → STOP (decide with the Senior Architect before importing).
+Local shows "valid but not activated", which does not count for production (5a report, note after F-3).
 
 **0.4 ACFML dump, before.**
 ```bash
@@ -236,29 +335,43 @@ Expected: `non-group entries: post_type_689bb2945f206 / post_type_689bb2945f206 
 baseline. (Checked locally: the same file against itself → `true`; against the groups-only file → `false` with every
 setting listed.)
 
-**0.8 Orphan meta + home saved values (report, don't fix).**
+**0.8 Orphan meta for every `finalCtaSection` field name + home saved values (report, don't fix).** Appendix D reads,
+for every page and project in every language, the eight names `title`, `subtitle`, `prefooter_cta_text`,
+`prefooter_cta_link`, `bgimage`, `cta_path`, `secondary_cta_text`, `secondary_cta_path`, and prints one row per existing
+meta key with its value and its `_name` reference.
 ```bash
 ssh -i ~/.ssh/siteground_magneto_v2 -p 18765 "$SG_HOST" "cd $WP_ROOT && wp eval-file -" < "$RB/orphans.php" | tee "$RB/0.8-orphans.txt"
 ```
-Expected (A3): the EN rows of E5.
-The Dev classifies every row:
+Expected (A3): the EN rows of the first E5 block (home `OWN` ×5; `title` + `subtitle` orphans on 32/34/36/38/41), and
+**no** row for `cta_path`, `secondary_cta_text` or `secondary_cta_path` anywhere.
+
+The 5a frontend renders a post's own final CTA **only when that post's `title` is non-empty**; otherwise it uses home's,
+as a whole. The Dev classifies every row with that rule:
 
 | Row | Rule |
 |---|---|
 | `OWN 2 … title` / `subtitle` / `prefooter_cta_text` present | **Required.** If any is missing, removing the defaults would change the live home → **STOP**. |
-| `ORPHAN … subtitle` / `prefooter_*` / `bgimage` with a value, `title` empty or absent on that post | Report only. Hidden by the 5a whole-object fallback. Cleanup phase. |
-| `ORPHAN … title` **with a value** (any post) | Report. **Doesn't block this import** (the live frontend reads only home), but **blocks the 5a promote**: that page would render its own wrong final CTA. Mauricio + Senior Architect decide (5c loader writes `title` + `subtitle` for that page, or the 5a frontend ignores orphans). |
-| `OWN` rows on a post other than home (2) | Report (saved under an older location). Same rule as above for `title`. |
-| Rows on FR/ES posts | Report (A3 didn't expect them). |
+| Any row named `cta_path`, `secondary_cta_text` or `secondary_cta_path` on home (2) | Report. **Blocks the 5a promote** (D-b rule): after the import, home's final CTA would pick it up (e.g. a stale `cta_path` turns the modal button into a link). |
+| `ORPHAN … title` **with a value** (any post) | Report. **Blocks the 5a promote** (D-b): that post would render its own final CTA from stale values. |
+| Any `ORPHAN` row (any of the eight names) on a post whose `title` row has a value | Report. **Blocks the 5a promote**: the stale value is mixed into a CTA that renders. |
+| Any `ORPHAN` row on a post with no `title` row or an empty one | Report only. Hidden by the whole-object fallback. Cleanup phase. |
+| `OWN` rows on a post other than home (2) | Report (saved under an older location). Then the two rules above apply. |
+| Rows on FR/ES posts | Report (A3 didn't expect them). Same rules. |
+
+None of these rows blocks **this import**: the live frontend reads `finalCtaSection` only on home and selects none of the
+new fields (E4). "Blocks the 5a promote" goes to Mauricio + Senior Architect, who choose the fix: the 5c loader writes
+that post's final-CTA fields, or the frontend ignores orphans.
 
 Nothing in this step is fixed in production. The 5c loader rule stands: it always writes `finalCtaSection` `title` and
-`subtitle` together.
+`subtitle` together. With F-1 in mind, it should write **all eight** names whenever it writes a post's final CTA, `''`
+included.
 
 **0.9 (Dev) Schema baseline.**
 ```bash
 node "$RB/schema.mjs" https://cms.magnetomarketing.co/graphql | tee "$RB/0.9-schema-before.txt"
 ```
-Expected: fewer than 37 OK, with `MISSING` listing the Phase 5 fields (proves step 5 measures a real change).
+Expected: fewer than 38 OK, with `MISSING` listing the Phase 5 fields, `HeroContent.ctaPath` included (proves step 5
+measures a real change).
 
 ### Step 1 — Backups (≈10 min). Nothing changes before both exist.
 **1.1 (Mauricio, admin)** Site Tools → Security → Backups → Create Backup, named `phase-5a-acf-before-<yyyymmdd-hhmm>`.
@@ -280,7 +393,8 @@ both times. Every line `200 ok`, except `GetAboutTexts` `ERR` (E4). If the two r
 until it's quiet. `<X>` is the baseline for step 7.
 
 ### Step 3 — Import (Mauricio, admin, ≈5 min) — the only schema write
-ACF → Tools → **Import Field Groups** → choose `$REPO/docs/acf/phase-5-field-groups.json` → **Import JSON**.
+ACF → Tools → **Import Field Groups** → choose `$REPO/docs/acf/phase-5-field-groups.json` (the corrected file that
+passed P1; 0.1 confirmed its hash) → **Import JSON**.
 - Expected notice: **"Imported 14 items"**, listing the 13 existing group titles and "Packages - Content Sections".
 - Then ACF → Field Groups: **14** groups, each title once (no duplicates), all active. Don't click "Sync" or
   anything else.
@@ -300,7 +414,7 @@ Expected: `IDENTICAL` (production = local post-import, E3).
 ```bash
 diff <(sed -E 's/ \| key=[^|]* \|/ |/; s/ \| types=.*$//; s/ default=.*$//' "$RB/0.4-acfml-prod-before.txt") <(sed -E 's/ \| key=[^|]* \|/ |/; s/ \| types=.*$//; s/ default=.*$//' "$RB/4-acfml-prod-after.txt") > "$RB/4.2-prod.diff"; diff "$RB/4.2-local.diff" "$RB/4.2-prod.diff" && echo IDENTICAL
 ```
-Expected: `IDENTICAL`: production gained exactly the 35 lines local gained (0 removed, 15 hunks, same positions).
+Expected: `IDENTICAL`: production gained exactly the 36 lines local gained (0 removed, same hunks as `4.2-local.diff`).
 The `finalCtaSection` location, types and defaults are invisible in this filtered format; step 4.1 already proved them.
 A difference → STOP, the Dev reads `4.2-prod.diff`, then the rollback table (row 4).
 
@@ -308,7 +422,8 @@ A difference → STOP, the Dev reads `4.2-prod.diff`, then the rollback table (r
 ```bash
 node "$RB/schema.mjs" https://cms.magnetomarketing.co/graphql | tee "$RB/5-schema-after.txt"
 ```
-Expected: `schema checks 37/37 OK` (includes `Project.finalCtaSection` and `Page.packagesContentSections`).
+Expected: `schema checks 38/38 OK` (includes `Project.finalCtaSection`, `Page.packagesContentSections` and
+`HeroContent.ctaPath`).
 
 ### Step 6 — Caches (≈3 min)
 **6.1** `wp cache flush`:
@@ -341,8 +456,8 @@ Expected: as 1.2. The window is over; content editing may resume.
 
 ### Step 9 — Preview (not a CMS step)
 Redeploy the 5a PR preview and run 5a AC-23 (WORKFLOW checklist + 5a AC-8 to AC-12 against production data, state C).
-Record the result in the PR. If 0.8 found an orphan `title` with a value, the PR must not merge until that decision is
-made.
+Record the result in the PR. If 0.8 found a row marked "blocks the 5a promote", the PR must not merge until that decision
+is made.
 
 ### Rollback (decide by symptom, least invasive first)
 | # | Symptom | Action (Mauricio) |
@@ -370,32 +485,40 @@ ssh -i ~/.ssh/siteground_magneto_v2 -p 18765 "$SG_HOST" "cd $WP_ROOT && wp db im
 ## Files touched by this task
 - `docs/specs/phase-5a-production-acf-runbook.md`: this runbook (Architect).
 - After execution (separate instruction, Dev): the report and the `WP-SETUP.md` rows above. Outside the repo: `$RB/*`.
-- No code changes. No change to `docs/acf/*` (if step 0 fails, the JSON is **not** edited to fit production without a new
-  checkpoint decision).
+- No code changes by this runbook. The P1 guard in `scripts/phase-5a/acf-json-diff.mjs` and the corrected JSON are Dev
+  work under the 5a spec (F-3), committed before the window. No change to `docs/acf/*` during the window (if step 0
+  fails, the JSON is **not** edited to fit production without a new checkpoint decision).
 
 ## Out of scope
 - Any content write: final CTA values, testimonials, `displayOrder`, heroes (5c loader, release day).
-- Fixing orphan meta (cleanup phase; 5c writes `title` + `subtitle` together).
+- Fixing orphan meta (cleanup phase; 5c writes the final-CTA fields together).
 - WP `generalSettings.title` → "Magneto Web Consulting" (release-day runbook, 5a spec O3).
 - The project CPT (excluded by D1), WPML settings, plugins, the WPML Production key (Phase 3b O-1/O-2).
 - Vercel settings; merging or promoting the 5a PR.
 
 ## Acceptance criteria
-- [ ] P3: local dump = E3 (120 lines, `c2b12bcd…`); local orphan list = E5; `4.2-local.diff` = `6136656a…`.
-- [ ] 0.1: artifacts committed, hashes = E1.
+- [ ] P1: the diff exits 0 with the rev 4 counts (36 / 0 / 10 / 0), `about_cta_*` and `hero_cta_path` among the added
+  fields, and the duplicate-name section `(none)` for both files. The negative test exits non-zero on `cta_path`, page
+  32. `phase-5-before.json` hash = E1; all three hashes recorded.
+- [ ] P0b: amended JSON imported locally; re-export → amended JSON: 0 changes; local introspection shows
+  `HeroContent.ctaPath`.
+- [ ] P3 (after P0b): local dump 121 lines, sha256 recorded; no `ORPHAN … cta_path` on 32; `4.2-local.diff` = 0 removed /
+  36 added, sha256 recorded.
+- [ ] 0.1: artifacts committed, hashes = `P1-hashes.txt`.
 - [ ] 0.2: production frontend commit recorded; Appendix A's commit matches.
 - [ ] 0.3: siteurl is `cms.magnetomarketing.co`; plugin versions = A2.
+- [ ] 0.3b: ACF PRO license active on production.
 - [ ] 0.4b: production's filtered dump = `phase-3b/acfml-local.txt` (`IDENTICAL`).
 - [ ] 0.6: the diff output is exactly the expected one (13 → 13, the CPT excluded on both sides, 0 / 0 / 0 / 0).
 - [ ] 0.7: `equal (ignoring modified): true`.
-- [ ] 0.8: home 2 has saved `title`, `subtitle`, `prefooter_cta_text`. Every orphan row is listed in the report and
-  classified. Any orphan `title` with a value is escalated before the 5a promote.
+- [ ] 0.8: home 2 has saved `title`, `subtitle`, `prefooter_cta_text`. Every row for the eight names is listed in the
+  report and classified with the 0.8 table. Every "blocks the 5a promote" row is escalated before the 5a promote.
 - [ ] Two backups exist before step 3 (names, times, the `Dump completed` line).
 - [ ] Step 2: two identical before-captures (31 requests).
 - [ ] Step 3: "Imported 14 items"; 14 groups, no duplicates.
-- [ ] Step 4.1 `IDENTICAL` (or only pref fixes, recorded). Step 4.2 `IDENTICAL` (0 removed, 35 added, as measured
+- [ ] Step 4.1 `IDENTICAL` (or only pref fixes, recorded). Step 4.2 `IDENTICAL` (0 removed, 36 added, as measured
   locally).
-- [ ] Step 5: 37/37 OK (0.9 showed fewer before).
+- [ ] Step 5: 38/38 OK (0.9 showed fewer before).
 - [ ] Step 7.1 `IDENTICAL`; 7.2: 7 × 200 + 404; Mauricio's visual check unchanged.
 - [ ] After backup taken (step 8).
 - [ ] The Dev's production access was read-only (queries and GETs). The report lists every command run against
@@ -405,14 +528,15 @@ ssh -i ~/.ssh/siteground_magneto_v2 -p 18765 "$SG_HOST" "cd $WP_ROOT && wp db im
 - **D-a — yes:** the Dev has read-only production access for this run, as in Phase 3b D3: GraphQL queries and GETs. No
   SSH, no admin.
 - **D-b — yes:** an orphan `title` with a value (step 0.8) doesn't block the import, but blocks the 5a promote. The fix
-  is chosen when it happens (5c loader write, or the frontend ignoring orphans).
+  is chosen when it happens (5c loader write, or the frontend ignoring orphans). Rev 3 applies the same reasoning to every
+  case where a stale value would render (the 0.8 table). Please confirm the extension at review.
 - SSH values and the WordPress root: filled in (E6).
 - No ADR needed: this executes ADR 0006 decision 2.
 
 ## Estimate
-- Mauricio's active time: **≈ 45–70 min** (step 0: 15–20 · backups: 10 · import: 5 · ACFML: 5–10 · caches: 3 · visual:
+- Mauricio: P0 local re-import + fixtures ≈ 10 min (done); P0b re-import of the amended JSON ≈ 15–20 min; 0.3b ≈ 2 min. Active time in the window **≈ 45–70 min** (step 0: 15–20 · backups: 10 · import: 5 · ACFML: 5–10 · caches: 3 · visual:
   5 · after backup: 3), plus the first SSH with the new key (≈ 5 min).
-- Dev: prep P1–P3 ≈ 20 min; read-only checkpoints during the run ≈ 2–3 min each; report + `WP-SETUP.md` ≈ 30 min.
+- Dev: prep P1–P3 ≈ 20 min, plus ≈ 30–45 min for the P1 duplicate-name guard and its negative test; read-only checkpoints during the run ≈ 2–3 min each; report + `WP-SETUP.md` ≈ 30 min.
 
 ## Appendix A — live-frontend EN capture (read-only)
 Run it from the repo (it reads the queries of the pinned commit with `git`). It sends only `query` operations and throws
@@ -487,6 +611,7 @@ const EXPECT = {
   ServicesServiceDetailsServices: ["heading", "descriptionHtml", "ctaText", "ctaPath", "anchorId", "serviceGroup"],
   PackagesPackageFeaturesPackagesElements: ["heading", "descriptionHtml", "featuresTitle", "ctaText", "ctaPath", "anchorId"],
   PackagesContentSections: ["sections"], PackagesContentSectionsSections: ["heading", "bodyHtml"],
+  HeroContent: ["ctaPath"], // rev 4 (ADR 0006 amendment 1)
 };
 const q = "query {" + Object.keys(EXPECT).map((t, i) => `t${i}: __type(name: "${t}") { fields { name } }`).join(" ") + "}";
 const r = await fetch(EP, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ query: q }) });
@@ -517,9 +642,10 @@ foreach ( acf_get_field_groups() as $g ) {
 ```
 
 ## Appendix D — orphan meta check (read-only, `wp eval-file -`)
-Lists every page/project meta whose name is a `finalCtaSection` field. `OWN` = its `_<name>` reference is that field's
-key; `ORPHAN` = it references another field (an older or different group) but would still surface through the widened
-location. Every post of every language, statuses other than auto-draft/trash/revision.
+Lists every page/project meta whose name is one of the **eight** `finalCtaSection` field names (`$own` below, with
+each field's key from `phase-5-field-groups.json`). `OWN` = its `_<name>` reference is that field's key. `ORPHAN` = it
+references another field (an older or different group, or a same-named field such as F-1's
+`field_p5_aboutdata_cta_path`) but would still surface through the widened location, since ACF reads by name. Every post of every language, statuses other than auto-draft/trash/revision.
 ```php
 <?php
 // Read-only. Lists page/project meta that the widened finalCtaSection location would expose.
