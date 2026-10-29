@@ -20,6 +20,18 @@ describe('getHomeFeaturedServices', () => {
     expect(vi.mocked(fetchWPGraphQL).mock.calls[0][1]).toEqual({ language: 'fr', mediaOriginal: true });
   });
 
+  it('state N: serviceTagline is queried and passed through (state C: null)', async () => {
+    vi.mocked(fetchWPGraphQL).mockResolvedValueOnce({
+      pages: { nodes: [{ homeFeaturedServices: { title: null, service: [
+        { serviceTitle: 'BUILD', serviceTagline: 'A website that works as hard as you do.', serviceDescription: 'D', anchorLink: 'build', serviceIcon: null },
+        { serviceTitle: 'Old', serviceTagline: null, serviceDescription: 'D', anchorLink: null, serviceIcon: null },
+      ] } }] },
+    });
+    const result = await getHomeFeaturedServices('en');
+    expect(result.service?.map((s) => s.serviceTagline)).toEqual(['A website that works as hard as you do.', null]);
+    expect(vi.mocked(fetchWPGraphQL).mock.calls[0][0]).toMatch(/serviceTitle\s+serviceTagline\s+serviceDescription/);
+  });
+
   it('empty list on nodes: []', async () => {
     vi.mocked(fetchWPGraphQL).mockResolvedValueOnce({ pages: { nodes: [] } });
     await expect(getHomeFeaturedServices('en')).resolves.toEqual({ sectionTitle: undefined, service: [] });

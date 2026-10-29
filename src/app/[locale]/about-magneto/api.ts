@@ -27,11 +27,14 @@ const ABOUT_PAGE_QUERY = `
       aboutData {
         sectionTitle
         description
+        descriptionHtml
         linkText
         linkUrl
         generalText
         calendlyText
         calendlyUrl
+        ctaText
+        ctaPath
       }
       }
     }
@@ -59,8 +62,20 @@ export interface AboutPageData {
     generalText: string;
     calendlyText?: string;
     calendlyUrl?: string;
+    descriptionHtml?: string | null;
+    ctaText?: string | null;
+    ctaPath?: string | null;
   };
+  /**
+   * Founder text: `descriptionHtml` as HTML (sanitize before rendering), else the legacy `description` as a
+   * text node (it is a `text` field; ADR 0006 expand/contract). null when both are empty.
+   */
+  founder: { kind: 'html'; html: string } | { kind: 'text'; text: string } | null;
+  /** Bottom button when both `ctaText` and `ctaPath` are set; otherwise null (→ the current CalendlyButton). */
+  cta: { text: string; path: string } | null;
 }
+
+const nonEmpty = (value: string | null | undefined): value is string => typeof value === 'string' && value.trim() !== '';
 
 /** The `about-magneto` page in `locale`, or null when it has no translation (→ 404). */
 export async function getAboutPageData(locale: Locale): Promise<AboutPageData | null> {
@@ -68,5 +83,17 @@ export async function getAboutPageData(locale: Locale): Promise<AboutPageData | 
   //console.log('About page data:', data);
   const page = data?.pages?.nodes?.[0];
   if (!page) return null;
-  return { ...page, featuredImage: resolveMediaWrapper(page.featuredImage) ?? page.featuredImage } as AboutPageData;
+  const about: AboutPageData['aboutData'] = page.aboutData ?? { generalText: '' };
+  const founder: AboutPageData['founder'] = nonEmpty(about.descriptionHtml)
+    ? { kind: 'html', html: about.descriptionHtml }
+    : nonEmpty(about.description)
+      ? { kind: 'text', text: about.description }
+      : null;
+  const cta = nonEmpty(about.ctaText) && nonEmpty(about.ctaPath) ? { text: about.ctaText.trim(), path: about.ctaPath.trim() } : null;
+  return {
+    ...page,
+    featuredImage: resolveMediaWrapper(page.featuredImage) ?? page.featuredImage,
+    founder,
+    cta,
+  } as AboutPageData;
 }

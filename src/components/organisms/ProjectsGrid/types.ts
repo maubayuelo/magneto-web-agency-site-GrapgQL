@@ -17,6 +17,8 @@ export interface ProjectItem {
   slug: string;
   title: string;
   featuredImage?: { node?: WpImage } | null;
+  /** Card text: `cardDescription`, else `projectSubtitle`, else '' (ADR 0006). */
+  description?: string;
   solutions?: string[] | null;
   results?: string[] | null;
 }

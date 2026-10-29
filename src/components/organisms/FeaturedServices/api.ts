@@ -2,7 +2,6 @@ import { fetchWPGraphQL } from "@/utils/wp-graphql";
 import type { FeaturedServiceItem, FeaturedServicesResponse } from './types';
 import type { Locale } from '@/i18n/config';
 import { wpLocaleVars } from '@/i18n/wp';
-import { getDictionary } from '@/i18n/dictionary';
 import { mediaOriginalFields, resolveMediaWrapper } from '@/utils/wp-media';
 
 const SERVICE_SECTION_QUERY = `
@@ -13,6 +12,7 @@ const SERVICE_SECTION_QUERY = `
         title
         service {
           serviceTitle
+          serviceTagline
           serviceDescription
           serviceIcon {
             node {
@@ -46,7 +46,7 @@ export async function getHomeFeaturedServices(locale: Locale): Promise<FeaturedS
   } catch (error) {
     //console.error("GraphQL fetch error:", error);
     return {
-      sectionTitle: getDictionary(locale).cmsFallback.featuredServicesTitle,
+      sectionTitle: null,
       service: []
     };
   }

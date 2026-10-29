@@ -32,6 +32,8 @@ export const GET_PROJECT_BY_SLUG_QUERY = `
         }
       }
       projectsProjectData {
+        cardDescription
+        displayOrder
         projectData {
           projectSubtitle
           projectDescription
@@ -109,6 +111,10 @@ export interface ProjectNode {
   title: string;
   featuredImage: { node: MediaNode | null } | null;
   projectsProjectData: {
+    /** Card text (ADR 0006); the list falls back to `projectSubtitle`. */
+    cardDescription?: string | null;
+    /** Display order, ascending, gaps of 10 (ADR 0006, decision 5). */
+    displayOrder?: number | null;
     projectData: ProjectAcfData | null;
     images: ProjectImage[] | null;
   } | null;

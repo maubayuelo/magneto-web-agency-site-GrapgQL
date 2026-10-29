@@ -19,8 +19,15 @@ export interface FinalCTAData {
   subtitle?: string | null;
   ctaText?: string | null;
   ctaLink?: string | null;
+  /** Internal path (e.g. `/contact`), localized by the frontend. Empty → the primary button opens the modal. */
+  ctaPath?: string | null;
+  secondaryCtaText?: string | null;
+  secondaryCtaPath?: string | null;
   bgimage?: ImageNode | null;
 }
+
+/** Whose final CTA to read: a WP page by `name` (slug) or a project by slug, in the request language. */
+export type FinalCtaSource = { kind: 'page'; name: string } | { kind: 'project'; slug: string };
 
 export interface FinalCTASectionProps {
   title?: string;
