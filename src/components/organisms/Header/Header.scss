@@ -116,3 +116,48 @@
         }
     }
 }
+
+@media (max-width: $breakpoint-phone) {
+    .header {
+        .main {
+            gap: $spacing-10;
+
+            .logo {
+                flex-shrink: 0;
+            }
+        }
+
+        ul.nav_mobile {
+            min-width: 0;
+            gap: $spacing-5;
+
+            li:first-child {
+                min-width: 0;
+            }
+
+            .btn {
+                max-width: 100%;
+                min-height: 44px;
+            }
+
+            li:last-child {
+                flex-shrink: 0;
+
+                a {
+                    width: 44px;
+                    height: 44px;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
+    .nav_mobile__menu {
+        // 44px controls plus the header's existing 7px top/bottom padding.
+        top: 58px;
+        bottom: 0;
+        height: auto;
+        overflow-y: auto;
+    }
+}

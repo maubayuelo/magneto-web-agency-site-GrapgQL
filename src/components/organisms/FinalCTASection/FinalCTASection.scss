@@ -55,3 +55,13 @@
             box-shadow: 0 0 0 5px rgba($white, 0.3); // Creates a 5px white external border
         }
 }
+
+.final-cta-section__actions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-20;
+    margin-top: $spacing-30;
+}

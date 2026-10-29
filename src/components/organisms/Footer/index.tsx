@@ -1,61 +1,37 @@
 import './Footer.scss';
-import type { FooterProps, FooterResponse, FooterSocialIcon } from './types';
-import Link from 'next/link';
-import Image from 'next/image';
+import type { FooterProps } from './types';
 import { formatParts, getDictionary } from '@/i18n/dictionary';
 
+// Phase 5a: line (footerLine2: "Based in Montreal …") · LinkedIn + email links · copyright.
+// footerLine1 and the social icons are no longer rendered; the Privacy link comes with the Privacy route.
 export const Footer: React.FC<FooterProps> = ({ className = '', footerData = null, locale }) => {
   const t = getDictionary(locale);
+  const line = footerData?.footerLine2?.trim();
+  const linkedinUrl = footerData?.footerSocialIcons?.[0]?.iconUrl?.trim();
 
   return (
-    <section className={`main footer pt-lg-responsive ${className}`}>
-        {footerData && (
-          <p className="typo-md-medium typo-center m-0">
-            {footerData?.footerLine1 || 'Default Footer Line 1'}
-          </p>
-        )}
+    <footer className={`main footer pt-lg-responsive ${className}`.trim()}>
+      {line ? <p className="typo-md-medium typo-center m-0">{line}</p> : null}
 
-        {/* Social Media Icons */}
-        <div className="footer__social">
-          {footerData?.footerSocialIcons?.map((icon: FooterSocialIcon, idx: number) => {
-            const iconUrl = icon?.iconSvg?.node?.sourceUrl || '';
-            const isExternal = iconUrl && (iconUrl.startsWith('http://') || iconUrl.startsWith('https://'));
-            const src = isExternal ? iconUrl : '/assets/images/default-icon.svg';
-            // Use <img> for SVGs, especially local ones
-            return (
-              <Link
-                key={idx}
-                href={icon.iconUrl || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer__social-icon"
-              >
-                {src ? (
-                  <Image
-                    src={src}
-                    alt={(icon && (icon as any).alt) || t.cmsFallback.socialIconAlt}
-                    className="footer__icon"
-                    width={24}
-                    height={24}
-                  />
-                ) : null}
-              </Link>
-            );
-          })}
-        </div>
+      <ul className="footer__links typo-md-medium">
+        {linkedinUrl ? (
+          <li>
+            <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="footer__link">
+              {t.footer.linkedin}
+            </a>
+          </li>
+        ) : null}
+        <li>
+          <a href={`mailto:${t.footer.email}`} className="footer__link">
+            {t.footer.email}
+          </a>
+        </li>
+      </ul>
 
-        {footerData && (
-          <>
-          <p className="typo-md-medium typo-center m-0">
-            {footerData?.footerLine2 || 'Default Footer Line 2'}
-          </p>
-            <p className="typo-md-medium typo-center mb-lg-responsive">
-            {formatParts(t.footer.copyright, { year: new Date().getFullYear() })}
-            </p>
-          </>
-        )}    
-
-    </section>
+      <p className="typo-md-medium typo-center mb-lg-responsive">
+        {formatParts(t.footer.copyright, { year: new Date().getFullYear() })}
+      </p>
+    </footer>
   );
 };
 

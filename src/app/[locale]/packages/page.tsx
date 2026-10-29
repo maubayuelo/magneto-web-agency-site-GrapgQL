@@ -4,6 +4,7 @@ import { PackagesGrid } from "@/components/organisms";
 import { notFound } from "next/navigation";
 import { DEFAULT_LOCALE, isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionary";
+import FinalCTASectionLoader from "@/components/organisms/FinalCTASection/FinalCTASectionLoader";
 import { getPackagesPageData } from "./api";
 
 type PackagesPageProps = { params: Promise<{ locale: string }> };
@@ -31,6 +32,7 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
       <div className="main">
         <PackagesGrid packages={packages} />
       </div>
+      <FinalCTASectionLoader source={{ kind: "page", name: "packages" }} locale={locale} />
     </>
   );
 }

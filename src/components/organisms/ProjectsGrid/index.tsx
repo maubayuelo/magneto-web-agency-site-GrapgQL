@@ -13,12 +13,13 @@
   import { useI18n } from '@/i18n/I18nProvider';
 
 
+  // Card = thumbnail · title · description, the whole card linked to the case study (Phase 5a).
   export const ProjectsGrid = ({ 
     projects,
     maxProjects = 6, 
-    showButton = true, 
-    title: titleProp
-  }: { projects: ProjectItem[]; maxProjects?: number; showButton?: boolean; title?: string }) => {
+    title: titleProp,
+    intro,
+  }: { projects: ProjectItem[]; maxProjects?: number; title?: string; intro?: string }) => {
     const { t, locale } = useI18n();
     const title = titleProp ?? t.home.recentProjects;
     const displayedProjects = projects.slice(0, maxProjects);
@@ -43,21 +44,22 @@
       )}
         {projects.length > 0 && (
           <div className="main">
-            
-
-            {projects.length > 0 && (
               <section className="projects-grid pb-lg-responsive">
-                {title && (
+                {(title || intro) && (
                   <div className="projects-grid__header pb-15">
-                    <h2 className="typo-3xl-extrabold typo-center m-0">{title}</h2>
+                    {title && <h2 className="typo-3xl-extrabold typo-center m-0">{title}</h2>}
+                    {intro && <p className="projects-grid__intro typo-xl-medium typo-center m-0">{intro}</p>}
                   </div>
                 )}
 
                 <div className="projects-grid__container">
                   <div className="projects-grid__grid">
                     {displayedProjects.map((project) => (
-                      <div key={project.id} className="projects-grid__item mb-sm-responsive">
-                        <Link href={localizePath(`/projects/${project.slug}`, locale)} className="projects-grid__item-link mb-15">
+                      <Link
+                        key={project.id}
+                        href={localizePath(`/projects/${project.slug}`, locale)}
+                        className="projects-grid__item projects-grid__item-link mb-sm-responsive"
+                      >
                           {project.featuredImage?.node?.sourceUrl ? (
                             <WpResponsiveImage
                               image={project.featuredImage?.node}
@@ -68,39 +70,22 @@
                           ) : (
                             <Image
                               src={"https://placehold.co/400x300"}
-                              alt={project.title}
+                              alt=""
                               className="projects-grid__image"
                               width={390}
                               height={270}
                               priority
                             />
                           )}
-                        </Link>
-                        <Link href={localizePath(`/projects/${project.slug}`, locale)} className="projects-grid__item-link m-0">
                           <h3 className="projects-grid__item-title typo-2xl-extrabold m-0">{project.title}</h3>
-                        </Link>
-                        {project.solutions && project.solutions.length > 0 ? (
-                          <p className='m-0'><span className='typo-sm-bold'>{t.projects.solutionLabel}</span><span className='m-0 typo-sm-medium'>{project.solutions[0]}</span></p>
-                        ) : (
-                          <p className='m-0'><span className='typo-sm-bold'>{t.projects.solutionLabel}</span><span className='m-0 typo-sm-medium'>—</span></p>
-                        )}
-                        {project.results && project.results.length > 0 ? (
-                          <p className='m-0'><span className='typo-sm-bold'>{t.projects.outcomeLabel}</span><span className='m-0 typo-sm-medium'>{project.results[0]}</span></p>
-                        ) : (
-                          <p className='m-0'><span className='typo-sm-bold'>{t.projects.outcomeLabel}</span><span className='m-0 typo-sm-medium'>—</span></p>
-                        )}
-                      </div>
+                          {project.description ? (
+                            <p className="projects-grid__item-description typo-paragraph-medium m-0">{project.description}</p>
+                          ) : null}
+                      </Link>
                     ))}
                   </div>
-
-                  {showButton && projects.length > maxProjects && (
-                    <Link href={localizePath('/projects/', locale)} className="btn btn-secondary mt-15">
-                      {t.projects.checkAll}
-                    </Link>
-                  )}
                 </div>
               </section>
-            )}
           </div>
         )}
       </>

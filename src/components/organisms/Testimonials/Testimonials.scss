@@ -20,7 +20,7 @@
         }
 
         @include media-desktop-up {
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: $spacing-30;
         }
     }
@@ -67,7 +67,7 @@
     }
 
     &__quote {
-        @include font-style(sm, medium, sm);
+        @include font-style(md, medium, md);
         color: $black;
         word-wrap: break-word;
         flex-grow: 1;
