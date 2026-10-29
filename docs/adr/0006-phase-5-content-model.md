@@ -1,6 +1,8 @@
 # ADR 0006 — Phase 5 content model: expand/contract ACF fields, per-page final CTA, release-day content load
 
 - Status: Accepted (2026-10-26, Senior Architect, with amendments: schema as code, project order 10/20/40)
+- Amendment 1 (2026-10-27, Senior Architect, approved by Mauricio): `heroContent.hero_cta_path` added to the single
+  Phase 5 export (see "Amendments").
 - Date: 2026-10-26
 - Deciders: Mauricio (lead), Senior Architect
 - Spec: `docs/specs/phase-5a-structure-shared-home-about-cases.md` (first consumer).
@@ -122,7 +124,7 @@ type, to be checked in the post-import dump; 2 = Translate, 1 = Copy.
 | `homeFeaturedServices.service` | add | `service_tagline` → `serviceTagline` | text | 2 | 5a |
 | `homeTestimonialsSection.testimonials` | add | `role`, `company`, `city`, `note` | text ×4 | 2 | 5a |
 | `aboutData` | add | `description_html` → `descriptionHtml` | wysiwyg | 2 | 5a |
-| `aboutData` | add | `cta_text` → `ctaText`, `cta_path` → `ctaPath` | text ×2 | 2 | 5a |
+| `aboutData` | add | `about_cta_text` → `ctaText`, `about_cta_path` → `ctaPath` (names per 5a F-3) | text ×2 | 2 | 5a |
 | `projectsProjectData` (top level) | add | `card_description` → `cardDescription` | text | 2 | 5a |
 | `projectsProjectData` (top level) | add | `display_order` → `displayOrder` | number | **1** | 5a |
 | `pageintrotext` | add | `intro_body_html` → `introBodyHtml` | wysiwyg | 2 | 5b |
@@ -134,6 +136,7 @@ type, to be checked in the post-import dump; 2 = Translate, 1 = Copy.
 | `packagesPackageFeatures.packages_elements` | add | `description_html` | wysiwyg | 2 | 5b |
 | **new group** `packagesContentSections` (page==36) | add | `sections[]`: `heading` (text), `body_html` (wysiwyg) | repeater | 1 / 2 / 2 | 5b |
 | `contactContactTexts` | add | `supporting_html` → `supportingHtml` | wysiwyg | 2 | 5d-lite / R1 Contact copy |
+| `heroContent` | add (amendment 1) | `hero_cta_path` → `ctaPath`, key `field_p5_herocontent_hero_cta_path`, blank default | text | 2 | 5b (Packages Hero → `/contact`) |
 
 Not ACF:
 - Privacy Policy is a WP page `privacy-policy` read through its `content`.
@@ -141,6 +144,20 @@ Not ACF:
 
 The 5b/5d rows may be refined by their specs **only by adding**. Existing fields keep their type and meaning until the
 cleanup phase.
+
+## Amendments
+
+**1. `heroContent.hero_cta_path` (2026-10-27).** The 5b Packages Hero links to `/contact`. `ctaLinkHero` is a `text`
+field, but it means "booking link" to the live frontend, which renders a non-Calendly value as an unlocalized `<a>`;
+reusing it would change the meaning of an existing field (decision 1). So one new field is added. Because production
+has not imported the Phase 5 file yet, it goes into the **same** `docs/acf/phase-5-field-groups.json` instead of a
+second export and runbook (decision 2, "another additive export"): one import, one rollback point. The meta name is
+prefixed (`hero_cta_path`) because `heroContent` applies to every page, where `finalCtaSection.cta_path` also applies
+(the 5a F-1 collision class). Runbook: `docs/specs/phase-5a-production-acf-runbook.md` rev 4. Spec:
+`docs/specs/phase-5b-services-packages-seo.md` rev 3 (S1, §5.3). After the production import, a further field is again
+a separate additive export with its own runbook.
+
+The same edit records the 5a F-3 names of the two `aboutData` fields in the table above (GraphQL names unchanged).
 
 ## Consequences
 
