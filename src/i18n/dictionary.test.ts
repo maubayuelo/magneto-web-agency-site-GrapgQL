@@ -55,6 +55,13 @@ describe('getDictionary', () => {
     expect(getDictionary('fr')).toBe(fr);
     expect(getDictionary('es')).toBe(es);
   });
+
+  it('uses the approved short ES header CTA without changing other booking labels', () => {
+    expect(getDictionary('es').header.scheduleCall).toBe('Reservar consulta');
+    expect(getDictionary('es').common.bookStrategyCall).toBe('Agendar una llamada de orientación');
+    expect(getDictionary('en').header.scheduleCall).toBe('Book a Strategy Call');
+    expect(getDictionary('fr').header.scheduleCall).toBe('Réserver un appel-conseil');
+  });
 });
 
 describe('format', () => {
@@ -72,16 +79,12 @@ describe('format', () => {
 
 describe('formatParts', () => {
   it('splits the footer like the hand-written JSX children', () => {
-    expect(formatParts(en.footer.copyright, { year: 2026 })).toEqual([
-      'Magneto Marketing - All Rights Reserved, ',
-      2026,
-      '.',
-    ]);
+    expect(formatParts(en.footer.copyright, { year: 2026 })).toEqual(['Magneto Web Consulting © ', 2026]);
   });
 
   it('renders the same SSR markup as the original JSX (text separators kept)', () => {
     const year = 2026;
-    const before = renderToStaticMarkup(React.createElement('p', null, 'Magneto Marketing - All Rights Reserved, ', year, '.'));
+    const before = renderToStaticMarkup(React.createElement('p', null, 'Magneto Web Consulting © ', year));
     const after = renderToStaticMarkup(React.createElement('p', null, formatParts(en.footer.copyright, { year })));
     expect(after).toBe(before);
   });
@@ -98,10 +101,20 @@ describe('formatParts', () => {
 });
 
 describe('readiness guard', () => {
-  it('EN has no TODO markers; FR/ES list every key while placeholders exist', () => {
+  it('EN has no TODO markers; FR/ES list every key except the ones the copy provides', () => {
+    // Phase 5a (spec "Dictionary changes", AC-21): exactly these keys left TODO. The brand is a proper name (O3).
+    const phase5a = [
+      'common.bookStrategyCall', 'nav.about', 'nav.services', 'nav.packages', 'nav.projects', 'nav.contact',
+      'header.scheduleCall', 'home.recentProjects', 'home.projectsIntro', 'footer.copyright', 'footer.linkedin',
+      'footer.email', 'featuredServices.explore', 'projectDetail.challenges', 'projectDetail.solutions',
+      'projectDetail.results', 'projectDetail.viewLiveSite', 'cmsFallback.finalCta.title',
+      'cmsFallback.finalCta.subtitle', 'meta.site.fallbackTitle',
+    ];
+    const doneFr = new Set(phase5a); // testimonials.title stays [FR TODO] (O2)
+    const doneEs = new Set([...phase5a, 'testimonials.title']);
     expect(findTodoKeys(en)).toEqual([]);
-    expect(findTodoKeys(fr)).toEqual(Object.keys(flat(fr)));
-    expect(findTodoKeys(es)).toEqual(Object.keys(flat(es)));
+    expect(findTodoKeys(fr)).toEqual(Object.keys(flat(fr)).filter((k) => !doneFr.has(k)));
+    expect(findTodoKeys(es)).toEqual(Object.keys(flat(es)).filter((k) => !doneEs.has(k)));
   });
 
   it('does not throw for EN only, or with the local override', () => {
@@ -113,7 +126,7 @@ describe('readiness guard', () => {
   it('throws for an enabled locale with markers and names it with its count', () => {
     const count = findTodoKeys(fr).length;
     expect(() => assertLocalesReady(['en', 'fr'], { allowUntranslated: false })).toThrow(
-      new RegExp(`enables fr, but its dictionary has ${count} untranslated keys \\(\\[FR TODO\\]\\): common\\.bookStrategyCall`),
+      new RegExp(`enables fr, but its dictionary has ${count} untranslated keys \\(\\[FR TODO\\]\\): common\\.goHome`),
     );
     expect(() => assertLocalesReady(['en', 'fr', 'es'])).toThrow(/enables fr.*enables es/);
   });

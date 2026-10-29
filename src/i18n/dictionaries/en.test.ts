@@ -1,13 +1,16 @@
 // EN fingerprint (spec §2.4, AC-4). This table was generated from the V0 sources (master 8065eae: the
 // components, pages and Next's built-in 404 as they were before Phase 4), not from en.ts. It locks every EN
 // value byte-for-byte: punctuation, dashes, ellipses, trailing spaces. A key added to en.ts must be added here.
+// Phase 5a (spec Part 2 item 12, D1): keys changed, added or removed on purpose for the 2026 copy. Each changed or
+// added line carries its source line in docs/content/magneto-copy-en.md (commit 23b620a); Mauricio confirms them
+// (AC-20). Every other line is still the V0 value.
 // Transforms applied to the sources: JSX `&apos;` → ', `\u2014` → —, and `${expr}` / `{expr}` → {year} {n} {title} {status}.
 import { describe, expect, it } from 'vitest';
 import { en } from './en';
 import { flattenDictionary } from '../dictionary';
 
 const EN_FINGERPRINT: Record<string, string> = {
-  "common.bookStrategyCall": "Book a Free Strategy Call",
+  "common.bookStrategyCall": "Book a Strategy Call", // Phase 5a, magneto-copy-en.md:18
   "common.goHome": "Go Home",
   "common.checkIconAlt": "Check icon",
   "common.loading": "Loading...",
@@ -18,28 +21,28 @@ const EN_FINGERPRINT: Record<string, string> = {
   "nav.projects": "Projects",
   "nav.contact": "Contact",
   "header.logoAlt": "Logo",
-  "header.scheduleCall": "Free Schedule Call",
+  "header.scheduleCall": "Book a Strategy Call", // Phase 5a, magneto-copy-en.md:18
   "header.menuOpen": "Menu",
   "header.menuClose": "Close",
   "header.languageSwitcher": "Language",
-  "home.recentProjects": "Recent Projects",
+  "home.recentProjects": "Selected Web Projects", // Phase 5a, magneto-copy-en.md:66
+  "home.projectsIntro": "Web experiences for wellness, professional services and digital commerce — built around the needs of each business.", // Phase 5a, magneto-copy-en.md:68
   "services.errorTitle": "Services",
   "services.errorBody": "Sorry, we couldn't load the services right now. Please try again later.",
   "services.featuredBadge": "Featured Service",
   "about.linkedinIconAlt": "LinkedIn Icon",
-  "footer.copyright": "Magneto Marketing - All Rights Reserved, {year}.",
-  "featuredServices.checkAll": "Check All Services",
-  "featuredServices.learnMore": "Learn More",
+  "footer.copyright": "Magneto Web Consulting © {year}", // Phase 5a, magneto-copy-en.md:136
+  "footer.linkedin": "Mauricio Bayuelo on LinkedIn", // Phase 5a, magneto-copy-en.md:242
+  "footer.email": "contact@magnetomarketing.co", // Phase 5a, magneto-copy-en.md:242
+  "testimonials.title": "Client feedback", // Phase 5a, magneto-copy-en.md:88
+  "featuredServices.explore": "Explore {name}", // Phase 5a, magneto-copy-en.md:46/54/62 (name as a placeholder)
   "projects.emptyTitle": "Everything unfolds in its sacred time.",
   "projects.emptySubtitle": "We’re planting and cultivating new digital projects with wonderful clients.",
   "projects.emptyQuestion": "Do you have a project in mind?",
-  "projects.solutionLabel": "Solution: ",
-  "projects.outcomeLabel": "Outcome: ",
-  "projects.checkAll": "Check All Projects",
   "projectDetail.challenges": "Challenges",
   "projectDetail.solutions": "Solutions",
-  "projectDetail.results": "Results",
-  "projectDetail.viewLiveSite": "View live site",
+  "projectDetail.results": "What Was Delivered", // Phase 5a, magneto-copy-en.md:931
+  "projectDetail.viewLiveSite": "View {domain}", // Phase 5a, magneto-copy-en.md:954 (domain as a placeholder)
   "projectDetail.backToProjects": "← Back to Projects",
   "packages.popularBadge": "Popular",
   "packages.included": "What's included:",
@@ -101,13 +104,12 @@ const EN_FINGERPRINT: Record<string, string> = {
   "cmsFallback.leadMagnet.subtitle": "5 Mistakes That Kill Funnel Conversions",
   "cmsFallback.requestQuote": "Request Free Quote",
   "cmsFallback.finalCta.bgAlt": "Background",
-  "cmsFallback.finalCta.title": "Stop losing leads. Start converting.",
-  "cmsFallback.finalCta.subtitle": "Request your free funnel quote today and find out what's holding you back.",
-  "cmsFallback.featuredServicesTitle": "Featured Services",
+  "cmsFallback.finalCta.title": "Start with a conversation.", // Phase 5a, magneto-copy-en.md:122
+  "cmsFallback.finalCta.subtitle": "Share what is and is not working with your website. Magneto will help determine whether the sensible next step is a new website, a focused fix, ongoing care — or no major intervention yet.", // Phase 5a, magneto-copy-en.md:124
   "cmsFallback.heroImageAlt": "Hero Image",
   "cmsFallback.socialIconAlt": "Social Icon",
   "cmsFallback.galleryImageAlt": "Gallery image {n}",
-  "meta.site.fallbackTitle": "Magneto Marketing - Web Solo Agency Portfolio and Services",
+  "meta.site.fallbackTitle": "Magneto Web Consulting", // Phase 5a O3 brand rename (spec 1.6)
   "meta.site.fallbackDescription": "A creative digital agency showcasing work and services.",
   "meta.home.title": "Magneto Marketing - Home",
   "meta.home.description": "Magneto Marketing — strategy, web development and UX services for solo founders and small teams.",
@@ -129,7 +131,7 @@ describe('EN dictionary fingerprint', () => {
     expect(Object.keys(flattenDictionary(en)).sort()).toEqual(Object.keys(EN_FINGERPRINT).sort());
   });
 
-  it.each(Object.entries(EN_FINGERPRINT))('%s is byte-identical to the V0 source', (key, value) => {
+  it.each(Object.entries(EN_FINGERPRINT))('%s is byte-identical to the approved source', (key, value) => {
     expect(flattenDictionary(en)[key]).toBe(value);
   });
 });

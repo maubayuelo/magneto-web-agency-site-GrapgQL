@@ -4,28 +4,29 @@ import type { Dictionary } from '../dictionary';
 
 export const fr: Dictionary = {
   common: {
-    bookStrategyCall: '[FR TODO] Book a Free Strategy Call',
+    bookStrategyCall: 'Réserver un appel-conseil',
     goHome: '[FR TODO] Go Home',
     checkIconAlt: '[FR TODO] Check icon',
     loading: '[FR TODO] Loading...',
     close: '[FR TODO] Close',
   },
   nav: {
-    about: '[FR TODO] About',
-    services: '[FR TODO] Services',
-    packages: '[FR TODO] Packages',
-    projects: '[FR TODO] Projects',
-    contact: '[FR TODO] Contact',
+    about: 'À propos',
+    services: 'Services',
+    packages: 'Forfaits',
+    projects: 'Réalisations',
+    contact: 'Contact',
   },
   header: {
     logoAlt: '[FR TODO] Logo',
-    scheduleCall: '[FR TODO] Free Schedule Call',
+    scheduleCall: 'Réserver un appel-conseil',
     menuOpen: '[FR TODO] Menu',
     menuClose: '[FR TODO] Close',
     languageSwitcher: '[FR TODO] Language',
   },
   home: {
-    recentProjects: '[FR TODO] Recent Projects',
+    recentProjects: 'Réalisations web',
+    projectsIntro: 'Des expériences web pour le bien-être, les services professionnels et le commerce en ligne, adaptées aux besoins de chaque entreprise.',
   },
   services: {
     errorTitle: '[FR TODO] Services',
@@ -36,25 +37,26 @@ export const fr: Dictionary = {
     linkedinIconAlt: '[FR TODO] LinkedIn Icon',
   },
   footer: {
-    copyright: '[FR TODO] Magneto Marketing - All Rights Reserved, {year}.',
+    copyright: 'Magneto Web Consulting © {year}',
+    linkedin: 'Mauricio Bayuelo sur LinkedIn',
+    email: 'contact@magnetomarketing.co',
+  },
+  testimonials: {
+    title: '[FR TODO] Client feedback',
   },
   featuredServices: {
-    checkAll: '[FR TODO] Check All Services',
-    learnMore: '[FR TODO] Learn More',
+    explore: 'Découvrir {name}',
   },
   projects: {
     emptyTitle: '[FR TODO] Everything unfolds in its sacred time.',
     emptySubtitle: '[FR TODO] We’re planting and cultivating new digital projects with wonderful clients.',
     emptyQuestion: '[FR TODO] Do you have a project in mind?',
-    solutionLabel: '[FR TODO] Solution: ',
-    outcomeLabel: '[FR TODO] Outcome: ',
-    checkAll: '[FR TODO] Check All Projects',
   },
   projectDetail: {
-    challenges: '[FR TODO] Challenges',
-    solutions: '[FR TODO] Solutions',
-    results: '[FR TODO] Results',
-    viewLiveSite: '[FR TODO] View live site',
+    challenges: 'Défis',
+    solutions: 'Solutions',
+    results: 'Livrables',
+    viewLiveSite: 'Voir {domain}',
     backToProjects: '[FR TODO] ← Back to Projects',
   },
   packages: {
@@ -141,17 +143,16 @@ export const fr: Dictionary = {
     requestQuote: '[FR TODO] Request Free Quote',
     finalCta: {
       bgAlt: '[FR TODO] Background',
-      title: '[FR TODO] Stop losing leads. Start converting.',
-      subtitle: '[FR TODO] Request your free funnel quote today and find out what\'s holding you back.',
+      title: 'Commençons par en parler.',
+      subtitle: 'Expliquez ce qui fonctionne et ce qui ne fonctionne pas sur votre site web. Magneto vous aidera à déterminer si la prochaine étape la plus sensée est un nouveau site, une correction ciblée, un entretien continu — ou aucune intervention majeure pour le moment.',
     },
-    featuredServicesTitle: '[FR TODO] Featured Services',
     heroImageAlt: '[FR TODO] Hero Image',
     socialIconAlt: '[FR TODO] Social Icon',
     galleryImageAlt: '[FR TODO] Gallery image {n}',
   },
   meta: {
     site: {
-      fallbackTitle: '[FR TODO] Magneto Marketing - Web Solo Agency Portfolio and Services',
+      fallbackTitle: 'Magneto Web Consulting',
       fallbackDescription: '[FR TODO] A creative digital agency showcasing work and services.',
     },
     home: {

@@ -1,10 +1,11 @@
 // EN UI microcopy: the source of truth for every dictionary (ADR 0005). Values are byte-exact copies of the
 // strings that were hardcoded in components (curly ’, em/en dashes, "...", trailing spaces included);
 // `en.test.ts` locks them. Declared without `as const`, so `typeof en` widens every leaf to `string`.
-// Placeholders: {year} {n} {title} {status}.
+// Placeholders: {year} {n} {title} {status} {name} {domain}.
+// Phase 5a: values from docs/content/magneto-copy-en.md (line refs in docs/reports/phase-5a-…md).
 export const en = {
   common: {
-    bookStrategyCall: 'Book a Free Strategy Call',
+    bookStrategyCall: 'Book a Strategy Call',
     goHome: 'Go Home',
     checkIconAlt: 'Check icon',
     loading: 'Loading...',
@@ -19,13 +20,14 @@ export const en = {
   },
   header: {
     logoAlt: 'Logo',
-    scheduleCall: 'Free Schedule Call',
+    scheduleCall: 'Book a Strategy Call',
     menuOpen: 'Menu',
     menuClose: 'Close',
     languageSwitcher: 'Language',
   },
   home: {
-    recentProjects: 'Recent Projects',
+    recentProjects: 'Selected Web Projects',
+    projectsIntro: 'Web experiences for wellness, professional services and digital commerce — built around the needs of each business.',
   },
   services: {
     errorTitle: 'Services',
@@ -36,25 +38,26 @@ export const en = {
     linkedinIconAlt: 'LinkedIn Icon',
   },
   footer: {
-    copyright: 'Magneto Marketing - All Rights Reserved, {year}.',
+    copyright: 'Magneto Web Consulting © {year}',
+    linkedin: 'Mauricio Bayuelo on LinkedIn',
+    email: 'contact@magnetomarketing.co',
+  },
+  testimonials: {
+    title: 'Client feedback',
   },
   featuredServices: {
-    checkAll: 'Check All Services',
-    learnMore: 'Learn More',
+    explore: 'Explore {name}',
   },
   projects: {
     emptyTitle: 'Everything unfolds in its sacred time.',
     emptySubtitle: 'We’re planting and cultivating new digital projects with wonderful clients.',
     emptyQuestion: 'Do you have a project in mind?',
-    solutionLabel: 'Solution: ',
-    outcomeLabel: 'Outcome: ',
-    checkAll: 'Check All Projects',
   },
   projectDetail: {
     challenges: 'Challenges',
     solutions: 'Solutions',
-    results: 'Results',
-    viewLiveSite: 'View live site',
+    results: 'What Was Delivered',
+    viewLiveSite: 'View {domain}',
     backToProjects: '← Back to Projects',
   },
   packages: {
@@ -145,17 +148,16 @@ export const en = {
     requestQuote: 'Request Free Quote',
     finalCta: {
       bgAlt: 'Background',
-      title: 'Stop losing leads. Start converting.',
-      subtitle: "Request your free funnel quote today and find out what's holding you back.",
+      title: 'Start with a conversation.',
+      subtitle: 'Share what is and is not working with your website. Magneto will help determine whether the sensible next step is a new website, a focused fix, ongoing care — or no major intervention yet.',
     },
-    featuredServicesTitle: 'Featured Services',
     heroImageAlt: 'Hero Image',
     socialIconAlt: 'Social Icon',
     galleryImageAlt: 'Gallery image {n}',
   },
   meta: {
     site: {
-      fallbackTitle: 'Magneto Marketing - Web Solo Agency Portfolio and Services',
+      fallbackTitle: 'Magneto Web Consulting',
       fallbackDescription: 'A creative digital agency showcasing work and services.',
     },
     home: {

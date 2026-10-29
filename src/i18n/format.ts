@@ -14,7 +14,7 @@ export function format(template: string, vars: Record<string, string | number>):
 /**
  * For JSX children that mix text and values. Returns the parts in order, so React renders the same text
  * nodes (and SSR `<!-- -->` separators) as hand-written JSX:
- * "Magneto Marketing - All Rights Reserved, {year}.", { year: 2026 } → ["Magneto … Reserved, ", 2026, "."].
+ * "Magneto Web Consulting © {year}", { year: 2026 } → ["Magneto Web Consulting © ", 2026].
  * Empty text parts are dropped; element values get a key so an array child doesn't warn.
  */
 export function formatParts(template: string, vars: Record<string, ReactNode>): ReactNode[] {
