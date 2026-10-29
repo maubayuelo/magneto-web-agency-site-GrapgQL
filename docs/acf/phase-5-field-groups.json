@@ -1,0 +1,3256 @@
+[
+    {
+        "key": "group_68cb1f886eb9b",
+        "title": "pageIntroText",
+        "fields": [
+            {
+                "key": "field_68cb1f8940e08",
+                "label": "Page IntroText",
+                "name": "pageintrotext",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "(legacy — do not edit; replaced by Intro Body (HTML))",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque velit diam, placerat ac nibh nec, tincidunt lacinia tortor.",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "pageIntroText",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_pageintrotext_intro_body_html",
+                "label": "Intro Body (HTML)",
+                "name": "intro_body_html",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0,
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "introBodyHtml",
+                "graphql_non_null": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "34"
+                }
+            ],
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "38"
+                }
+            ],
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "36"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "pageintrotext",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_68c87e7e6d796",
+        "title": "LeadMagnetSection",
+        "fields": [
+            {
+                "key": "field_68c88016d41e1",
+                "label": "OverTitle LeadMagnetSection",
+                "name": "OverTitle_LeadMagnetSection",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Not ready to book a call?",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "OverTitleLeadMagnetSection",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_68c87e7e7068b",
+                "label": "title LeadMagnetSection",
+                "name": "title_LeadMagnetSection",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Download our free guide:",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "titleLeadMagnetSection",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_68c87e7e7068e",
+                "label": "SubTitle LeadMagnetSection",
+                "name": "subtitle_LeadMagnetSection",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "5 Mistakes That Kill Funnel Conversions",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "subtitleLeadMagnetSection",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_68c87e7e70691",
+                "label": "CTA Text LeadMagnetSection",
+                "name": "cta_text_LeadMagnetSection",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Get the PDF and join our tips newsletter",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaTextLeadMagnetSection",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_68c87e7e70693",
+                "label": "CTA Link LeadMagnetSection",
+                "name": "cta_link_LeadMagnetSection",
+                "aria-label": "",
+                "type": "file",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaLinkLeadMagnetSection"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "2"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "LeadMagnetSection",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_68b33adfafa9c",
+        "title": "Home - Footer",
+        "fields": [
+            {
+                "key": "field_68b33adfb5087",
+                "label": "Line Text 1",
+                "name": "footerLine1",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Check updates and news in social media",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "footerLine1",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_68b33c1dfd64d",
+                "label": "Social Icons",
+                "name": "footerSocialIcons",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add Row",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "footerSocialIcons",
+                "graphql_non_null": 0,
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_68b33c61fd64e",
+                        "label": "Icon SVG",
+                        "name": "iconSvg",
+                        "aria-label": "",
+                        "type": "image",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "return_format": "array",
+                        "library": "all",
+                        "min_width": "",
+                        "min_height": "",
+                        "min_size": "",
+                        "max_width": "",
+                        "max_height": "",
+                        "max_size": "",
+                        "mime_types": "",
+                        "allow_in_bindings": 0,
+                        "preview_size": "medium",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "iconSvg",
+                        "parent_repeater": "field_68b33c1dfd64d"
+                    },
+                    {
+                        "key": "field_68b33ca3fd64f",
+                        "label": "URL",
+                        "name": "iconUrl",
+                        "aria-label": "",
+                        "type": "url",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "default_value": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "iconUrl",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_68b33c1dfd64d"
+                    }
+                ]
+            },
+            {
+                "key": "field_68b33adfb508b",
+                "label": "Line Text 2",
+                "name": "footerLine2",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Based in Montreal | Serving clients worldwide",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "footerLine2",
+                "graphql_non_null": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "2"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "homeFooter",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_689bae6caa678",
+        "title": "About - Data",
+        "fields": [
+            {
+                "key": "field_689bae6dc2660",
+                "label": "Section Title",
+                "name": "section_title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "The Founder",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689baea2c2661",
+                "label": "Description",
+                "name": "description",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "(legacy — do not edit; replaced by Description (HTML))",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "I'm Mauricio Bayuelo — designer, developer, and strategist based in Montreal. I started Magneto to help entrepreneurs turn their ideas into magnetic digital experiences that attract, convert, and scale.",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_p5_aboutdata_description_html",
+                "label": "Description (HTML)",
+                "name": "description_html",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0,
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "descriptionHtml",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689baec9c2662",
+                "label": "Link Text",
+                "name": "link_text",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Visit LinkedIn Profile",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689baedcc2663",
+                "label": "Link URL",
+                "name": "link_url",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "https:\/\/www.linkedin.com\/in\/maubayuelo\/",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689baf03953b6",
+                "label": "General Text",
+                "name": "general_text",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Why Magneto?\r\nYou're not just getting a website — you're getting a conversion-focused system. From sales funnels to landing pages, from SEO to Google and social media ads, Magneto blends clean design with marketing strategy to drive real results.\r\n\r\nWhat I Bring to the Table\r\nIntuitive UX\/UI design that enhances user navigation\r\nExpert in WordPress and front-end development with a focus on good practices and site performance\r\nProven strategies for high-converting landing pages and sales funnels\r\nSeamless integration with Google Ads and Meta Ads for effective marketing\r\nMultilingual capabilities: English, French, Spanish\r\nReady to Bring Your Vision to Life?\r\nLet's talk about how we can build a bold, strategic online presence for your brand. Whether you're starting fresh or scaling up, I'll help you map out the next steps — clearly and confidently.",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "full",
+                "media_upload": 1,
+                "delay": 0
+            },
+            {
+                "key": "field_689baf38953b7",
+                "label": "Calendly Text",
+                "name": "calendly_text",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Book a Free Strategy Call",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689baf52953b8",
+                "label": "Calendly URL",
+                "name": "calendly_url",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "default_value": "https:\/\/calendly.com\/mauriciobayuelo\/free-discovery-call",
+                "allow_in_bindings": 0,
+                "placeholder": ""
+            },
+            {
+                "key": "field_p5_aboutdata_cta_text",
+                "label": "CTA Text",
+                "name": "about_cta_text",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaText",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_aboutdata_cta_path",
+                "label": "CTA Path",
+                "name": "about_cta_path",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Internal path, e.g. \/contact or \/packages#build. The site adds the language prefix.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaPath",
+                "graphql_non_null": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "32"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "aboutData",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_689ba94657393",
+        "title": "Contact - Contact Texts",
+        "fields": [
+            {
+                "key": "field_689ba94785963",
+                "label": "Main Copy",
+                "name": "main_copy",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Request Free Quote",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689ba96e84eae",
+                "label": "Tag Text",
+                "name": "tag_text",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Let's Build Something Powerful Together",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689ba98084eaf",
+                "label": "Bodytext",
+                "name": "bodytext",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "(legacy — do not edit; replaced by Supporting Text (HTML))",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Whether you need a high-converting website, a sleek funnel, or full branding for your next launch—I'm here to help. Fill out the form below, and I'll get back to you within 48 hours.",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "rows": "",
+                "placeholder": "",
+                "new_lines": ""
+            },
+            {
+                "key": "field_p5_contactcontacttexts_supporting_html",
+                "label": "Supporting Text (HTML)",
+                "name": "supporting_html",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0,
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "supportingHtml",
+                "graphql_non_null": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "41"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "contactContactTexts",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_689a6d041e120",
+        "title": "Projects - Project Data",
+        "fields": [
+            {
+                "key": "field_689bb68e09f8a",
+                "label": "Project Data",
+                "name": "project_data",
+                "aria-label": "",
+                "type": "group",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "layout": "block",
+                "sub_fields": [
+                    {
+                        "key": "field_689bb6b409f8b",
+                        "label": "Project Subtitle",
+                        "name": "project_subtitle",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "Mystical Commerce & Spiritual E-commerce Platform - Connecting Ancient Wisdom with Modern Technology",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": ""
+                    },
+                    {
+                        "key": "field_6a63eef32f48a",
+                        "label": "Project URL",
+                        "name": "project_url",
+                        "aria-label": "",
+                        "type": "url",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "projectUrl",
+                        "graphql_non_null": 0,
+                        "wpml_cf_preferences": 1
+                    },
+                    {
+                        "key": "field_689bb6ca09f8c",
+                        "label": "Project Description",
+                        "name": "project_description",
+                        "aria-label": "",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "Comprehensive design UX-UI and full-stack development of an immersive ecommerce platform and content-rich blog dedicated to mysticism, wicca, tarot, crystal healing, and spiritual wellness subjects. The project focused on creating an authentic mystical experience that drives organic traffic from social media platforms like Instagram, TikTok, and Pinterest, while implementing a sophisticated affiliate marketing system through engaging blog articles, product reviews, and spiritual guidance content to maximize revenue generation.",
+                        "allow_in_bindings": 0,
+                        "tabs": "all",
+                        "toolbar": "full",
+                        "media_upload": 1,
+                        "delay": 0
+                    },
+                    {
+                        "key": "field_689bb6e509f8d",
+                        "label": "Challenges",
+                        "name": "challenges",
+                        "aria-label": "",
+                        "type": "repeater",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "layout": "table",
+                        "pagination": 0,
+                        "min": 0,
+                        "max": 0,
+                        "collapsed": "",
+                        "button_label": "Add Row",
+                        "rows_per_page": 20,
+                        "sub_fields": [
+                            {
+                                "key": "field_689bb6ff09f8e",
+                                "label": "Item",
+                                "name": "item",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "wpml_cf_preferences": 2,
+                                "default_value": "Creating an authentic mystical brand experience",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "parent_repeater": "field_689bb6e509f8d"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_689bb725dc084",
+                        "label": "Solutions",
+                        "name": "solutions",
+                        "aria-label": "",
+                        "type": "repeater",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "layout": "table",
+                        "pagination": 0,
+                        "min": 0,
+                        "max": 0,
+                        "collapsed": "",
+                        "button_label": "Add Row",
+                        "rows_per_page": 20,
+                        "sub_fields": [
+                            {
+                                "key": "field_689bb725dc085",
+                                "label": "Item",
+                                "name": "item",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "wpml_cf_preferences": 2,
+                                "default_value": "Creating an authentic mystical brand experience",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "parent_repeater": "field_689bb725dc084"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_689bb738dc086",
+                        "label": "Results",
+                        "name": "results",
+                        "aria-label": "",
+                        "type": "repeater",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "layout": "table",
+                        "pagination": 0,
+                        "min": 0,
+                        "max": 0,
+                        "collapsed": "",
+                        "button_label": "Add Row",
+                        "rows_per_page": 20,
+                        "sub_fields": [
+                            {
+                                "key": "field_689bb738dc087",
+                                "label": "Item",
+                                "name": "item",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "wpml_cf_preferences": 2,
+                                "default_value": "Creating an authentic mystical brand experience",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "parent_repeater": "field_689bb738dc086"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "field_p5_projectsprojectdata_card_description",
+                "label": "Card Description",
+                "name": "card_description",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Short text on the project card.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "cardDescription",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_projectsprojectdata_display_order",
+                "label": "Display Order",
+                "name": "display_order",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Ascending; steps of 10 (Dangel 10, Shamanicca 20, Trépied 40). Empty: listed last. Set it in every language.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "default_value": "",
+                "min": "",
+                "max": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "step": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "displayOrder",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689a6d04467f9",
+                "label": "Images",
+                "name": "images",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add Row",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "images",
+                "graphql_non_null": 0,
+                "rows_per_page": 20,
+                "wpml_cf_preferences": 1,
+                "sub_fields": [
+                    {
+                        "key": "field_689a6d42467fa",
+                        "label": "Image",
+                        "name": "image",
+                        "aria-label": "",
+                        "type": "image",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "return_format": "array",
+                        "library": "all",
+                        "min_width": "",
+                        "min_height": "",
+                        "min_size": "",
+                        "max_width": "",
+                        "max_height": "",
+                        "max_size": "",
+                        "mime_types": "",
+                        "allow_in_bindings": 0,
+                        "preview_size": "medium",
+                        "parent_repeater": "field_689a6d04467f9"
+                    },
+                    {
+                        "key": "field_689a6d4d467fb",
+                        "label": "Foot Note",
+                        "name": "foot_note",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a6d04467f9"
+                    },
+                    {
+                        "key": "field_6a63dc11f0865",
+                        "label": "ismobilescreenshot",
+                        "name": "ismobilescreenshot",
+                        "aria-label": "",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "message": "Is it mobile",
+                        "default_value": 0,
+                        "allow_in_bindings": 0,
+                        "ui": 0,
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "ismobilescreenshot",
+                        "graphql_non_null": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": "",
+                        "parent_repeater": "field_689a6d04467f9",
+                        "wpml_cf_preferences": 1
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "project"
+                }
+            ],
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "project"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "projectsProjectData",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Project"
+        ]
+    },
+    {
+        "key": "group_689a5bb650fb6",
+        "title": "homeAboutSection",
+        "fields": [
+            {
+                "key": "field_689a5bb77c99c",
+                "label": "About Section Title",
+                "name": "aboutSectionTitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "About Magneto",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "aboutSectionTitle",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689a5be67c99d",
+                "label": "Section Description",
+                "name": "description",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "(legacy — do not edit; replaced by Description (HTML))",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Magneto is a solo web agency helping experts and service businesses thrive with powerful websites, sales funnels, and diverse marketing assets.",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "description",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_homeaboutsection_description_html",
+                "label": "Description (HTML)",
+                "name": "description_html",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0,
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "descriptionHtml",
+                "graphql_non_null": 0
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "2"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "homeAboutSection",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_689a58f582e2e",
+        "title": "finalCtaSection",
+        "fields": [
+            {
+                "key": "field_689a58f65e417",
+                "label": "title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689a592f5e419",
+                "label": "SubTitle",
+                "name": "subtitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689a59405e41a",
+                "label": "CTA Text",
+                "name": "prefooter_cta_text",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaText",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689a594e5e41b",
+                "label": "CTA Link",
+                "name": "prefooter_cta_link",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaLink",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_finalctasection_cta_path",
+                "label": "CTA Path",
+                "name": "cta_path",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Internal path, e.g. \/contact or \/packages#build. The site adds the language prefix. Empty: the button opens the strategy-call modal.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaPath",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_finalctasection_secondary_cta_text",
+                "label": "Secondary CTA Text",
+                "name": "secondary_cta_text",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "secondaryCtaText",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_finalctasection_secondary_cta_path",
+                "label": "Secondary CTA Path",
+                "name": "secondary_cta_path",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Internal path, e.g. \/contact or \/packages#build. The site adds the language prefix. Empty: the button opens the strategy-call modal.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "secondaryCtaPath",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_68c72ae49677b",
+                "label": "bgImage",
+                "name": "bgimage",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "bgimage"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                }
+            ],
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "project"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "finalCtaSection",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page",
+            "Project"
+        ]
+    },
+    {
+        "key": "group_689a539447013",
+        "title": "homeFeaturedServices",
+        "fields": [
+            {
+                "key": "field_689a5c28a785d",
+                "label": "Section Title",
+                "name": "sectionTitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Featured Services",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "title",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689a5395d1bc9",
+                "label": "Service",
+                "name": "service",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add Row",
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_689a53b3d1bca",
+                        "label": "Service Title",
+                        "name": "service_title",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a5395d1bc9"
+                    },
+                    {
+                        "key": "field_p5_homefeaturedservices_service_service_tagline",
+                        "label": "Service Tagline",
+                        "name": "service_tagline",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "serviceTagline",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a5395d1bc9"
+                    },
+                    {
+                        "key": "field_689a53c7d1bcb",
+                        "label": "Service Description",
+                        "name": "service_description",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a5395d1bc9"
+                    },
+                    {
+                        "key": "field_689a53d7d1bcc",
+                        "label": "Service icon",
+                        "name": "service_icon",
+                        "aria-label": "",
+                        "type": "image",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "return_format": "array",
+                        "library": "all",
+                        "min_width": "",
+                        "min_height": "",
+                        "min_size": "",
+                        "max_width": "",
+                        "max_height": "",
+                        "max_size": "",
+                        "mime_types": "",
+                        "allow_in_bindings": 0,
+                        "preview_size": "medium",
+                        "parent_repeater": "field_689a5395d1bc9"
+                    },
+                    {
+                        "key": "field_689a5402d1bcd",
+                        "label": "Anchor Link",
+                        "name": "anchor_link",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "anchorLink",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a5395d1bc9"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "2"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "homeFeaturedServices",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_689a37f06db47",
+        "title": "Home - Testimonials",
+        "fields": [
+            {
+                "key": "field_689a37f1b1fb8",
+                "label": "Testimonials",
+                "name": "testimonials",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add Row",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "testimonials",
+                "graphql_non_null": 0,
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_689a52d93cd54",
+                        "label": "Author",
+                        "name": "author",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a37f1b1fb8"
+                    },
+                    {
+                        "key": "field_689a52e73cd55",
+                        "label": "Testimonial",
+                        "name": "testimonial",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a37f1b1fb8"
+                    },
+                    {
+                        "key": "field_p5_hometestimonialssection_testimonials_role",
+                        "label": "Role",
+                        "name": "role",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "Required for the testimonial to be shown.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "role",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a37f1b1fb8"
+                    },
+                    {
+                        "key": "field_p5_hometestimonialssection_testimonials_company",
+                        "label": "Company",
+                        "name": "company",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "company",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a37f1b1fb8"
+                    },
+                    {
+                        "key": "field_p5_hometestimonialssection_testimonials_city",
+                        "label": "City",
+                        "name": "city",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "Shown when Company is empty.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "city",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a37f1b1fb8"
+                    },
+                    {
+                        "key": "field_p5_hometestimonialssection_testimonials_note",
+                        "label": "Note",
+                        "name": "note",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "Optional small line, e.g. \"Translated from Spanish.\"",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "note",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a37f1b1fb8"
+                    },
+                    {
+                        "key": "field_689a52f03cd56",
+                        "label": "Thumb",
+                        "name": "thumb",
+                        "aria-label": "",
+                        "type": "image",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "return_format": "array",
+                        "library": "all",
+                        "min_width": "",
+                        "min_height": "",
+                        "min_size": "",
+                        "max_width": "",
+                        "max_height": "",
+                        "max_size": "",
+                        "mime_types": "",
+                        "allow_in_bindings": 0,
+                        "preview_size": "medium",
+                        "parent_repeater": "field_689a37f1b1fb8"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "2"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "homeTestimonialsSection",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_689a3176ba948",
+        "title": "Packages - Package Features",
+        "fields": [
+            {
+                "key": "field_689a4b0bfdf48",
+                "label": "Packages Elements",
+                "name": "packages_elements",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add Row",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "packagesElements",
+                "graphql_non_null": 0,
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_689a4b21fdf49",
+                        "label": "Name",
+                        "name": "name",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_p5_packagespackagefeatures_packages_elements_heading",
+                        "label": "Heading",
+                        "name": "heading",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "heading",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_689a4b7ffdf4b",
+                        "label": "Recommended",
+                        "name": "Popular_Choise",
+                        "aria-label": "",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "message": "",
+                        "default_value": 0,
+                        "allow_in_bindings": 0,
+                        "ui": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": "",
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_689a4b3bfdf4a",
+                        "label": "Icon",
+                        "name": "icon",
+                        "aria-label": "",
+                        "type": "image",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "return_format": "array",
+                        "library": "all",
+                        "min_width": "",
+                        "min_height": "",
+                        "min_size": "",
+                        "max_width": "",
+                        "max_height": "",
+                        "max_size": "",
+                        "mime_types": "",
+                        "allow_in_bindings": 0,
+                        "preview_size": "medium",
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_689a4e0b9f4ea",
+                        "label": "Price",
+                        "name": "price",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_689a4b95fdf4c",
+                        "label": "Description",
+                        "name": "description",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "(legacy — do not edit; replaced by Description (HTML))",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_p5_packagespackagefeatures_packages_elements_description_html",
+                        "label": "Description (HTML)",
+                        "name": "description_html",
+                        "aria-label": "",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "allow_in_bindings": 0,
+                        "tabs": "all",
+                        "toolbar": "basic",
+                        "media_upload": 0,
+                        "delay": 0,
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "descriptionHtml",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_p5_packagespackagefeatures_packages_elements_features_title",
+                        "label": "Features Title",
+                        "name": "features_title",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "featuresTitle",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_689a4bacfdf4d",
+                        "label": "Features",
+                        "name": "features",
+                        "aria-label": "",
+                        "type": "repeater",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "layout": "table",
+                        "pagination": 0,
+                        "min": 0,
+                        "max": 0,
+                        "collapsed": "",
+                        "button_label": "Add Row",
+                        "rows_per_page": 20,
+                        "parent_repeater": "field_689a4b0bfdf48",
+                        "sub_fields": [
+                            {
+                                "key": "field_689a4bf9fdf4f",
+                                "label": "Feature",
+                                "name": "feature",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "wpml_cf_preferences": 2,
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "parent_repeater": "field_689a4bacfdf4d"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "field_p5_packagespackagefeatures_packages_elements_cta_text",
+                        "label": "CTA Text",
+                        "name": "cta_text",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "ctaText",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_p5_packagespackagefeatures_packages_elements_cta_path",
+                        "label": "CTA Path",
+                        "name": "cta_path",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "Internal path, e.g. \/contact or \/packages#build. The site adds the language prefix.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "ctaPath",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    },
+                    {
+                        "key": "field_p5_packagespackagefeatures_packages_elements_anchor_id",
+                        "label": "Anchor ID",
+                        "name": "anchor_id",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "Lowercase id without \"#\", e.g. build.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "anchorId",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a4b0bfdf48"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "36"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "packagesPackageFeatures",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_p5_packagescontentsections",
+        "title": "Packages - Content Sections",
+        "fields": [
+            {
+                "key": "field_p5_packagescontentsections_sections",
+                "label": "Sections",
+                "name": "sections",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "layout": "block",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "field_p5_packagescontentsections_sections_heading",
+                "button_label": "Add Section",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "sections",
+                "graphql_non_null": 0,
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_p5_packagescontentsections_sections_heading",
+                        "label": "Heading",
+                        "name": "heading",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "heading",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_p5_packagescontentsections_sections"
+                    },
+                    {
+                        "key": "field_p5_packagescontentsections_sections_body_html",
+                        "label": "Body (HTML)",
+                        "name": "body_html",
+                        "aria-label": "",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "allow_in_bindings": 0,
+                        "tabs": "all",
+                        "toolbar": "basic",
+                        "media_upload": 0,
+                        "delay": 0,
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "bodyHtml",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_p5_packagescontentsections_sections"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "36"
+                }
+            ]
+        ],
+        "menu_order": 1,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "packagesContentSections",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_689a30edd36b7",
+        "title": "Services - Service Details",
+        "fields": [
+            {
+                "key": "field_p5_servicesservicedetails_core_heading",
+                "label": "Core Heading",
+                "name": "core_heading",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "coreHeading",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_servicesservicedetails_supporting_heading",
+                "label": "Supporting Heading",
+                "name": "supporting_heading",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "supportingHeading",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_p5_servicesservicedetails_supporting_intro",
+                "label": "Supporting Intro",
+                "name": "supporting_intro",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "supportingIntro",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689a5f0dc2a9b",
+                "label": "Services",
+                "name": "services",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add Row",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "services",
+                "graphql_non_null": 0,
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_689a5f28c2a9c",
+                        "label": "Title",
+                        "name": "title",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_p5_servicesservicedetails_services_heading",
+                        "label": "Heading",
+                        "name": "heading",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "heading",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_68ca01c7b169f",
+                        "label": "Featured Service",
+                        "name": "featured_service",
+                        "aria-label": "",
+                        "type": "true_false",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "message": "",
+                        "default_value": 0,
+                        "allow_in_bindings": 0,
+                        "ui": 0,
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "featuredService",
+                        "graphql_non_null": 0,
+                        "ui_on_text": "",
+                        "ui_off_text": "",
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_689a5f3fc2a9d",
+                        "label": "Image",
+                        "name": "Image",
+                        "aria-label": "",
+                        "type": "image",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "return_format": "array",
+                        "library": "all",
+                        "min_width": "",
+                        "min_height": "",
+                        "min_size": "",
+                        "max_width": "",
+                        "max_height": "",
+                        "max_size": "",
+                        "mime_types": "",
+                        "allow_in_bindings": 0,
+                        "preview_size": "medium",
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_689a5f4fc2a9e",
+                        "label": "Icon",
+                        "name": "icon",
+                        "aria-label": "",
+                        "type": "image",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "return_format": "array",
+                        "library": "all",
+                        "min_width": "",
+                        "min_height": "",
+                        "min_size": "",
+                        "max_width": "",
+                        "max_height": "",
+                        "max_size": "",
+                        "mime_types": "",
+                        "allow_in_bindings": 0,
+                        "preview_size": "medium",
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_689a5f5fc2a9f",
+                        "label": "Description",
+                        "name": "description",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "(legacy — do not edit; replaced by Description (HTML))",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_p5_servicesservicedetails_services_description_html",
+                        "label": "Description (HTML)",
+                        "name": "description_html",
+                        "aria-label": "",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "allow_in_bindings": 0,
+                        "tabs": "all",
+                        "toolbar": "basic",
+                        "media_upload": 0,
+                        "delay": 0,
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "descriptionHtml",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_p5_servicesservicedetails_services_cta_text",
+                        "label": "CTA Text",
+                        "name": "cta_text",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "ctaText",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_p5_servicesservicedetails_services_cta_path",
+                        "label": "CTA Path",
+                        "name": "cta_path",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "Internal path, e.g. \/contact or \/packages#build. The site adds the language prefix.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "ctaPath",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_p5_servicesservicedetails_services_anchor_id",
+                        "label": "Anchor ID",
+                        "name": "anchor_id",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "Lowercase id without \"#\", e.g. build.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 2,
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "anchorId",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    },
+                    {
+                        "key": "field_p5_servicesservicedetails_services_service_group",
+                        "label": "Service Group",
+                        "name": "service_group",
+                        "aria-label": "",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "wpml_cf_preferences": 1,
+                        "choices": {
+                            "core": "Core",
+                            "supporting": "Supporting"
+                        },
+                        "default_value": false,
+                        "return_format": "value",
+                        "multiple": 0,
+                        "allow_null": 1,
+                        "allow_in_bindings": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "placeholder": "",
+                        "create_options": 0,
+                        "save_options": 0,
+                        "show_in_graphql": 1,
+                        "graphql_description": "",
+                        "graphql_field_name": "serviceGroup",
+                        "graphql_non_null": 0,
+                        "parent_repeater": "field_689a5f0dc2a9b"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                },
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "34"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "servicesServiceDetails",
+        "map_graphql_types_from_location_rules": 1,
+        "graphql_types": [
+            "Page"
+        ]
+    },
+    {
+        "key": "group_689a2d99bc46f",
+        "title": "heroContent",
+        "fields": [
+            {
+                "key": "field_689a2d9a6031f",
+                "label": "Hero Title",
+                "name": "hero_title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_689a2dbb60320",
+                "label": "Subtitle Hero",
+                "name": "subtitle_hero",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "subtitleHero",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689a2e0960321",
+                "label": "CTA text Hero",
+                "name": "cta_text_hero",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "Book a Free Strategy Call",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaTextHero",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689a2e2960322",
+                "label": "CTA link Hero",
+                "name": "cta_link_hero",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 2,
+                "default_value": "https:\/\/calendly.com\/mauriciobayuelo\/free-discovery-call",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "ctaLinkHero",
+                "graphql_non_null": 0
+            },
+            {
+                "key": "field_689a2e4260323",
+                "label": "Image",
+                "name": "image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+            },
+            {
+                "key": "field_689a2e4d60324",
+                "label": "Background Image",
+                "name": "background_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "wpml_cf_preferences": 1,
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "acf_after_title",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "",
+        "show_in_rest": 0,
+        "display_title": "",
+        "allow_ai_access": false,
+        "ai_description": "",
+        "acfml_field_group_mode": "translation",
+        "show_in_graphql": 1,
+        "graphql_field_name": "heroContent",
+        "map_graphql_types_from_location_rules": 0,
+        "graphql_types": ""
+    }
+]
