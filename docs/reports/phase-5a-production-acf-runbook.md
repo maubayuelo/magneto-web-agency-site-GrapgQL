@@ -53,7 +53,7 @@ promote.
 | 0.8: home `title`, `subtitle`, `prefooter_cta_text` present; every row listed and classified; promote blockers escalated | **Pass**: 15 rows below; 0 promote blockers |
 | Two backups before step 3 | **Pass**: SiteGround 18:06 + dump 18:26 (`Dump completed on 2026-10-29 22:26:46`) |
 | Step 2: two identical before-captures (31 requests) | **Pass** |
-| Step 3: "Imported 14 items"; 14 groups, no duplicates | **Pass** (reported by Mauricio; no screenshot) |
+| Step 3: "Imported 14 items"; 14 groups, no duplicates | **Pass**: screenshot `3-imported-14-items.png` (D-6) |
 | Step 4.1 `IDENTICAL`; 4.2 `IDENTICAL` (0 removed, 36 added) | **Pass**: no `pref=` fixes needed |
 | Step 5: 38/38 (0.9 fewer) | **Pass**: 1/38 → 38/38 |
 | Step 7.1 `IDENTICAL`; 7.2 7 × 200 + 404; visual unchanged | **Pass**: the 7.1 of record is 19:02, after 6.2 (D-3) |
@@ -91,7 +91,7 @@ promote.
 | 18:06 | 1.1 SiteGround backup | Mauricio | `phase-5a-acf-before-20261029-1806` | — |
 | 18:26 | 1.2 DB export | Mauricio | 3,484,075 B, `d1712034a11ae0076103edae09795ba975ad4ea80e4a11cbb12d3e128d933879` | `phase-5a-acf-before-20261029-1826.sql` |
 | 18:28 | 2 before-capture ×2 | Dev | identical; 31 × 200; all `ok` except `GetAboutTexts` `ERR` (E4) | `2-before.txt`, `2-before-2.txt` |
-| 18:48 | **3 import — production write** | Mauricio | "Imported 14 items"; 14 groups, no duplicate titles, all active; no Sync | — |
+| 18:48 | **3 import — production write** | Mauricio | "Imported 14 items"; 14 groups, no duplicate titles, all active; no Sync | `3-imported-14-items.png` |
 | 18:52 | 4.1 ACFML after | Mauricio | `IDENTICAL` to local | `4-acfml-prod-after.txt` |
 | 18:53 | 4.2 / 5 | Dev | `IDENTICAL`; 38/38 | `4.2-prod.diff`, `5-schema-after.txt` |
 | 18:56 | **6.1 `wp cache flush` — production write** | Mauricio | `Success: The cache was flushed.` | — |
@@ -199,8 +199,15 @@ promote.
   1440. The 1440 modal check was done in the AC-24 prep (fits).
 - **D-5 (preview access):** the preview was checked in Chrome, not with `curl`, because of Vercel Deployment
   Protection (approved by Mauricio, same as Phases 3b and 4).
-- **D-6 (step 3 evidence):** "Imported 14 items" and the 14 groups were reported by Mauricio, with no screenshot. 4.1,
-  4.2 and 5 independently confirm the result.
+- **D-6 (step 3 evidence): evidence saved.** Mauricio added the screenshot after the run (22:34):
+  - file: `$RB/3-imported-14-items.png`, 334,985 B, sha256
+    `3de471197d54f8de115cb59ee1c64a89452a5c9282e8df48c6ed070a0f5040a4`;
+  - address bar: `cms.magnetomarketing.co/wp-admin/edit.php?post_type=acf-field-group&page=acf-tools`;
+  - green notice: "Imported 14 items", followed by the 14 group titles;
+  - the Export list shows 14 groups, each once, including "Packages - Content Sections".
+
+  4.1, 4.2 and 5 independently confirm the result. An earlier file with the same name held an unrelated terminal
+  capture (sha256 `b2dabe97…cd46b383`); it was replaced and is not evidence.
 
 ## Issues found (not fixed)
 - **I-1, orphan final-CTA meta (0.8):** `title=(empty)` and the old hero `subtitle` on pages 32, 34, 36, 38 and 41
