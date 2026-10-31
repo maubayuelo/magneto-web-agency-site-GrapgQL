@@ -56,11 +56,17 @@ describe('getDictionary', () => {
     expect(getDictionary('es')).toBe(es);
   });
 
-  it('uses the approved short ES header CTA without changing other booking labels', () => {
+  it('keeps the header CTAs and uses the 5b main CTA label everywhere else (spec §5.4, Q-A1/Q-R1)', () => {
     expect(getDictionary('es').header.scheduleCall).toBe('Reservar consulta');
-    expect(getDictionary('es').common.bookStrategyCall).toBe('Agendar una llamada de orientación');
     expect(getDictionary('en').header.scheduleCall).toBe('Book a Strategy Call');
     expect(getDictionary('fr').header.scheduleCall).toBe('Réserver un appel-conseil');
+    // magneto-copy-en.md:27, magneto-copy-fr-CA.md:27, magneto-copy-es.md:29 (01ff73f)
+    expect(getDictionary('en').common.bookStrategyCall).toBe('Book a Free Strategy Call');
+    expect(getDictionary('fr').common.bookStrategyCall).toBe('Réserver un appel-conseil gratuit');
+    expect(getDictionary('es').common.bookStrategyCall).toBe('Agendar una llamada de orientación gratuita');
+    for (const locale of LOCALES) {
+      expect(getDictionary(locale).common.bookStrategyCall, locale).not.toBe(getDictionary(locale).header.scheduleCall);
+    }
   });
 });
 
@@ -106,15 +112,33 @@ describe('readiness guard', () => {
     const phase5a = [
       'common.bookStrategyCall', 'nav.about', 'nav.services', 'nav.packages', 'nav.projects', 'nav.contact',
       'header.scheduleCall', 'home.recentProjects', 'home.projectsIntro', 'footer.copyright', 'footer.linkedin',
-      'footer.email', 'featuredServices.explore', 'projectDetail.challenges', 'projectDetail.solutions',
+      'featuredServices.explore', 'projectDetail.challenges', 'projectDetail.solutions',
       'projectDetail.results', 'projectDetail.viewLiveSite', 'cmsFallback.finalCta.title',
       'cmsFallback.finalCta.subtitle', 'meta.site.fallbackTitle',
     ];
-    const doneFr = new Set(phase5a); // testimonials.title stays [FR TODO] (O2)
-    const doneEs = new Set([...phase5a, 'testimonials.title']);
+    // Phase 5b (spec §6, E14): the 13 metadata keys per locale + the new case-study keys. meta.project.title stays TODO (Q-D1).
+    const phase5b = [
+      'meta.site.fallbackDescription',
+      ...['home', 'services', 'packages', 'projects', 'about', 'contact'].flatMap((p) => [`meta.${p}.title`, `meta.${p}.description`]),
+      ...['dangel', 'trepied', 'shamanicca'].flatMap((c) => [`meta.caseStudies.${c}.title`, `meta.caseStudies.${c}.description`]),
+    ];
+    const doneFr = new Set([...phase5a, ...phase5b]); // testimonials.title stays [FR TODO] (O2)
+    const doneEs = new Set([...phase5a, ...phase5b, 'testimonials.title']);
     expect(findTodoKeys(en)).toEqual([]);
     expect(findTodoKeys(fr)).toEqual(Object.keys(flat(fr)).filter((k) => !doneFr.has(k)));
     expect(findTodoKeys(es)).toEqual(Object.keys(flat(es)).filter((k) => !doneEs.has(k)));
+  });
+
+  it('AC-12: 13 metadata TODOs filled, plus two new Packages error keys per locale', () => {
+    for (const [locale, dict, baseline] of [['fr', fr, 94], ['es', es, 93]] as const) {
+      expect(findTodoKeys(dict)).toHaveLength(baseline - 13 + 2);
+      for (const key of ['packages.errorTitle', 'packages.errorBody']) {
+        expect(findTodoKeys(dict)).toContain(key);
+        // Even when every other key is translated, either error key must block a launch build.
+        const isolated = { ...en, packages: { ...en.packages, [key.split('.')[1]]: flat(dict)[key] } };
+        expect(() => assertLocalesReady([locale], { allowUntranslated: false }, { en, fr: isolated, es: isolated })).toThrow(key);
+      }
+    }
   });
 
   it('does not throw for EN only, or with the local override', () => {

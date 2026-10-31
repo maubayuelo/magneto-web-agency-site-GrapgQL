@@ -4,7 +4,7 @@ import type { Dictionary } from '../dictionary';
 
 export const fr: Dictionary = {
   common: {
-    bookStrategyCall: 'Réserver un appel-conseil',
+    bookStrategyCall: 'Réserver un appel-conseil gratuit',
     goHome: '[FR TODO] Go Home',
     checkIconAlt: '[FR TODO] Check icon',
     loading: '[FR TODO] Loading...',
@@ -39,7 +39,6 @@ export const fr: Dictionary = {
   footer: {
     copyright: 'Magneto Web Consulting © {year}',
     linkedin: 'Mauricio Bayuelo sur LinkedIn',
-    email: 'contact@magnetomarketing.co',
   },
   testimonials: {
     title: '[FR TODO] Client feedback',
@@ -62,6 +61,8 @@ export const fr: Dictionary = {
   packages: {
     popularBadge: '[FR TODO] Popular',
     included: '[FR TODO] What\'s included:',
+    errorTitle: '[FR TODO] Packages',
+    errorBody: '[FR TODO] Sorry, we couldn\'t load the packages right now. Please try again later.',
   },
   calendly: {
     closeDialog: '[FR TODO] Close scheduling dialog',
@@ -153,34 +154,49 @@ export const fr: Dictionary = {
   meta: {
     site: {
       fallbackTitle: 'Magneto Web Consulting',
-      fallbackDescription: '[FR TODO] A creative digital agency showcasing work and services.',
+      fallbackDescription: 'Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec son fondateur, en français, en anglais et en espagnol.',
     },
     home: {
-      title: '[FR TODO] Magneto Marketing - Home',
-      description: '[FR TODO] Magneto Marketing — strategy, web development and UX services for solo founders and small teams.',
+      title: 'Conception et développement de sites web à Montréal | Magneto',
+      description: 'Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec son fondateur, en français, en anglais et en espagnol.',
     },
     services: {
-      title: '[FR TODO] Services - Magneto Marketing',
-      description: '[FR TODO] Strategy, Web Development, UX/UI and growth services offered by Magneto Marketing.',
+      title: 'Services web à Montréal | BUILD, FIX et CARE | Magneto',
+      description: "Conception, développement, optimisation et entretien de sites web pour les entreprises de services à Montréal. BUILD, FIX et CARE avec l'implication directe du fondateur.",
     },
     packages: {
-      title: '[FR TODO] Packages - Magneto Marketing',
-      description: '[FR TODO] Browse service packages and pricing for Magneto Marketing.',
+      title: 'Tarifs de création de sites web à Montréal | Magneto',
+      description: 'Tarifs de sites web pour les entreprises de services à Montréal : pages de destination dès 3 500 $ CA, sites complets généralement de 5 000 à 8 000 $ CA, FIX dès 1 000 $ CA et CARE dès 200 $ CA/mois.',
     },
     projects: {
-      title: '[FR TODO] Projects - Magneto Marketing',
-      description: '[FR TODO] A curated selection of recent projects and case studies by Magneto Marketing.',
+      title: 'Réalisations web à Montréal | Magneto',
+      description: 'Réalisations web de Magneto Web Consulting à Montréal : des expériences web pour le bien-être, les services professionnels et le commerce en ligne.',
     },
     about: {
-      title: '[FR TODO] About Magneto - About the Agency',
-      description: '[FR TODO] Meet Magneto Marketing — a solo web agency focused on strategy, design and web development.',
+      title: 'À propos de Magneto | Consultation web à Montréal',
+      description: 'Découvrez Mauricio Bayuelo, fondateur de Magneto à Montréal : stratégie web, UX/UI et développement pour les entreprises de services, en français, en anglais et en espagnol.',
     },
     contact: {
-      title: '[FR TODO] Contact - Magneto Marketing',
-      description: '[FR TODO] Get in touch with Magneto Marketing to book a strategy call or ask about services.',
+      title: 'Contacter Magneto | Projets web à Montréal',
+      description: "Contactez Magneto Web Consulting à Montréal. Présentez votre projet de création, d'amélioration ou d'entretien de site web et découvrez la prochaine étape, en français, en anglais ou en espagnol.",
     },
     project: {
       title: '[FR TODO] {title} | Magneto Projects',
+    },
+    // Case-study pages by slug (5b §6): see CASE_STUDY_KEYS in src/utils/page-metadata.ts.
+    caseStudies: {
+      dangel: {
+        title: 'Dangel Wellness — Site web trilingue | Magneto',
+        description: 'Un site web en français, en anglais et en espagnol pour un professionnel du bien-être à Montréal : services clairs, réservation, contact et contenu modifiable par le propriétaire.',
+      },
+      trepied: {
+        title: 'Trépied — Site web de studio vidéo | Magneto',
+        description: 'Un site web trilingue pour un studio de production vidéo montréalais, conçu pour présenter ses services et ses productions et orienter les clients vers un appel ou une demande de soumission.',
+      },
+      shamanicca: {
+        title: 'Shamanicca — Boutique en ligne et blogue (projet de Magneto) | Magneto',
+        description: "Projet de Magneto, et non un projet client : une boutique en ligne et un blogue réunis dans un même site, avec une recherche commune aux produits et aux articles et une inscription à l'infolettre.",
+      },
     },
   },
 };

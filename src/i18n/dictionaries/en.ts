@@ -5,7 +5,7 @@
 // Phase 5a: values from docs/content/magneto-copy-en.md (line refs in docs/reports/phase-5a-…md).
 export const en = {
   common: {
-    bookStrategyCall: 'Book a Strategy Call',
+    bookStrategyCall: 'Book a Free Strategy Call',
     goHome: 'Go Home',
     checkIconAlt: 'Check icon',
     loading: 'Loading...',
@@ -40,7 +40,6 @@ export const en = {
   footer: {
     copyright: 'Magneto Web Consulting © {year}',
     linkedin: 'Mauricio Bayuelo on LinkedIn',
-    email: 'contact@magnetomarketing.co',
   },
   testimonials: {
     title: 'Client feedback',
@@ -63,6 +62,9 @@ export const en = {
   packages: {
     popularBadge: 'Popular',
     included: "What's included:",
+    // 5b: CMS error state (pattern of services.errorTitle / errorBody; wording pending Mauricio's approval).
+    errorTitle: 'Packages',
+    errorBody: "Sorry, we couldn't load the packages right now. Please try again later.",
   },
   calendly: {
     closeDialog: 'Close scheduling dialog',
@@ -158,34 +160,49 @@ export const en = {
   meta: {
     site: {
       fallbackTitle: 'Magneto Web Consulting',
-      fallbackDescription: 'A creative digital agency showcasing work and services.',
+      fallbackDescription: 'Magneto builds, fixes and maintains websites for Montreal service businesses. Strategy, UX/UI and development with direct founder involvement, in English, French and Spanish.',
     },
     home: {
-      title: 'Magneto Marketing - Home',
-      description: 'Magneto Marketing — strategy, web development and UX services for solo founders and small teams.',
+      title: 'Website Design & Development in Montreal | Magneto',
+      description: 'Magneto builds, fixes and maintains websites for Montreal service businesses. Strategy, UX/UI and development with direct founder involvement, in English, French and Spanish.',
     },
     services: {
-      title: 'Services - Magneto Marketing',
-      description: 'Strategy, Web Development, UX/UI and growth services offered by Magneto Marketing.',
+      title: 'Website Services in Montreal | Build, Fix & Care | Magneto',
+      description: 'Website design, development, optimization and ongoing care for Montreal service businesses. BUILD, FIX and CARE with direct founder involvement.',
     },
     packages: {
-      title: 'Packages - Magneto Marketing',
-      description: 'Browse service packages and pricing for Magneto Marketing.',
+      title: 'Website Design Pricing in Montreal | Magneto',
+      description: 'Website pricing for Montreal service businesses. Landing pages from C$3,500, full websites typically C$5,000–8,000. Fixes start at C$1,000; care starts at C$200/month.',
     },
     projects: {
-      title: 'Projects - Magneto Marketing',
-      description: 'A curated selection of recent projects and case studies by Magneto Marketing.',
+      title: 'Web Design Projects in Montreal | Magneto',
+      description: 'Selected website projects by Magneto Web Consulting in Montreal: web experiences for wellness, professional services and digital commerce.',
     },
     about: {
-      title: 'About Magneto - About the Agency',
-      description: 'Meet Magneto Marketing — a solo web agency focused on strategy, design and web development.',
+      title: 'About Magneto | Montreal Web Consulting',
+      description: 'Meet Mauricio Bayuelo, founder of Magneto Web Consulting in Montreal. Web strategy, UX/UI and development for service businesses in English, French and Spanish.',
     },
     contact: {
-      title: 'Contact - Magneto Marketing',
-      description: 'Get in touch with Magneto Marketing to book a strategy call or ask about services.',
+      title: 'Contact Magneto | Website Projects in Montreal',
+      description: 'Contact Magneto Web Consulting in Montreal. Tell me what you need built, fixed or maintained and get a clear next step, in English, French or Spanish.',
     },
     project: {
       title: '{title} | Magneto Projects',
+    },
+    // Case-study pages by slug (5b §6): see CASE_STUDY_KEYS in src/utils/page-metadata.ts.
+    caseStudies: {
+      dangel: {
+        title: 'Dangel Wellness — Trilingual Website | Magneto',
+        description: 'A French, English and Spanish website for a Montreal wellness professional: clear service information, booking and contact paths, and owner-editable content.',
+      },
+      trepied: {
+        title: 'Trépied — Video Studio Website | Magneto',
+        description: 'A trilingual website for a Montreal video production studio, built to present its services and productions and lead clients to a call or quote request.',
+      },
+      shamanicca: {
+        title: 'Shamanicca — Online Shop & Blog (Own Project) | Magneto',
+        description: "Magneto's own project: an online shop and blog in one website, with one search across products and articles and a newsletter signup.",
+      },
     },
   },
 };
