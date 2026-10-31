@@ -1,0 +1,389 @@
+{
+  "_provenance": {
+    "what": "State C: read-only snapshot of the local CMS EN GraphQL response (pages(first:1, where:{language:\"en\", name}) nodes[0]) before the 5c loader run. Test data only; no secrets.",
+    "capturedAt": "2026-10-31T17:43:17.880Z",
+    "endpoint": "http://magneto-cms-2.local/graphql",
+    "variables": {
+      "language": "en",
+      "mediaOriginal": false
+    },
+    "gitHead": "f9b93678f4569859aecae40ec01d257341271390",
+    "queries": {
+      "services": {
+        "export": "SERVICES_PAGE_QUERY (src/app/[locale]/services/api.ts)",
+        "sha256": "e621395b4c820a625ff47a5391601204266679b2891438d555c04c3d9d4b3178"
+      },
+      "packages": {
+        "export": "PACKAGES_QUERY (src/app/[locale]/packages/api.ts)",
+        "sha256": "e8fff5ec5758c088951d04f99d28c11e793e8850bbe73ce11e04da2cbdf154a0"
+      }
+    }
+  },
+  "services": {
+    "pageintrotext": {
+      "pageIntroText": "From sales funnels to complete web builds, we design high-converting digital systems tailored for service providers, coaches, and small businesses.",
+      "introBodyHtml": null
+    },
+    "servicesServiceDetails": {
+      "coreHeading": null,
+      "supportingHeading": null,
+      "supportingIntro": null,
+      "services": [
+        {
+          "title": "Sales Funnel Development",
+          "heading": null,
+          "descriptionHtml": null,
+          "serviceGroup": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "featuredService": true,
+          "description": "We craft funnels that convert — from lead magnet to upsell. Includes funnel strategy, user journey mapping, wireframes, conversion copy, A/B testing, and email/CRM integrations using tools like Mailchimp or ActiveCampaign.",
+          "icon": {
+            "node": {
+              "id": "cG9zdDo3NA==",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/ico-services-sales-funnel.svg",
+              "altText": "",
+              "databaseId": 74,
+              "languageCode": "en"
+            }
+          },
+          "image": {
+            "node": {
+              "id": "cG9zdDoxMzQ=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/services-sales-funnel.webp",
+              "altText": "",
+              "databaseId": 134,
+              "languageCode": "en"
+            }
+          }
+        },
+        {
+          "title": "Website & E-Commerce Development",
+          "heading": null,
+          "descriptionHtml": null,
+          "serviceGroup": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "featuredService": true,
+          "description": "Tailored websites and shops built on WordPress, Shopify, or JAMstack. Whether you're launching a coaching brand or selling products, your site will be mobile-optimized, SEO-enhanced, and analytics-ready.",
+          "icon": {
+            "node": {
+              "id": "cG9zdDo2OQ==",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/ico-services-web-dev.svg",
+              "altText": "",
+              "databaseId": 69,
+              "languageCode": "en"
+            }
+          },
+          "image": {
+            "node": {
+              "id": "cG9zdDoxMzg=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/services-web-dev.webp",
+              "altText": "",
+              "databaseId": 138,
+              "languageCode": "en"
+            }
+          }
+        },
+        {
+          "title": "UX/UI Design & Prototyping",
+          "heading": null,
+          "descriptionHtml": null,
+          "serviceGroup": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "featuredService": false,
+          "description": "Beautiful layouts start with smart wireframes. Using Figma, we design responsive, conversion-focused interfaces backed by user flow insights and mobile-first strategy.",
+          "icon": {
+            "node": {
+              "id": "cG9zdDo5Nw==",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/ico-ux-ui-design.svg",
+              "altText": "",
+              "databaseId": 97,
+              "languageCode": "en"
+            }
+          },
+          "image": {
+            "node": {
+              "id": "cG9zdDoxNDI=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/services-uxui.webp",
+              "altText": "",
+              "databaseId": 142,
+              "languageCode": "en"
+            }
+          }
+        },
+        {
+          "title": "Email Marketing & Automation",
+          "heading": null,
+          "descriptionHtml": null,
+          "serviceGroup": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "featuredService": false,
+          "description": "Build relationships on autopilot. From newsletter templates to full drip sequences, we design and automate email systems that engage and convert your audience.",
+          "icon": {
+            "node": {
+              "id": "cG9zdDoxMDE=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/ico-email-marketing.svg",
+              "altText": "",
+              "databaseId": 101,
+              "languageCode": "en"
+            }
+          },
+          "image": {
+            "node": {
+              "id": "cG9zdDoxNDU=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/services-email.webp",
+              "altText": "",
+              "databaseId": 145,
+              "languageCode": "en"
+            }
+          }
+        },
+        {
+          "title": "Branding & Visual Identity",
+          "heading": null,
+          "descriptionHtml": null,
+          "serviceGroup": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "featuredService": false,
+          "description": "Develop a cohesive and memorable brand look. Logo design, typography, color palette, social templates, and iconography included — all optimized for digital-first presence.",
+          "icon": {
+            "node": {
+              "id": "cG9zdDo4Mg==",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/ico-services-branding.svg",
+              "altText": "",
+              "databaseId": 82,
+              "languageCode": "en"
+            }
+          },
+          "image": {
+            "node": {
+              "id": "cG9zdDoxNDg=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/services-branding.webp",
+              "altText": "",
+              "databaseId": 148,
+              "languageCode": "en"
+            }
+          }
+        },
+        {
+          "title": "Content Strategy & Creation",
+          "heading": null,
+          "descriptionHtml": null,
+          "serviceGroup": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "featuredService": false,
+          "description": "From blog posts to Instagram visuals and infographics, we plan and create content that supports your funnel and builds your brand. Includes asset planning, formatting, and repurposing strategies.",
+          "icon": {
+            "node": {
+              "id": "cG9zdDoxNTQ=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/ico-services-content.svg",
+              "altText": "",
+              "databaseId": 154,
+              "languageCode": "en"
+            }
+          },
+          "image": {
+            "node": {
+              "id": "cG9zdDoxNTE=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/08/services-content.webp",
+              "altText": "",
+              "databaseId": 151,
+              "languageCode": "en"
+            }
+          }
+        },
+        {
+          "title": "Ad Campaign Setup & Strategy",
+          "heading": null,
+          "descriptionHtml": null,
+          "serviceGroup": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "featuredService": false,
+          "description": "Get started with Meta, Google, or LinkedIn Ads the right way. We’ll help you structure your first campaigns, create audience targets, and connect everything to your funnel — so you can launch with confidence.",
+          "icon": {
+            "node": {
+              "id": "cG9zdDo0NzY=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/10/icon-target.svg",
+              "altText": "",
+              "databaseId": 476,
+              "languageCode": "en"
+            }
+          },
+          "image": {
+            "node": {
+              "id": "cG9zdDo0NzM=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/10/icon-brand-4d.png",
+              "altText": "",
+              "databaseId": 473,
+              "languageCode": "en"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "packages": {
+    "pageintrotext": {
+      "pageIntroText": "Whether you're just starting or scaling up, our done-for-you packages deliver strategic digital systems that turn visitors into clients.",
+      "introBodyHtml": null
+    },
+    "packagesContentSections": {
+      "sections": null
+    },
+    "packagesPackageFeatures": {
+      "packagesElements": [
+        {
+          "name": "Funnel Launch",
+          "heading": null,
+          "descriptionHtml": null,
+          "featuresTitle": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "popularChoise": false,
+          "icon": {
+            "node": {
+              "id": "cG9zdDozOTM=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/09/icon-zap.svg",
+              "altText": "",
+              "databaseId": 393,
+              "languageCode": "en"
+            }
+          },
+          "price": "From $950",
+          "description": "For solopreneurs or coaches who want to start generating leads fast with a lean, optimized sales funnel.",
+          "features": [
+            {
+              "feature": "1 landing page + 1 thank-you page"
+            },
+            {
+              "feature": "1 lead magnet or offer integration"
+            },
+            {
+              "feature": "Email capture & basic automation setup"
+            },
+            {
+              "feature": "Calendar integration (Calendly, etc.)"
+            },
+            {
+              "feature": "Initial ad campaign setup (Meta, Google, or LinkedIn). We'll structure your first campaign and connect it to your funnel. Ad spend not included — we recommend a budget of $150–$500 CAD to start."
+            },
+            {
+              "feature": "1–2 week delivery"
+            },
+            {
+              "feature": "Perfect for: new service providers"
+            }
+          ]
+        },
+        {
+          "name": "Funnel + Website",
+          "heading": null,
+          "descriptionHtml": null,
+          "featuresTitle": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "popularChoise": true,
+          "icon": {
+            "node": {
+              "id": "cG9zdDozOTA=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/09/icon-trending-up.svg",
+              "altText": "",
+              "databaseId": 390,
+              "languageCode": "en"
+            }
+          },
+          "price": "From $2,400",
+          "description": "For growing businesses who need a cohesive web presence and a funnel that converts cold traffic.",
+          "features": [
+            {
+              "feature": "Full website (up to 5 pages)"
+            },
+            {
+              "feature": "1 lead-generation funnel"
+            },
+            {
+              "feature": "Branded design & mobile optimization"
+            },
+            {
+              "feature": "Basic email marketing automation"
+            },
+            {
+              "feature": "Copywriting guidance"
+            },
+            {
+              "feature": "Blog, booking, or contact integrations"
+            },
+            {
+              "feature": "3–4 week delivery"
+            },
+            {
+              "feature": "Best for: coaches, freelancers, wellness pros"
+            }
+          ]
+        },
+        {
+          "name": "Growth Stack",
+          "heading": null,
+          "descriptionHtml": null,
+          "featuresTitle": null,
+          "ctaText": null,
+          "ctaPath": null,
+          "anchorId": null,
+          "popularChoise": false,
+          "icon": {
+            "node": {
+              "id": "cG9zdDozODc=",
+              "sourceUrl": "http://magneto-cms-2.local/wp-content/uploads/2025/09/icon-layers.svg",
+              "altText": "",
+              "databaseId": 387,
+              "languageCode": "en"
+            }
+          },
+          "price": "From $4,500",
+          "description": "A complete system for businesses ready to scale — full site, funnel, email automation, and content strategy.",
+          "features": [
+            {
+              "feature": "Website (multi-page + blog/store)"
+            },
+            {
+              "feature": "Multi-step funnel (lead magnet, nurture, offer)"
+            },
+            {
+              "feature": "Custom content strategy (1 session included)"
+            },
+            {
+              "feature": "Advanced automations (emails, segments, follow-ups)"
+            },
+            {
+              "feature": "SEO & performance optimization"
+            },
+            {
+              "feature": "Initial ad campaign setup (Meta, Google, or LinkedIn)."
+            },
+            {
+              "feature": "5–6 week delivery"
+            },
+            {
+              "feature": "Ideal for: scaling service brands & small teams"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

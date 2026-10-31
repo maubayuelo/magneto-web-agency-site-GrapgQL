@@ -1,0 +1,334 @@
+{
+  "source": {
+    "file": "docs/content/magneto-copy-en.md",
+    "commit": "01ff73f",
+    "sha256": "870b8573013427b3ba57afc3301d864f30c9ee32fb89363eeb243c265daee16d"
+  },
+  "spec": "docs/specs/phase-5c-loader.md rev 2 + docs/specs/phase-5b-services-packages-seo.md rev 9 §5.4 override",
+  "format": "fields[].value is the raw ACF value; repeater rows are keyed by sub-field key; subfields maps sub-field key → GraphQL name (\"[]\" = GraphQL list).",
+  "posts": [
+    {
+      "type": "page",
+      "slug": "services",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "EN 272",
+          "value": "Web services built around what your business actually needs."
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "EN 274",
+          "value": "Build a stronger website, improve the one you already have, or keep it working with reliable ongoing care."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "EN 276 (5b §5.4 override)",
+          "value": "Book a Free Strategy Call"
+        },
+        {
+          "key": "field_68cb1f8940e08",
+          "label": "pageintrotext.pageIntroText",
+          "src": "EN 280",
+          "value": "Start with the problem — not a package."
+        },
+        {
+          "key": "field_p5_pageintrotext_intro_body_html",
+          "label": "pageintrotext.introBodyHtml",
+          "src": "EN 282-286",
+          "value": "<p>Magneto helps Montreal service businesses choose the most sensible path for their website.</p>\n<p>That may mean building something new, fixing specific problems in an existing site, or providing ongoing care once the website is stable.</p>\n<p>The three core services are <strong>BUILD, FIX and CARE</strong>.</p>"
+        },
+        {
+          "key": "field_p5_servicesservicedetails_core_heading",
+          "label": "servicesServiceDetails.coreHeading",
+          "src": "EN 288",
+          "value": "Core Services"
+        },
+        {
+          "key": "field_p5_servicesservicedetails_supporting_heading",
+          "label": "servicesServiceDetails.supportingHeading",
+          "src": "EN 353",
+          "value": "Included Where Your Project Needs It"
+        },
+        {
+          "key": "field_p5_servicesservicedetails_supporting_intro",
+          "label": "servicesServiceDetails.supportingIntro",
+          "src": "EN 355",
+          "value": "These are supporting capabilities, not separate Magneto packages. They are included or scoped when they support the website and business goal."
+        },
+        {
+          "key": "field_689a5f0dc2a9b",
+          "label": "servicesServiceDetails.services",
+          "src": "EN 290-312, 313-340, 341-352, 357-366, 367-378, 379-386, 387-394",
+          "subfields": {
+            "field_689a5f28c2a9c": "title",
+            "field_p5_servicesservicedetails_services_heading": "heading",
+            "field_p5_servicesservicedetails_services_description_html": "descriptionHtml",
+            "field_p5_servicesservicedetails_services_cta_text": "ctaText",
+            "field_p5_servicesservicedetails_services_cta_path": "ctaPath",
+            "field_p5_servicesservicedetails_services_anchor_id": "anchorId",
+            "field_p5_servicesservicedetails_services_service_group": "serviceGroup[]"
+          },
+          "value": [
+            {
+              "field_689a5f28c2a9c": "BUILD — Website Build / Rebuild",
+              "field_p5_servicesservicedetails_services_heading": "Build a website that makes your business easier to understand, trust and contact.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>BUILD is for businesses that need a new website, a substantial rebuild, or a focused landing page.</p>\n<p>The work brings strategy, structure, UX/UI and development together so the finished website works as one coherent experience.</p>\n<p><strong>Typical scope can include:</strong></p>\n<ul><li>Website strategy and content structure</li><li>UX/UI design</li><li>Responsive development</li><li>CMS when needed</li><li>Forms, booking and standard integrations</li><li>Multilingual implementation when required</li><li>Analytics and search foundations</li><li>QA, launch and handoff</li></ul>\n<p><strong>Investment:</strong> Starting at <strong>C$3,500</strong> for a focused one-language landing page. Typical website investment: <strong>C$5,000–8,000</strong>. Custom projects: <strong>C$10,000+</strong>. All prices are in Canadian dollars. Applicable taxes are added when required.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "See BUILD pricing",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#build",
+              "field_p5_servicesservicedetails_services_anchor_id": "build",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "FIX — Website Optimization & Rescue",
+              "field_p5_servicesservicedetails_services_heading": "Improve the website you already have — without rebuilding it unnecessarily.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>FIX is for websites that are fundamentally usable but have specific problems affecting clarity, usability or reliability.</p>\n<p>That may include a confusing mobile experience, slow pages, broken forms or booking, WordPress or other technical problems, analytics issues, accessibility foundations or other technical friction.</p>\n<p>Magneto follows a simple process:</p>\n<p><strong>Diagnose → Prioritize → Approve → Fix → Verify</strong></p>\n<p>You know what is being fixed before the work starts, and the result is checked afterward.</p>\n<p><strong>Common FIX work can include:</strong></p>\n<ul><li>Mobile and usability problems</li><li>Forms and booking issues</li><li>Performance improvements</li><li>WordPress or other technical problems</li><li>Analytics setup or corrections</li><li>Accessibility foundations</li><li>Technical reliability issues</li></ul>\n<p>Most bounded issues can move directly to a FIX estimate. If the website needs a deeper technical review before the work can be responsibly scoped, a Paid Website Diagnostic may be recommended first.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "See how FIX works",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#fix",
+              "field_p5_servicesservicedetails_services_anchor_id": "fix",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "CARE — Website Care",
+              "field_p5_servicesservicedetails_services_heading": "Keep your website maintained, monitored and supported.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>CARE is ongoing support for websites that are already in good working condition.</p>\n<p>Depending on the plan, CARE can include routine maintenance, monitoring, critical form or booking-flow checks, website health review, small changes and ongoing website support.</p>\n<p>Sites built by Magneto can move into CARE after launch when appropriate. If an existing site was not built by Magneto, a Paid Website Diagnostic is required before CARE acceptance and any existing problems may need to be stabilized through FIX first.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "Compare CARE plans",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#care",
+              "field_p5_servicesservicedetails_services_anchor_id": "care",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "Focused Landing Pages",
+              "field_p5_servicesservicedetails_services_heading": "One audience. One offer. One clear next step.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>A focused landing page is a <strong>BUILD project</strong> for a specific service, campaign or offer when an entire website is not required.</p>\n<p>It can include focused page structure, UX/UI designed around one clear next step, forms or booking, analytics foundations and multilingual implementation when needed.</p>\n<p>Landing pages can support referrals, search or paid campaigns. Magneto builds the page; ad campaign management is not included.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "",
+              "field_p5_servicesservicedetails_services_cta_path": "",
+              "field_p5_servicesservicedetails_services_anchor_id": "",
+              "field_p5_servicesservicedetails_services_service_group": "supporting"
+            },
+            {
+              "field_689a5f28c2a9c": "Multilingual Websites",
+              "field_p5_servicesservicedetails_services_heading": "Serve your audience clearly in English, French and Spanish.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>Multilingual implementation can include adapting approved website copy between English, French and Spanish when included in the project scope.</p>\n<p>Magneto can structure and build multilingual experiences while keeping navigation, content hierarchy and calls to action consistent across languages.</p>\n<p>Language scope affects project complexity and is assessed as part of the applicable BUILD, FIX or CARE work.</p>\n<p>Certified or specialized translation is not included. Final translated copy is subject to client approval.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "",
+              "field_p5_servicesservicedetails_services_cta_path": "",
+              "field_p5_servicesservicedetails_services_anchor_id": "",
+              "field_p5_servicesservicedetails_services_service_group": "supporting"
+            },
+            {
+              "field_689a5f28c2a9c": "Booking, Forms & Lead Capture",
+              "field_p5_servicesservicedetails_services_heading": "Make it easier for the right visitor to take the next step.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>Depending on the business, the website can connect visitors to contact forms, booking systems, Calendly, newsletter or email capture, WhatsApp and other standard inquiry flows.</p>\n<p>The goal is not to add tools for their own sake. The right flow depends on what the visitor needs to do next.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "",
+              "field_p5_servicesservicedetails_services_cta_path": "",
+              "field_p5_servicesservicedetails_services_anchor_id": "",
+              "field_p5_servicesservicedetails_services_service_group": "supporting"
+            },
+            {
+              "field_689a5f28c2a9c": "Analytics, Search & Accessibility Foundations",
+              "field_p5_servicesservicedetails_services_heading": "Give the website the technical basics it needs to work responsibly.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>When relevant to the project, Magneto can include analytics setup, search / SEO foundations, accessibility foundations, CMS configuration and standard third-party integrations.</p>\n<p>Advanced automation, AI systems, complex e-commerce, custom application logic or unusual infrastructure require separate assessment and may become a Custom project.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "",
+              "field_p5_servicesservicedetails_services_cta_path": "",
+              "field_p5_servicesservicedetails_services_anchor_id": "",
+              "field_p5_servicesservicedetails_services_service_group": "supporting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "packages",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "EN 448",
+          "value": "Website Packages & Pricing"
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "EN 450 + 452",
+          "value": "Clear starting points for building, improving or caring for your website.\n\nEvery project starts with understanding the problem. The prices and plan details below show where your project may fit before a proposal is prepared."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "EN 454",
+          "value": "Tell me about your project"
+        },
+        {
+          "key": "field_p5_herocontent_hero_cta_path",
+          "label": "heroContent.ctaPath",
+          "src": "EN 454 (B1: /contact)",
+          "value": "/contact"
+        },
+        {
+          "key": "field_p5_pageintrotext_intro_body_html",
+          "label": "pageintrotext.introBodyHtml",
+          "src": "EN 456",
+          "value": "<p>All prices are in Canadian dollars. Applicable taxes are added when required.</p>"
+        },
+        {
+          "key": "field_689a4b0bfdf48",
+          "label": "packagesPackageFeatures.packagesElements",
+          "src": "EN 460-471, 472-483, 484-501",
+          "subfields": {
+            "field_689a4b21fdf49": "name",
+            "field_p5_packagespackagefeatures_packages_elements_heading": "heading",
+            "field_p5_packagespackagefeatures_packages_elements_description_html": "descriptionHtml",
+            "field_p5_packagespackagefeatures_packages_elements_cta_text": "ctaText",
+            "field_p5_packagespackagefeatures_packages_elements_cta_path": "ctaPath",
+            "field_p5_packagespackagefeatures_packages_elements_anchor_id": "anchorId"
+          },
+          "value": [
+            {
+              "field_689a4b21fdf49": "BUILD — New Website or Rebuild",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "For a new website, a substantial rebuild or a focused landing page.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<ul><li><strong>Focused landing page, one language:</strong> from <strong>C$3,500</strong></li><li><strong>Full website, about 5–10 pages, typically in two or three languages:</strong> <strong>C$5,000–8,000</strong></li><li><strong>Larger or more complex projects:</strong> <strong>C$10,000+</strong>, quoted individually</li></ul>\n<p>Includes strategy, design, development, launch and handoff.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Discuss a BUILD project",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "build"
+            },
+            {
+              "field_689a4b21fdf49": "FIX — Improve an Existing Website",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "For a website that needs focused improvements, not an unnecessary rebuild.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p>FIX can address pages that are confusing or slow, problems on mobile, or forms and booking that do not work properly.</p>\n<p>You receive a written list of what will be fixed and a fixed price before any work starts. The result is checked afterward.</p>\n<p><strong>Starting at C$1,000.</strong> Final price is confirmed before work begins.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Discuss a FIX project",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "fix"
+            },
+            {
+              "field_689a4b21fdf49": "CARE — Ongoing Website Care",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "For a website that already works well and needs to stay that way.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p><strong>Starting at C$200/month.</strong></p>\n<p><strong>CARE Essential:</strong> updates, monitoring, regular checks that forms and booking work, and a website health report.</p>\n<p><strong>CARE Partner:</strong> everything in Essential, plus small changes, priority response and a quarterly review.</p>\n<p>Monthly-plan pricing is confirmed after a short review of your website.</p>\n<p>Repairs to existing problems and new features are quoted separately.</p>\n<p><strong>Existing website?</strong> If the site was not built by Magneto, a Paid Website Diagnostic is required before CARE acceptance. Existing problems may need to be stabilized through FIX first.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Ask about CARE",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "care"
+            }
+          ]
+        },
+        {
+          "key": "field_p5_packagescontentsections_sections",
+          "label": "packagesContentSections.sections",
+          "src": "EN 502-511, 512-528",
+          "subfields": {
+            "field_p5_packagescontentsections_sections_heading": "heading",
+            "field_p5_packagescontentsections_sections_body_html": "bodyHtml"
+          },
+          "value": [
+            {
+              "field_p5_packagescontentsections_sections_heading": "Paid Website Diagnostic",
+              "field_p5_packagescontentsections_sections_body_html": "<p>Most projects start with a conversation and a look at what is publicly visible on your website.</p>\n<p>A Paid Website Diagnostic is used when technical unknowns make a responsible estimate impossible, or before CARE begins on a website Magneto did not build.</p>\n<p>You receive the evidence, priorities and a recommended direction for a <strong>C$450 fixed fee</strong> that you approve before it starts.</p>"
+            },
+            {
+              "field_p5_packagescontentsections_sections_heading": "Good to Know Before You Budget",
+              "field_p5_packagescontentsections_sections_body_html": "<h3>What affects the price</h3>\n<ul><li>Number of pages and amount of content</li><li>Number of languages</li><li>An online store or payments</li><li>Connecting other systems beyond standard forms and booking</li><li>Moving a large amount of content from an old website</li></ul>\n<h3>What you provide or arrange separately</h3>\n<ul><li>Website text and photos; full copywriting and photography are quoted separately</li><li>Certified or specialized translation. Multilingual copy adaptation by Magneto can be included in the project scope and is subject to client approval.</li><li>Ongoing SEO, content or advertising management</li><li>Hosting, domain and third-party tools, paid directly in your own accounts</li></ul>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "home",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "EN 23",
+          "value": "Website strategy, design and development for Montreal service businesses."
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "EN 25",
+          "value": "Build a stronger website, fix what is holding your current one back, or keep it running with reliable ongoing care."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "EN 27 (5b §5.4 override)",
+          "value": "Book a Free Strategy Call"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "about-magneto",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "EN 166",
+          "value": "About Magneto Web Consulting"
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "EN 168",
+          "value": "Website strategy, UX/UI and development with one point of contact from the first conversation through launch."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "EN 170 (5b §5.4 override)",
+          "value": "Book a Free Strategy Call"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "projects",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "EN 67 (Home §4)",
+          "value": "Selected Web Projects"
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "EN 69 (Home §4)",
+          "value": "Web experiences for wellness, professional services and digital commerce — built around the needs of each business."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "EN 27 (5b §5.4 override: main CTA label)",
+          "value": "Book a Free Strategy Call"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "contact",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "EN 573",
+          "value": "Tell me about your website project."
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "EN 575",
+          "value": "Share a few details about your website and what you want to improve. I’ll reply with the most sensible next step."
+        }
+      ]
+    }
+  ]
+}
