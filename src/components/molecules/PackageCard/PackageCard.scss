@@ -8,15 +8,8 @@
   border-radius: $border-radius-desktop;
   flex: 1;
   background-color: $gray-30;
-  
-  @include media-phone-up {
-    min-height: 600px;
-  }
-  
-  @include media-tablet-up {
-    min-height: 650px;
-    height: -webkit-fill-available;
-  }
+  // 5b (a): the fixed 600/650 px min-height left grey dead space under short cards. Equal heights and
+  // aligned prices come from the subgrid in PackagesGrid.scss (legacy cards, 2+ columns) instead.
 
   &--popular {
     border: 3px solid $primary-color;
@@ -90,7 +83,102 @@
     flex-shrink: 0;
     @include flex-center;
     width: fit-content;
+
+    // I-5 (5b): the 30 px check circle was taller than the feature text's first line (typo-sm line-height
+    // 20 / 18 / 16 px) and hung below it. Size it to that line box so it sits inside the first line.
+    .icon-component {
+      width: 20px;
+      height: 20px;
+
+      @media (max-width: $breakpoint-desktop) {
+        width: 18px;
+        height: 18px;
+      }
+
+      @media (max-width: $breakpoint-phone) {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .icon-component__placeholder {
+      width: 60%;
+      height: 60%;
+    }
   }
 
-  
+  // 5b rich card (state N), D-6: top white box (name + heading) · CTA · bottom white box (descriptionHtml).
+  // The grey is painted by the two zones, not the card, so the card can sit in a 2-track subgrid (PackagesGrid.scss):
+  // the top zones of a row share a height (CTAs aligned) while each bottom zone keeps its own height.
+  &--rich {
+    gap: 0;
+    background-color: transparent;
+  }
+
+  &__zone {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-15;
+    background-color: $gray-30;
+    padding: $spacing-15;
+
+    &--top {
+      padding-bottom: 0;
+      border-radius: $border-radius-desktop $border-radius-desktop 0 0;
+
+      .package-card__header {
+        flex: 1;
+      }
+    }
+
+    &--bottom {
+      border-radius: 0 0 $border-radius-desktop $border-radius-desktop;
+    }
+  }
+
+  &__details {
+    border-radius: $border-radius-mobile;
+
+    @include media-tablet-up {
+      border-radius: $border-radius-tablet;
+    }
+  }
+
+  &--rich[id] {
+    scroll-margin-top: 90px; // sticky header (same offset as the Services anchors)
+  }
+
+  &__body {
+    overflow-wrap: anywhere;
+
+    p {
+      margin: 0 0 $spacing-10;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin: 0 0 $spacing-10;
+      padding-left: 1.25em;
+    }
+
+    // The global `ul li` rule (typography.scss) sets lg type; list items follow the card body.
+    li {
+      font: inherit;
+      color: inherit;
+      margin-bottom: $spacing-5;
+    }
+  }
+
+  &__cta {
+    align-self: stretch;
+  }
+
+  // Beats the global .btn-primary white focus ring, which is barely visible on the light card.
+  & &__cta:focus-visible {
+    outline: 3px solid $primary-color;
+    outline-offset: 3px;
+  }
 }

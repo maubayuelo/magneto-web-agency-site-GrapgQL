@@ -5,6 +5,7 @@ import { fetchWPGraphQL } from '@/utils/wp-graphql';
 import { getPageHero, heroPageName, resolveHeroCta, PAGE_HERO_QUERY } from './api';
 import HeroLoader from './HeroLoader';
 import HeroCTA from './HeroCTA';
+import { Hero } from './index';
 
 vi.mock('@/utils/wp-graphql', () => ({
   fetchWPGraphQL: vi.fn(),
@@ -135,5 +136,22 @@ describe('Hero CTA rule (5b §5.3)', () => {
     expect(await loaderCta(hero, 'en')).toEqual({ text: 'Book a Free Strategy Call', href: link });
     expect(await loaderCta({ ...hero, ctaLinkHero: null }, 'en')).toBeUndefined();
     expect(await loaderCta({ ...hero, ctaTextHero: '' }, 'en')).toBeUndefined();
+  });
+});
+
+// 5b §5.2 / AC-6: the Packages subtitle (two paragraphs, blank line between) renders as two <p>; other variants keep one.
+describe('Hero subtitle paragraphs', () => {
+  const subtitles = (variant: 'packages' | 'services', subtitle: string) => {
+    const html = renderToStaticMarkup(React.createElement(Hero, { variant, title: 'T', subtitle }));
+    return [...new DOMParser().parseFromString(html, 'text/html').querySelectorAll('p.hero-subtitle')].map((p) => p.textContent);
+  };
+  it('splits the Packages subtitle on a blank line', () => {
+    expect(subtitles('packages', 'First paragraph.\n\nSecond paragraph.')).toEqual(['First paragraph.', 'Second paragraph.']);
+    expect(subtitles('packages', 'First.\r\n  \r\nSecond.')).toEqual(['First.', 'Second.']);
+  });
+  it('keeps a single paragraph otherwise', () => {
+    expect(subtitles('packages', 'One line\nwrapped')).toEqual(['One line\nwrapped']);
+    expect(subtitles('services', 'First.\n\nSecond.')).toEqual(['First.\n\nSecond.']);
+    expect(subtitles('packages', '')).toEqual(['']);
   });
 });

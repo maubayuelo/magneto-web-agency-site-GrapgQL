@@ -46,6 +46,10 @@ export function Hero({
   const defaultHeroImage = { src: '/assets/images/hero-main-visual.png', alt: 'Mauricio - Web Designer & Developer', width: 500, height: 500 };
 
   const finalImage = image || (finalShowImage ? defaultHeroImage : null);
+  // Packages (5b): subtitleHero holds two paragraphs separated by a blank line; other variants keep one <p>.
+  const subtitleParagraphs = variant === 'packages'
+    ? subtitle.split(/\r?\n[ \t]*\r?\n/).map((p) => p.trim()).filter(Boolean)
+    : [];
   const heroClasses = `hero hero-${variant} ${className}`.trim();
 
   return (
@@ -78,7 +82,13 @@ export function Hero({
         )}
         <div className="hero-content">
           <h1 className={`${finalTitleSize} m-0 hero-title`}>{title}</h1>
-          <p className={`${finalSubtitleSize} m-0 hero-subtitle`}>{subtitle}</p>
+          {subtitleParagraphs.length > 1 ? (
+            subtitleParagraphs.map((paragraph, index) => (
+              <p key={index} className={`${finalSubtitleSize} m-0 hero-subtitle`}>{paragraph}</p>
+            ))
+          ) : (
+            <p className={`${finalSubtitleSize} m-0 hero-subtitle`}>{subtitle}</p>
+          )}
           {children}
 
           {cta && (

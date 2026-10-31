@@ -33,20 +33,8 @@ export interface PackageContent {
   ctaMode: 'link' | 'legacy' | 'none';
   icon: string;
 }
-export interface LegacyPackage {
-  title: string;
-  price: string;
-  currency: string;
-  description: string;
-  icon: string;
-  isPopular: boolean;
-  features: { text: string }[];
-  variant: 'popular' | 'default';
-}
 export interface PackagesPageData {
   introText: string;
-  /** Part 1 adapter: preserves the current Packages presentation until checkpoint approval. */
-  packages: LegacyPackage[];
   content: {
     introBody: ContentBody | null;
     packages: PackageContent[];

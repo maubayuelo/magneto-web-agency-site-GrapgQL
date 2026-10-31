@@ -2,9 +2,10 @@ import { describe, it, expect, vi } from 'vitest';
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { mapPackagesPage, getPackagesPageData, PACKAGES_QUERY } from './api';
+import { mapPackagesPage, getPackagesPageData, legacyIntroHtml, PACKAGES_QUERY } from './api';
 import PackagesPage from './page';
-import PackagesGrid from '@/components/organisms/PackagesGrid';
+import { HeroLoader } from '@/components/organisms/Hero';
+import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
 import { I18nProvider } from '@/i18n/I18nProvider';
 import { getDictionary } from '@/i18n/dictionary';
 import C from '../../../../scripts/phase-5c/fixtures/state-c.json';
@@ -51,17 +52,32 @@ function localizedC<T>(value: T, locale: string): T {
   };
   return walk(structuredClone(value)) as T;
 }
-const text = (html: string) => new DOMParser().parseFromString(html, 'text/html').body.textContent ?? '';
 const enPieces = (): string[] => EN.posts.flatMap((p) => p.fields.flatMap((f) => {
   const values = Array.isArray(f.value) ? f.value.flatMap((row) => Object.values(row as Record<string, string>)) : [f.value as string];
   return values.flatMap((v) => /<[a-z]/i.test(v) ? [...new DOMParser().parseFromString(v, 'text/html').body.querySelectorAll('p,li,h3')].map((el) => el.textContent ?? '') : [v]);
 })).filter((v) => v.length >= 12 && !v.startsWith('/'));
 
-describe('Packages C/N/M contracts; presentation deferred',()=>{
-  it('C preserves the old consumer shape and legacy CTA mode',()=>{
+// Renders the page's synchronous parts: async server loaders (Hero, final CTA) are tested on their own.
+type El = React.ReactElement<{ children?: React.ReactNode }>;
+function strip(node: React.ReactNode): React.ReactNode {
+  if (Array.isArray(node)) return node.map(strip);
+  if (!React.isValidElement(node)) return node;
+  const el = node as El;
+  if (el.type === HeroLoader || el.type === FinalCTASectionLoader) return null;
+  return el.props.children === undefined ? el : React.cloneElement(el, undefined, strip(el.props.children));
+}
+async function renderPage(locale: 'en' | 'fr' | 'es', node: unknown) {
+  vi.mocked(fetchWPGraphQL).mockReset().mockResolvedValueOnce({ pages: { nodes: [node] } });
+  const page = (await PackagesPage({ params: Promise.resolve({ locale }) })) as El;
+  const html = renderToStaticMarkup(React.createElement(I18nProvider, { locale, dictionary: getDictionary(locale) }, strip(page)));
+  return new DOMParser().parseFromString(html, 'text/html').body;
+}
+
+describe('Packages C/N/M contracts',()=>{
+  it('C preserves the legacy card content and CTA mode',()=>{
     const data=mapPackagesPage(C.packages);
-    expect(data.packages.map(p=>p.title)).toEqual(['Funnel Launch','Funnel + Website','Growth Stack']);
-    expect(data.packages[0]).toMatchObject({price:'From $950',currency:'CAD',description:C.packages.packagesPackageFeatures.packagesElements[0].description});
+    expect(data.content.packages.map(p=>p.title)).toEqual(['Funnel Launch','Funnel + Website','Growth Stack']);
+    expect(data.content.packages[0]).toMatchObject({price:'From $950',currency:'CAD',body:{kind:'text',text:C.packages.packagesPackageFeatures.packagesElements[0].description}});
     expect(data.content.packages.every(p=>p.ctaMode==='legacy')).toBe(true);
     expect(data.content.sections).toEqual([]);
   });
@@ -75,8 +91,6 @@ describe('Packages C/N/M contracts; presentation deferred',()=>{
     expect(JSON.stringify(data.content)).toContain('C$3,500');
     expect(JSON.stringify(data.content)).toContain('C$450');
     expect(data.content.sections.map(s=>s.heading)).toEqual(['Paid Website Diagnostic','Good to Know Before You Budget']);
-    // Current page still receives the legacy adapter; no Packages UI switch in Part 1.
-    expect(data.packages[0].price).toBe('WRONG');
   });
   it('M empty HTML falls back and empty section rows are omitted',()=>{
     const data=mapPackagesPage({packagesPackageFeatures:{packagesElements:[null,{name:'Old',description:'Legacy',descriptionHtml:'<p>&nbsp;</p>',features:[null,{feature:'Keep'}]}]},packagesContentSections:{sections:[null,{heading:' ',bodyHtml:'<p><br></p>'},{heading:'Only heading'}]}});
@@ -94,7 +108,7 @@ describe('Packages C/N/M contracts; presentation deferred',()=>{
     expect(data.content.packages.map(p=>p.anchorId)).toEqual(['fix',null]);
     expect(data.content.packages[0].ctaMode).toBe('none');
     expect(data.content.sections[0].body).toEqual({kind:'html',html:'<p>Safe</p>'});
-    expect(mapPackagesPage({}).packages).toEqual([]);
+    expect(mapPackagesPage({}).content.packages).toEqual([]);
   });
   it('reads verified fields and returns null for a missing locale, without a Hero path query',async()=>{
     vi.mocked(fetchWPGraphQL).mockResolvedValue({pages:{nodes:[]}});
@@ -119,10 +133,8 @@ describe('Packages C/N/M contracts; presentation deferred',()=>{
       expect(html).not.toMatch(/script|onerror|alert/i);
     }
   });
-  it.each(['fr','es'] as const)('FR/ES state-C-shaped response renders the grid without throwing and without en.json strings: %s',locale=>{
-    const data=mapPackagesPage(localizedC(C.packages,locale));
-    const html=renderToStaticMarkup(React.createElement(I18nProvider,{locale,dictionary:getDictionary(locale)},React.createElement(PackagesGrid,{packages:data.packages})));
-    const out=text(html);
+  it.each(['fr','es'] as const)('FR/ES state-C-shaped response renders the page without throwing and without en.json strings: %s',async locale=>{
+    const out=(await renderPage(locale,localizedC(C.packages,locale))).textContent ?? '';
     expect(out).toContain(`[${locale}] Funnel Launch`);
     const pieces=enPieces();
     expect(pieces.length).toBeGreaterThan(50);
@@ -139,5 +151,81 @@ describe('Packages C/N/M contracts; presentation deferred',()=>{
     const hero=page.props.children[0];
     expect(hero.props.pageUri).toBe('packages');
     expect(hero.props.requireInternalCta).toBe(expected);
+  });
+});
+
+describe('Packages presentation (5b Part 2)', () => {
+  it('state C: three legacy cards with price, description, features and the new default CTA label; no badge', async () => {
+    const body = await renderPage('en', C.packages);
+    const cards = [...body.querySelectorAll('.package-card')];
+    expect(cards).toHaveLength(3);
+    expect(cards.map((c) => c.querySelector('h3')?.textContent)).toEqual(['Funnel Launch', 'Funnel + Website', 'Growth Stack']);
+    expect(cards[0].textContent).toContain('From $950');
+    expect(cards[0].querySelectorAll('.package-card__feature-item').length).toBeGreaterThan(0);
+    cards.forEach((card) => expect(card.querySelector('button')?.textContent).toBe('Book a Free Strategy Call'));
+    expect(body.querySelector('.badge')).toBeNull();
+    expect(body.querySelector('.packages-sections')).toBeNull();
+    expect(body.querySelector('h3.typo-3xl-bold')?.textContent).toBe(C.packages.pageintrotext.pageIntroText);
+  });
+
+  it.each([['en', '/contact'], ['fr', '/fr/contact'], ['es', '/es/contact']] as const)(
+    'state N (%s): rich cards, localized Contact CTAs, anchors, intro body and sections after the cards', async (locale, href) => {
+      const body = await renderPage(locale, N.packages);
+      const cards = [...body.querySelectorAll('article.package-card--rich')];
+      expect(cards.map((c) => c.id)).toEqual(['build', 'fix', 'care']);
+      expect(cards.map((c) => c.querySelector('a.btn')?.textContent)).toEqual(['Discuss a BUILD project', 'Discuss a FIX project', 'Ask about CARE']);
+      cards.forEach((c) => expect(c.querySelector('a.btn')?.getAttribute('href')).toBe(href));
+      expect(cards[0].querySelector('.package-card__heading')?.textContent).toMatch(/^For a new website/);
+      expect(cards[0].textContent).toContain('C$3,500');
+      const out = body.textContent ?? '';
+      // No legacy price/description/features/"What's included", no badge, no legacy intro.
+      expect(out).not.toMatch(/From \$950|What's included|1 landing page \+ 1 thank-you page|Popular|done-for-you packages/);
+      expect(body.querySelector('.package-card__features, .package-card__pricing, .badge, button')).toBeNull();
+      expect(body.querySelector('.packages-intro')?.textContent).toContain('All prices are in Canadian dollars');
+      const sections = [...body.querySelectorAll('.packages-sections h2')].map((h) => h.textContent);
+      expect(sections).toEqual(['Paid Website Diagnostic', 'Good to Know Before You Budget']);
+      expect(body.querySelector('.packages-sections')?.textContent).toContain('C$450 fixed fee');
+      // Order: cards, then Diagnostic, then budget guidance.
+      const grid = body.querySelector('.packages-grid')!;
+      expect(grid.compareDocumentPosition(body.querySelector('.packages-sections')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+  it('a rich card without a valid CTA renders no CTA at all (no modal fallback)', async () => {
+    const node = structuredClone(N.packages);
+    node.packagesPackageFeatures.packagesElements[1].ctaPath = 'https://calendly.com/x';
+    const cards = [...(await renderPage('en', node)).querySelectorAll('article.package-card')];
+    expect(cards[1].querySelector('a, button')).toBeNull();
+    expect(cards[0].querySelector('a.btn')).not.toBeNull();
+  });
+
+  it('empty repeaters → no grid, no sections wrapper', async () => {
+    const body = await renderPage('en', { pageintrotext: { pageIntroText: '', introBodyHtml: '<p>Tax note</p>' }, packagesPackageFeatures: { packagesElements: [] }, packagesContentSections: { sections: [] } });
+    expect(body.querySelector('.packages-grid')).toBeNull();
+    expect(body.querySelector('.packages-sections')).toBeNull();
+    expect(body.querySelector('.packages-intro')?.textContent).toBe('Tax note');
+  });
+
+  it.each(['en', 'fr', 'es'] as const)('CMS error (%s) → dictionary-backed error state, not a 404 or a throw', async (locale) => {
+    vi.mocked(fetchWPGraphQL).mockReset().mockRejectedValueOnce(new Error('CMS unavailable'));
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const page = (await PackagesPage({ params: Promise.resolve({ locale }) })) as El;
+    const html = renderToStaticMarkup(React.createElement(I18nProvider, { locale, dictionary: getDictionary(locale) }, strip(page)));
+    const status = new DOMParser().parseFromString(html, 'text/html').querySelector('[role="status"]');
+    expect(status?.querySelector('h2')?.textContent).toBe(getDictionary(locale).packages.errorTitle);
+    expect(status?.textContent).toContain(getDictionary(locale).packages.errorBody);
+    expect(html).not.toContain('package-card');
+    // The Hero and the final CTA still render around the error state.
+    expect((page.props.children as El[])[0].type).toBe(HeroLoader);
+    spy.mockRestore();
+  });
+
+  it('D-S: the legacy intro is sanitized after the newline transform', () => {
+    const out = legacyIntroHtml('Line one<img src="x" onerror="alert(1)">\nLine two<script>alert(2)</script>');
+    expect(out).not.toMatch(/onerror|script|alert/);
+    expect(out).toContain('Line one');
+    // A plain two-line intro gives the same DOM as the unsanitized `<br />` string rendered before 5b.
+    const before = new DOMParser().parseFromString('Whether you are starting<br />or scaling up.', 'text/html').body.innerHTML;
+    const after = new DOMParser().parseFromString(legacyIntroHtml('Whether you are starting\nor scaling up.'), 'text/html').body.innerHTML;
+    expect(after).toBe(before);
   });
 });
