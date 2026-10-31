@@ -8,6 +8,7 @@ import { getDictionary } from '@/i18n/dictionary';
 import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
 import { getServicesPageData } from './api';
 import type { ServicesPageData } from './types';
+import { pageMetadata } from '@/utils/page-metadata';
 
 type ServicesPageProps = { params: Promise<{ locale: string }> };
 
@@ -41,32 +42,8 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
   </>;
 }
 
-// If you have a CMS API helper for services, call it here. Otherwise this
-// generateMetadata will fetch a presumed endpoint at /api/pages/services.
+// Approved SEO copy from the dictionary (5b §6); the former WP_API REST override is removed.
 export async function generateMetadata({ params }: ServicesPageProps) {
   const { locale: rawLocale } = await params;
-  const t = getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
-  try {
-    // Avoid attempting a relative fetch when WP_API is not configured in production
-    const wpApiBase = process.env.WP_API;
-    if (!wpApiBase) {
-      throw new Error('WP_API not configured');
-    }
-
-    const res = await fetch(`${wpApiBase.replace(/\/+$/, '')}/pages/services`, { cache: 'no-store' });
-    if (!res.ok) throw new Error('failed to fetch');
-    const json = await res.json();
-    const title = json.title ?? t.meta.services.title;
-    const desc = json.meta_description ?? t.meta.services.description;
-    return {
-      title,
-      description: desc,
-      openGraph: { title, description: desc },
-      twitter: { title, description: desc },
-    };
-  } catch (err) {
-    const title = t.meta.services.title;
-    const desc = t.meta.services.description;
-    return { title, description: desc, openGraph: { title, description: desc }, twitter: { title, description: desc } };
-  }
+  return pageMetadata(getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE).meta.services);
 }

@@ -5,6 +5,7 @@ import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionary';
 import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
 import { getProjects, getProjectsPageData } from './api';
+import { pageMetadata } from '@/utils/page-metadata';
 
 export default async function PortfolioPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: rawLocale } = await params;
@@ -25,8 +26,5 @@ export default async function PortfolioPage({ params }: { params: Promise<{ loca
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: rawLocale } = await params;
-  const t = getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
-  const title = t.meta.projects.title;
-  const desc = t.meta.projects.description;
-  return { title, description: desc, openGraph: { title, description: desc }, twitter: { title, description: desc } };
+  return pageMetadata(getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE).meta.projects);
 }

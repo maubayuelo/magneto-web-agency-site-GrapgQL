@@ -19,6 +19,7 @@ import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionary';
 import { getPageExists } from '@/utils/wp-page';
 import { getProjects } from './projects/api';
+import { pageMetadata } from '@/utils/page-metadata';
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: rawLocale } = await params;
@@ -82,13 +83,5 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: rawLocale } = await params;
-  const t = getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE);
-  // This function can run server-side to provide page-specific metadata.
-  // For the homepage we return a short title and description. If you need
-  // dynamic metadata based on CMS content, you can fetch it here similarly
-  // to the approach used in `layout.tsx`.
-  return {
-    title: t.meta.home.title,
-    description: t.meta.home.description,
-  };
+  return pageMetadata(getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE).meta.home);
 }

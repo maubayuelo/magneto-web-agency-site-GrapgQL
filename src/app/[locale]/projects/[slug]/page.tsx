@@ -3,10 +3,11 @@ import { ProjectDetail } from '@/components/organisms';
 import { notFound } from 'next/navigation';
 import type { ProjectData } from '@/data/projects';
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
-import { format, getDictionary } from '@/i18n/dictionary';
+import { getDictionary } from '@/i18n/dictionary';
 import { getProjects } from '../api';
 import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
 import { getProjectBySlug } from './api';
+import { caseStudyMeta, pageMetadata } from '@/utils/page-metadata';
 
 interface PageProps {
   params: Promise<{
@@ -27,11 +28,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  return {
-    title: format(t.meta.project.title, { title: project.title }),
-    // Not queried (always undefined, as before). Project meta descriptions are Phase 7 (SEO).
-    description: undefined,
-  };
+  // The locale's project is resolved first (missing translation → 404 above); then the case copy by slug (5b §6).
+  return pageMetadata(caseStudyMeta(t, slug, project.title));
 }
 
 export default async function ProjectPage({ params }: PageProps) {
