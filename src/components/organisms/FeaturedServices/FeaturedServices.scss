@@ -47,6 +47,12 @@
         @include media-breakpoint-up(sm) {
             grid-template-columns: repeat(2, 1fr);
             gap: $spacing-15;
+
+            // Option D (5b §5.7, tablet T1 provisional): BUILD (first in CMS order, every language) spans row 1,
+            // FIX + CARE share row 2.
+            > :first-child {
+                grid-column: 1 / -1;
+            }
         }
 
         @include media-breakpoint-up(lg) {
