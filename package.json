@@ -6,6 +6,8 @@
     "dev": "next dev",
   "build": "next build",
     "start": "next start",
+    "agent:build": "node scripts/agent-gate.mjs build",
+    "agent:start": "node scripts/agent-gate.mjs start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest"
