@@ -2,7 +2,8 @@
 
 - Spec: `docs/specs/phase-5b-services-packages-seo.md` (Approved, rev 9) + `docs/specs/phase-5c-loader.md` rev 2 with the
   5b §5.4 override.
-- Author: Dev (Claude) · Date: 2026-10-31 · Branch: `feat/phase-5b` @ `f9b9367` (nothing staged, nothing committed).
+- Part 1 author: Dev (Claude) · Date: 2026-10-31 · Entry branch: `feat/phase-5b` @ `f9b9367`.
+  Part 1 subsequently committed through `4c3a2c5`; its historical change/commit lists below describe checkpoint-time state.
 
 ---
 
@@ -25,8 +26,9 @@ in WP admin — local now, production before launch. See the pre-launch checklis
 **Part 1 done — stopped at the combined checkpoint for review.** Steps 1–6 are complete. Loader run matched the expected
 totals; GraphQL read-back 98/98 ok (run twice, before and after the CMS outage); the three builds were re-run cleanly;
 state C and state N Services captured at 375/768/1440. A WIP layout bug found by the first N attempt (core and
-supporting groups side by side) is fixed in `Services.scss` and verified. Visual approval (Mauricio) pending. No claim
-of launch readiness; Packages presentation, metadata, footer, CTA label and the other Part 2 items are not started.
+supporting groups side by side) is fixed in `Services.scss` and verified. Mauricio's technical and visual approval is
+recorded above. No claim of launch readiness; Packages presentation, metadata, footer, CTA label and the other Part 2
+items were not started at this checkpoint (current recovery status below).
 
 ### Changes (unstaged)
 | Path | What and why |
@@ -176,7 +178,7 @@ icons, package icons) → HTTP 200.
 | build `ENABLED_LOCALES=en` | passed (14 pages) | clean re-run |
 | build `en,fr,es`, no override | **failed as expected** (guard) | "fr … 94 untranslated keys", "es … 93 untranslated keys" |
 | build `en,fr,es` + `ALLOW_UNTRANSLATED_LOCALES=1` | passed (28 pages) | clean re-run |
-| visual | C: 6 captures; N Services: 3 captures + DOM checks — passed; Mauricio's approval pending | EN only (Part 1 scope) |
+| visual | C: 6 captures; N Services: 3 captures + DOM checks — passed; Mauricio approved at the checkpoint above | EN only (Part 1 scope) |
 
 **AC-12 baseline (before any 5b dictionary change; Part 1 changes no dictionary):** the guard counts **94 FR / 93 ES
 keys**; `grep -c '[FR TODO]' fr.ts` / `'[ES TODO]' es.ts` gives **95 / 94 lines** (the spec's E14 numbers). One matching
@@ -270,8 +272,8 @@ line per file is not a key. AC-12 will report both counts: keys 94/93 → expect
 - Dev-server guard → Part 2 item (above).
 - Read boundary: repo + `~/Documents/projects/magneto/backups/` only.
 
-### Open for the checkpoint review
-1. Visual approval of state C and state N Services (screenshots above); the legacy images on the rich rows.
+### Checkpoint review disposition
+1. State C and state N Services approved as recorded above; legacy row media remains a pre-launch follow-up.
 2. Part 2 entry: Packages presentation (rich mode, sections, Hero paragraphs, I-5/I-6/D-S, error state), main CTA label,
    footer, Projects grid, Featured Services option D (T1), metadata EN/FR/ES, FR/ES-enabled build, dev-server guard.
 
@@ -288,3 +290,420 @@ commit would leave the earlier commits with failing tests). Per-commit gate not 
 
 ### Time
 Agent ≈ 4 h active (estimated). Mauricio: loader run ≈ 15–20 min + incident handling (unknown).
+
+## Part 2 — recovery gate (Codex, 2026-10-31)
+
+**Recovery gate complete; Part 2 implementation NOT approved. Stop for Senior Architect review before full Part 2 QA.**
+
+### Ownership and preservation
+- Mauricio confirmed closure of both Claude sessions. Independent process inspection before writes found neither PID
+  1091 nor 9505, no other Claude editing process and no Next process. Claude's browser native host remained; it is not
+  a checkout editing session. Ports 3000/3100 had no listeners. Exclusive ownership is confirmed for this work window,
+  not guaranteed for future sessions.
+- Entry: `feat/phase-5b` @ `4c3a2c57e24ccbc775ba975527ffdac7e423b898`, empty index, 28 modified tracked files
+  (+555/−281) and 9 untracked files. SHA-256 baseline of 332 tracked/untracked files captured in session memory;
+  unchanged from the preceding read-only recovery. Environment files were excluded and were not read or edited.
+- Incremental changes only: `package.json`, `scripts/agent-gate.mjs`, `scripts/agent-gate.node-test.mjs`,
+  `src/i18n/dictionary.test.ts`, and this report. Existing Packages implementation, copy, schema and other Part 2
+  edits preserved. No staging, commits, CMS reads/writes or production operations.
+
+### Fail-fast agent gate
+- Use **`npm run agent:build`** and **`npm run agent:start`** for future agent build/start work. Start is fixed to 3100.
+  `node scripts/agent-gate.mjs check` performs the preflight alone. Normal npm build/start and deployment commands
+  remain unchanged; agents must use the guarded commands. No dependencies, environment variables or `distDir` changes.
+- Before launching Next, refuse any listener on 3000/3100 or a Next process with this checkout's real working directory
+  (includes dev on another port, a build and `next-server`). Process arguments are inspected internally, never printed.
+  Missing tools, denied inspection or unresolved process ownership fail closed. No process is stopped by the guard.
+- Limitation: this is a preflight, not a global lock against a human/other agent starting an unguarded command later.
+  Exclusive ownership remains required throughout the build/server window. On a sandbox inspection failure, stop;
+  do not bypass the guard. The separate `distDir` proposal remains out of scope.
+
+### Actual verification results
+| Check | Result |
+|---|---|
+| `node --test scripts/agent-gate.node-test.mjs` | PASS — 9 tests: idle; both ports; same-checkout dev/build/server; other checkout; inspection failures; launch order, fixed port, child exit propagation and invalid mode |
+| `node scripts/agent-gate.mjs check` (process inspection permitted) | PASS — exit 0 on actual idle machine |
+| Owned TCP listener on 127.0.0.1:3100, then guard `build` and `start` | PASS — both exit 1 with port-3100 STOP; no child output; no Next launched. Listener closed by its owner in `finally` |
+| Focused Vitest: `src/i18n/dictionary.test.ts` and `src/app/[locale]/packages/api.test.ts` | PASS — 2 files, 53 tests (20 dictionary + 33 Packages) |
+| `node --check` on both guard files; `git diff --check` | PASS |
+| Full lint/typecheck/test suite/builds/browser matrix | NOT RUN — deferred to separately approved full Part 2 verification |
+
+Guard tests use Node's built-in test runner; `.node-test.mjs` deliberately avoids Vitest's test glob. No application
+server or build started. Focused tests emitted Vite/Sass deprecations, React key warnings from the existing Packages
+render harness and the expected malformed-CTA diagnostic; no failures. These warnings are recorded, not fixed here.
+
+### AC-12 reconciliation (translation guard unchanged)
+| Measure | FR | ES |
+|---|---:|---:|
+| Part 1 TODO keys | 94 | 93 |
+| Existing metadata keys filled by Part 2 | −13 | −13 |
+| New `packages.errorTitle` / `packages.errorBody` TODO keys | +2 | +2 |
+| Current TODO keys | **83** | **82** |
+| Current matching text lines (includes one comment) | 84 | 83 |
+
+The earlier 81/80-key (82/81-line) projection excluded the subsequently approved Packages error state. The six new
+case-study metadata keys per locale are already translated and add no TODOs. The new regression test pins 83/82,
+asserts both error keys remain TODO, and proves **each error key alone blocks its enabled locale** even if all other
+keys are translated. No production override or exemption added. This documents the authorized reconciliation;
+rev 9 itself was not edited and complete AC-12 acceptance still awaits Part 2 verification.
+
+### Packages error handling and editorial approval
+- Existing tests pass for CMS rejection in EN/FR/ES: dictionary-backed `role="status"`, heading/body, no package cards,
+  no thrown page error. Missing FR/ES translation still throws `notFound()` (404). No Packages code changes needed.
+- Verification limit: these tests render the page's synchronous content and strip async Hero/final-CTA loaders.
+  Read inspection confirms both loaders catch their fetch failures; this is not an HTTP outage/browser verification.
+- Mauricio's editorial approval remains required for EN `packages.errorTitle`: **“Packages”** and
+  `packages.errorBody`: **“Sorry, we couldn't load the packages right now. Please try again later.”** Existing wording
+  preserved, not marked approved. FR/ES error translations remain Q-D1 TODOs and block launch when those locales are enabled.
+- Stale Part 1 visual-approval wording corrected using its already documented technical/visual checkpoint approval;
+  this does not approve Part 2 or T1.
+
+### Remaining work / stop
+After Senior Architect review: full Part 2 gates with baseline lint comparison; C/N/M regressions; EN/FR/ES metadata
+and rendered heads; cross-page anchor journeys with keyboard; complete responsive/footer/grid checks; simulated
+FR/ES CTA fit; existing FR/ES route captures; T1 and final visual approval; reconcile existing screenshots and populate
+the final AC table. D-L Privacy prerequisites, remaining translations and launch QA remain open. No new regression
+was detected by the focused checks; full Part 2 correctness is not asserted.
+
+## Part 2 — final (Dev, Claude, 2026-10-31)
+
+Supersedes the recovery-gate status above. Author: Dev (Claude, fresh session) · Branch `feat/phase-5b` @ `4c3a2c5` + the
+uncommitted Codex Part 2 work + the changes below. Nothing staged, nothing committed.
+
+### Result
+**Part 2 done — stopped for the final review.** Every Part 2 item is implemented; the full gate was run once at the end
+(all green except lint, which has no new finding vs `4c3a2c5`); AC-19/21/22/23/24/26 and the §9 QA have browser
+evidence. Human decisions closed 2026-10-31: T1 approved, Packages D-6 cards confirmed, EN error strings approved.
+No claim of launch readiness.
+
+### Entry
+- Codex WIP verified against its backup `~/Documents/projects/magneto/backups/phase-5b-part2-codex-wip-20261031/`
+  (`tracked.patch` `702f97e3…755a2`, `untracked.tgz` `be6431d2…57dc59`): reverse dry-run of the patch on the working
+  tree = clean; the 11 untracked files byte-identical. Read-only review delivered first (Part 2 done/missing list).
+- **Codex's reported results (446 tests, builds, lint 108/99, responsive evidence) were not in the repo** and were
+  treated as unverified; every result below was re-run in this session. Codex's screenshots
+  (`screenshots/{N-en-packages-*,P2-*}.png`) are not used as evidence.
+- `.env.local` (names/hosts only): `NEXT_PUBLIC_WORDPRESS_API_URL` host `magneto-cms-2.local`; `DISABLE_SMTP=1`;
+  `ENABLED_LOCALES=en,fr,es`; no `MAILCHIMP_*`, `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_GTM_ID`, `ALLOW_UNTRANSLATED_LOCALES`
+  lines. No form submitted.
+- Port guard at entry **stopped**: `next-server` PID 24062 (parent `node scripts/agent-gate.mjs start` PID 24018, started
+  16:11:40, this checkout) on 3100 — a Codex leftover. Not touched; Mauricio stopped both PIDs; guard re-run → exit 0.
+
+### Senior Architect decisions applied (2026-10-31)
+| # | Decision | Applied |
+|---|---|---|
+| 1 | EN error wording accepted in principle; Mauricio approves the exact strings (Notion system copy); FR/ES TODO | Strings below |
+| 2 | AC-12 = 83 FR / 82 ES TODO keys | Spec AC-12 row updated (the only spec edit, authorized by this decision); reconciliation below |
+| 3 | No Header component test; the dictionary test (header ≠ main CTA per locale) covers §7 | Approved deviation |
+| 4 | `scripts/agent-gate.mjs`, `scripts/agent-gate.node-test.mjs`, the two `package.json` scripts | Approved deviations; `node --test` added to the gate |
+| 5 | Restore `min-height: 44px` on `.service-cta` | Done; `Services.scss` is again identical to `4c3a2c5` (drops out of the diff) |
+| 6 | About metadata from the dictionary only | Accepted (§6) |
+| 7 | Footer email: restore patch instead of hunk staging | Patch created + checked (D-L entry) |
+
+**Packages error state — EN strings APPROVED by Mauricio (2026-10-31) as written** (`src/i18n/dictionaries/en.ts`):
+- `packages.errorTitle`: `Packages`
+- `packages.errorBody`: `Sorry, we couldn't load the packages right now. Please try again later.`
+- [ ] Follow-up (Mauricio): add both strings to Notion EN as system copy **before the FR/ES dictionary fill (Q-D1)**.
+FR/ES: `[FR TODO] …` / `[ES TODO] …` (Q-D1); each key alone blocks a locale's build (`dictionary.test.ts`).
+
+### Changes in this session
+| Path | What and why |
+|---|---|
+| `src/app/[locale]/services/Services.scss` | Decision 5: `.service-cta { …; min-height: 44px; }` restored (file = `4c3a2c5`) |
+| `src/components/molecules/PackageCard/index.tsx` | D-6: rich card (state N) markup in three stacked zones — top white box (name + icon + heading), CTA, bottom white box `package-card__details` (`descriptionHtml`). Two grey zones (`package-card__zone--top` / `--bottom`) instead of a grey card. No prop/API change; legacy branch untouched. |
+| `src/components/molecules/PackageCard/PackageCard.scss` | (a) Removed the fixed `min-height: 600/650px` + `height: -webkit-fill-available` (grey dead space). D-6: rich card transparent, zones grey (rounded top/bottom), details box radius as the legacy features box. |
+| `src/components/organisms/PackagesGrid/PackagesGrid.scss` | (a) At ≥ 601 px, `grid-template-rows: subgrid`: legacy cards (state C) span 5 shared tracks (title, price, description, CTA, "What's included"; header subgrid of 3) → prices/CTAs aligned across a row even when a title wraps, features box fills the row. **D-6 rich cards:** 2 shared tracks — top zone (tallest in the row → CTAs aligned), bottom zone `align-self: start` at tablet (own height) and `stretch` at desktop ≥ 1024 (equal-height grey cards, description box keeps its height). |
+| `docs/specs/phase-5b-services-packages-seo.md` | AC-12 row only (decision 2) |
+| `docs/reports/phase-5b-services-packages-seo.md` | This section |
+| `~/Documents/projects/magneto/backups/phase-5b/footer-email-restore.patch` | Decision 7 (outside the repo) |
+
+Codex Part 2 code kept as reviewed: Packages presentation (rich cards, `PackagesContentSections`, state N intro, Hero
+two-paragraph split in `Hero/index.tsx`, dictionary-backed error state, D-S `legacyIntroHtml`), I-5 icon sizing, I-6
+grids, option D, main CTA label EN/FR/ES, footer (§5.5), metadata helper `src/utils/page-metadata.ts` + case slug map,
+REST override removed, tests (`page-metadata.test.ts`, `Footer.test.tsx`, `FinalCTASection.test.tsx`,
+`PackagesContentSections.test.tsx`, Packages/Hero/dictionary/ProjectsGrid test updates), agent gate. `HeroCTA.tsx`,
+`Header/*`, `ContactForm*`, `pages/api/*`, `docs/content/*`, `.env.local*` untouched; `contact/page.tsx` changed in
+`generateMetadata` only.
+
+### Packages card fix (a) — before / after (EN, 375/768/1440)
+Screenshots: `~/Documents/projects/magneto/backups/phase-5b/screenshots/` — before C = Part 1 `C-en-packages-*.png`;
+before N = `part2-final/before-N-en-packages-*.png`; after N = `part2-final/after-N-en-packages-*.png` and
+`P2F-en-packages-*.png`; after C (simulated) = `part2-final/after-Csim-en-packages-*.png`, `P2F-Csim-en-packages-*.png`.
+
+| State · width | Before | After |
+|---|---|---|
+| N · 1440 | header panels BUILD/FIX 213 px empty below content; CTAs bottom-aligned | **Option A** (`optA-N-en-packages-1440.png`): panels end together at 1068, CTAs 1083–1133 directly below (15 px gap) in all 3 cards, card ends 15 px after the CTA. BUILD/FIX keep white space inside the panel (shorter copy). |
+| N · 768 | FIX panel 35 px empty | **Option A** (`optA-N-en-packages-768.png`): row-1 panels end at 749, CTAs 764–812; lone CARE card same rule |
+| N · 375 | 15 px (single column) | unchanged |
+| C · 768 (Part 1 capture) | "Funnel + / Website" wraps → its price, description, CTA and features sit ~24 px lower than the neighbours; grey area under short cards (min-height 650) | simulated: title 417 / price 458 / description 518 / CTA 608 / features 671–998 identical in both row-1 cards; grey below features = 15 px |
+| C · 1440 | grey area under "Funnel + Website" | simulated: all three cards title 487 / price 529 / description 595 / CTA 697 / features 762–1145 |
+
+Notes for the visual review:
+- **N layout — D-6 (Mauricio, 2026-10-31, final):** the previous three-zone card structure, restored for rich cards:
+  (1) top white box = package name + heading, (2) CTA below it, (3) bottom white box = `descriptionHtml` (extended
+  description, incl. the prices for now). In each row the top boxes share one height so the CTAs line up (as the legacy
+  cards in state C); the bottom boxes take their own content height. **Adjustment (Mauricio, 2026-10-31): desktop
+  (3 columns, ≥ 1024 px)** — the grey cards stretch to the full row height (equal-height grey cards), the bottom white box
+  keeps its content height and the grey continues below it; **tablet (2 columns)** — each grey card ends after its own
+  bottom box; **375** — stacked. Existing fields only, no schema change. Supersedes option A (`optA-N-en-packages-*.png`)
+  and the content-height layout (`after-N-en-packages-*.png`).
+  Measured (`D6-N-en-packages-{375,768,1024,1440}.png`): 1440 top boxes 472–646 and CTAs 661–711 in all 3 cards, grey
+  ends 1205 in all 3 (grey below the description box 213 / 237 / 15 px); 1024 same pattern (top 452–608, grey ends
+  1141); 768 row-1 top boxes 401–537, CTAs 552–600, grey ends 15 px after each description box (860 / 840); 375 stacked,
+  15 px. No horizontal scroll, no console errors. Simulated state C unchanged (prices 458 / 529). **Confirmed by
+  Mauricio (2026-10-31)** on the 768 and 1440 screenshots — D-6 verification done.
+- **N prices:** in state N the prices are inside each card's approved body HTML (a list in BUILD, the first paragraph in
+  CARE, the last paragraph in FIX). CSS cannot align them without changing the copy structure; a structured price field
+  would be a schema/loader change (5c or later) — not done.
+- **State C is simulated** (approved approach, no CMS restore): the local CMS holds state N since the Part 1 loader run.
+  In DevTools only, the legacy cards were injected into the live `/packages` from `scripts/phase-5c/fixtures/state-c.json`
+  with the markup `PackageCard` renders, against the real compiled CSS. State C rendering itself is covered by the unit
+  test "state C: three legacy cards with price, description, features and the new default CTA label; no badge"
+  (`packages/api.test.ts`).
+
+### Gate (end of Part 2, one run, started 18:13)
+| Check | Command | Result |
+|---|---|---|
+| port guard | `node scripts/agent-gate.mjs check` | passed (exit 0) before every build/start |
+| lint | `npm run lint` | **failed (pre-existing)** — 108 errors / 99 warnings / 91 `no-explicit-any`. Baseline `4c3a2c5` (scratch copy rebuilt without git: reverse backup patch + untracked removed): 108 / 102 / 91. Per file + severity + rule: **0 new findings**, 3 fewer (`no-unused-vars` in about-magneto, packages, services `page.tsx` — the removed metadata `catch` vars). No new `any`. |
+| typecheck | `npm run typecheck` | passed |
+| tests | `npm test -- --run` | passed — **35 files, 446 tests** (Part 1: 31 / 377) |
+| agent gate test | `node --test scripts/agent-gate.node-test.mjs` | passed — 9 tests, 0 fail |
+| build EN | `ENABLED_LOCALES=en npm run agent:build` | passed (14 pages) |
+| build EN/FR/ES, no override | `ENABLED_LOCALES=en,fr,es npm run agent:build` | **failed as expected** (guard): "fr … 83 untranslated keys", "es … 82 untranslated keys" |
+| build EN/FR/ES + override | `ENABLED_LOCALES=en,fr,es ALLOW_UNTRANSLATED_LOCALES=1 npm run agent:build` | passed (28 pages) |
+| visual | headless Chrome (DevTools protocol, exact widths), `next start -p 3100` via `npm run agent:start` on the override build | passed — details in Evidence; Mauricio approved (T1, D-6 cards) 2026-10-31 |
+
+Order: lint → typecheck → tests → node test → 3 builds, no source change after the run. The evidence server ran on an
+`en,fr,es` + override build of the same sources (my PIDs 25782, 26225 started by `agent:start`, stopped by their task;
+the gate builds ran after both were gone). Local CMS checked = 200 before every capture batch.
+
+### AC-12 reconciliation
+| Measure | FR | ES |
+|---|---:|---:|
+| Guard keys at Part 1 end | 94 | 93 |
+| 13 metadata keys filled (§6) | −13 | −13 |
+| `packages.errorTitle` / `errorBody` (new, TODO) | +2 | +2 |
+| **Guard keys now** (build output) | **83** | **82** |
+| `grep -c` text lines (one comment line each) | 84 | 83 |
+`meta.caseStudies.*` (6 keys per locale) are new and translated: no TODO. `meta.project.title` stays TODO (Q-D1).
+
+### Evidence
+Files: `~/Documents/projects/magneto/backups/phase-5b/screenshots/part2-final/` (74 PNG). Measurements: DOM probes
+(scripts in the session scratchpad, not committed). All captures: HTTP 200 where expected, `scrollWidth = clientWidth`
+(no horizontal scroll), no console errors except the ES case below.
+
+- **AC-19 Footer** — EN 9 routes × 375/768/1440 (+ Home 1024), FR/ES 5 routes × 3 widths: `mailto:` links 0, empty
+  `<ul>` 0; LinkedIn = copyright computed `font-size`/`line-height`: 14/18 px (375), 14/20 (768, 1024), 16/24 (1440)
+  everywhere; LinkedIn text per locale ("on" / "sur" / "en LinkedIn"). Keyboard focus (real Tab): `solid 2px #705AF8`
+  outline (EN `/packages`, FR `/fr`). Email removal reversible by the restore patch (D-L).
+- **AC-21 I-5** — state C simulated at 375/768/1440: every multi-line feature (1/0/2 per card at 375, 1/0/2 at 768,
+  1/0/4 at 1440) has its check icon inside the first line box (icon 20/18/16 px = line-height; measured against the line
+  box, centre ± line-height/2). State N has no feature lists (rich body). Unit: `packages/api.test.ts`.
+- **AC-22 I-6** — `/packages`: 1 / 2 / 3 tracks at 375 / 768 / 1440; third card left at 768 = 15 px = first column.
+  Projects grid `/` and `/projects`: 1 / 2 / 3 tracks; third card at 768 left 15 = first column (Home and `/projects`).
+  1024: 3 tracks.
+- **AC-23 Option D** — `/` Featured Services: 375 one column (3 × 345 px); 768 BUILD 738 = grid 738, FIX + CARE 362 + 362
+  on one row; 1024 964 / 467 + 467; 1440 1200 / 585 + 585. `/fr`, `/es` at 768/1440: BUILD spans (738 / 1200); **the
+  FR/ES home has only 2 featured services in the local CMS**, so row 2 has one card (FR/ES content is 5c). T1 approved
+  by Mauricio (2026-10-31).
+- **AC-24 CTA fit** — criteria per `.btn` (hero, card, final CTA): `scrollWidth ≤ clientWidth`, inside viewport and
+  container, ≤ 2 lines. **EN real**: Hero on `/`, `/about-magneto`, `/services`, `/projects` + final CTAs, all 1 line,
+  0 failures at 375/768/1440; legacy card label on simulated C. **FR/ES simulated** (labels set in DevTools on the same
+  buttons, incl. the 3 legacy cards): 0 failures; 2 lines at 375 (ES also on a card at 1440), 1 line otherwise.
+  Screenshots `AC24-{fr,es}-*-375.png`. Real FR/ES → launch QA.
+- **AC-26 FR/ES** — `/fr`, `/fr/projects`, `/fr/projects/trepied-trepied-ca`, `/es`, `/es/projects/trepied-trepied-ca` at
+  375/768/1440 (`P2F-{fr,es}-*`): `lang` fr-CA / es; footer as AC-19; header label "Réserver un appel-conseil" /
+  "Reservar consulta" (unchanged); option D and grid as above; no EN fallback from 5b strings. Expected 404 (E16):
+  `/fr|es/{services,packages,about-magneto,contact}`, `/es/projects` — all 404. ES case page logs "Failed to load
+  resource 404": Next prefetches of the ES nav links to those untranslated routes (each fetched with `RSC: 1` → 404;
+  `/es` and the case pages → 200) — E16, not a 5b defect.
+- **Metadata (AC-10, AC-25 rendered)** — 14 routes at 1440: `<title>`, description, `og:title`, `og:description`,
+  `twitter:title`, `twitter:description` = dictionary values (verbatim from `01ff73f`, checked earlier this session:
+  60/60 values; only difference is the Markdown `\$` escape), `twitter:card` `summary_large_image`, `og:image` set. EN:
+  7 page routes + 3 cases; FR: `/fr`, `/fr/projects`, FR Trépied; ES: `/es`, ES Trépied. Fallback description EN 143
+  rendered on `/does-not-exist` (404). Unknown-case title + fallback: no live route (all 3 local cases are mapped) → unit
+  test `page-metadata.test.ts`.
+- **§9 Header** — 375 menu opened by click: bar label EN "Book a Strategy Call" / FR "Réserver un appel-conseil" / ES
+  "Reservar consulta", menu `display: flex` with the localized nav; 1440 same labels.
+- **§9 Cross-page links (keyboard, EN 1440)** — focus + real Enter key: Home "Explore" → `/services#build|fix|care`;
+  Services core CTAs → `/packages#build|fix|care`; Packages card CTA and Hero CTA → `/contact`. Each anchor target exists
+  once, `scroll-margin-top: 90px`, lands 90 px from the top (header is static).
+- **§9 a11y (Services, Packages, Home + footer)** — Tab trace 40 stops at 375 and 1440: logical order (header → Hero CTA
+  → content CTAs → final CTA → footer → loop), 0 stops without a focus indicator; Packages card CTA settles to
+  `solid 3px #705AF8` on `#E8E8E8`. Accessible names: 0 unnamed links/buttons. Contrast (text vs solid background,
+  excluding image/gradient backgrounds): 8–9 colour pairs per page, min 4.66:1, 0 below AA. 200% zoom (viewport 720 and
+  640): no horizontal scroll, no clipped `.btn`. Targets < 24 px (pre-existing, out-of-scope components, spacing
+  exception likely but not measured): language switcher EN/FR/ES (16–18 × 18–20, `Header`), Featured Services "Explore
+  …" links 313 × 20 at 375 (`ServiceCard`), case "View <site>" links (`ProjectDetail`).
+
+### Final acceptance table
+| AC | Status | Evidence / note |
+|---|---|---|
+| AC-1 | Met (pending commit) | Only listed files + approved deviations differ; index empty; no CMS/production writes |
+| AC-2 | Met | Part 1 |
+| AC-3 | Met | Unit (state C test); simulated C visual; Hero test 5; final CTA fallback test |
+| AC-4 | Met | Part 1 N capture; unchanged since (Services only lost/regained one CSS line) |
+| AC-5 | Met | Keyboard journeys above |
+| AC-6 | Met | N `/packages`: two Hero paragraphs (`Hero/api.test.ts` + capture), CTA "Tell me about your project" → `/contact`, tax note, 3 cards, CTA labels |
+| AC-7 | Met | Diagnostic (C$450) after cards, budget guidance after it; no 4th card, no badge |
+| AC-8 | Met | 446 tests incl. M groups, Hero tests, rev 5–8 tests |
+| AC-9 | Met | Final CTAs present; Contact without final CTA; no lead magnet |
+| AC-10 | Met | Rendered heads + fallback on 404 |
+| AC-11 | Met | Cases by slug; unit tests for missing translation / unknown case |
+| AC-12 | Met (revised) | 83 / 82; fingerprint + parity tests; `header.scheduleCall` unchanged ×3 |
+| AC-13 | **Met** — T1 approved; Packages D-6 cards confirmed (Mauricio, 2026-10-31) | No clipping/overlap/h-scroll found; D-6 re-checked at 375/768/1024/1440 |
+| AC-14 | Met | Gate table (lint: no new findings) |
+| AC-15 | Met | 3 builds as expected |
+| AC-16 | Met | FR/ES unit tests in the suite |
+| AC-17 | Met | Loader per Part 1; no launch-readiness claim |
+| AC-18 | Met | EN labels in Hero captures; `grep -rn "Book a Strategy Call" src --include=*.ts --include=*.tsx` → `en.ts:23` (`header.scheduleCall`), `en.test.ts:24`, `dictionary.test.ts:61`, plus a code comment in `FinalCTASection/index.tsx:36` (unmodified file, comment only) |
+| AC-19 | Met | Footer evidence; email removal reversible (patch) instead of a separate commit (decision 7) |
+| AC-20 | Met | D-L entry below |
+| AC-21 | Met (C simulated) | I-5 above |
+| AC-22 | Met | I-6 above |
+| AC-23 | Met; T1 approved | Option D above |
+| AC-24 | Met (EN real; FR/ES simulated) | Real FR/ES in launch QA |
+| AC-25 | Met | Unit + rendered heads |
+| AC-26 | Met | FR/ES captures |
+
+### Deviations from the spec (approved unless stated)
+- D-2: agent gate (`scripts/agent-gate.mjs`, `scripts/agent-gate.node-test.mjs`, `package.json` `agent:build` /
+  `agent:start`) outside the file list — checkpoint decision, Senior Architect decision 4. No dependency.
+- D-3: no Header component test (decision 3).
+- D-4: AC-12 83/82 with the Packages error keys (decision 2; spec AC-12 row updated).
+- D-5: footer email removal ships inside normal commits; reversal via the restore patch (decision 7).
+- D-6: rich Packages card = three stacked zones + desktop equal-height grey cards (Mauricio, 2026-10-31; supersedes
+  option A). Markup change in the rich branch of `PackageCard/index.tsx` (listed file; no public API change).
+  Verification done: confirmed by Mauricio on the 768/1440 screenshots.
+- D-6 re-verification (after the full gate): affected tests `npx vitest run "src/app/[locale]/packages"
+  src/components/organisms/PackagesGrid src/components/molecules/PackageCard src/components/organisms/PackagesContentSections`
+  → 2 files, 35 tests passed; `npx eslint src/components/molecules/PackageCard/index.tsx` → the same 3 pre-existing
+  warnings, 0 errors. First EN build attempt refused by the guard (port 3000: Mauricio's `npm run dev`, PID 28961,
+  stopped by him). After the desktop adjustment (`PackagesGrid.scss` only): guard exit 0, `ENABLED_LOCALES=en npm run
+  agent:build` → passed (14 pages); captures from `npm run agent:start` on 3100 (my PID 29971, stopped). Full gate not
+  re-run (as instructed; SCSS + one rich-branch markup change since the full run).
+- D-7 (**for review**): state C visual evidence is simulated in DevTools (approved approach), not a CMS restore.
+- Evidence server ran on the override build (one build for EN + FR/ES captures), as §7 allows.
+- One read-only git command, `git apply --check`, authorized for decision 7 only.
+
+### Release checklist (D-L) — keep or revert before promote
+- [ ] **D-L:** `/privacy-policy` live **in every locale enabled at launch** (EN + FR + ES; EN + FR under Plan B, OQ-2)
+  with §1 (Privacy Officer + email) and the footer Privacy link → keep the email-less footer. **Otherwise apply the
+  restore patch before promote:**
+  `~/Documents/projects/magneto/backups/phase-5b/footer-email-restore.patch`
+  (sha256 `458ceec83453510504715eaab4ac1cc08b01feb93408660a053bd4b74594bf5a`, 7 files, `diff -u`): restores the email `<li>`
+  in `Footer/index.tsx`, `footer.email` in `en.ts`/`fr.ts`/`es.ts`, the fingerprint line in `en.test.ts`, the done-key in
+  `dictionary.test.ts`, and flips `Footer.test.tsx` to expect the email link. Verified: `git apply --check -v` against the
+  final tree → all 7 files OK (exit 0); applied to a scratch copy, Footer + i18n tests pass (9 files, 206 tests).
+  Re-run `git apply --check` if any of those 7 files changes before release; the footer typography fix stays either way.
+
+### Launch-blocking item for 5d-lite (not fixed in 5b)
+**Booking modal a11y defect** (strategy-call email/booking modal opened by "Book a … Strategy Call" buttons — Hero,
+legacy package cards, final CTA, header): focus is not trapped in the dialog and Escape does not close it. Acceptance
+criteria for 5d-lite:
+1. On open, focus moves into the dialog (first field or the dialog heading).
+2. Tab / Shift+Tab cycle only within the dialog while it is open (background inert or `aria-hidden`).
+3. Escape closes the dialog.
+4. On close (Escape, close button, success), focus returns to the triggering control.
+5. The dialog has `role="dialog"` (or native `<dialog>`), `aria-modal="true"` and is labelled by its visible heading
+   (`aria-labelledby`); the close button has an accessible name.
+6. Unit test(s) for 1–4 plus a keyboard check in the launch QA, EN/FR/ES.
+
+### Post-launch follow-ups
+- [ ] **Separate price field for the Packages top box** (D-6): today the prices live inside `descriptionHtml` (bottom
+  box). Moving them to the top box needs an ACF field, a loader (5c) update and a copy change in Notion EN/FR/ES —
+  own spec, after launch.
+
+### Issues found (not fixed)
+- Targets < 24 px in `Header` (language switcher), `ServiceCard` ("Explore …" at 375) and `ProjectDetail` ("View …")
+  — pre-existing, out of scope; verify the WCAG 2.5.8 spacing exception in the launch QA.
+- 404 `<title>` "[FR TODO] / [ES TODO] 404: …" on FR/ES (dictionary TODO, Q-D1). FR/ES 404s render the route's own
+  meta description (dictionary) — same behaviour as before 5b.
+- FR/ES home has 2 Featured Services locally (5c content); option D's BUILD-first rule still needs BUILD, FIX, CARE in
+  every language (spec §5.7 → 5c).
+- `/es` nav links prefetch untranslated routes → console 404s until the ES posts exist (E16).
+- Final CTA secondary label in the local CMS still "Book a Strategy Call" (5c-rest, eight names together).
+- Codex left a `next-server` on 3100 at the end of its session (stopped by Mauricio); the gate is a preflight, not a
+  lock (as Codex reported).
+- Focused Vitest runs print React key warnings from the Packages render harness (test-only, as Codex reported).
+
+### Incidents (this session)
+- Port guard stop at entry (Codex leftover server) → asked, Mauricio stopped it.
+- A safety check refused one scratch-copy cleanup command (variable-based `rm`); re-run with a literal path and
+  `${VAR:?}` guards as instructed; all its writes stayed in the scratchpad copy. In that copy, `patch -R` re-applied
+  the `Services.scss` hunk forward (the file already equals `HEAD`) — SCSS is not linted, the comparison is unaffected.
+- Reads stayed within the repo, `~/Documents/projects/magneto/backups/` and this session's scratchpad.
+
+### Proposed commits (nothing staged; Mauricio commits; file-level staging only)
+Order keeps each commit buildable as far as reviewed by reading (dependencies first); the per-commit gate was **not
+run**, only the full gate on the final tree. Hunk staging is avoided, so multi-concern files group concerns.
+1. `chore(tooling): guarded agent build/start with port and .next preflight`
+   ```
+   git add 'scripts/agent-gate.mjs'
+   git add 'scripts/agent-gate.node-test.mjs'
+   git add 'package.json'
+   ```
+2. `feat(i18n): 5b dictionary — main CTA label, SEO copy EN/FR/ES, Packages error keys, email-less footer (D-L)`
+   ```
+   git add 'src/i18n/dictionaries/en.ts'
+   git add 'src/i18n/dictionaries/fr.ts'
+   git add 'src/i18n/dictionaries/es.ts'
+   git add 'src/i18n/dictionaries/en.test.ts'
+   git add 'src/i18n/dictionary.test.ts'
+   git add 'src/components/organisms/Footer/index.tsx'
+   git add 'src/components/organisms/Footer/Footer.test.tsx'
+   git add 'src/components/organisms/FinalCTASection/FinalCTASection.test.tsx'
+   git add 'src/components/organisms/ProjectsGrid/ProjectsGrid.test.tsx'
+   ```
+3. `style(footer): footer links use the copyright typography (md)`
+   ```
+   git add 'src/components/organisms/Footer/Footer.scss'
+   ```
+4. `feat(packages): rich/legacy Packages presentation, content sections, error state and aligned cards`
+   ```
+   git add 'src/app/[locale]/packages/api.ts'
+   git add 'src/app/[locale]/packages/api.test.ts'
+   git add 'src/app/[locale]/packages/types.ts'
+   git add 'src/app/[locale]/packages/page.tsx'
+   git add 'src/app/[locale]/packages/Packages.scss'
+   git add 'src/components/molecules/PackageCard/index.tsx'
+   git add 'src/components/molecules/PackageCard/PackageCard.scss'
+   git add 'src/components/organisms/PackagesGrid/index.tsx'
+   git add 'src/components/organisms/PackagesGrid/types.ts'
+   git add 'src/components/organisms/PackagesGrid/PackagesGrid.scss'
+   git add 'src/components/organisms/PackagesContentSections/index.tsx'
+   git add 'src/components/organisms/PackagesContentSections/types.ts'
+   git add 'src/components/organisms/PackagesContentSections/PackagesContentSections.scss'
+   git add 'src/components/organisms/PackagesContentSections/PackagesContentSections.test.tsx'
+   git add 'src/components/organisms/Hero/index.tsx'
+   git add 'src/components/organisms/Hero/api.test.ts'
+   git add 'src/utils/page-metadata.ts'
+   ```
+   (`page-metadata.ts` is here because `packages/page.tsx` imports it.)
+5. `feat(seo): per-page and case-study metadata from the approved copy (EN/FR/ES)`
+   ```
+   git add 'src/app/[locale]/page.tsx'
+   git add 'src/app/[locale]/about-magneto/page.tsx'
+   git add 'src/app/[locale]/services/page.tsx'
+   git add 'src/app/[locale]/contact/page.tsx'
+   git add 'src/app/[locale]/projects/page.tsx'
+   git add 'src/app/[locale]/projects/[slug]/page.tsx'
+   git add 'src/utils/page-metadata.test.ts'
+   ```
+6. `style(layout): two-column tablet grids for Projects (I-6) and BUILD-first Featured Services (option D)`
+   ```
+   git add 'src/components/organisms/ProjectsGrid/ProjectsGrid.scss'
+   git add 'src/components/organisms/FeaturedServices/FeaturedServices.scss'
+   ```
+7. `docs(phase-5b): AC-12 revision and Part 2 final report`
+   ```
+   git add 'docs/specs/phase-5b-services-packages-seo.md'
+   git add 'docs/reports/phase-5b-services-packages-seo.md'
+   ```
+`src/app/[locale]/services/Services.scss` is no longer modified (decision 5) and is not in any commit. After commit 7,
+`git status` should be clean.
+
+### Time
+Agent ≈ 2.5 h active this session (estimated), plus Codex's Part 2 time (unknown). Mauricio: stopping the leftover
+server + decisions (unknown).
