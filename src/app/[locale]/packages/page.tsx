@@ -14,11 +14,13 @@ export default async function PackagesPage({ params }: PackagesPageProps) {
   const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
   const pageData = await getPackagesPageData(locale);
   if (!pageData) notFound();
-  const { introText, packages } = pageData;
+  const { introText, packages, content } = pageData;
+  // New Packages content populated → the Hero may only link to /contact, never fall back to the booking link (§5.3).
+  const requireInternalCta = content.introBody !== null || content.packages.some((p) => p.body?.kind === 'html');
 
   return (
     <>
-      <HeroLoader pageUri="packages" variant="packages" locale={locale} />
+      <HeroLoader pageUri="packages" variant="packages" locale={locale} requireInternalCta={requireInternalCta} />
       {introText ? (
         <div className="main typo-center">
           <h3
