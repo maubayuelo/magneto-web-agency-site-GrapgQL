@@ -9,8 +9,6 @@
 import '@/main.scss'; // Import global styles at the root (use alias for consistency)
 import type { Metadata } from 'next';
 import { Header } from '@/components/organisms';
-import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
-import { LeadMagnetSection } from '@/components/organisms';
 import FooterLoader from '@/components/organisms/Footer/FooterLoader';
 import EmailCollectorProvider from '@/components/organisms/EmailCollectorProvider';
 import { SITE_URL, siteName, defaultOgImage, buildCanonical } from '@/utils/seo';
@@ -174,9 +172,8 @@ export default async function RootLayout({
           {/* children is where page-specific content is rendered (each page's content). */}
           {children}
 
-          {/* These are common marketing sections rendered on most pages: lead magnet, final CTA and footer. */}
-          <LeadMagnetSection locale={locale} />
-          <FinalCTASectionLoader locale={locale} />
+          {/* Footer on every route. The final CTA is rendered by each route page (ADR 0006, decision 3); the lead
+              magnet is not rendered until its guide is rebuilt (Phase 5a, Part 2 item 2). */}
           <FooterLoader locale={locale} />
         </EmailCollectorProvider>
         </I18nProvider>

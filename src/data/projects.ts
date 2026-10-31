@@ -48,6 +48,8 @@ export const GET_PROJECTS = gql`
           }
         }
         projectsProjectData {
+          cardDescription
+          displayOrder
           projectData {
             projectSubtitle
             projectDescription

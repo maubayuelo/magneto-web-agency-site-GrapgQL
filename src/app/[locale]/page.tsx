@@ -8,6 +8,9 @@
 import { notFound } from 'next/navigation';
 import { HeroLoader } from '@/components/organisms/Hero';
 import { getHomeTestimonials, type Testimonial } from '@/components/organisms/Testimonials/api';
+import { Testimonials } from '@/components/organisms/Testimonials';
+import type { Testimonial as TestimonialItem } from '@/components/organisms/Testimonials/types';
+import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
 import { ProjectsGrid } from '@/components/organisms';
 import type { ProjectItem } from '@/components/organisms/ProjectsGrid/types';
 import AboutSection from '@/components/organisms/AboutSection';
@@ -47,29 +50,32 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     fetchError = true;
   }
 
-  // Map testimonials into the shape required by the `Testimonials` component.
-  const testimonials = testimonialData.map((t: any, idx: number) => ({
+  // Only rows with a role reach here (getHomeTestimonials), so the placeholder rows never render.
+  const testimonials: TestimonialItem[] = testimonialData.map((row, idx) => ({
     id: idx + 1,
-    quote: t.testimonial,
-    author: t.author,
-    avatar: t.thumb?.node?.sourceUrl || 'https://placehold.co/54x54',
-    role: '', // Optional: add role if available in the CMS
+    quote: row.testimonial,
+    author: row.author,
+    role: row.role,
+    company: row.company,
+    city: row.city,
+    note: row.note,
   }));
+  const t = getDictionary(locale);
 
+  // Section order follows the 2026 copy: hero · Meet Magneto · BUILD/FIX/CARE · projects · testimonials · final CTA.
   return (
     <>
-      {/* HeroLoader: server component that renders the hero for the page */}
       <HeroLoader pageUri="/" variant="home" locale={locale} />
-      {/* AboutSection, FeaturedServices and other page sections: usually composed from smaller components */}
       <AboutSection locale={locale} />
       <FeaturedServicesLoader locale={locale} />
-      {/* <Testimonials testimonials={testimonials} /> */}
       <ProjectsGrid
           projects={projects}
           maxProjects={3}
-          title={getDictionary(locale).home.recentProjects}
-          showButton={true}
+          title={t.home.recentProjects}
+          intro={t.home.projectsIntro}
         />
+      <Testimonials title={t.testimonials.title} testimonials={testimonials} />
+      <FinalCTASectionLoader source={{ kind: 'page', name: 'home' }} locale={locale} />
     </>
   );
 }

@@ -5,6 +5,7 @@ import type { ProjectData } from '@/data/projects';
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
 import { format, getDictionary } from '@/i18n/dictionary';
 import { getProjects } from '../api';
+import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
 import { getProjectBySlug } from './api';
 
 interface PageProps {
@@ -66,7 +67,12 @@ export default async function ProjectPage({ params }: PageProps) {
     // Add more fields as needed
   };
 
-  return <ProjectDetail project={mappedProject} locale={locale} />;
+  return (
+    <>
+      <ProjectDetail project={mappedProject} locale={locale} />
+      <FinalCTASectionLoader source={{ kind: 'project', slug: project.slug }} locale={locale} />
+    </>
+  );
 }
 
 // Only the slugs that exist in this locale (ADR 0004): a locale without translations prerenders none, and an

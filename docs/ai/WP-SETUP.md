@@ -137,6 +137,27 @@ Backups (local copies in `~/Documents/projects/magneto/backups/phase-3b/`):
 - `phase-3b-before-20261025-1708.sql` (13:08 EDT), `phase-3b-after-20261025-1909.sql` (15:09 EDT, after step 6),
   `phase-3b-after-20261025-2309.sql` (19:09 EDT, after the frontend promote). File names use server time (UTC).
 
+### Phase 5a ACF import (2026-10-29)
+
+Runbook `docs/specs/phase-5a-production-acf-runbook.md` (rev 4), report `docs/reports/phase-5a-production-acf-runbook.md`.
+Imported `docs/acf/phase-5-field-groups.json` (sha256 `36ca235f…e842cd4`): "Imported 14 items".
+
+ACF: 14 field groups (the 13 existing, updated in place, plus "Packages - Content Sections"); `acf-field` posts 72 → 107.
+ACFML: 14 groups, all `mode=translation`, 0 `pref=-`; dump (121 lines, sha256 `3cc47ce0…aa9050b82`) identical to
+local. Schema: 38/38 Phase 5 fields, including `HeroContent.ctaPath`.
+
+Inventory at step 0.3 (SSH): siteurl `http://cms.magnetomarketing.co`. Core plugins unchanged since Phase 3b. Since
+then, `wordpress-seo` is 28.8 and `all-in-one-wp-migration` 7.113 (minor auto-updates). Full list:
+`backups/phase-5a-prod/0.3-inventory.txt`. ACF PRO license: Active (Lifetime – Developer).
+
+Backups (local copies in `~/Documents/projects/magneto/backups/phase-5a-prod/`):
+- SiteGround manual backup `phase-5a-acf-before-20261029-1806` (18:06).
+- `phase-5a-acf-before-20261029-1826.sql` (18:26 EDT, before the import) and `phase-5a-acf-after-20261029-1909.sql`
+  (19:09 EDT, after). These file names use local time (EDT).
+
+Open: orphan final-CTA meta (`title` empty + old hero `subtitle`) on pages 32/34/36/38/41, for the cleanup phase.
+The admin bar shows a "Development Site" badge.
+
 ## Change log
 
 | Date | Change | By |
@@ -164,3 +185,8 @@ Backups (local copies in `~/Documents/projects/magneto/backups/phase-3b/`):
 | 2026-10-25 ≤15:06 | (prod) Phase 3b step 6: WPML GraphQL reactivated; `wp cache flush` + SiteGround dynamic cache flushed; backup `phase-3b-after-20261025-1909.sql` | Mauricio |
 | 2026-10-25 | (prod) Phase 3b verified read-only: Appendix A hash `b0517e27…aaa4` unchanged at 7 checkpoints; schema checks; live site and PR #10 preview/production routes | Claude Code (Dev) |
 | 2026-10-25 19:09 | (prod) Backup `phase-3b-after-20261025-2309.sql` after the PR #10 promote | Mauricio |
+| 2026-10-29 18:06–18:26 | (prod) Phase 5a step 1: SiteGround backup `phase-5a-acf-before-20261029-1806`; `phase-5a-acf-before-20261029-1826.sql` | Mauricio |
+| 2026-10-29 18:48 | (prod) Phase 5a step 3: ACF import of `phase-5-field-groups.json` ("Imported 14 items"; 14 groups) | Mauricio |
+| 2026-10-29 18:56 / 19:00 | (prod) Phase 5a step 6: `wp cache flush`; SiteGround Dynamic Cache flushed (`cms.magnetomarketing.co`) | Mauricio |
+| 2026-10-29 19:09 | (prod) Phase 5a step 8: backup `phase-5a-acf-after-20261029-1909.sql` | Mauricio |
+| 2026-10-29 | (prod) Phase 5a verified read-only: ACFML dump = local; 38/38 schema; Appendix A `bdabf4a1…ac1c1f88` unchanged; live routes 7 × 200 + 404 | Claude Code (Dev) |

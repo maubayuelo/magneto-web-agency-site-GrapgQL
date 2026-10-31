@@ -8,6 +8,16 @@ import { format, getDictionary } from '@/i18n/dictionary';
 import { localizePath } from '@/i18n/paths';
 import './ProjectDetail.scss';
 
+/** "https://www.dangelwellness.ca/fr/" → "dangelwellness.ca" (the live-link label, Phase 5a). */
+export function liveSiteDomain(url: string | undefined): string {
+  if (!url) return '';
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+}
+
 interface ProjectDetailProps {
   project: ProjectData;
   locale: Locale;
@@ -129,7 +139,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, locale })
               rel="noopener noreferrer"
               className="project-detail__external-link typo-sm-medium mt-sm-responsive mb-lg-responsive"
             >
-              {t.projectDetail.viewLiveSite}
+              {format(t.projectDetail.viewLiveSite, { domain: liveSiteDomain(project.projectUrl) })}
               <svg
                 className="project-detail__external-link-icon"
                 width="12"

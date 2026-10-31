@@ -50,3 +50,31 @@
         border: 1px solid $gray-50;
     }
 }
+
+.projects-grid__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-10;
+}
+
+.projects-grid__intro {
+    max-width: 760px;
+}
+
+.projects-grid__item-link {
+    gap: $spacing-10;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover .projects-grid__item-title,
+    &:focus-visible .projects-grid__item-title {
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary-color;
+        outline-offset: 4px;
+        @include responsive-border-radius;
+    }
+}

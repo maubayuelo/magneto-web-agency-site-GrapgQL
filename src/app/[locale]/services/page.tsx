@@ -4,6 +4,7 @@ import './Services.scss';
 import { notFound } from 'next/navigation';
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionary';
+import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
 import { getServicesPageData } from './api';
 
 // Service data structure
@@ -51,6 +52,7 @@ export default async function ServicesPage({ params }: ServicesPageProps) {
         <div className="main pb-md-responsive">
           <ServicesList services={servicesArray} locale={locale} />
         </div>
+        <FinalCTASectionLoader source={{ kind: 'page', name: 'services' }} locale={locale} />
       </>
     );
   } catch (err) {

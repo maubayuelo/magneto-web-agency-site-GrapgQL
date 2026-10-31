@@ -17,7 +17,7 @@ re-export if Notion changes. Do not edit copy here — edit in Notion, then re-e
 
 **Selector de idioma:** EN | FR | ES
 
-**CTA principal:** Agendar una llamada de orientación
+**CTA principal:** Reservar consulta
 
 ## 1. Hero
 

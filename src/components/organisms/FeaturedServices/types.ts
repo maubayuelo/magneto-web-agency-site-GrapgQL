@@ -6,6 +6,8 @@ export interface IconNode {
 
 export interface FeaturedServiceItem {
   serviceTitle?: string | null;
+  /** New in Phase 5 (ADR 0006); no legacy fallback. */
+  serviceTagline?: string | null;
   serviceDescription?: string | null;
   serviceIcon?: IconNode | string | null;
   anchorLink?: string | null;

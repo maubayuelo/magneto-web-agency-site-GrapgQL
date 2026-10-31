@@ -37,7 +37,10 @@ interface ProjectListNode {
   title: string;
   featuredImage: { node: WpMediaNode | null } | null;
   projectsProjectData: {
+    cardDescription?: string | null;
+    displayOrder?: number | null;
     projectData: {
+      projectSubtitle?: string | null;
       solutions: { item: string | null }[] | null;
       results: { item: string | null }[] | null;
     } | null;
@@ -50,16 +53,40 @@ interface ProjectsResponse {
 
 const GET_PROJECTS_QUERY = typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || '';
 
-/** Projects in `locale` (first 12, Known debt), mapped to the ProjectsGrid shape. [] when there are none. */
+const nonEmpty = (value: string | null | undefined): value is string => typeof value === 'string' && value.trim() !== '';
+const orderOf = (node: ProjectListNode): number | null => {
+  const order = node.projectsProjectData?.displayOrder;
+  return typeof order === 'number' && Number.isFinite(order) ? order : null;
+};
+
+/**
+ * Projects in `locale` (first 12, Known debt), mapped to the ProjectsGrid shape. [] when there are none.
+ * Sorted by `displayOrder` ascending, missing values last, GraphQL order as the tie-breaker (ADR 0006, decision 5).
+ */
 export async function getProjects(locale: Locale): Promise<ProjectItem[]> {
   const data: ProjectsResponse | undefined = await fetchWPGraphQL(GET_PROJECTS_QUERY, wpLocaleVars(locale));
   const nodes = data?.projects?.nodes ?? [];
-  return nodes.map((project) => ({
-    id: project.id,
-    slug: project.slug,
-    title: project.title,
-    featuredImage: resolveMediaWrapper(project.featuredImage) as ProjectItem['featuredImage'],
-    solutions: (project.projectsProjectData?.projectData?.solutions || []).map((s) => s.item) as string[],
-    results: (project.projectsProjectData?.projectData?.results || []).map((r) => r.item) as string[],
-  }));
+  return nodes
+    .map((project, index) => ({ project, index, order: orderOf(project) }))
+    .sort((a, b) => {
+      if (a.order !== b.order) {
+        if (a.order === null) return 1;
+        if (b.order === null) return -1;
+        return a.order - b.order;
+      }
+      return a.index - b.index;
+    })
+    .map(({ project }) => {
+      const acf = project.projectsProjectData;
+      const subtitle = acf?.projectData?.projectSubtitle;
+      return {
+        id: project.id,
+        slug: project.slug,
+        title: project.title,
+        featuredImage: resolveMediaWrapper(project.featuredImage) as ProjectItem['featuredImage'],
+        description: nonEmpty(acf?.cardDescription) ? acf.cardDescription : nonEmpty(subtitle) ? subtitle : '',
+        solutions: (acf?.projectData?.solutions || []).map((s) => s.item) as string[],
+        results: (acf?.projectData?.results || []).map((r) => r.item) as string[],
+      };
+    });
 }
