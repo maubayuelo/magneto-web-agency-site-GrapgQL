@@ -10,7 +10,7 @@ import { en } from './en';
 import { flattenDictionary } from '../dictionary';
 
 const EN_FINGERPRINT: Record<string, string> = {
-  "common.bookStrategyCall": "Book a Strategy Call", // Phase 5a, magneto-copy-en.md:18
+  "common.bookStrategyCall": "Book a Free Strategy Call", // Phase 5b, magneto-copy-en.md:27 (01ff73f)
   "common.goHome": "Go Home",
   "common.checkIconAlt": "Check icon",
   "common.loading": "Loading...",
@@ -21,7 +21,7 @@ const EN_FINGERPRINT: Record<string, string> = {
   "nav.projects": "Projects",
   "nav.contact": "Contact",
   "header.logoAlt": "Logo",
-  "header.scheduleCall": "Book a Strategy Call", // Phase 5a, magneto-copy-en.md:18
+  "header.scheduleCall": "Book a Strategy Call", // Phase 5b, magneto-copy-en.md:19 (01ff73f) (unchanged value)
   "header.menuOpen": "Menu",
   "header.menuClose": "Close",
   "header.languageSwitcher": "Language",
@@ -33,7 +33,6 @@ const EN_FINGERPRINT: Record<string, string> = {
   "about.linkedinIconAlt": "LinkedIn Icon",
   "footer.copyright": "Magneto Web Consulting © {year}", // Phase 5a, magneto-copy-en.md:136
   "footer.linkedin": "Mauricio Bayuelo on LinkedIn", // Phase 5a, magneto-copy-en.md:242
-  "footer.email": "contact@magnetomarketing.co", // Phase 5a, magneto-copy-en.md:242
   "testimonials.title": "Client feedback", // Phase 5a, magneto-copy-en.md:88
   "featuredServices.explore": "Explore {name}", // Phase 5a, magneto-copy-en.md:46/54/62 (name as a placeholder)
   "projects.emptyTitle": "Everything unfolds in its sacred time.",
@@ -46,6 +45,8 @@ const EN_FINGERPRINT: Record<string, string> = {
   "projectDetail.backToProjects": "← Back to Projects",
   "packages.popularBadge": "Popular",
   "packages.included": "What's included:",
+  "packages.errorTitle": "Packages", // Phase 5b, Packages CMS error state (no copy source; pattern of services.error*)
+  "packages.errorBody": "Sorry, we couldn't load the packages right now. Please try again later.", // Phase 5b, idem
   "calendly.closeDialog": "Close scheduling dialog",
   "calendly.frameTitle": "Calendly scheduling",
   "forms.namePlaceholder": "Your name",
@@ -110,20 +111,26 @@ const EN_FINGERPRINT: Record<string, string> = {
   "cmsFallback.socialIconAlt": "Social Icon",
   "cmsFallback.galleryImageAlt": "Gallery image {n}",
   "meta.site.fallbackTitle": "Magneto Web Consulting", // Phase 5a O3 brand rename (spec 1.6)
-  "meta.site.fallbackDescription": "A creative digital agency showcasing work and services.",
-  "meta.home.title": "Magneto Marketing - Home",
-  "meta.home.description": "Magneto Marketing — strategy, web development and UX services for solo founders and small teams.",
-  "meta.services.title": "Services - Magneto Marketing",
-  "meta.services.description": "Strategy, Web Development, UX/UI and growth services offered by Magneto Marketing.",
-  "meta.packages.title": "Packages - Magneto Marketing",
-  "meta.packages.description": "Browse service packages and pricing for Magneto Marketing.",
-  "meta.projects.title": "Projects - Magneto Marketing",
-  "meta.projects.description": "A curated selection of recent projects and case studies by Magneto Marketing.",
-  "meta.about.title": "About Magneto - About the Agency",
-  "meta.about.description": "Meet Magneto Marketing — a solo web agency focused on strategy, design and web development.",
-  "meta.contact.title": "Contact - Magneto Marketing",
-  "meta.contact.description": "Get in touch with Magneto Marketing to book a strategy call or ask about services.",
+  "meta.site.fallbackDescription": "Magneto builds, fixes and maintains websites for Montreal service businesses. Strategy, UX/UI and development with direct founder involvement, in English, French and Spanish.", // Phase 5b, magneto-copy-en.md:143 (01ff73f)
+  "meta.home.title": "Website Design & Development in Montreal | Magneto", // Phase 5b, magneto-copy-en.md:141 (01ff73f)
+  "meta.home.description": "Magneto builds, fixes and maintains websites for Montreal service businesses. Strategy, UX/UI and development with direct founder involvement, in English, French and Spanish.", // Phase 5b, magneto-copy-en.md:143 (01ff73f)
+  "meta.services.title": "Website Services in Montreal | Build, Fix & Care | Magneto", // Phase 5b, magneto-copy-en.md:429 (01ff73f)
+  "meta.services.description": "Website design, development, optimization and ongoing care for Montreal service businesses. BUILD, FIX and CARE with direct founder involvement.", // Phase 5b, magneto-copy-en.md:431 (01ff73f)
+  "meta.packages.title": "Website Design Pricing in Montreal | Magneto", // Phase 5b, magneto-copy-en.md:551 (01ff73f)
+  "meta.packages.description": "Website pricing for Montreal service businesses. Landing pages from C$3,500, full websites typically C$5,000–8,000. Fixes start at C$1,000; care starts at C$200/month.", // Phase 5b, magneto-copy-en.md:553 (01ff73f)
+  "meta.projects.title": "Web Design Projects in Montreal | Magneto", // Phase 5b, magneto-copy-en.md:158 (01ff73f)
+  "meta.projects.description": "Selected website projects by Magneto Web Consulting in Montreal: web experiences for wellness, professional services and digital commerce.", // Phase 5b, magneto-copy-en.md:160 (01ff73f)
+  "meta.about.title": "About Magneto | Montreal Web Consulting", // Phase 5b, magneto-copy-en.md:255 (01ff73f)
+  "meta.about.description": "Meet Mauricio Bayuelo, founder of Magneto Web Consulting in Montreal. Web strategy, UX/UI and development for service businesses in English, French and Spanish.", // Phase 5b, magneto-copy-en.md:257 (01ff73f)
+  "meta.contact.title": "Contact Magneto | Website Projects in Montreal", // Phase 5b, magneto-copy-en.md:654 (01ff73f)
+  "meta.contact.description": "Contact Magneto Web Consulting in Montreal. Tell me what you need built, fixed or maintained and get a clear next step, in English, French or Spanish.", // Phase 5b, magneto-copy-en.md:656 (01ff73f)
   "meta.project.title": "{title} | Magneto Projects",
+  "meta.caseStudies.dangel.title": "Dangel Wellness — Trilingual Website | Magneto", // Phase 5b, magneto-copy-en.md:973 (01ff73f)
+  "meta.caseStudies.dangel.description": "A French, English and Spanish website for a Montreal wellness professional: clear service information, booking and contact paths, and owner-editable content.", // Phase 5b, magneto-copy-en.md:975 (01ff73f)
+  "meta.caseStudies.trepied.title": "Trépied — Video Studio Website | Magneto", // Phase 5b, magneto-copy-en.md:1084 (01ff73f)
+  "meta.caseStudies.trepied.description": "A trilingual website for a Montreal video production studio, built to present its services and productions and lead clients to a call or quote request.", // Phase 5b, magneto-copy-en.md:1086 (01ff73f)
+  "meta.caseStudies.shamanicca.title": "Shamanicca — Online Shop & Blog (Own Project) | Magneto", // Phase 5b, magneto-copy-en.md:1219 (01ff73f)
+  "meta.caseStudies.shamanicca.description": "Magneto's own project: an online shop and blog in one website, with one search across products and articles and a newsletter signup.", // Phase 5b, magneto-copy-en.md:1221 (01ff73f)
 };
 
 describe('EN dictionary fingerprint', () => {

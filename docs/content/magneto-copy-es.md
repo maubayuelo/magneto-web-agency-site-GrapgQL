@@ -1,8 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / ES
 URL: https://app.notion.com/p/3fc702393b5e81abaf9af4c499daab27
-Notion page last edited: 2026-10-26T21:41:11.268Z
-Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Notion page last edited: 2026-10-31 (P-1 edits + /projects SEO, Senior Architect via the Notion connector)
+Exported: 2026-10-31 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: 2026-10-26 export + the Notion edits made since then (CTA « gratuita », correo fuera de los pies de página, SEO /projects, Política de privacidad ES en borrador, Dangel «el propietario»), applied verbatim with count-checked replacements.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -25,7 +26,7 @@ re-export if Notion changes. Do not edit copy here — edit in Notion, then re-e
 
 Crea un sitio web más sólido, corrige lo que limita tu sitio actual o asegúrate de que siga funcionando con un mantenimiento continuo y confiable.
 
-**CTA: Agendar una llamada de orientación**
+**CTA: Agendar una llamada de orientación gratuita**
 
 ## 2. Conoce Magneto
 
@@ -117,13 +118,13 @@ Enviada por correo electrónico. La suscripción al boletín informativo es opci
 
 Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas, optar por mantenimiento continuo o, por ahora, no realizar cambios importantes.
 
-**CTA: Agendar una llamada de orientación**
+**CTA: Agendar una llamada de orientación gratuita**
 
 ## 8. Pie de página
 
 **Con sede en Montreal · Atención en español, francés e inglés**
 
-Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Política de privacidad · Opciones de privacidad
+Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacidad
 
 **Magneto Web Consulting © 2026**
 
@@ -132,6 +133,12 @@ Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 **Título SEO:** Diseño y desarrollo web en Montreal | Magneto
 
 **Metadescripción:** Magneto crea, mejora y mantiene sitios web para empresas de servicios en Montreal. Estrategia, UX/UI y desarrollo con atención directa del fundador, en español, francés e inglés.
+
+## SEO — Índice de Proyectos (/projects) — Final (aprobado por Mauricio, 2026-10-31)
+
+**Título SEO:** Proyectos web en Montreal | Magneto
+
+**Metadescripción:** Proyectos web de Magneto Web Consulting en Montreal: experiencias web para el sector del bienestar, los servicios profesionales y el comercio digital.
 
 ---
 
@@ -143,7 +150,7 @@ Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 
 Estrategia web, diseño UX/UI y desarrollo con una sola persona de contacto, desde la primera conversación hasta el lanzamiento.
 
-**CTA: Agendar una llamada de orientación**
+**CTA: Agendar una llamada de orientación gratuita**
 
 ## 2. El fundador
 
@@ -204,13 +211,13 @@ El papel de Magneto es recomendar primero el camino más sensato y, después, di
 
 Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar cuál es el siguiente paso más conveniente.
 
-**CTA: Agendar una llamada de orientación**
+**CTA: Agendar una llamada de orientación gratuita**
 
 ## 8. Pie de página
 
 **Con sede en Montreal · Atención en español, francés e inglés**
 
-Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Política de privacidad · Opciones de privacidad
+Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacidad
 
 **Magneto Web Consulting © 2026**
 
@@ -230,7 +237,7 @@ Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 
 Crea un sitio web más sólido, mejora el que ya tienes o asegúrate de que siga funcionando con un mantenimiento continuo y confiable.
 
-**CTA: Agendar una llamada de orientación**
+**CTA: Agendar una llamada de orientación gratuita**
 
 ## 2. Introducción
 
@@ -361,7 +368,7 @@ No necesitas elegir entre BUILD, FIX o CARE antes de ponerte en contacto con Mag
 
 Empieza por explicar qué está pasando con tu sitio web. Magneto te recomendará el siguiente paso más sensato antes de definir el alcance del proyecto.
 
-**CTA principal: Agendar una llamada de orientación**
+**CTA principal: Agendar una llamada de orientación gratuita**
 
 **CTA secundario: Cuéntame sobre tu proyecto**
 
@@ -369,7 +376,7 @@ Empieza por explicar qué está pasando con tu sitio web. Magneto te recomendar�
 
 **Con sede en Montreal · Atención en español, francés e inglés**
 
-Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Política de privacidad · Opciones de privacidad
+Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacidad
 
 **Magneto Web Consulting © 2026**
 
@@ -478,13 +485,13 @@ Explica qué está pasando con tu sitio web y qué quieres mejorar. Magneto te o
 
 **CTA principal: Cuéntame sobre tu proyecto**
 
-**CTA secundario: Agendar una llamada de orientación**
+**CTA secundario: Agendar una llamada de orientación gratuita**
 
 ## 8. Pie de página
 
 **Con sede en Montreal · Atención en español, francés e inglés**
 
-Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Política de privacidad · Opciones de privacidad
+Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacidad
 
 **Magneto Web Consulting © 2026**
 
@@ -512,7 +519,7 @@ Un sitio web en español, francés e inglés para un profesional del bienestar e
 
 Dangel es un terapeuta holístico e intuitivo de Montreal que atiende a su clientela en español, francés e inglés.
 
-Su sitio necesitaba presentar varios servicios terapéuticos sin abrumar al visitante, ofrecer una experiencia clara en tres idiomas y permitir que la propietaria actualizara el contenido por su cuenta.
+Su sitio necesitaba presentar varios servicios terapéuticos sin abrumar al visitante, ofrecer una experiencia clara en tres idiomas y permitir que el propietario actualizara el contenido por su cuenta.
 
 Magneto se encargó del proyecto desde la estrategia hasta el lanzamiento: diseño UX/UI, desarrollo, implementación multilingüe, opciones de reserva y contacto, controles de consentimiento para cookies, medición de los envíos de formularios y de los clics en los enlaces de reserva, y una guía de administración escrita.
 
@@ -536,7 +543,7 @@ Magneto se encargó del proyecto desde la estrategia hasta el lanzamiento: dise�
 - Un sitio web publicado en español, francés e inglés.
 - Presentación de servicios y navegación adaptadas a diferentes tamaños de pantalla.
 - Opciones de reserva y contacto.
-- Contenido editable por la propietaria, acompañado de una guía de administración escrita.
+- Contenido editable por el propietario, acompañado de una guía de administración escrita.
 - Controles de consentimiento para cookies.
 - Medición de envíos de formularios y clics en enlaces de reserva.
 
@@ -561,7 +568,7 @@ Magneto se encargó del proyecto desde la estrategia hasta el lanzamiento: dise�
 
 Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo.
 
-**CTA: Agendar una llamada de orientación**
+**CTA: Agendar una llamada de orientación gratuita**
 
 ### SEO — Dangel
 
@@ -635,7 +642,7 @@ Magneto se encargó del proyecto desde la estrategia hasta el lanzamiento: estru
 
 Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo.
 
-**CTA: Agendar una llamada de orientación**
+**CTA: Agendar una llamada de orientación gratuita**
 
 ### SEO — Trépied
 
@@ -709,7 +716,7 @@ Magneto diseñó y desarrolló el sitio, y continúa manteniéndolo y ampliándo
 
 Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo.
 
-**CTA: Agendar una llamada de orientación**
+**CTA: Agendar una llamada de orientación gratuita**
 
 ### SEO — Shamanicca
 
@@ -727,7 +734,7 @@ Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nue
 
 Comparte algunos detalles sobre tu proyecto y lo que quieres crear o mejorar. Te responderé con una recomendación sobre el siguiente paso más conveniente.
 
-**CTA secundario:** ¿Prefieres conversar? **Agendar una llamada de orientación**
+**CTA secundario:** ¿Prefieres conversar? **Agendar una llamada de orientación gratuita**
 
 ## 2. Formulario de solicitud de proyecto
 
@@ -798,7 +805,7 @@ Los revisaré y te responderé por correo electrónico con una recomendación so
 
 **Con sede en Montreal · Atención en español, francés e inglés**
 
-Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Política de privacidad · Opciones de privacidad
+Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacidad
 
 **Magneto Web Consulting © 2026**
 
@@ -818,7 +825,7 @@ Mauricio Bayuelo en LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 
 *Instrucción interna no visible: usar solo si Calendly recibe el correo desde el modal y lo muestra prellenado de manera fiable. No volver a pedirlo.*
 
-### Agendar una llamada de orientación
+### Agendar una llamada de orientación gratuita
 
 Indica tu correo electrónico y responde tres preguntas breves para que podamos concentrarnos en tu sitio web durante la conversación. Después elige un horario para una llamada gratuita de 30 minutos.
 
@@ -863,7 +870,7 @@ Tus respuestas y tu correo electrónico se transmiten a Calendly junto con tu re
 
 *Instrucción interna no visible: utilizar si el prellenado del correo desde el modal no es fiable o resulta innecesariamente complejo. No mostrar un campo de correo en este modal. Calendly recoge nombre y correo para reservar.*
 
-### Agendar una llamada de orientación
+### Agendar una llamada de orientación gratuita
 
 Responde tres preguntas breves para que podamos concentrarnos en tu sitio web durante la conversación. Después elige un horario para una llamada gratuita de 30 minutos.
 
@@ -899,6 +906,148 @@ Tus respuestas se utilizan para preparar la llamada. Calendly te pedirá tu nomb
 **B2 — Condición interna:** las tres respuestas se transmiten realmente a Calendly y quedan asociadas con la reserva.
 
 Tus respuestas se transmiten a Calendly junto con tu reserva para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizarla. Agendar una llamada no te suscribe a correos promocionales. **Política de privacidad**
+
+---
+
+# POLÍTICA DE PRIVACIDAD — ES (BORRADOR)
+
+> **Nota interna, no visible — BORRADOR (2026-10-30).** Adaptado de la fuente EN canónica (Privacy Policy — Consensus EN Source Copy v2) y alineado con la versión FR-CA. Terminología cercana a la Ley 25 de Quebec (Loi sur la protection des renseignements personnels dans le secteur privé). Sujeto a las mismas verificaciones de publicación que EN y FR-CA; todo cambio de fondo empieza en el EN. No es asesoría legal.
+
+## Política de privacidad
+
+**Fecha de entrada en vigor:** 8 de octubre de 2026
+
+**Última actualización:** 8 de octubre de 2026
+
+Magneto Web Consulting es operada por Mauricio Bayuelo bajo el nombre comercial registrado **Magneto MKTNG**, con sede en Montreal, Quebec, Canadá.
+
+Esta política explica qué información personal recopila Magneto a través de este sitio web, por qué se recopila, cómo puede utilizarse o comunicarse y qué opciones tienes.
+
+### 1. ¿Quién es responsable de tu información personal?
+
+**Persona responsable de la protección de la información personal:** Mauricio Bayuelo
+
+**Empresa:** Magneto Web Consulting · nombre comercial registrado: Magneto MKTNG · Montreal, Quebec, Canadá
+
+**Correo electrónico:** [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co)
+
+### 2. Qué información puedo recopilar
+
+Según cómo utilices el sitio web, Magneto puede recopilar:
+
+- **Información de una solicitud de proyecto:** nombre, correo electrónico, URL de tu sitio web, el tipo de ayuda que necesitas, la información que decidas compartir sobre tu sitio o tu proyecto y un rango de presupuesto aproximado.
+- **Información de una llamada de orientación:** tus respuestas a las preguntas previas a la reserva —URL de tu sitio, tipo de ayuda y principal problema u objetivo—, además del nombre, el correo electrónico y los detalles de la reserva recopilados a través de Calendly.
+- **Mensajes que envías directamente:** la información que decidas proporcionar por correo electrónico o mediante un formulario de contacto.
+- **Información técnica y de uso:** datos básicos sobre tu dispositivo, tu navegador, las páginas visitadas y las interacciones, cuando las herramientas de analítica u otras herramientas de medición similares están activadas de acuerdo con tu elección de privacidad.
+- **Información de seguridad y diagnóstico:** registros técnicos que pueden ser necesarios para mantener el sitio web confiable y seguro.
+
+Te pido que no envíes información personal sensible a través de los formularios de solicitud de proyecto o de reserva, salvo que sea necesaria para conversar sobre tu proyecto.
+
+### 3. Por qué la recopilo
+
+Utilizo la información personal únicamente para fines comerciales pertinentes, en particular para:
+
+- revisar una solicitud y responderla;
+- preparar o agendar una llamada de orientación;
+- comprender un problema relacionado con un sitio web y recomendar un siguiente paso adecuado;
+- preparar una propuesta o prestar los servicios solicitados;
+- operar el sitio web, mantener su seguridad y resolver problemas técnicos;
+- comprender el uso del sitio y mejorar la experiencia, cuando hayas dado tu consentimiento a la analítica;
+- cumplir las obligaciones legales, contables o de conservación de registros aplicables.
+
+Magneto no vende información personal.
+
+### 4. Proveedores de servicios e información fuera de Quebec
+
+Magneto recurre a servicios de terceros cuando son necesarios para operar el sitio web o para responderte.
+
+Entre ellos pueden encontrarse:
+
+- **Calendly**, para agendar las llamadas de orientación;
+- proveedores de alojamiento web, infraestructura, gestión de contenido y envío de formularios;
+- herramientas de correo electrónico, almacenamiento de archivos y gestión de proyectos utilizadas para responder solicitudes y gestionar el trabajo con clientes;
+- proveedores de analítica, cuando la analítica no esencial esté activada con el consentimiento del visitante.
+
+Algunos proveedores pueden tratar o almacenar información fuera de Quebec o de Canadá. Antes del lanzamiento en producción, Magneto debe verificar la ubicación real de los proveedores, las medidas de protección aplicables y las evaluaciones o acuerdos de privacidad requeridos. Los proveedores de servicios se utilizan únicamente para las funciones necesarias para operar el sitio web, comunicarse contigo o prestar los servicios.
+
+### 5. Cookies y analítica
+
+El sitio web puede utilizar:
+
+- **tecnologías necesarias** para las funciones básicas del sitio, su seguridad o la conservación de tus preferencias de privacidad; y
+- **herramientas de analítica opcionales** para comprender cómo usan el sitio los visitantes.
+
+Las herramientas de analítica opcionales están previstas para estar desactivadas por defecto y cargarse solo si seleccionas **«Aceptar la analítica»** en el banner de privacidad. Puedes rechazar la analítica no esencial sin perder el acceso al sitio web y cambiar tu elección más adelante mediante el enlace **«Opciones de privacidad»** del pie de página.
+
+*Condición de publicación (nota interna, no visible): verificar este comportamiento en producción antes de publicar esta política.*
+
+### 6. Solicitudes de proyecto, reservas y correos promocionales
+
+La información enviada mediante el formulario de solicitud de proyecto o el proceso de reserva de una llamada de orientación se utiliza para responder a esa solicitud.
+
+**Enviar una solicitud o agendar una llamada no te suscribe automáticamente a correos promocionales.**
+
+Si Magneto ofrece un boletín informativo, una guía u otras comunicaciones por correo electrónico, el consentimiento para recibir correos promocionales se solicitará por separado. Puedes darte de baja de los correos promocionales mediante la opción incluida en esos mensajes.
+
+### 7. Cuánto tiempo se conserva la información
+
+Magneto conserva la información personal solo durante el tiempo razonablemente necesario para el fin con el que se recopiló, para una relación comercial activa o razonablemente prevista, o para cumplir requisitos legales, contables, de seguridad o de resolución de controversias aplicables.
+
+Cuando la información deja de ser necesaria, Magneto la elimina, la anonimiza o la destruye de forma segura, conforme a sus prácticas de conservación. Después del lanzamiento del sitio web se creará un calendario interno detallado de conservación, que se mantendrá como registro operativo de privacidad.
+
+### 8. Cómo se protege la información
+
+Magneto aplica medidas de protección administrativas y técnicas razonables, adecuadas para una pequeña consultoría web y para la naturaleza de la información que trata.
+
+Ningún sitio web, red o sistema de almacenamiento puede garantizar una seguridad absoluta.
+
+### 9. Tus opciones y derechos
+
+Conforme a la legislación aplicable, puedes comunicarte con Magneto para:
+
+- preguntar qué información personal tiene Magneto sobre ti;
+- solicitar el acceso a tu información personal o su rectificación;
+- retirar tu consentimiento cuando el tratamiento se base en él;
+- solicitar que la información personal informatizada admisible que proporcionaste se te comunique, o se comunique a una persona u organización que designes, en un formato tecnológico estructurado y de uso común;
+- hacer una pregunta o presentar una queja relacionada con la privacidad.
+
+Dentro de Magneto, solo Mauricio Bayuelo accede habitualmente a la información personal. Los proveedores de servicios solo pueden acceder a ella en la medida necesaria para prestar sus servicios.
+
+Para presentar una solicitud o una queja, escribe a la persona responsable de la protección de la información personal a [**contact@magnetomarketing.co**](mailto:contact@magnetomarketing.co). Magneto responderá por escrito dentro de los plazos previstos por la legislación aplicable. Si la respuesta no te satisface, puedes comunicarte con la Commission d'accès à l'information du Québec (Comisión de Acceso a la Información de Quebec).
+
+### 10. Servicios y enlaces externos
+
+El sitio web puede incluir enlaces a servicios operados por terceros, como Calendly, o integrarlos. Cuando interactúas directamente con esos servicios, se aplican sus propias prácticas de privacidad.
+
+### 11. Cambios en esta política
+
+Esta política puede actualizarse cuando el sitio web, las herramientas o las prácticas de privacidad de Magneto cambien de forma importante. La versión vigente, su fecha de entrada en vigor y su fecha de última actualización se publicarán en esta página.
+
+## SEO — Política de privacidad
+
+**Título SEO:** Política de privacidad | Magneto Web Consulting
+
+**Metadescripción:** Cómo Magneto Web Consulting recopila, utiliza y protege la información personal enviada a través de este sitio web, y cómo contactar a la persona responsable de su protección.
+
+## Textos de interfaz — privacidad (BORRADOR)
+
+### Banner de cookies y analítica
+
+**Título:** Opciones de privacidad
+
+Las tecnologías necesarias ayudan a que este sitio funcione. Con tu permiso, Magneto también puede utilizar herramientas de analítica para comprender cómo se usa el sitio y mejorar la experiencia. Puedes aceptar o rechazar la analítica no esencial.
+
+**Botones:** Aceptar la analítica · Rechazar lo no esencial · Política de privacidad
+
+**Enlace permanente del pie de página:** Opciones de privacidad
+
+### Consentimiento para el boletín o la guía — BLOQUE OCULTO HASTA SU ACTIVACIÓN
+
+**Casilla opcional, desmarcada por defecto:**
+
+- [ ] Me gustaría recibir también correos ocasionales de **Magneto Web Consulting** con consejos sobre sitios web e información sobre sus servicios. Puedo darme de baja en cualquier momento.
+
+*La entrega de la guía solicitada y el consentimiento para correos promocionales son independientes. No mostrar este bloque hasta que la guía y su envío estén listos.*
 
 ---
 

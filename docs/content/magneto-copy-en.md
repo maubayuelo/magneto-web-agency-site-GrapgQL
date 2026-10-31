@@ -1,8 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / EN
 URL: https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f
-Notion page last edited: 2026-10-26T21:41:01.863Z
-Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Notion page last edited: 2026-10-31 (P-1 edits + /projects SEO, Senior Architect via the Notion connector)
+Exported: 2026-10-31 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: 2026-10-26 export + the Notion edits made since then (Free CTA, Featured Services line, footer email removed, SEO headings Final, /projects SEO), applied verbatim with count-checked replacements.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -23,7 +24,7 @@ Primary CTA: **Book a Strategy Call**
 
 Build a stronger website, fix what is holding your current one back, or keep it running with reliable ongoing care.
 
-**CTA:** Book a Strategy Call
+**CTA:** Book a Free Strategy Call
 
 ### 2. Meet Magneto
 
@@ -123,7 +124,7 @@ Sent by email. Newsletter subscription is optional.
 
 Share what is and is not working with your website. Magneto will help determine whether the sensible next step is a new website, a focused fix, ongoing care — or no major intervention yet.
 
-**CTA:** Book a Strategy Call
+**CTA:** Book a Free Strategy Call
 
 ### 8. Footer
 
@@ -131,11 +132,11 @@ Share what is and is not working with your website. Magneto will help determine 
 
 **LinkedIn:** links to **Mauricio Bayuelo's personal LinkedIn profile**, which presents his career experience; it is not a Magneto company page.
 
-[contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Privacy Policy · Privacy choices
+Privacy Policy · Privacy choices
 
 **Magneto Web Consulting © 2026**
 
-### SEO — Draft
+### SEO — Final (approved by Mauricio, 2026-10-27)
 
 **Title:** Website Design & Development in Montreal | Magneto
 
@@ -148,9 +149,15 @@ Share what is and is not working with your website. Magneto will help determine 
 - Keep real project screenshots as the dominant proof visuals.
 - Hero visual should shift away from generic funnel / lead-generation imagery toward a website-centered composition (desktop/mobile, build/fix/care cues) while retaining Magneto's current visual identity where practical.
 - Preferred Hero direction: real Magneto work inside desktop/mobile frames + Magneto's current graphic/3D language as supporting elements, rather than either a generic marketing illustration or a plain screenshot-only hero.
-- Featured Services should keep the current layout as much as possible. BUILD and FIX remain the two main large cards; CARE must still be visibly represented on the Home without forcing a major layout rebuild.
+- Featured Services keeps the current card design. BUILD is the main full-width card on the first row; FIX and CARE share the second row. On mobile the three cards stack. (Decided by Mauricio, 2026-10-30.)
 - The Home must work as an organic acquisition / credibility page and as a trust hub for visitors arriving from Ads. Campaign-specific Ads may later use dedicated landing pages rather than forcing the Home to serve every campaign intent.
 - Do not publish unsupported lead, revenue, ranking or conversion claims.
+
+## Projects index (/projects) — SEO — Final (approved by Mauricio, 2026-10-31)
+
+**Title:** Web Design Projects in Montreal | Magneto
+
+**Meta description:** Selected website projects by Magneto Web Consulting in Montreal: web experiences for wellness, professional services and digital commerce.
 
 ## About — Consensus EN Source Copy v2
 
@@ -160,7 +167,7 @@ Share what is and is not working with your website. Magneto will help determine 
 
 Website strategy, UX/UI and development with one point of contact from the first conversation through launch.
 
-**CTA:** Book a Strategy Call
+**CTA:** Book a Free Strategy Call
 
 ### 2. The Founder
 
@@ -233,17 +240,17 @@ Sent by email. Newsletter subscription is optional.
 
 Share what is and is not working with your website. Magneto will help determine the most sensible next step.
 
-**CTA:** Book a Strategy Call
+**CTA:** Book a Free Strategy Call
 
 ### 8. Footer
 
 **Based in Montreal · Available in English, French & Spanish**
 
-Mauricio Bayuelo on LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Privacy Policy · Privacy choices
+Mauricio Bayuelo on LinkedIn · Privacy Policy · Privacy choices
 
 **Magneto Web Consulting © 2026**
 
-### SEO — Draft
+### SEO — Final (approved by Mauricio, 2026-10-27)
 
 **Title:** About Magneto | Montreal Web Consulting
 
@@ -266,7 +273,7 @@ Mauricio Bayuelo on LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 
 Build a stronger website, improve the one you already have, or keep it working with reliable ongoing care.
 
-**CTA:** Book a Strategy Call
+**CTA:** Book a Free Strategy Call
 
 ### 2. Intro
 
@@ -405,7 +412,7 @@ You do not need to decide between BUILD, FIX or CARE before getting in touch.
 
 Start by explaining what is happening with the website. Magneto will recommend the most sensible next step before defining the scope.
 
-**Primary CTA:** Book a Strategy Call
+**Primary CTA:** Book a Free Strategy Call
 
 **Secondary CTA:** Tell me about your project
 
@@ -413,11 +420,11 @@ Start by explaining what is happening with the website. Magneto will recommend t
 
 **Based in Montreal · Available in English, French & Spanish**
 
-Mauricio Bayuelo on LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Privacy Policy · Privacy choices
+Mauricio Bayuelo on LinkedIn · Privacy Policy · Privacy choices
 
 **Magneto Web Consulting © 2026**
 
-### SEO — Draft
+### SEO — Final (approved by Mauricio, 2026-10-27)
 
 **Title:** Website Services in Montreal | Build, Fix & Care | Magneto
 
@@ -529,17 +536,17 @@ Share what is happening with your website and what you want to improve, and Magn
 
 **Primary CTA:** Tell me about your project
 
-**Secondary CTA:** Book a Strategy Call
+**Secondary CTA:** Book a Free Strategy Call
 
 ### 8. Footer
 
 **Based in Montreal · Available in English, French & Spanish**
 
-Mauricio Bayuelo on LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Privacy Policy · Privacy choices
+Mauricio Bayuelo on LinkedIn · Privacy Policy · Privacy choices
 
 **Magneto Web Consulting © 2026**
 
-### SEO — Draft
+### SEO — Final (approved by Mauricio, 2026-10-27)
 
 **Title:** Website Design Pricing in Montreal | Magneto
 
@@ -567,7 +574,7 @@ Mauricio Bayuelo on LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 
 Share a few details about your website and what you want to improve. I’ll reply with the most sensible next step.
 
-**Secondary CTA:** Prefer to talk? **Book a Strategy Call**
+**Secondary CTA:** Prefer to talk? **Book a Free Strategy Call**
 
 ### 2. Project Inquiry Form
 
@@ -638,11 +645,11 @@ I’ll review them and reply by email with a recommended next step.
 
 **Based in Montreal · Available in English, French & Spanish**
 
-Mauricio Bayuelo on LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Privacy Policy · Privacy choices
+Mauricio Bayuelo on LinkedIn · Privacy Policy · Privacy choices
 
 **Magneto Web Consulting © 2026**
 
-### SEO — Draft
+### SEO — Final (approved by Mauricio, 2026-10-27)
 
 **Title:** Contact Magneto | Website Projects in Montreal
 
@@ -653,7 +660,7 @@ Mauricio Bayuelo on LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 - Preserve the current **two-block Contact-page structure**: Hero + existing form/image area.
 - Do not add separate **What Happens Next**, **Strategy Call Alternative** or **Final CTA** sections.
 - Replace the current **Request Free Quote** framing with **Tell me about your website project**.
-- The form is the primary lead path by position; **Book a Strategy Call** is the secondary path in the Hero.
+- The form is the primary lead path by position; **Book a Free Strategy Call** is the secondary path in the Hero.
 - Keep the form to six inputs: Name · Email · Website URL · Need · Project problem / goal · Approximate budget.
 - Website URL is optional and should not require a strict https:// format where avoidable.
 - The open project question is required.
@@ -668,7 +675,7 @@ Mauricio Bayuelo on LinkedIn · [contact@magnetomarketing.co](mailto:contact@mag
 
 ### Strategy Call ModalPopup — Public EN Copy
 
-#### Book a Strategy Call
+#### Book a Free Strategy Call
 
 Answer three short questions so we can focus the conversation on your website. Then choose a time for a free 30-minute call.
 
@@ -959,7 +966,7 @@ Use current production screenshots only.
 
 Magneto can help determine whether the right next step is a new website, a focused fix or ongoing care.
 
-**CTA:** Book a Strategy Call
+**CTA:** Book a Free Strategy Call
 
 ### SEO — Final EN
 
@@ -1070,7 +1077,7 @@ Do not use old testimonial screenshots. Do not capture the Calendly popup.
 
 Magneto can help determine whether the right next step is a new website, a focused fix or ongoing care.
 
-**CTA:** Book a Strategy Call
+**CTA:** Book a Free Strategy Call
 
 ### SEO — Final EN
 
@@ -1205,7 +1212,7 @@ Current-site caveats for screenshots:
 
 Magneto can help determine whether the right next step is a new website, a focused fix or ongoing care.
 
-**CTA:** Book a Strategy Call
+**CTA:** Book a Free Strategy Call
 
 ### SEO — Final EN
 

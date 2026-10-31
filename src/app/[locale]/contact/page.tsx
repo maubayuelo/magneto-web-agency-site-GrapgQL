@@ -5,6 +5,7 @@ import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
 import { notFound } from 'next/navigation';
 import { DEFAULT_LOCALE, isLocale } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionary';
+import { pageMetadata } from '@/utils/page-metadata';
 
 type ContactPageProps = { params: Promise<{ locale: string }> };
 
@@ -56,17 +57,5 @@ export default async function ContactPage({ params }: ContactPageProps) {
 
 export async function generateMetadata({ params }: ContactPageProps) {
   const { locale: rawLocale } = await params;
-  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  const t = getDictionary(locale);
-  try {
-  await getContactPageData(locale);
-  const title = t.meta.contact.title;
-  const desc = t.meta.contact.description;
-  return { title, description: desc, openGraph: { title, description: desc }, twitter: { title, description: desc } };
-  } catch {
-    return {
-      title: t.meta.contact.title,
-      description: t.meta.contact.description,
-    };
-  }
+  return pageMetadata(getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE).meta.contact);
 }

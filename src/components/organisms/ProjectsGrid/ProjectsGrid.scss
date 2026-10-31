@@ -15,22 +15,19 @@
 
     &__grid {
         display: grid;
-        grid-template-columns: 1fr; // Mobile-first: single column
+        grid-template-columns: minmax(0, 1fr); // Mobile-first: single column
         gap: $spacing-15; // Mobile-first: smaller gap
         width: 100%;
         max-width: 1380px;
 
-        @media (min-width: $breakpoint-phone) {
-            grid-template-columns: repeat(2, 1fr);
-            gap: $spacing-15;
+        // I-6 (5b): 2 tracks 601–1023, 3 from 1024; a lone third card stays in the first column (D-G6).
+        @include media-tablet-up {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: $spacing-30;
         }
-        
-        @media (min-width: $breakpoint-tablet) {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        @media (min-width: $breakpoint-tablet) {
-            grid-template-columns: repeat(3, 1fr);
-             gap: $spacing-30;
+
+        @include media-desktop-up {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
     }
 

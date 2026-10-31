@@ -99,3 +99,60 @@
     text-align: right;
   }
 }
+
+.services-intro {
+  flex-direction: column;
+  gap: $spacing-15;
+
+  &__title { white-space: pre-line; }
+  .service-rich-body { max-width: 70ch; margin-inline: auto; }
+}
+
+// `.main` is a flex row (globals.scss); the core and supporting groups must stack, not sit side by side.
+.main:has(> .services-group) { flex-direction: column; }
+
+.services-group {
+  width: 100%;
+
+  &__heading { margin: 0 0 $spacing-30; }
+  &__intro { max-width: 70ch; margin: 0 0 $spacing-30; }
+}
+
+.service-item[id] { scroll-margin-top: 90px; }
+.service-content { min-width: 0; }
+.service-cta { align-self: flex-start; min-height: 44px; }
+.service-cta:focus-visible { outline: 3px solid $primary-color; outline-offset: 4px; }
+.service-rich-body {
+  overflow-wrap: anywhere;
+  p:first-child { margin-top: 0; }
+  p:last-child { margin-bottom: 0; }
+  ul, ol { padding-left: 1.5em; }
+  li + li { margin-top: $spacing-5; }
+}
+
+.service-item--rich {
+  align-items: flex-start;
+  .service-content { align-items: flex-start; text-align: left; }
+  .service-heading { margin-bottom: $spacing-15; }
+
+  @media (max-width: 1023px) {
+    flex-direction: column;
+    .service-image-wrapper { max-width: 100%; width: 100%; }
+  }
+}
+
+.services-supporting-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: $spacing-30;
+  margin-bottom: $spacing-30;
+
+  @include media-desktop-up { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.service-item--supporting {
+  display: block;
+  border-top: 1px solid $gray-30;
+  padding-top: $spacing-30;
+  .service-content { align-items: flex-start; text-align: left; }
+}

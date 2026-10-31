@@ -70,6 +70,12 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: $spacing-10 $spacing-30;
+
+    // 5b §5.5 (E9): the global `ul li` rule (typography.scss) sets lg type; links take the list's md, like the copyright.
+    > li {
+        font: inherit;
+        margin-bottom: 0;
+    }
 }
 
 .footer__link {

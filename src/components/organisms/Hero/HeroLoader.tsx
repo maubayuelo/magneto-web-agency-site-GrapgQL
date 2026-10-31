@@ -1,16 +1,18 @@
 import { Hero } from './index';
 import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionary';
-import { getPageHero, heroPageName, type PageHero } from './api';
+import { getPageHero, heroPageName, resolveHeroCta, type PageHero } from './api';
 
 
 interface HeroLoaderProps {
   pageUri: string;
   locale: Locale;
   variant?: 'default' | 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'packages';
+  /** Set by Packages when its new content is populated: only an internal ctaPath CTA may render (5b §5.3). */
+  requireInternalCta?: boolean;
 }
 
-export default async function HeroLoader({ pageUri, locale, variant = 'default' }: HeroLoaderProps) {
+export default async function HeroLoader({ pageUri, locale, variant = 'default', requireInternalCta = false }: HeroLoaderProps) {
   let about: PageHero | null = null;
   try {
     about = await getPageHero(heroPageName(pageUri), locale);
@@ -25,7 +27,7 @@ export default async function HeroLoader({ pageUri, locale, variant = 'default' 
       variant={variant}
       title={hero?.heroTitle || about?.title || "Magneto"}
       subtitle={hero?.subtitleHero || ""}
-      cta={hero?.ctaTextHero && hero?.ctaLinkHero ? { text: hero.ctaTextHero, href: hero.ctaLinkHero } : undefined}
+      cta={resolveHeroCta(hero, locale, requireInternalCta)}
       // Only show the hero image on the home variant. Some pages provide a
       // CMS image but the design requires the visual only on the home page.
       showImage={variant === 'home' ? !!hero?.image?.node?.sourceUrl : false}

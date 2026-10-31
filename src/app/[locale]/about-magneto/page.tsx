@@ -10,39 +10,13 @@ import { localizePath } from '@/i18n/paths';
 import DOMPurify from 'isomorphic-dompurify';
 import FinalCTASectionLoader from '@/components/organisms/FinalCTASection/FinalCTASectionLoader';
 import { getAboutPageData } from './api';
+import { pageMetadata } from '@/utils/page-metadata';
 
 type AboutPageProps = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: AboutPageProps) {
   const { locale: rawLocale } = await params;
-  const locale = isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE;
-  const t = getDictionary(locale);
-  try {
-    const data = await getAboutPageData(locale);
-    const title = data?.title ?? t.meta.about.title;
-    const desc = data?.meta_description ?? t.meta.about.description;
-    return {
-      title,
-      description: desc,
-      openGraph: {
-        title,
-        description: desc,
-      },
-      twitter: {
-        title,
-        description: desc,
-      },
-    };
-  } catch (e) {
-    const title = t.meta.about.title;
-    const desc = t.meta.about.description;
-    return {
-      title,
-      description: desc,
-      openGraph: { title, description: desc },
-      twitter: { title, description: desc },
-    };
-  }
+  return pageMetadata(getDictionary(isLocale(rawLocale) ? rawLocale : DEFAULT_LOCALE).meta.about);
 }
 
 export default async function AboutPage({ params }: AboutPageProps) {

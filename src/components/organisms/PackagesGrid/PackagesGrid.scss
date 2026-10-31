@@ -1,7 +1,3 @@
-/* Placeholder styles for PackagesGrid */
-.packages-grid {
-  display: block; /* placeholder to avoid empty-ruleset lint errors */
-}
 @import "../../../styles/variables";
 @import "../../../styles/mixins";
 
@@ -11,21 +7,67 @@
     display: grid;
     gap: $spacing-15;
     
-    // Mobile: Column layout (single column)
-    grid-template-columns: 1fr;
-    
-    // Tablet: 2x2 grid layout
+    // Mobile: single column
+    grid-template-columns: minmax(0, 1fr);
+
+    // I-6 (5b): 2 tracks 601–1023; the lone third card stays in the first column (D-G6)
     @include media-tablet-up {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       max-width: none;
     }
-    
-    // Desktop: Row layout (all cards in a row)
+
+    // Desktop: 3 cards in a row
     @include media-desktop-up {
       gap: $spacing-30;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       justify-content: center;
       align-items: flex-start;
+    }
+
+    // 5b (a), legacy cards (state C) at 2+ columns: each card spans 5 shared row tracks (title, price, description,
+    // CTA, "What's included"), so a wrapped title no longer pushes one card's price/CTA out of line and the
+    // features box fills the row instead of leaving grey space.
+    @include media-tablet-up {
+      // Rich cards (state N, D-6): 2 shared tracks — top zone (name + heading, tallest in the row, so the CTAs line
+      // up) and bottom zone (CTA + description), which keeps its own height: each card ends after its own box.
+      &.packages-grid__container--rich {
+        align-items: stretch;
+
+        > .package-card {
+          display: grid;
+          grid-row: span 2;
+          grid-template-rows: subgrid;
+          row-gap: 0;
+        }
+
+        > .package-card > .package-card__zone--bottom {
+          align-self: start;
+
+          // Desktop (3 columns, D-6 adjustment): the grey card fills the row height; the white description box keeps
+          // its own height and the grey continues below it. Tablet keeps content-height cards.
+          @include media-desktop-up {
+            align-self: stretch;
+          }
+        }
+      }
+
+      &:not(.packages-grid__container--rich) {
+        align-items: stretch;
+
+        > .package-card {
+          display: grid;
+          grid-row: span 5;
+          grid-template-rows: subgrid;
+          row-gap: $spacing-15;
+        }
+
+        > .package-card > .package-card__header {
+          display: grid;
+          grid-row: span 3;
+          grid-template-rows: subgrid;
+          row-gap: 12px;
+        }
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { usePathname } from 'next/navigation';
 import { ProjectsGrid } from './index';
+import { en } from '@/i18n/dictionaries/en';
 
 // Classic JSX runtime in Vitest (Known debt): ProjectsGrid doesn't import React.
 (globalThis as typeof globalThis & { React: typeof React }).React = React;
@@ -20,7 +21,7 @@ describe('ProjectsGrid with zero projects', () => {
     vi.mocked(usePathname).mockReturnValue(path);
     render(<ProjectsGrid projects={[]} maxProjects={6} title="" />);
     expect(screen.getByText(EMPTY_TITLE)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Book a Strategy Call' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: en.common.bookStrategyCall })).toBeInTheDocument();
     expect(document.querySelector('.projects-grid')).toBeNull();
   });
 
