@@ -1,8 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / FR-CA
 URL: https://app.notion.com/p/3fc702393b5e8195a8c1eeede1910b62
-Notion page last edited: 2026-10-26T21:41:07.682Z
-Exported: 2026-10-26 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Notion page last edited: 2026-10-31 (P-1 edits + /projects SEO, Senior Architect via the Notion connector)
+Exported: 2026-10-31 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: 2026-10-26 export + the Notion edits made since then (CTA « gratuit », courriel retiré des pieds de page, SEO /projects), applied verbatim with count-checked replacements.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -23,7 +24,7 @@ re-export if Notion changes. Do not edit copy here — edit in Notion, then re-e
 
 Bâtissez un site web plus solide, corrigez ce qui freine votre site actuel ou gardez-le fonctionnel grâce à un entretien fiable et continu.
 
-**CTA : Réserver un appel-conseil**
+**CTA : Réserver un appel-conseil gratuit**
 
 ## 2. Découvrir Magneto
 
@@ -105,13 +106,13 @@ Projet de Magneto, et non un projet client : une boutique en ligne et un blogue 
 
 Expliquez ce qui fonctionne et ce qui ne fonctionne pas sur votre site web. Magneto vous aidera à déterminer si la prochaine étape la plus sensée est un nouveau site, une correction ciblée, un entretien continu — ou aucune intervention majeure pour le moment.
 
-**CTA : Réserver un appel-conseil**
+**CTA : Réserver un appel-conseil gratuit**
 
 ## 8. Pied de page
 
 **Établi à Montréal · Services offerts en français, en anglais et en espagnol**
 
-Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Politique de confidentialité · Choix de confidentialité
+Mauricio Bayuelo sur LinkedIn · Politique de confidentialité · Choix de confidentialité
 
 **Magneto Web Consulting © 2026**
 
@@ -120,6 +121,12 @@ Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@ma
 **Balise titre :** Conception et développement de sites web à Montréal | Magneto
 
 **Méta-description :** Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec son fondateur, en français, en anglais et en espagnol.
+
+## SEO — Index Réalisations (/projects) — Final (approuvé par Mauricio, 2026-10-31)
+
+**Balise titre :** Réalisations web à Montréal | Magneto
+
+**Méta-description :** Réalisations web de Magneto Web Consulting à Montréal : des expériences web pour le bien-être, les services professionnels et le commerce en ligne.
 
 ---
 
@@ -131,7 +138,7 @@ Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@ma
 
 Stratégie web, conception UX/UI et développement : vous échangez avec la même personne, du premier contact à la mise en ligne.
 
-**CTA : Réserver un appel-conseil**
+**CTA : Réserver un appel-conseil gratuit**
 
 ## 2. Le fondateur
 
@@ -192,13 +199,13 @@ Votre site web est dépassé, manque de clarté ou est difficile à utiliser? Vo
 
 Expliquez ce qui fonctionne et ce qui ne fonctionne pas sur votre site web. Magneto vous aidera à déterminer la prochaine étape la plus sensée.
 
-**CTA : Réserver un appel-conseil**
+**CTA : Réserver un appel-conseil gratuit**
 
 ## 8. Pied de page
 
 **Établi à Montréal · Services offerts en français, en anglais et en espagnol**
 
-Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Politique de confidentialité · Choix de confidentialité
+Mauricio Bayuelo sur LinkedIn · Politique de confidentialité · Choix de confidentialité
 
 **Magneto Web Consulting © 2026**
 
@@ -218,7 +225,7 @@ Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@ma
 
 Créez un site web plus solide, améliorez celui que vous avez déjà ou gardez-le fonctionnel grâce à un entretien fiable et continu.
 
-**CTA : Réserver un appel-conseil**
+**CTA : Réserver un appel-conseil gratuit**
 
 ## 2. Introduction
 
@@ -349,7 +356,7 @@ Vous n'avez pas à choisir entre BUILD, FIX et CARE avant de communiquer avec Ma
 
 Commencez par expliquer ce qui se passe avec votre site web. Magneto vous recommandera la prochaine étape la plus sensée avant de définir la portée des travaux.
 
-**CTA principal : Réserver un appel-conseil**
+**CTA principal : Réserver un appel-conseil gratuit**
 
 **CTA secondaire : Parlez-moi de votre projet**
 
@@ -357,7 +364,7 @@ Commencez par expliquer ce qui se passe avec votre site web. Magneto vous recomm
 
 **Établi à Montréal · Services offerts en français, en anglais et en espagnol**
 
-Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Politique de confidentialité · Choix de confidentialité
+Mauricio Bayuelo sur LinkedIn · Politique de confidentialité · Choix de confidentialité
 
 **Magneto Web Consulting © 2026**
 
@@ -468,13 +475,13 @@ Expliquez ce qui se passe avec votre site web et ce que vous souhaitez améliore
 
 **CTA principal : Parlez-moi de votre projet**
 
-**CTA secondaire : Réserver un appel-conseil**
+**CTA secondaire : Réserver un appel-conseil gratuit**
 
 ## 8. Pied de page
 
 **Établi à Montréal · Services offerts en français, en anglais et en espagnol**
 
-Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Politique de confidentialité · Choix de confidentialité
+Mauricio Bayuelo sur LinkedIn · Politique de confidentialité · Choix de confidentialité
 
 **Magneto Web Consulting © 2026**
 
@@ -549,7 +556,7 @@ Magneto a pris en charge le projet, de la stratégie à la mise en ligne : conce
 
 Magneto peut vous aider à déterminer si la prochaine étape est un nouveau site web, un correctif ciblé ou un entretien continu.
 
-**CTA : Réserver un appel-conseil**
+**CTA : Réserver un appel-conseil gratuit**
 
 ### SEO — Dangel
 
@@ -621,7 +628,7 @@ Magneto a pris en charge le projet, de la stratégie à la mise en ligne : struc
 
 Magneto peut vous aider à déterminer si la prochaine étape est un nouveau site web, un correctif ciblé ou un entretien continu.
 
-**CTA : Réserver un appel-conseil**
+**CTA : Réserver un appel-conseil gratuit**
 
 ### SEO — Trépied
 
@@ -693,7 +700,7 @@ Magneto a conçu et développé le site web et continue de l'entretenir et de le
 
 Magneto peut vous aider à déterminer si la prochaine étape est un nouveau site web, un correctif ciblé ou un entretien continu.
 
-**CTA : Réserver un appel-conseil**
+**CTA : Réserver un appel-conseil gratuit**
 
 ### SEO — Shamanicca
 
@@ -711,7 +718,7 @@ Magneto peut vous aider à déterminer si la prochaine étape est un nouveau sit
 
 Décrivez brièvement votre projet et ce que vous souhaitez créer ou améliorer. Je vous répondrai en vous proposant la prochaine étape la plus sensée.
 
-**CTA secondaire :** Vous préférez en discuter? **Réserver un appel-conseil**
+**CTA secondaire :** Vous préférez en discuter? **Réserver un appel-conseil gratuit**
 
 ## 2. Formulaire de demande de projet
 
@@ -782,7 +789,7 @@ Je les examinerai et vous répondrai par courriel en vous recommandant une proch
 
 **Établi à Montréal · Services offerts en français, en anglais et en espagnol**
 
-Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co) · Politique de confidentialité · Choix de confidentialité
+Mauricio Bayuelo sur LinkedIn · Politique de confidentialité · Choix de confidentialité
 
 **Magneto Web Consulting © 2026**
 
@@ -802,7 +809,7 @@ Mauricio Bayuelo sur LinkedIn · [contact@magnetomarketing.co](mailto:contact@ma
 
 *À utiliser seulement si le préremplissage de l'adresse courriel dans Calendly est réellement vérifié et fiable.*
 
-### Réserver un appel-conseil
+### Réserver un appel-conseil gratuit
 
 Indiquez votre adresse courriel et répondez à trois courtes questions pour préparer notre échange sur votre site web. Choisissez ensuite une plage horaire pour un appel gratuit de 30 minutes.
 
@@ -847,7 +854,7 @@ Vos réponses et votre adresse courriel sont transmises à Calendly avec votre r
 
 *À utiliser si le préremplissage du courriel depuis le modal n'est pas fiable ou ajoute une complexité inutile. Aucun champ Courriel dans le modal.*
 
-### Réserver un appel-conseil
+### Réserver un appel-conseil gratuit
 
 Répondez à trois courtes questions pour préparer notre échange sur votre site web. Choisissez ensuite une plage horaire pour un appel gratuit de 30 minutes.
 
