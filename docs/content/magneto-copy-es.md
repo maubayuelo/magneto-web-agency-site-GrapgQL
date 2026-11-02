@@ -1,9 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / ES
 URL: https://app.notion.com/p/3fc702393b5e81abaf9af4c499daab27
-Notion page last edited: 2026-10-31 (P-1 edits + /projects SEO, Senior Architect via the Notion connector)
-Exported: 2026-10-31 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: 2026-10-26 export + the Notion edits made since then (CTA « gratuita », correo fuera de los pies de página, SEO /projects, Política de privacidad ES en borrador, Dangel «el propietario»), applied verbatim with count-checked replacements.
+Notion page last edited: 2026-10-31 evening (5d-lite P-1 strings, Senior Architect via the Notion connector)
+Exported: 2026-11-02 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: 01ff73f export + the Notion edits made since then (mensajes del formulario 4b), applied verbatim with count-checked replacements.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -800,6 +800,24 @@ Usaré la información que compartas para revisar tu solicitud de proyecto y res
 **Gracias. Los detalles de tu proyecto se enviaron correctamente.**
 
 Los revisaré y te responderé por correo electrónico con una recomendación sobre el siguiente paso.
+
+## 4b. Mensajes del formulario — Final (aprobado por Mauricio, 2026-10-31)
+
+**Texto inicial de las listas (Necesidad y Presupuesto):** Elige una opción
+
+**Leyenda de campos obligatorios:** Los campos marcados con * son obligatorios.
+
+**Error — nombre:** Escribe tu nombre.
+
+**Error — correo:** Escribe un correo electrónico válido.
+
+**Error — necesidad:** Elige con qué necesitas ayuda.
+
+**Error — problema / objetivo:** Cuéntame brevemente sobre tu sitio web o tu proyecto.
+
+**Error — presupuesto:** Elige un presupuesto aproximado, o « Todavía no lo sé ».
+
+**Fallo del envío:** Ocurrió un error y tu mensaje no se envió. Inténtalo de nuevo o agenda una llamada de orientación gratuita.
 
 ## 5. Pie de página
 
