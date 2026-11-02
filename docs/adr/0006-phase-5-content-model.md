@@ -3,6 +3,8 @@
 - Status: Accepted (2026-10-26, Senior Architect, with amendments: schema as code, project order 10/20/40)
 - Amendment 1 (2026-10-27, Senior Architect, approved by Mauricio): `heroContent.hero_cta_path` added to the single
   Phase 5 export (see "Amendments").
+- Amendment 2 (2026-11-02, Senior Architect, approved by Mauricio): the Contact page no longer renders
+  `contactContactTexts` (see "Amendments").
 - Date: 2026-10-26
 - Deciders: Mauricio (lead), Senior Architect
 - Spec: `docs/specs/phase-5a-structure-shared-home-about-cases.md` (first consumer).
@@ -158,6 +160,13 @@ prefixed (`hero_cta_path`) because `heroContent` applies to every page, where `f
 a separate additive export with its own runbook.
 
 The same edit records the 5a F-3 names of the two `aboutData` fields in the table above (GraphQL names unchanged).
+
+**2. Contact page stops rendering `contactContactTexts` (2026-11-02).** Phase 5d-lite (D-2) moves the three Contact
+supporting lines to the UI dictionaries (ADR 0005), so they ship in EN/FR/ES without a release-day loader dependency.
+The Contact page no longer renders `contactContactTexts` (`mainCopy`, `tagText`, `bodytext`, `supportingHtml`), and
+`CONTACT_PAGE_QUERY` no longer requests the group. Following expand/contract, the fields stay in the schema and are
+removed in the Cleanup/Contract phase. No schema change now. The `supportingHtml` row above ("5d-lite / R1 Contact
+copy") is therefore unused. Spec: `docs/specs/phase-5d-lite-contact-modal.md` rev 3.
 
 ## Consequences
 
