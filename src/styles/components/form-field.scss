@@ -26,6 +26,11 @@
 
 .form-field__control {
   @include font-style(sm, regular, md);
+  // iOS Safari zooms the page when a focused control's text is under 16px (the sm scale is 12px here), which
+  // clipped the booking dialog sideways. Phones and tablets get 16px; desktop keeps the 14px design.
+  @media (max-width: $breakpoint-desktop) {
+    font-size: 16px;
+  }
   //width: 100%;
   padding: 14px 16px;
   background: $white;
