@@ -2,11 +2,11 @@
 
 - Spec: `docs/specs/phase-5d-lite-contact-modal.md` (rev 3, Approved 2026-11-02)
 - Author: Dev (Claude) · Date: 2026-11-02 · Branch: `feat/phase-5d-lite` @ `d78c631` (working tree, nothing staged or committed)
-- Status: **Part 2 implemented and reviewed (Senior Architect: approved with two fixes, both done 2026-11-02; branch @
-  `298d171` + working tree, nothing staged).** Native `<dialog>` chosen (Chrome: 7/7, re-checked after the fixes). V1
-  passed in EN/FR/ES on the single event. Gate green except the pre-existing lint baseline.
-  **The PR is not ready** until Mauricio has run V2 and the Safari / iPhone / VoiceOver checklist (section "Part 2" →
-  "For Mauricio"). Part 1 + Option A were approved earlier (checkpoint below).
+- Status: **Part 2 implemented, reviewed and manually checked by Mauricio on the Vercel preview (2026-11-03).**
+  macOS Safari keyboard + VoiceOver, V2, AC-20 and P-3: **pass**. iPhone Safari **failed on 3 points** (auto-zoom,
+  background scroll, close-button size). All 3 are fixed in the working tree (section "Part 2 — iOS fixes",
+  2026-11-03). **The PR is not ready until Mauricio re-checks on the iPhone.** Branch `feat/phase-5d-lite` @
+  `e7d92be` + working tree, nothing staged.
 
 ## Result
 Part 1 is implemented, and so is Option A (the single Calendly event):
@@ -380,6 +380,11 @@ Widths 375 / 768 / 1440 use the Part 1 same-origin iframe method; the window max
 | 6 | Background inert (clicks + AT) | **pass, clicks and focus**: a real click on the header logo behind hit the backdrop (no navigation). `focus()` on header and main controls is refused. AT tree: the extension's tree walks the DOM, so it is not evidence → **VoiceOver pending** | pending | pending | n/a |
 | 7 | No layout regression 375/768/1440; `::backdrop` replaces `.ec-overlay` | **pass after a fix**: first render clipped (`.ec-modal` was content-box: 100% + 60 px padding inside a 480 px dialog). Fixed with `box-sizing: border-box`, re-checked after a rebuild: `scrollWidth = clientWidth` at every width, page `scrollWidth` = viewport. When content is taller than the viewport, the dialog scrolls inside itself (see Observations). | pending | pending | pending |
 
+**Update 2026-11-03 (Mauricio, Vercel preview):**
+- macOS Safari, keyboard + VoiceOver: **pass** for behaviours 1–7 and every trigger.
+- iPhone Safari: **fail** on auto-zoom (7), background scroll (6, touch) and the close-button size. Fixed in "Part 2 — iOS fixes"; the iPhone re-check is pending.
+- Firefox (optional): not reported.
+
 **Choice: native `<dialog>` + `showModal()`** (decision rule §6.0: every check passes in the checked browser).
 - The custom-dialog bullets (portal, `inert` siblings, manual Escape, Tab trap) were not built. No approaches are mixed.
 - If a manual Safari / iPhone check fails, switching to the custom dialog (§6.1) becomes a follow-up **before the PR**
@@ -634,3 +639,166 @@ typechecks and passes its tests on top of the previous one.
 
 ### Time
 Agent active time for Part 2 ≈ 3 h (estimate: implementation, two local builds, Chrome evaluation, V1 ×3, report).
+
+---
+## Part 2 — Mauricio's manual checks (Vercel preview, 2026-11-03)
+
+| Check | Result |
+|---|---|
+| A. macOS Safari, keyboard (all triggers) | **pass** |
+| D. VoiceOver smoke check (macOS Safari) | **pass** |
+| V2: one real booking through the site, then cancelled | **pass**: `a1`–`a3` arrived in Calendly → **AC-13 met**, B2 can ship |
+| AC-20: real email from the preview `/contact` form | **pass**: the email arrived; no subscription was created |
+| P-3: Vercel env | **pass**: no `DISABLE_SMTP` or `ALLOW_CONTACT_FALLBACK`; `SMTP_*` set in Preview + Production |
+| B. iPhone Safari | **fail on 3 points** → fixed below; **re-check pending (Mauricio)** |
+| C. Firefox (optional) | not reported |
+
+Per the Senior Architect's rule, a Safari failure would have meant switching to the custom dialog (§6.1). The 3 iPhone
+failures are not dialog-semantics failures: focus, naming, inert background and Escape all passed in Safari and VoiceOver.
+They are a font-size zoom, iOS touch-scroll chaining and a tap-target size, so they were fixed on the native dialog
+(Mauricio's instruction, 2026-11-03). If the iPhone re-check fails again, §6.1 is back on the table.
+
+## Part 2 — iOS fixes (2026-11-03)
+
+### Result
+1. **Auto-zoom:** every input, select and textarea in the booking dialog **and** on `/contact` is 16 px at ≤ 1024 px
+   (it was 12 px: the `sm` type scale on phone/tablet). Desktop (> 1024 px) keeps the 14 px design. The viewport
+   meta is unchanged: no `maximum-scale`, no `user-scalable=no`.
+2. **Background scroll:** the page is locked while the dialog is open:
+   - `html { overflow: hidden }`
+   - `body { position: fixed; top: -<scrollY>px; left/right: 0; overflow: hidden }`
+   - plus `padding-right` = the scrollbar width, only when there is a classic scrollbar
+
+   The dialog has `overscroll-behavior: contain`. On every close path (Escape, close button, Continue, provider
+   unmount) the exact previous inline `style` of `<html>` and `<body>` comes back and the scroll position is restored,
+   **before** focus returns to the trigger and before Calendly opens.
+3. **Close button:**
+   - a 44×44 px tap target (it was 32×32)
+   - an SVG ✕: 20 px, stroke 2.5, round caps, `currentColor` = `$black` #171717 → **17.9:1** on white (≥ 3:1 needed for the icon); it was a text "×" in the inherited button colour
+   - `aria-hidden` icon; the accessible name is still `aria-label={t.common.close}`
+   - hover background `$gray-20`; the `:focus-visible` ring is unchanged and now outlines the 44 px box
+   - `.ec-heading` `padding-right` 32 → 40 px, so long headings stay clear of the bigger button
+
+### Changes
+| File | What |
+|---|---|
+| `src/styles/components/form-field.scss` | `.form-field__control`: `font-size: 16px` at `max-width: $breakpoint-desktop` (1024 px), placed after the `font-style(sm…)` mixin so it wins at phone width too. Shared by the dialog and `/contact` ("form styles as needed"). |
+| `src/styles/components/email-collector.scss` | `.ec-dialog` `overscroll-behavior: contain`. `.ec-close` 44×44 flex box, `$black`, hover `$gray-20`, `&__icon`. `.ec-heading` `padding-right: 40px`. |
+| `src/components/organisms/EmailCollectorProvider/index.tsx` | Module-private `lockPageScroll()` (not exported: public API unchanged). It is called just before `showModal()`. Its unlock runs in `finishClose` before focus returns, and in an unmount cleanup. The close button's "×" text is replaced by an `aria-hidden` SVG. |
+| `src/components/organisms/EmailCollectorProvider/EmailCollectorProvider.test.tsx` | +7 tests (new `describe`). Lock on open; exact restore (inline styles + `scrollTo(0, 420)`) on Escape, the close button (restore runs **before** `trigger.focus()`), Continue (body already unlocked when Calendly is called) and unmount. Close button ×3 locales: name kept, `type="button"`, no text, icon `aria-hidden`. A file-level no-op `window.scrollTo` (jsdom has none). |
+
+**Not testable in Vitest:** the close button's size and the 16 px font. Vitest does not process SCSS (no `css` option),
+so jsdom has no computed style from these rules. Both were measured in the browser (below).
+
+### Gate (2026-11-03)
+| Check | Command | Result |
+|---|---|---|
+| lint | `npm run lint` | exit 1, **pre-existing only**, unchanged: 88 errors / 94 warnings / 82 `no-explicit-any`. The provider's 1 error (`{}`, the props type) + 4 unused catch vars are the same pre-existing findings; the new test block is clean. |
+| typecheck | `npm run typecheck` | **passed** |
+| tests | `npm test -- --run` | **passed**: 39 files / **557** tests (+7) |
+| agent-gate node test | `node --test scripts/agent-gate.node-test.mjs` | **passed** 9 / 9 |
+| local trilingual build | `ALLOW_UNTRANSLATED_LOCALES=1 npm run agent:build` | passed (for the browser checks) |
+| trilingual guard | `ENABLED_LOCALES=en,fr,es npm run agent:build` | **fails as designed**: fr 58 / es 57 (AC-14 unchanged) |
+| EN build | `ENABLED_LOCALES=en npm run agent:build` | **passed** (the last build of the session; `.next` is clean) |
+
+### Browser checks (Chrome, local trilingual build on 3100)
+**The 7 native-dialog behaviours, keyboard, top-level page** (775 px window; trigger = home final CTA, page scrolled to
+y = 2496):
+
+| # | Result |
+|---|---|
+| 1 | **pass**: Enter on the trigger → focus on Website |
+| 2 | **pass**: the 8× Tab / 8× Shift+Tab log, as before: Close → Website → Need → Problem → Privacy Policy → Continue → (browser chrome) → Close … Never the page. |
+| 3 | **pass**: Escape closes |
+| 4 | **pass**: focus is back on the trigger with `:focus-visible`, and **scrollY = 2496** (unchanged) |
+| 5 | **pass**: named by the `<h2>` "Book a Free Strategy Call"; `:modal` true |
+| 6 | **pass**: `focus()` on 3 background controls refused. 10 wheel ticks over the backdrop: the page doesn't move. A real click on a link behind: no navigation. |
+| 7 | **pass**: table below |
+
+While open: `html` `overflow: hidden`, `body` `position: fixed; top: -2496px; …`. After Escape and after a real click
+on the close button, both `style` attributes are back to `null` (none before), with scrollY 2496. The click landed
+18 px off-centre, at the button's top-right corner, outside the old 32 px box, and closed the dialog.
+
+**Per width** (exact-size same-origin iframes, the page scrolled to 400 before opening). The 375×812 rows are the emulated mobile check:
+
+| Viewport | Locale | Controls font | Close | Dialog `scrollHeight/clientHeight` | Dialog / page horizontal scroll | Lock (`top`) |
+|---|---|---|---|---|---|---|
+| 375×812 | EN | 16 / 16 / 16 | 44×44, inside | 658 / 658 | none / none (345 = 345, 375 = 375) | −400px |
+| 375×812 | FR | 16 / 16 / 16 | 44×44 | 714 / 714 | none / none | −400px |
+| 375×812 | ES | 16 / 16 / 16 | 44×44 | 745 / 745 | none / none | −400px |
+| 768×1024 | EN | 16 / 16 / 16 | 44×44 | 605 / 605 | none / none | −400px |
+| 1440×900 | EN | 14 / 14 / 14 (desktop design) | 44×44 | 703 / 703 | none / none | −400px |
+
+- The dialog heights equal the review-fix-1 numbers: the type scale fixes the line-height in px, so 16 px text added
+  no height, and "Continue" is still visible without scrolling.
+- `/contact` EN: all 6 `.form-field__control` are 16 px at 375 and 768 and 14 px at 1440. No horizontal scroll.
+- `/fr/contact` and `/es/contact` are 404 locally (known, issue 7 → AC-19 launch QA). The rule is shared, so the
+  result doesn't depend on the locale.
+
+**Limits of this evidence:** Chrome emulation doesn't reproduce iOS's zoom-on-focus or iOS touch scrolling. They are
+checked by their cause: computed font ≥ 16 px, and the body pinned with `position: fixed` (the technique iOS needs,
+since iOS ignores `overflow: hidden` on body for touch). The real proof is Mauricio's iPhone re-check (below).
+
+Screenshots (8) in `~/Documents/projects/magneto/backups/phase-5d-lite/screenshots/part2-ios-fixes/`:
+- `375x812-{en,fr,es}-booking-dialog.png`, `768x1024-en-booking-dialog.png`, `1440x900-en-booking-dialog.png`
+- `375x812-en-contact-form-16px.png`
+- `375x812-en-close-button-focus-ring.png`, `775-en-close-button-44px.png`
+
+**Safety:**
+- `.env.local` targets `magneto-cms-2.local` (host checked, values not printed); `DISABLE_SMTP=1`.
+- The local CMS answered 200.
+- No form was submitted and Continue was not pressed, so Calendly was not opened.
+- No CMS, Calendly or production write; no git command beyond `status` / `log`.
+- Server: `agent:start` on 3100 (gate 8080 / server 8124), stopped by PID. Port 3000 was not touched.
+
+### Deviations (iOS fixes)
+19. **`form-field.scss` changes `/contact` too** (16 px controls at ≤ 1024 px). This was requested ("the /contact form,
+    same issue"), and the class is shared. On phone and tablet, the `/contact` control text is visibly larger than in
+    the approved Part 1 screenshots.
+20. **Desktop (> 1024 px) stays 14 px.** iPads wider than 1024 px CSS (12.9″ landscape) would get 14 px. iPadOS
+    Safari requests desktop sites by default and generally doesn't zoom on focus there, but it is unverified. If
+    Mauricio wants 16 px everywhere, the fix is to drop the media query (one line).
+21. **Scroll lock is in the provider, not a shared hook.** It's a small module-private function, kept inside the
+    allowed files. Only the booking/download dialog uses it; the D-10 Calendly iframe fallback in `calendly.ts` was
+    out of scope and doesn't lock.
+
+### Issues found (not fixed)
+12. **A click on the backdrop moves focus to the dialog heading** (`tabIndex=-1`) in Chrome. Focus stays inside the
+    dialog, and nothing behind reacts. This predates the iOS fixes (the heading has had `tabIndex=-1` since Part 2).
+    It is harmless, but a following Tab starts from the heading. Candidate for the cleanup phase, if wanted.
+13. `common.close` is still `[FR TODO]` / `[ES TODO]` (counted in AC-14 58/57), so the FR/ES close button's accessible
+    name is the TODO-marked string until translation. Unchanged by this work.
+
+### For Mauricio — iPhone re-check (≈ 5 min, Vercel preview after these commits are pushed)
+1. Scroll down the home page, tap "Book a Strategy Call". → The dialog opens, and the page doesn't jump.
+2. Tap "Your website". → **No zoom**: the dialog keeps its 15 px side margins, nothing clipped sideways.
+3. Also tap the "Need" select and the "Problem" box. → No zoom.
+4. Drag on the dark backdrop, and drag inside the dialog past its end. → **The page behind doesn't scroll.**
+5. Tap ✕ (also try near its edge). → It closes at the first tap, and the page is **at the same scroll position** as
+   before.
+6. Open again, then Continue to scheduling. → Calendly opens, and the page behind is still where it was.
+7. `/contact`: tap Name, Email and Message. → No zoom.
+8. Quick repeat of 1–5 in `/fr`.
+
+Any fail → report it. Per the Senior Architect's rule, a dialog-semantics failure moves the PR to the custom dialog (§6.1).
+
+### Commit plan, iOS fixes (not staged; Mauricio runs it)
+```bash
+# 12. iOS: 16px form controls on phone/tablet (dialog + /contact)
+git add 'src/styles/components/form-field.scss'
+git commit -m "fix(forms): use 16px form controls up to 1024px to stop iOS focus zoom"
+
+# 13. iOS: lock page scroll behind the booking dialog + 44px close button
+git add 'src/components/organisms/EmailCollectorProvider/index.tsx'
+git add 'src/components/organisms/EmailCollectorProvider/EmailCollectorProvider.test.tsx'
+git add 'src/styles/components/email-collector.scss'
+git commit -m "fix(booking): lock page scroll while the dialog is open and enlarge the close button"
+
+# 14. Report
+git add 'docs/reports/phase-5d-lite-contact-modal.md'
+git commit -m "docs(phase-5d-lite): record Mauricio's preview checks and the iOS fixes"
+```
+Each commit typechecks and passes the tests on its own; 12 and 13 don't depend on each other.
+
+### Time
+Agent active time for the iOS fixes ≈ 1 h (estimate: fixes + tests, gate, one local build, Chrome checks, report).
