@@ -11,6 +11,7 @@
   width: calc(100% - #{2 * $spacing-15});
   max-width: 480px;
   overflow: auto;
+  overscroll-behavior: contain; // scrolling inside the dialog doesn't chain to the (locked) page behind
 
   &::backdrop {
     background: rgba(0,0,0,0.45);
@@ -31,22 +32,31 @@
 
 // The heading takes focus only when the dialog has no form control (download success); no ring on a heading.
 .ec-heading {
-  padding-right: 32px; // keeps the text clear of the close button
+  padding-right: 40px; // keeps the text clear of the close button
   &:focus { outline: none; }
 }
 
+// 5d-lite iOS fix: 44×44 tap target (WCAG 2.5.5 / Apple HIG), stroked icon in $black (17.9:1 on white).
 .ec-close {
   position: absolute;
-  right: 8px;
-  top: 8px;
-  min-width: 32px;
-  min-height: 32px;
+  right: 6px;
+  top: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   background: transparent;
-  font-size: 22px;
-  line-height: 1;
+  color: $black;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover { background: $gray-20; }
+
+  &__icon { display: block; pointer-events: none; }
 
   &:focus-visible {
     outline: 2px solid $primary-color;

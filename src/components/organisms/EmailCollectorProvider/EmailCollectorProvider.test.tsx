@@ -36,6 +36,8 @@ function pressEscape(dialog: HTMLElement) {
 beforeAll(() => {
   Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value: showModal });
   Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: closeDialog });
+  // jsdom has no scrollTo; the scroll-lock unlock calls it (tests that check it install their own spy).
+  window.scrollTo = (() => {}) as typeof window.scrollTo;
 });
 
 type Opts = Parameters<ReturnType<typeof useEmailModal>['openModal']>[0];
@@ -273,5 +275,89 @@ describe('EmailCollectorProvider: download branch unchanged (A5)', () => {
     pressEscape(screen.getByRole('dialog'));
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     await act(async () => resolve(new Response(JSON.stringify({ success: true }), { status: 200 })));
+  });
+});
+
+describe('EmailCollectorProvider: page scroll lock and close button (5d-lite iOS fixes)', () => {
+  let scrollToSpy: ReturnType<typeof vi.fn>;
+  const html = document.documentElement;
+  const body = document.body;
+
+  beforeEach(() => {
+    // The page was scrolled to y=420 before the dialog opened.
+    Object.defineProperty(window, 'scrollY', { configurable: true, value: 420 });
+    Object.defineProperty(window, 'scrollX', { configurable: true, value: 0 });
+    scrollToSpy = vi.fn();
+    window.scrollTo = scrollToSpy as unknown as typeof window.scrollTo;
+    html.removeAttribute('style');
+    body.setAttribute('style', 'color: red;'); // a pre-existing inline style must come back unchanged
+  });
+
+  afterEach(() => {
+    html.removeAttribute('style');
+    body.removeAttribute('style');
+  });
+
+  function expectLocked() {
+    expect(html.style.overflow).toBe('hidden');
+    expect(body.style.position).toBe('fixed');
+    expect(body.style.top).toBe('-420px');
+    expect(body.style.overflow).toBe('hidden');
+  }
+  function expectRestored() {
+    expect(html.getAttribute('style')).toBeNull();
+    expect(body.getAttribute('style')).toBe('color: red;');
+    expect(scrollToSpy).toHaveBeenLastCalledWith(0, 420);
+  }
+
+  it('locks on open and restores exactly on Escape', () => {
+    renderWith(<TestTrigger />);
+    openFrom(screen.getByText('Open Modal'));
+    expectLocked();
+    expect(scrollToSpy).not.toHaveBeenCalled();
+    pressEscape(screen.getByRole('dialog'));
+    expectRestored();
+  });
+
+  it('restores on the close button and before focus returns to the trigger', () => {
+    renderWith(<TestTrigger />);
+    const trigger = screen.getByText('Open Modal');
+    openFrom(trigger);
+    const focusSpy = vi.spyOn(trigger, 'focus');
+    fireEvent.click(screen.getByRole('button', { name: en.common.close }));
+    expectRestored();
+    expect(scrollToSpy.mock.invocationCallOrder[0]).toBeLessThan(focusSpy.mock.invocationCallOrder[0]);
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('restores before Calendly opens on Continue', async () => {
+    renderWith(<TestTrigger />);
+    openFrom(screen.getByText('Open Modal'));
+    calendlySpy.mockImplementation(async () => {
+      expect(body.style.position).toBe('');
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: en.bookingModal.continue }));
+    });
+    expect(calendlySpy).toHaveBeenCalledTimes(1);
+    expectRestored();
+  });
+
+  it('restores if the provider unmounts with the dialog open', () => {
+    const { unmount } = renderWith(<TestTrigger />);
+    openFrom(screen.getByText('Open Modal'));
+    expectLocked();
+    unmount();
+    expectRestored();
+  });
+
+  it.each(['en', 'fr', 'es'] as const)('%s: close button keeps its name; the icon is hidden from AT', (locale) => {
+    renderWith(<TestTrigger />, locale);
+    openFrom(screen.getByText('Open Modal'));
+    const close = screen.getByRole('button', { name: DICTS[locale].common.close });
+    expect(close).toHaveClass('ec-close');
+    expect(close).toHaveAttribute('type', 'button');
+    expect(close.textContent).toBe('');
+    expect(close.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
   });
 });

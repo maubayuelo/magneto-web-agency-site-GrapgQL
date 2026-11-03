@@ -29,6 +29,38 @@ const EmailModalContext = createContext<EmailModalContextValue | undefined>(unde
 /** 5d-lite §5.2: answer lengths kept short enough for a Calendly URL. */
 const BOOKING_LIMITS = { website: 2048, problem: 500 } as const;
 
+/**
+ * Locks page scroll while the dialog is open and returns the unlock function.
+ * iOS Safari still scrolls the page behind a modal <dialog> and ignores `overflow: hidden` on <body> for touch
+ * scrolling, so the body is pinned with `position: fixed` at the current offset. Unlock restores the exact inline
+ * styles and the scroll position. The padding stands in for the desktop scrollbar so the page doesn't shift.
+ */
+function lockPageScroll(): () => void {
+  const html = document.documentElement;
+  const body = document.body;
+  const x = window.scrollX;
+  const y = window.scrollY;
+  const scrollbar = window.innerWidth - html.clientWidth;
+  const prevHtml = html.getAttribute('style');
+  const prevBody = body.getAttribute('style');
+
+  html.style.overflow = 'hidden';
+  body.style.position = 'fixed';
+  body.style.top = `${-y}px`;
+  body.style.left = '0';
+  body.style.right = '0';
+  body.style.overflow = 'hidden';
+  if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
+
+  return () => {
+    const restore = (el: HTMLElement, prev: string | null) =>
+      prev === null ? el.removeAttribute('style') : el.setAttribute('style', prev);
+    restore(html, prevHtml);
+    restore(body, prevBody);
+    window.scrollTo(x, y);
+  };
+}
+
 export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
   const { t, locale } = useI18n();
   const tm = t.emailModal;
@@ -47,6 +79,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const openRef = useRef(false);
+  const unlockScrollRef = useRef<(() => void) | null>(null);
   const uid = useId();
   const ids = {
     heading: `${uid}-heading`,
@@ -83,6 +116,9 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
     setError(null);
     setIsSubmitting(false);
     setOptions(undefined);
+    // Unlock first: restoring the scroll position before focusing keeps the page from jumping to the trigger.
+    unlockScrollRef.current?.();
+    unlockScrollRef.current = null;
     const trigger = triggerRef.current;
     triggerRef.current = null;
     // Browsers don't focus an element that is removed or not rendered (e.g. inside a mobile menu that closed on
@@ -103,12 +139,16 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!isOpen || !dialog || dialog.open) return;
+    unlockScrollRef.current = lockPageScroll();
     dialog.showModal();
     openRef.current = true;
     // showModal() focuses the first focusable (the close button); the spec wants the first form control.
     const first = dialog.querySelector<HTMLElement>('input:not([type="hidden"]), select, textarea');
     (first ?? document.getElementById(ids.heading))?.focus();
   }, [isOpen, ids.heading]);
+
+  // Never leave the page locked if the provider unmounts with the dialog open.
+  useEffect(() => () => unlockScrollRef.current?.(), []);
 
   // Escape: the browser closes the dialog; keep it open while a download submit is in flight.
   const onCancel: React.ReactEventHandler<HTMLDialogElement> = (e) => {
@@ -395,7 +435,11 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
           onClose={finishClose}
         >
           <div className="ec-modal">
-            <button type="button" className="ec-close" onClick={closeModal} aria-label={t.common.close}>×</button>
+            <button type="button" className="ec-close" onClick={closeModal} aria-label={t.common.close}>
+              <svg className="ec-close__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                <path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+              </svg>
+            </button>
             {isDownload ? renderDownload() : renderBooking()}
           </div>
         </dialog>
