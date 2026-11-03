@@ -181,6 +181,10 @@ export interface CalendlyLabels {
 export const openCalendlyPopup = async (options?: {
   utmContent?: string;
   utmTerm?: string;
+  /**
+   * Ignored (5d-lite, D-8 revised): every locale and trigger opens the single event in `calendlyConfig.url`.
+   * Kept so callers that still pass a CMS link (hero, final CTA, lead magnet) compile unchanged.
+   */
   customUrl?: string;
   /** If true, open Calendly in a new browser tab/window instead of using the embedded popup widget. */
   forceNewWindow?: boolean;
@@ -191,7 +195,9 @@ export const openCalendlyPopup = async (options?: {
 }) => {
   try {
     // If caller prefers a new window (avoids iframe/permission policies), open immediately
-    const targetUrl = new URL(options?.customUrl || calendlyConfig.url);
+    // D-8 revised (free Calendly plan): one event for all locales, configured with the a1–a3 questions.
+    // CMS links (ctaLinkHero, finalCtaSection.ctaLink) may still point at another event, so customUrl is not used.
+    const targetUrl = new URL(calendlyConfig.url);
     targetUrl.searchParams.set('utm_source', calendlyConfig.defaultUtm.utmSource);
     targetUrl.searchParams.set('utm_medium', calendlyConfig.defaultUtm.utmMedium);
     targetUrl.searchParams.set('utm_campaign', calendlyConfig.defaultUtm.utmCampaign);
