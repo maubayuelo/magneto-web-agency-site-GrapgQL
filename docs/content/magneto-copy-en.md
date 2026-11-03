@@ -1,9 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / EN
 URL: https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f
-Notion page last edited: 2026-10-31 (P-1 edits + /projects SEO, Senior Architect via the Notion connector)
-Exported: 2026-10-31 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: 2026-10-26 export + the Notion edits made since then (Free CTA, Featured Services line, footer email removed, SEO headings Final, /projects SEO), applied verbatim with count-checked replacements.
+Notion page last edited: 2026-10-31 evening (5d-lite P-1 strings, Senior Architect via the Notion connector)
+Exported: 2026-11-02 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: 01ff73f export + the Notion edits made since then (Contact form messages 4b, B2 modal privacy line, Packages system messages), applied verbatim with count-checked replacements.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -552,6 +552,12 @@ Mauricio Bayuelo on LinkedIn · Privacy Policy · Privacy choices
 
 **Meta description:** Website pricing for Montreal service businesses. Landing pages from C\$3,500, full websites typically C\$5,000–8,000. Fixes start at C\$1,000; care starts at C\$200/month.
 
+### System messages — Final (approved by Mauricio, 2026-10-31)
+
+**Error title (packages could not load):** Packages
+
+**Error body:** Sorry, we couldn't load the packages right now. Please try again later.
+
 ## Packages structure / publishing constraints
 
 - Preserve the current three-card rhythm: **BUILD / FIX / CARE**.
@@ -640,6 +646,24 @@ This is not a quote or an automatic sales call.
 Thank you. Your project details were sent.
 
 I’ll review them and reply by email with a recommended next step.
+
+### 4b. Form messages — Final (approved by Mauricio, 2026-10-31)
+
+**Select placeholder (Need and Budget):** Select an option
+
+**Required-fields legend:** Fields marked * are required.
+
+**Name error:** Please enter your name.
+
+**Email error:** Please enter a valid email address.
+
+**Need error:** Please choose what you need help with.
+
+**Problem / goal error:** Please tell me a little about your website or project.
+
+**Budget error:** Please choose an approximate budget, or Not sure yet.
+
+**Send failure:** Something went wrong and your message was not sent. Please try again, or book a free strategy call instead.
 
 ### 5. Footer
 
@@ -857,6 +881,8 @@ I'll use the information you provide to review and respond to your project inqui
 Your answers are used to prepare for the call. Your email is passed to Calendly so you don't need to enter it twice. Booking a call does not subscribe you to marketing emails. **Privacy Policy**
 
 **Fallback implementation copy if Email is removed from the popup:** Your answers are used to prepare for the call. Calendly will ask for your name and email to schedule it. Booking a call does not subscribe you to marketing emails. **Privacy Policy**
+
+**B2 implementation copy (answers passed to Calendly with the booking; Final, approved by Mauricio, 2026-10-31):** Your answers are passed to Calendly with your booking to prepare for the call. Calendly will ask for your name and email to schedule it. Booking a call does not subscribe you to marketing emails. **Privacy Policy**
 
 #### Newsletter / lead-magnet consent
 

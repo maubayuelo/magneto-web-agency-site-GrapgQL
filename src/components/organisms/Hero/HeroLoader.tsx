@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Hero } from './index';
 import type { Locale } from '@/i18n/config';
 import { getDictionary } from '@/i18n/dictionary';
@@ -10,9 +11,11 @@ interface HeroLoaderProps {
   variant?: 'default' | 'home' | 'about' | 'services' | 'portfolio' | 'contact' | 'project' | 'packages';
   /** Set by Packages when its new content is populated: only an internal ctaPath CTA may render (5b §5.3). */
   requireInternalCta?: boolean;
+  /** Rendered by Hero under the subtitle (5d-lite: the Contact secondary CTA). */
+  children?: ReactNode;
 }
 
-export default async function HeroLoader({ pageUri, locale, variant = 'default', requireInternalCta = false }: HeroLoaderProps) {
+export default async function HeroLoader({ pageUri, locale, variant = 'default', requireInternalCta = false, children }: HeroLoaderProps) {
   let about: PageHero | null = null;
   try {
     about = await getPageHero(heroPageName(pageUri), locale);
@@ -38,6 +41,8 @@ export default async function HeroLoader({ pageUri, locale, variant = 'default',
       }
       imageNode={variant === 'home' ? hero?.image?.node : undefined}
   backgroundImage={hero?.backgroundImage?.node?.sourceUrl || undefined}
-    />
+    >
+      {children}
+    </Hero>
   );
 }

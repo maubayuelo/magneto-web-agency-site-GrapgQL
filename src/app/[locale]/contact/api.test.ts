@@ -14,12 +14,20 @@ describe('getContactPageData', () => {
       pages: { nodes: [{ contactContactTexts: { mainCopy: 'M', tagText: 'T', bodytext: 'B' }, featuredImage: { node: { sourceUrl: 'https://x/fr.png', altText: 'fr', mediaDetails: { sizes: [] }, databaseId: 1, languageCode: 'fr', translations: [{ languageCode: 'en', sourceUrl: 'https://x/en.png', altText: 'en', mediaDetails: { sizes: [{ sourceUrl: 'https://x/en-800.png', width: '800', height: '600', name: 'm' }] } }] } } }] },
     });
     await expect(getContactPageData('fr')).resolves.toEqual({
-      mainCopy: 'M', tagText: 'T', bodytext: 'B',
       featuredImage: { sourceUrl: 'https://x/en.png', altText: 'fr', mediaDetails: { sizes: [{ sourceUrl: 'https://x/en-800.png', width: '800', height: '600', name: 'm' }] } },
     });
     const [query, variables] = vi.mocked(fetchWPGraphQL).mock.calls[0];
     expect(query).toContain('pages(first: 1, where: { language: $language, name: "contact" })');
     expect(variables).toEqual({ language: 'fr', mediaOriginal: true });
+  });
+
+  it('5d-lite (ADR 0006 Am. 2): the query no longer requests contactContactTexts', async () => {
+    vi.mocked(fetchWPGraphQL).mockResolvedValueOnce({ pages: { nodes: [{ featuredImage: null }] } });
+    await expect(getContactPageData('en')).resolves.toEqual({ featuredImage: null });
+    const [query, variables] = vi.mocked(fetchWPGraphQL).mock.calls[0];
+    expect(query).not.toMatch(/contactContactTexts|mainCopy|tagText|bodytext|supportingHtml/);
+    expect(query).toContain('featuredImage');
+    expect(variables).toEqual({ language: 'en', mediaOriginal: false });
   });
 
   it('null on nodes: [] (→ 404)', async () => {

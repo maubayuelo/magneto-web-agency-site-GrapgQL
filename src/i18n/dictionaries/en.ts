@@ -10,6 +10,7 @@ export const en = {
     checkIconAlt: 'Check icon',
     loading: 'Loading...',
     close: 'Close',
+    privacyPolicy: 'Privacy Policy',
   },
   nav: {
     about: 'About',
@@ -62,7 +63,6 @@ export const en = {
   packages: {
     popularBadge: 'Popular',
     included: "What's included:",
-    // 5b: CMS error state (pattern of services.errorTitle / errorBody; wording pending Mauricio's approval).
     errorTitle: 'Packages',
     errorBody: "Sorry, we couldn't load the packages right now. Please try again later.",
   },
@@ -75,31 +75,54 @@ export const en = {
     emailPlaceholder: 'you@company.com',
   },
   contactForm: {
-    // Labels only: the option values sent to the email stay EN in the component.
-    businessTypes: {
-      coach: 'Coach',
-      therapist: 'Therapist',
-      ecommerce: 'Ecommerce',
-      realEstate: 'Real State',
-      other: 'Other',
+    // 5d-lite §8 (spec docs/specs/phase-5d-lite-contact-modal.md): verbatim from docs/content/magneto-copy-en.md (ffec355).
+    // Option labels for the stable codes in src/utils/inquiry.ts.
+    requiredNote: 'Fields marked * are required.',
+    nameLabel: 'Name',
+    emailLabel: 'Email',
+    websiteLabel: 'Your website (if you have one)',
+    websiteHelp: 'Optional if you do not have a website yet.',
+    needLabel: 'What do you need help with?',
+    needOptions: {
+      newSite: 'A new website or rebuild',
+      fixImprove: 'Fix or improve my current website',
+      care: 'Ongoing website care',
+      notSure: 'Not sure yet',
     },
+    messageLabel: 'What is happening with your website, and what would you like to improve?',
+    messageHelp: 'A few sentences is enough.',
+    budgetLabel: 'Approximate budget',
+    budgetOptions: {
+      under1000: 'Under C$1,000',
+      from1000to3500: 'Around C$1,000–3,500',
+      from3500to8000: 'Around C$3,500–8,000',
+      over8000: 'More than C$8,000',
+      notSure: 'Not sure yet',
+    },
+    budgetHelp: 'A rough range is enough. It helps me suggest a realistic next step and does not create a quote. Choose Not sure yet if you are asking about ongoing care.',
+    selectPlaceholder: 'Select an option',
+    submit: 'Send project details',
+    privacyText: 'I’ll use the information you provide to review and respond to your project inquiry. Sending this form does not subscribe you to marketing emails.',
+    successTitle: 'Thank you. Your project details were sent.',
+    successBody: 'I’ll review them and reply by email with a recommended next step.',
     errors: {
       nameRequired: 'Please enter your name.',
       emailInvalid: 'Please enter a valid email address.',
-      businessTypeRequired: 'Please select a business type.',
-      submitFailed: 'Failed to submit form',
-      unknown: 'Submission failed',
+      needRequired: 'Please choose what you need help with.',
+      messageRequired: 'Please tell me a little about your website or project.',
+      budgetRequired: 'Please choose an approximate budget, or Not sure yet.',
+      sendFailed: 'Something went wrong and your message was not sent. Please try again, or book a free strategy call instead.',
+      // Derived (rev 3, A6): the booking phrase inside sendFailed, rendered as a button. Must be a substring of it.
+      sendFailedCta: 'book a free strategy call',
     },
-    success: "Thanks! We'll get back to you within 24–48 hours.",
-    ariaLabel: 'Contact form',
-    nameLabel: 'Name',
-    emailLabel: 'Email Address',
-    businessTypeLabel: 'Business Type',
-    businessTypePlaceholder: 'Choose an option',
-    messageLabel: 'Message (optional)',
-    messagePlaceholder: 'A short note about your project',
-    sending: 'Sending...',
-    send: 'Send',
+  },
+  contactPage: {
+    preferToTalk: 'Prefer to talk?',
+    supporting: {
+      reply: 'I read every inquiry personally and reply by email with a recommended next step.',
+      languages: 'You can write in English, French or Spanish.',
+      notAQuote: 'This is not a quote or an automatic sales call.',
+    },
   },
   emailModal: {
     errors: {
@@ -107,12 +130,9 @@ export const en = {
       subscribeFailed: 'Failed to subscribe ({status})',
       unknown: 'Subscription failed',
     },
-    bookingTitle: 'Quick — before we book',
-    calendlyBody: 'Tell us who you are so we can prep a smarter session tailored to your goals.',
     downloadTitle: 'Grab your free guide',
     downloadReady: 'Thanks — your guide is ready for you.',
     downloadBody: 'Enter your name and email, so we can send marketing ideas and tips.',
-    defaultBody: 'Enter your name and email so we can send confirmation and reminders.',
     checking: 'Checking...',
     download: 'Download the free guide',
     openInNewTab: 'Open guide in new tab',
@@ -126,8 +146,18 @@ export const en = {
     emailLabel: 'Email',
     submitting: 'Submitting...',
     continueDownload: 'Continue to Download the Guide',
-    continueBooking: 'Continue to Book Call',
-    subscribe: 'Subscribe',
+  },
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export ffec355 (EN 704/709/715/716/718/885).
+  // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
+  bookingModal: {
+    body: 'Answer three short questions so we can focus the conversation on your website. Then choose a time for a free 30-minute call.',
+    websiteHelp: 'optional',
+    problemLabel: 'What is the main website problem or goal?',
+    problemHelp: 'One or two sentences is enough.',
+    continue: 'Continue to scheduling',
+    // B2 (D-1): true only once V1 + V2 confirm the answers reach Calendly (spec §5.3, AC-13).
+    privacyText:
+      'Your answers are passed to Calendly with your booking to prepare for the call. Calendly will ask for your name and email to schedule it. Booking a call does not subscribe you to marketing emails.',
   },
   notFound: {
     metaTitle: '404: This page could not be found.',

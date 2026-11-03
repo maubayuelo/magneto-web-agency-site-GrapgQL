@@ -42,10 +42,10 @@ const field = (slug: string, label: string) => {
 };
 
 describe('scripts/phase-5c/content/en.json', () => {
-  it('is pinned to the current export (docs/content @ 01ff73f)', () => {
+  it('is pinned to the current export (docs/content @ ffec355)', () => {
     expect(EN.source.file).toBe('docs/content/magneto-copy-en.md');
     expect(createHash('sha256').update(source).digest('hex')).toBe(EN.source.sha256);
-    expect(EN.source.sha256).toBe('870b8573013427b3ba57afc3301d864f30c9ee32fb89363eeb243c265daee16d');
+    expect(EN.source.sha256).toBe('9f9d57eed41678f0441b91a338f086cfbcdc2834fb4812b095848be76e687ca9');
   });
 
   it('every copy value appears verbatim (tags stripped, entities decoded) in the source lines named by src', () => {

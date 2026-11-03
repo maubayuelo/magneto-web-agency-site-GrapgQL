@@ -1,50 +1,42 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import crypto from 'crypto';
 import nodemailer from 'nodemailer';
+import { en } from '@/i18n/dictionaries/en';
+import { BUDGET_KEYS, NEED_KEYS, validateInquiry, type InquiryPayload } from '@/utils/inquiry';
 
-function isValidEmail(email: unknown) {
-  return typeof email === 'string' && /\S+@\S+\.\S+/.test(email);
+// src/types/nodemailer.d.ts declares neither `tls` nor `replyTo`; both are standard nodemailer options.
+type TransportOptions = Parameters<typeof nodemailer.createTransport>[0] & { tls?: { servername: string } };
+type MailOptions = Parameters<ReturnType<typeof nodemailer.createTransport>['sendMail']>[0] & { replyTo: string };
+
+// Response contract (5d-lite §2), consumed only by ContactForm. No response carries error text, delivery
+// details or env information: the detail stays in the server logs.
+type ContactResponse =
+  | { success: true; delivered?: false }
+  | { success: false; code: 'method' | 'validation' | 'delivery' | 'server'; fields?: string[] };
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
-function md5(input: string) {
-  return crypto.createHash('md5').update(input).digest('hex');
+/** The inquiry as label/value rows. Need and budget use the EN labels: the email is internal. */
+function inquiryRows(inquiry: InquiryPayload): [string, string][] {
+  const tf = en.contactForm;
+  return [
+    ['Name', inquiry.name],
+    ['Email', inquiry.email],
+    ['Website', inquiry.website || '—'],
+    ['Need', inquiry.need ? tf.needOptions[NEED_KEYS[inquiry.need]] : '—'],
+    ['Problem / goal', inquiry.message],
+    ['Budget', tf.budgetOptions[BUDGET_KEYS[inquiry.budget]]],
+    ['Form language', inquiry.locale],
+  ];
 }
 
-async function subscribeMailchimp(email: string, name?: string) {
-  const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY;
-  const MAILCHIMP_LIST_ID = process.env.MAILCHIMP_LIST_ID;
-  if (!MAILCHIMP_API_KEY || !MAILCHIMP_LIST_ID) return { success: false, message: 'Mailchimp not configured' };
-
-  const dc = MAILCHIMP_API_KEY.split('-')[1];
-  if (!dc) throw new Error('Invalid Mailchimp API key format');
-  const basic = Buffer.from(`any:${MAILCHIMP_API_KEY}`).toString('base64');
-  const body = { email_address: email, status: 'subscribed', merge_fields: { FNAME: name || '' } };
-
-  const createUrl = `https://${dc}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`;
-  let r = await fetch(createUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Basic ${basic}` },
-    body: JSON.stringify(body),
-  });
-
-  let payload = await r.json().catch(() => ({}));
-  if (!r.ok && typeof payload?.detail === 'string' && payload.detail.toLowerCase().includes('already a list member')) {
-    // upsert
-    const subscriberHash = md5(String(email).toLowerCase());
-    const putUrl = `https://${dc}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members/${subscriberHash}`;
-    r = await fetch(putUrl, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', Authorization: `Basic ${basic}` },
-      body: JSON.stringify(body),
-    });
-    payload = await r.json().catch(() => ({}));
-  }
-
-  if (!r.ok) return { success: false, message: payload?.detail || payload?.title || 'Mailchimp error', payload };
-  return { success: true, message: 'Subscribed (Mailchimp)', payload };
-}
-
-export async function sendEmail(payload: { name?: string; email: string; businessType?: string; message?: string }) {
+export async function sendEmail(inquiry: InquiryPayload) {
   try {
     const SMTP_HOST = process.env.SMTP_HOST;
     const SMTP_PORT = Number(process.env.SMTP_PORT || 587);
@@ -56,9 +48,7 @@ export async function sendEmail(payload: { name?: string; email: string; busines
     const CONTACT_RECIPIENT = process.env.CONTACT_RECIPIENT || 'contact@magnetomarketing.co';
 
     if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-      // don't completely fail — return a clear error object so callers and
-      // logs can show what's missing. Upstream code will decide whether to
-      // treat this as fatal based on DISABLE_SMTP.
+      // Internal result only (server logs, tests): the handler never forwards `details` to the browser.
       console.warn('SMTP configuration is incomplete. SMTP_HOST, SMTP_USER and SMTP_PASS are required to send email. Using CONTACT_RECIPIENT=%s', CONTACT_RECIPIENT);
       return { success: false, message: 'SMTP not configured', details: { SMTP_HOST: Boolean(SMTP_HOST), SMTP_USER: Boolean(SMTP_USER), SMTP_PASS: Boolean(SMTP_PASS), CONTACT_RECIPIENT } };
     }
@@ -71,117 +61,74 @@ export async function sendEmail(payload: { name?: string; email: string; busines
     // name mismatches.
     const SMTP_TLS_SERVERNAME = process.env.SMTP_TLS_SERVERNAME || undefined;
 
-    const transportOpts: any = {
+    const transportOpts: TransportOptions = {
       host: SMTP_HOST,
       port: SMTP_PORT,
       secure: SMTP_PORT === 465, // true for 465, false for other ports
       auth: { user: SMTP_USER, pass: SMTP_PASS },
+      ...(SMTP_TLS_SERVERNAME ? { tls: { servername: SMTP_TLS_SERVERNAME } } : {}),
     };
-
-    if (SMTP_TLS_SERVERNAME) {
-      transportOpts.tls = { servername: SMTP_TLS_SERVERNAME };
-    }
 
     const transporter = nodemailer.createTransport(transportOpts);
 
+    const rows = inquiryRows(inquiry);
     const html = `
-      <p>New contact form submission</p>
+      <p>New project inquiry</p>
       <ul>
-        <li><strong>Name:</strong> ${payload.name || '—'}</li>
-        <li><strong>Email:</strong> ${payload.email}</li>
-        <li><strong>Business Type:</strong> ${payload.businessType || '—'}</li>
-        <li><strong>Message:</strong> ${payload.message || '—'}</li>
+        ${rows.map(([label, value]) => `<li><strong>${label}:</strong> ${escapeHtml(value).replace(/\r?\n/g, '<br>')}</li>`).join('\n        ')}
       </ul>
     `;
 
-    const fromAddress = process.env.EMAIL_FROM || SMTP_USER;
-
-    const info = await transporter.sendMail({
-      from: fromAddress,
+    const mailOptions: MailOptions = {
+      from: process.env.EMAIL_FROM || SMTP_USER,
       to: CONTACT_RECIPIENT,
-      subject: `New contact from ${payload.name || payload.email}`,
-      text: `Name: ${payload.name || ''}\nEmail: ${payload.email}\nBusiness: ${payload.businessType || ''}\nMessage: ${payload.message || ''}`,
+      replyTo: inquiry.email,
+      // CR/LF stripped: the name must not be able to start a new header line.
+      subject: `New project inquiry — ${inquiry.name.replace(/[\r\n]+/g, ' ')}`,
+      text: rows.map(([label, value]) => `${label}: ${value}`).join('\n'),
       html,
-    });
+    };
+    const info = await transporter.sendMail(mailOptions);
 
-    // Return info for debugging in server logs if needed
     return { success: true, message: 'Email sent', info };
-  } catch (err: any) {
-    // more informative logging for server logs
-    console.error('nodemailer sendMail error:', err && (err.stack || err.message || err));
-    // Surface a readable error message for the API response & logs
-    return { success: false, message: `Failed to send email: ${String(err?.message || err)}` };
+  } catch (err: unknown) {
+    console.error('nodemailer sendMail error:', err instanceof Error ? err.stack || err.message : err);
+    return { success: false, message: 'Failed to send email' };
   }
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ContactResponse>) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+    return res.status(405).json({ success: false, code: 'method' });
   }
 
   try {
-    const { name, email, businessType, message } = req.body || {};
-
-    if (!email || !isValidEmail(email)) return res.status(400).json({ success: false, message: 'Invalid email' });
-    // name and businessType are validated clientside; server-side be permissive but warn
-
-    // 1) attempt Mailchimp subscribe (no-op if not configured)
-    let mcResult: { success: boolean; message?: string; payload?: unknown } = { success: false, message: 'Mailchimp not configured' };
-    try {
-      mcResult = await subscribeMailchimp(email, name);
-    } catch (err: unknown) {
-      // log and continue — subscription shouldn't block form delivery
-      // eslint-disable-next-line no-console
-      console.error('Mailchimp subscribe error:', err);
-      const msg = err instanceof Error ? err.message : String(err);
-      mcResult = { success: false, message: msg };
+    const body: unknown = req.body;
+    const honeypot = body && typeof body === 'object' ? (body as Record<string, unknown>).company : undefined;
+    if (typeof honeypot === 'string' && honeypot.trim()) {
+      // Silent success: bots get no signal. No PII in the log.
+      console.warn('Contact honeypot filled: inquiry dropped');
+      return res.status(200).json({ success: true });
     }
 
-    // 2) send email via SMTP unless explicitly disabled
-    const DISABLE_SMTP = String(process.env.DISABLE_SMTP || '').trim() === '1';
+    const result = validateInquiry(body);
+    if (!result.ok) return res.status(400).json({ success: false, code: 'validation', fields: result.fields });
 
-    let mailResult: { success: boolean; message?: string; info?: unknown } = { success: false, message: 'Not attempted' };
-    if (!DISABLE_SMTP) {
-      try {
-        mailResult = await sendEmail({ name, email, businessType, message });
-      } catch (err: unknown) {
-        // eslint-disable-next-line no-console
-        console.error('Send email error:', err);
-        const msg = err instanceof Error ? err.message : String(err);
-        mailResult = { success: false, message: msg };
-      }
-    } else {
-      // In local/dev we may only want Mailchimp subscription — avoid failing the request when SMTP is disabled
-      mailResult = { success: false, message: 'SMTP disabled via DISABLE_SMTP=1' };
+    // Local dry-run, checked before any transport is created. Never set in Vercel.
+    if (String(process.env.DISABLE_SMTP || '').trim() === '1') {
+      console.warn('DISABLE_SMTP=1: inquiry not delivered');
+      return res.status(200).json({ success: true, delivered: false });
     }
 
-    // Success criteria:
-    // - If SMTP is enabled, require mailResult.success
-    // - If SMTP disabled, accept Mailchimp success as overall success
-    const overallSuccess = !DISABLE_SMTP ? Boolean(mailResult.success) : Boolean(mcResult.success);
-
-    if (!overallSuccess) {
-      // Allow an explicit fallback in production for temporary outages by
-      // setting ALLOW_CONTACT_FALLBACK=1 in the environment. This keeps the
-      // stricter behavior by default but avoids a hard 500 when you know it's
-      // safe to accept submissions without delivery.
-      const ALLOW_CONTACT_FALLBACK = String(process.env.ALLOW_CONTACT_FALLBACK || '').trim() === '1';
-
-      if (process.env.NODE_ENV !== 'production' || ALLOW_CONTACT_FALLBACK) {
-        console.warn('Delivery failed but returning success due to dev-mode or ALLOW_CONTACT_FALLBACK=1. Details:', { mailResult, mcResult, DISABLE_SMTP, allowFallback: ALLOW_CONTACT_FALLBACK });
-        return res.status(200).json({ success: true, message: 'Contact submitted (fallback)', details: { mailResult, mcResult, DISABLE_SMTP, allowFallback: ALLOW_CONTACT_FALLBACK } });
-      }
-
-      // Return 500 with details so callers and logs can show why
-      return res.status(500).json({ success: false, message: 'Failed to deliver contact message', details: { mailResult, mcResult, DISABLE_SMTP } });
+    const mail = await sendEmail(result.value);
+    if (!mail.success) {
+      console.error('Contact delivery failed:', mail.message);
+      return res.status(500).json({ success: false, code: 'delivery' });
     }
-
-    return res.status(200).json({ success: true, message: 'Contact submitted', details: { mailResult, mcResult, DISABLE_SMTP } });
+    return res.status(200).json({ success: true });
   } catch (err: unknown) {
-    // eslint-disable-next-line no-console
     console.error('Contact handler error:', err);
-    const msg = err instanceof Error ? err.message : String(err || 'Internal server error');
-    return res.status(500).json({ success: false, message: msg });
+    return res.status(500).json({ success: false, code: 'server' });
   }
 }

@@ -1,9 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / FR-CA
 URL: https://app.notion.com/p/3fc702393b5e8195a8c1eeede1910b62
-Notion page last edited: 2026-10-31 (P-1 edits + /projects SEO, Senior Architect via the Notion connector)
-Exported: 2026-10-31 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: 2026-10-26 export + the Notion edits made since then (CTA « gratuit », courriel retiré des pieds de page, SEO /projects), applied verbatim with count-checked replacements.
+Notion page last edited: 2026-10-31 evening (5d-lite P-1 strings, Senior Architect via the Notion connector)
+Exported: 2026-11-02 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: 01ff73f export + the Notion edits made since then (messages du formulaire 4b), applied verbatim with count-checked replacements.
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -784,6 +784,24 @@ Ce n'est ni une soumission ni un appel commercial automatique.
 **Merci. Les détails de votre projet ont bien été envoyés.**
 
 Je les examinerai et vous répondrai par courriel en vous recommandant une prochaine étape.
+
+## 4b. Messages du formulaire — Final (approuvé par Mauricio, 2026-10-31)
+
+**Texte par défaut des listes (Besoin et Budget) :** Choisissez une option
+
+**Légende des champs obligatoires :** Les champs marqués d'un * sont obligatoires.
+
+**Erreur — nom :** Veuillez indiquer votre nom.
+
+**Erreur — courriel :** Veuillez entrer une adresse courriel valide.
+
+**Erreur — besoin :** Veuillez indiquer de quoi vous avez besoin.
+
+**Erreur — problème / objectif :** Décrivez brièvement votre site web ou votre projet.
+
+**Erreur — budget :** Veuillez choisir un budget approximatif, ou « Je ne sais pas encore ».
+
+**Échec de l'envoi :** Une erreur est survenue et votre message n'a pas été envoyé. Veuillez réessayer ou réserver un appel-conseil gratuit.
 
 ## 5. Pied de page
 

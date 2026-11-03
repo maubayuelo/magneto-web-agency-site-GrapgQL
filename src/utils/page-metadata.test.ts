@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 // 5b §6, AC-10/11/25: every route's generateMetadata returns the approved SEO copy of its locale, mirrored to Open Graph
-// and Twitter. Expected values are read from the copy export (docs/content @ 01ff73f, line map in spec E6), not retyped.
+// and Twitter. Expected values are read from the copy export (docs/content @ ffec355; 5b spec E6 lines re-pinned after the
+// 2026-11-02 re-export: EN +24 from old 644, +26 from old 861; FR/ES +18 from old 788/804), not retyped.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { Metadata } from 'next';
@@ -21,9 +22,9 @@ import { generateMetadata as caseMeta } from '@/app/[locale]/projects/[slug]/pag
 const FILES: Record<Locale, string> = { en: 'magneto-copy-en.md', fr: 'magneto-copy-fr-CA.md', es: 'magneto-copy-es.md' };
 // SEO block heading line; title = +2, description = +4 (E6).
 const BLOCKS = {
-  en: { home: 139, projects: 156, about: 253, services: 427, packages: 549, contact: 652, dangel: 971, trepied: 1082, shamanicca: 1217 },
-  fr: { home: 119, projects: 125, about: 212, services: 371, packages: 488, contact: 796, dangel: 561, trepied: 633, shamanicca: 705 },
-  es: { home: 131, projects: 137, about: 224, services: 383, packages: 498, contact: 812, dangel: 573, trepied: 647, shamanicca: 721 },
+  en: { home: 139, projects: 156, about: 253, services: 427, packages: 549, contact: 676, dangel: 997, trepied: 1108, shamanicca: 1243 },
+  fr: { home: 119, projects: 125, about: 212, services: 371, packages: 488, contact: 814, dangel: 561, trepied: 633, shamanicca: 705 },
+  es: { home: 131, projects: 137, about: 224, services: 383, packages: 498, contact: 830, dangel: 573, trepied: 647, shamanicca: 721 },
 } as const;
 type Block = keyof (typeof BLOCKS)['en'];
 
