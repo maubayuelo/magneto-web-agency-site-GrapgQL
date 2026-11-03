@@ -21,7 +21,19 @@ vi.mock('@/utils/calendly', async (importOriginal) => {
 // vitest.config.ts is out of scope for Phase 0.5b.
 (globalThis as typeof globalThis & { React: typeof React }).React = React;
 
-const MODAL_EMAIL_PLACEHOLDER = 'you@company.com';
+// 5d-lite: the booking modal is a native <dialog> named by the main label (variant B). jsdom 21 has no showModal,
+// so a spy stands in: "modal opened" = showModal called + a dialog with that name; "no modal" = neither.
+const DIALOG_NAME = 'Book a Free Strategy Call';
+const showModal = vi.fn(function (this: HTMLDialogElement) {
+  this.setAttribute('open', '');
+});
+beforeAll(() => {
+  Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value: showModal });
+});
+const expectNoModal = () => {
+  expect(showModal).not.toHaveBeenCalled();
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+};
 const props = {
   utmContent: 'test_content',
   utmTerm: 'test_term',
@@ -35,6 +47,7 @@ describe('CalendlyButton', () => {
 
   beforeEach(() => {
     vi.mocked(openCalendlyPopup).mockClear();
+    showModal.mockClear();
     global.fetch = vi.fn(async () => new Response('{}', { status: 200 }));
   });
 
@@ -51,7 +64,8 @@ describe('CalendlyButton', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Book' }));
 
-    expect(await screen.findByPlaceholderText(MODAL_EMAIL_PLACEHOLDER)).toBeInTheDocument();
+    expect(await screen.findByRole('dialog', { name: DIALOG_NAME })).toBeInTheDocument();
+    expect(showModal).toHaveBeenCalledTimes(1);
     expect(openCalendlyPopup).not.toHaveBeenCalled();
   });
 
@@ -62,7 +76,7 @@ describe('CalendlyButton', () => {
 
     await waitFor(() => expect(openCalendlyPopup).toHaveBeenCalledTimes(1));
     expect(openCalendlyPopup).toHaveBeenCalledWith({ ...props, forceNewWindow: undefined });
-    expect(screen.queryByPlaceholderText(MODAL_EMAIL_PLACEHOLDER)).not.toBeInTheDocument();
+    expectNoModal();
   });
 
   it('c. inside the provider with skipCollector: opens Calendly, no modal', async () => {
@@ -79,7 +93,7 @@ describe('CalendlyButton', () => {
     await waitFor(() => expect(openCalendlyPopup).toHaveBeenCalledTimes(1));
     expect(openCalendlyPopup).toHaveBeenCalledWith({ ...props, forceNewWindow: undefined });
     await flush();
-    expect(screen.queryByPlaceholderText(MODAL_EMAIL_PLACEHOLDER)).not.toBeInTheDocument();
+    expectNoModal();
   });
 
   it('d. inside the provider with forceNewWindow: opens Calendly with forceNewWindow, no modal', async () => {
@@ -96,7 +110,7 @@ describe('CalendlyButton', () => {
     await waitFor(() => expect(openCalendlyPopup).toHaveBeenCalledTimes(1));
     expect(openCalendlyPopup).toHaveBeenCalledWith({ ...props, forceNewWindow: true });
     await flush();
-    expect(screen.queryByPlaceholderText(MODAL_EMAIL_PLACEHOLDER)).not.toBeInTheDocument();
+    expectNoModal();
   });
 
   it('e. disabled: click opens neither the modal nor Calendly', async () => {
@@ -112,6 +126,6 @@ describe('CalendlyButton', () => {
 
     await flush();
     expect(openCalendlyPopup).not.toHaveBeenCalled();
-    expect(screen.queryByPlaceholderText(MODAL_EMAIL_PLACEHOLDER)).not.toBeInTheDocument();
+    expectNoModal();
   });
 });

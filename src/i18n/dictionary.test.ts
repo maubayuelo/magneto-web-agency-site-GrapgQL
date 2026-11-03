@@ -124,8 +124,10 @@ describe('readiness guard', () => {
       ...['home', 'services', 'packages', 'projects', 'about', 'contact'].flatMap((p) => [`meta.${p}.title`, `meta.${p}.description`]),
       ...['dangel', 'trepied', 'shamanicca'].flatMap((c) => [`meta.caseStudies.${c}.title`, `meta.caseStudies.${c}.description`]),
     ];
-    // Phase 5d-lite Part 1 (spec §8): every new Contact form/page key is filled in FR and ES.
-    const phase5d = Object.keys(flat(en)).filter((k) => k.startsWith('contactForm.') || k.startsWith('contactPage.') || k === 'common.privacyPolicy');
+    // Phase 5d-lite (spec §8): every new Contact form/page key (Part 1) and booking-dialog key (Part 2) is filled in FR and ES.
+    const phase5d = Object.keys(flat(en)).filter(
+      (k) => k.startsWith('contactForm.') || k.startsWith('contactPage.') || k.startsWith('bookingModal.') || k === 'common.privacyPolicy',
+    );
     const doneFr = new Set([...phase5a, ...phase5b, ...phase5d]); // testimonials.title stays [FR TODO] (O2)
     const doneEs = new Set([...phase5a, ...phase5b, ...phase5d, 'testimonials.title']);
     expect(findTodoKeys(en)).toEqual([]);
@@ -133,9 +135,13 @@ describe('readiness guard', () => {
     expect(findTodoKeys(es)).toEqual(Object.keys(flat(es)).filter((k) => !doneEs.has(k)));
   });
 
-  it('5d-lite AC-14 (Part 1): the 20 old contactForm TODOs are gone; Packages error keys still block a launch build', () => {
-    // 5b left FR 83 / ES 82. Part 1 removes the 20 old contactForm leaves → 63 / 62. Part 2 (−5 emailModal keys) → 58 / 57.
-    for (const [locale, dict, count] of [['fr', fr, 63], ['es', es, 62]] as const) {
+  it('5d-lite AC-14: FR 58 / ES 57 after the phase; Packages error keys still block a launch build', () => {
+    // 5b left FR 83 / ES 82. Part 1 removed the 20 old contactForm leaves → 63 / 62. Part 2 removes the 5 emailModal
+    // booking keys → 58 / 57. The new bookingModal keys are all filled.
+    for (const [locale, dict, count] of [['fr', fr, 58], ['es', es, 57]] as const) {
+      for (const gone of ['bookingTitle', 'calendlyBody', 'defaultBody', 'continueBooking', 'subscribe']) {
+        expect(Object.keys(flat(dict))).not.toContain(`emailModal.${gone}`);
+      }
       expect(findTodoKeys(dict)).toHaveLength(count);
       for (const key of ['packages.errorTitle', 'packages.errorBody']) {
         expect(findTodoKeys(dict)).toContain(key);
@@ -222,6 +228,14 @@ const CONTACT_COPY: [string, number, number, number, Pick?][] = [
   ['contactForm.errors.messageRequired', 662, 800, 816],
   ['contactForm.errors.budgetRequired', 664, 802, 818],
   ['contactForm.errors.sendFailed', 666, 804, 820],
+  // Part 2: booking dialog (variant B). Heading = common.bookStrategyCall (EN 702 / FR 875 / ES 891, pinned below).
+  ['bookingModal.body', 704, 877, 893],
+  ['bookingModal.websiteHelp', 709, 883, 899], // EN: the part after "Website URL, " (spec A3)
+  ['bookingModal.problemLabel', 715, 894, 910],
+  ['bookingModal.problemHelp', 716, 898, 914],
+  ['bookingModal.continue', 718, 900, 916],
+  ['bookingModal.privacyText', 885, 910, 926, { before: ' **' }],
+  ['common.bookStrategyCall', 702, 875, 891],
 ];
 // Line labels that are not bold-with-colon: EN "Helper text: …", FR/ES submit label inside the bold.
 const LABEL_AFTER: Record<string, string> = {
@@ -229,6 +243,10 @@ const LABEL_AFTER: Record<string, string> = {
   'en:contactForm.budgetHelp': 'Helper text: ',
   'fr:contactForm.submit': "CTA d'envoi : ",
   'es:contactForm.submit': 'CTA de envío: ',
+  'en:bookingModal.problemHelp': 'Helper text: ',
+  'en:bookingModal.websiteHelp': 'Website URL, ',
+  'fr:bookingModal.continue': 'CTA : ',
+  'es:bookingModal.continue': 'CTA: ',
 };
 
 describe('5d-lite Contact copy = export ffec355 (AC-4, AC-17)', () => {

@@ -130,12 +130,9 @@ export const en = {
       subscribeFailed: 'Failed to subscribe ({status})',
       unknown: 'Subscription failed',
     },
-    bookingTitle: 'Quick — before we book',
-    calendlyBody: 'Tell us who you are so we can prep a smarter session tailored to your goals.',
     downloadTitle: 'Grab your free guide',
     downloadReady: 'Thanks — your guide is ready for you.',
     downloadBody: 'Enter your name and email, so we can send marketing ideas and tips.',
-    defaultBody: 'Enter your name and email so we can send confirmation and reminders.',
     checking: 'Checking...',
     download: 'Download the free guide',
     openInNewTab: 'Open guide in new tab',
@@ -149,8 +146,18 @@ export const en = {
     emailLabel: 'Email',
     submitting: 'Submitting...',
     continueDownload: 'Continue to Download the Guide',
-    continueBooking: 'Continue to Book Call',
-    subscribe: 'Subscribe',
+  },
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export ffec355 (EN 704/709/715/716/718/885).
+  // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
+  bookingModal: {
+    body: 'Answer three short questions so we can focus the conversation on your website. Then choose a time for a free 30-minute call.',
+    websiteHelp: 'optional',
+    problemLabel: 'What is the main website problem or goal?',
+    problemHelp: 'One or two sentences is enough.',
+    continue: 'Continue to scheduling',
+    // B2 (D-1): true only once V1 + V2 confirm the answers reach Calendly (spec §5.3, AC-13).
+    privacyText:
+      'Your answers are passed to Calendly with your booking to prepare for the call. Calendly will ask for your name and email to schedule it. Booking a call does not subscribe you to marketing emails.',
   },
   notFound: {
     metaTitle: '404: This page could not be found.',

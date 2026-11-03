@@ -1,136 +1,277 @@
 /// <reference types="vitest" />
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import EmailCollectorProvider, { useEmailModal } from './index';
 import * as calendly from '@/utils/calendly';
 import * as utmUtil from '@/utils/utm';
+import { I18nProvider } from '@/i18n/I18nProvider';
+import { CalendlyButton } from '@/components/atoms/CalendlyButton';
+import { en } from '@/i18n/dictionaries/en';
+import { fr } from '@/i18n/dictionaries/fr';
+import { es } from '@/i18n/dictionaries/es';
 
-// helper component to trigger modal open from tests
-function TestTrigger({ opts }: { opts?: any }) {
-  const { openModal } = useEmailModal();
-  return <button onClick={() => openModal(opts)}>Open Modal</button>;
+// CalendlyButton has no React import and Vitest uses the classic JSX runtime (Known debt; as in CalendlyButton.test.tsx).
+(globalThis as unknown as { React: typeof React }).React = React;
+
+const DICTS = { en, fr, es } as const;
+// gtagEvent records its last call here in tests.
+const gtagHook = window as unknown as { __lastGtagEvent?: unknown[] };
+type Loc = keyof typeof DICTS;
+
+// jsdom 21 has no showModal/close (spec E26). Minimal stand-ins: the browser behaviour is verified in Chrome (§6.0).
+const showModal = vi.fn(function (this: HTMLDialogElement) {
+  this.setAttribute('open', '');
+});
+function closeDialog(this: HTMLDialogElement) {
+  if (!this.hasAttribute('open')) return;
+  this.removeAttribute('open');
+  this.dispatchEvent(new Event('close'));
+}
+/** What a browser does on Escape for a modal dialog: `cancel`, then close unless prevented. */
+function pressEscape(dialog: HTMLElement) {
+  const notPrevented = fireEvent(dialog, new Event('cancel', { cancelable: true }));
+  if (notPrevented) act(() => (dialog as HTMLDialogElement).close());
 }
 
-describe('EmailCollectorProvider analytics flows', () => {
-  beforeEach(() => {
-    // reset last gtag event
-    // @ts-ignore
-    window.__lastGtagEvent = undefined;
-    // mock fetch default to success
-    // @ts-ignore
-    global.fetch = (input: any, init?: any) => {
-      const url = typeof input === 'string' ? input : String(input?.url || '');
-      if (url.includes('/api/mailchimp')) {
-        return Promise.resolve(new Response(JSON.stringify({ success: true }), { status: 200 }));
-      }
-      if (url.includes('/api/download-check')) {
-        return Promise.resolve(new Response(JSON.stringify({ success: true }), { status: 200 }));
-      }
-      return Promise.resolve(new Response('{}', { status: 200 }));
-    };
+beforeAll(() => {
+  Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value: showModal });
+  Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value: closeDialog });
+});
 
-    // mock openCalendlyPopup so we don't load external script
-    vi.spyOn(calendly, 'openCalendlyPopup').mockImplementation(async () => {
-      // simulate Calendly opening
-      // @ts-ignore
-      window.__lastCalendly = true;
-      return Promise.resolve();
+type Opts = Parameters<ReturnType<typeof useEmailModal>['openModal']>[0];
+function TestTrigger({ opts, label = 'Open Modal' }: { opts?: Opts; label?: string }) {
+  const { openModal } = useEmailModal();
+  return <button onClick={() => openModal(opts)}>{label}</button>;
+}
+
+function renderWith(ui: React.ReactNode, locale: Loc = 'en') {
+  return render(
+    <I18nProvider locale={locale} dictionary={DICTS[locale]}>
+      <EmailCollectorProvider>{ui}</EmailCollectorProvider>
+    </I18nProvider>,
+  );
+}
+
+/** Clicks like a user: the trigger has focus when openModal runs. */
+function openFrom(button: HTMLElement) {
+  button.focus();
+  fireEvent.click(button);
+}
+
+let fetchSpy: ReturnType<typeof vi.fn>;
+let calendlySpy: ReturnType<typeof vi.spyOn>;
+
+beforeEach(() => {
+  showModal.mockClear();
+  gtagHook.__lastGtagEvent = undefined;
+  fetchSpy = vi.fn((input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url.includes('/api/mailchimp') || url.includes('/api/download-check')) {
+      return Promise.resolve(new Response(JSON.stringify({ success: true }), { status: 200 }));
+    }
+    return Promise.resolve(new Response('{}', { status: 200 }));
+  });
+  global.fetch = fetchSpy as unknown as typeof fetch;
+  calendlySpy = vi.spyOn(calendly, 'openCalendlyPopup').mockResolvedValue(undefined);
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
+describe('EmailCollectorProvider: booking dialog, variant B (5d-lite §5)', () => {
+  it.each(['en', 'fr', 'es'] as const)('%s: named by the main label, 3 optional questions, no name or email', (locale) => {
+    const t = DICTS[locale];
+    renderWith(<TestTrigger opts={{ origin: 'header' }} />, locale);
+    openFrom(screen.getByText('Open Modal'));
+
+    const dialog = screen.getByRole('dialog', { name: t.common.bookStrategyCall });
+    expect(dialog.tagName).toBe('DIALOG');
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(showModal).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('heading', { level: 2, name: t.common.bookStrategyCall })).toBeInTheDocument();
+    expect(dialog).toHaveAccessibleDescription(t.bookingModal.body);
+
+    expect(screen.getByLabelText(t.contactForm.websiteLabel)).toHaveAccessibleDescription(t.bookingModal.websiteHelp);
+    expect(screen.getByLabelText(t.contactForm.needLabel).tagName).toBe('SELECT');
+    expect(screen.getByLabelText(t.bookingModal.problemLabel)).toHaveAccessibleDescription(t.bookingModal.problemHelp);
+    for (const opt of Object.values(t.contactForm.needOptions)) expect(screen.getByRole('option', { name: opt })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: t.contactForm.selectPlaceholder })).toBeDisabled();
+    expect(dialog.querySelectorAll('[required]')).toHaveLength(0);
+    expect(dialog.querySelector('input[type="email"], input[name="name"], input[name="email"]')).toBeNull();
+
+    expect(screen.getByRole('button', { name: t.bookingModal.continue })).toBeInTheDocument();
+    expect(dialog.textContent).toContain(t.bookingModal.privacyText);
+    const prefix = locale === 'en' ? '' : `/${locale}`;
+    expect(screen.getByRole('link', { name: t.common.privacyPolicy })).toHaveAttribute('href', `${prefix}/privacy-policy`);
+    expect(screen.getByRole('button', { name: t.common.close })).toBeInTheDocument();
+  });
+
+  it('continue with answers: no Mailchimp call, Calendly gets only the non-empty answers (a2 = the label seen, FR)', async () => {
+    renderWith(<TestTrigger opts={{ origin: 'hero', utmContent: 'hero_home' }} />, 'fr');
+    openFrom(screen.getByText('Open Modal'));
+
+    fireEvent.change(screen.getByLabelText(fr.contactForm.websiteLabel), { target: { value: '  example.com ' } });
+    fireEvent.change(screen.getByLabelText(fr.contactForm.needLabel), { target: { value: 'fix-improve' } });
+    fireEvent.click(screen.getByRole('button', { name: fr.bookingModal.continue }));
+
+    await waitFor(() => expect(calendlySpy).toHaveBeenCalledTimes(1));
+    const args = calendlySpy.mock.calls[0][0]!;
+    expect(args.prefill).toEqual({ customAnswers: { a1: 'example.com', a2: fr.contactForm.needOptions.fixImprove } });
+    expect(args.utmContent).toBe('hero_home');
+    expect(args.labels).toEqual(fr.calendly);
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(gtagHook.__lastGtagEvent).toBeUndefined(); // no mailchimp_* events
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('continue with nothing filled: straight to Calendly, without prefill', async () => {
+    vi.spyOn(utmUtil, 'getUtm').mockReturnValue({ utm_source: 'newsletter', utm_content: 'hero_home' });
+    renderWith(<TestTrigger opts={{ origin: 'header' }} />);
+    openFrom(screen.getByText('Open Modal'));
+    fireEvent.click(screen.getByRole('button', { name: en.bookingModal.continue }));
+
+    await waitFor(() => expect(calendlySpy).toHaveBeenCalledTimes(1));
+    const args = calendlySpy.mock.calls[0][0]!;
+    expect(args).not.toHaveProperty('prefill');
+    expect(args.utmContent).toBe('header');
+    expect(args.utmParams).toEqual({ utm_source: 'newsletter', utm_content: 'hero_home' });
+    expect(args).not.toHaveProperty('labels'); // EN uses calendly.ts defaults
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it('the problem answer is passed as a3; field limits are 2048 / 500', async () => {
+    renderWith(<TestTrigger />);
+    openFrom(screen.getByText('Open Modal'));
+    expect(screen.getByLabelText(en.contactForm.websiteLabel)).toHaveAttribute('maxLength', '2048');
+    const problem = screen.getByLabelText(en.bookingModal.problemLabel);
+    expect(problem).toHaveAttribute('maxLength', '500');
+    fireEvent.change(problem, { target: { value: 'Slow site' } });
+    fireEvent.click(screen.getByRole('button', { name: en.bookingModal.continue }));
+    await waitFor(() => expect(calendlySpy).toHaveBeenCalledTimes(1));
+    expect(calendlySpy.mock.calls[0][0]!.prefill).toEqual({ customAnswers: { a3: 'Slow site' } });
+  });
+});
+
+describe('EmailCollectorProvider: dialog accessibility (5d-lite §6, native <dialog>)', () => {
+  it('open → focus on the first form control (booking: Website)', () => {
+    renderWith(<TestTrigger />);
+    openFrom(screen.getByText('Open Modal'));
+    expect(document.activeElement).toBe(screen.getByLabelText(en.contactForm.websiteLabel));
+  });
+
+  it('Escape (cancel) closes and focus returns to the trigger', () => {
+    renderWith(<TestTrigger />);
+    const trigger = screen.getByText('Open Modal');
+    openFrom(trigger);
+    pressEscape(screen.getByRole('dialog'));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('the close button closes and focus returns to the trigger', () => {
+    renderWith(<TestTrigger />);
+    const trigger = screen.getByText('Open Modal');
+    openFrom(trigger);
+    fireEvent.click(screen.getByRole('button', { name: en.common.close }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it('continue: focus is back on the trigger before Calendly opens', async () => {
+    let focusedWhenCalendlyOpened: Element | null = null;
+    calendlySpy.mockImplementation(async () => {
+      focusedWhenCalendlyOpened = document.activeElement;
     });
+    renderWith(<TestTrigger />);
+    const trigger = screen.getByText('Open Modal');
+    openFrom(trigger);
+    fireEvent.click(screen.getByRole('button', { name: en.bookingModal.continue }));
+    await waitFor(() => expect(calendlySpy).toHaveBeenCalledTimes(1));
+    expect(focusedWhenCalendlyOpened).toBe(trigger);
   });
 
-  afterEach(() => {
-    // @ts-ignore
-    delete window.__lastCalendly;
-    vi.restoreAllMocks();
-  });
-
-  it('fires mailchimp_subscribed and lead_download_ready on download flow', async () => {
-    render(
-      <EmailCollectorProvider>
-        <TestTrigger opts={{ downloadUrl: '/assets/guides/free-guide.pdf', utmContent: 'leadmagnet_home' }} />
-      </EmailCollectorProvider>
+  it.each(['en', 'fr', 'es'] as const)('%s: the send-failure booking button (A6) gets focus back after Escape (AC-21)', (locale) => {
+    const t = DICTS[locale];
+    renderWith(
+      <CalendlyButton variant="secondary" size="sm" className="form-error__cta" utmContent="contact_send_failed" utmTerm="strategy_call">
+        {t.contactForm.errors.sendFailedCta}
+      </CalendlyButton>,
+      locale,
     );
+    const button = screen.getByRole('button', { name: t.contactForm.errors.sendFailedCta });
+    openFrom(button);
+    expect(screen.getByRole('dialog', { name: t.common.bookStrategyCall })).toBeInTheDocument();
+    pressEscape(screen.getByRole('dialog'));
+    expect(document.activeElement).toBe(button);
+  });
 
-    fireEvent.click(screen.getByText('Open Modal'));
+  it('a trigger that is no longer rendered: focus is not left inside a removed dialog', () => {
+    function Vanishing() {
+      const { openModal } = useEmailModal();
+      const [shown, setShown] = React.useState(true);
+      return shown ? (
+        <button onClick={() => { openModal(); setShown(false); }}>Menu item</button>
+      ) : null;
+    }
+    renderWith(<Vanishing />);
+    openFrom(screen.getByText('Menu item'));
+    pressEscape(screen.getByRole('dialog'));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(document.activeElement).toBe(document.body);
+  });
 
-    // Modal should show and have an input for email
+  it('download branch: same shell (named <h2>, focus on Name), Escape returns focus', () => {
+    renderWith(<TestTrigger opts={{ downloadUrl: '/assets/guides/free-guide.pdf' }} />);
+    const trigger = screen.getByText('Open Modal');
+    openFrom(trigger);
+    expect(screen.getByRole('dialog', { name: en.emailModal.downloadTitle })).toHaveAttribute('aria-modal', 'true');
+    expect(screen.getByRole('heading', { level: 2, name: en.emailModal.downloadTitle })).toBeInTheDocument();
+    expect(document.activeElement).toBe(screen.getByPlaceholderText(en.forms.namePlaceholder));
+    pressEscape(screen.getByRole('dialog'));
+    expect(document.activeElement).toBe(trigger);
+  });
+});
+
+describe('EmailCollectorProvider: download branch unchanged (A5)', () => {
+  it('fires mailchimp_subscribed and lead_download_ready on download flow', async () => {
+    renderWith(<TestTrigger opts={{ downloadUrl: '/assets/guides/free-guide.pdf', utmContent: 'leadmagnet_home' }} />);
+    openFrom(screen.getByText('Open Modal'));
+
     const emailInput = await screen.findByPlaceholderText('you@company.com');
     const nameInput = screen.getByPlaceholderText('Your name');
-    const submit = screen.getByRole('button', { name: /Continue to Download the Guide|Submitting...|Subscribe/i });
+    const submit = screen.getByRole('button', { name: /Continue to Download the Guide|Submitting.../i });
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(nameInput, { target: { value: 'Tester' } });
-
     fireEvent.click(submit);
 
-    // wait for the download-check to be called and success message area
     await waitFor(() => {
-      // @ts-ignore
-      expect(window.__lastGtagEvent).toBeDefined();
+      expect(gtagHook.__lastGtagEvent).toBeDefined();
     });
+    expect(fetchSpy).toHaveBeenCalledWith('/api/mailchimp', expect.objectContaining({ method: 'POST' }));
 
-    // Check that the last gtag event corresponds to lead_download_ready or mailchimp_subscribed
-    // @ts-ignore
-    const args = window.__lastGtagEvent;
+    const args = gtagHook.__lastGtagEvent!;
     expect(args[0]).toBe('event');
-    const eventName = args[1];
-    expect(['lead_download_ready', 'mailchimp_subscribed'].includes(eventName)).toBe(true);
-
-    // Validate payload shape for the download event (args[2]) if present
-    const payload = args[2] || {};
+    expect(['lead_download_ready', 'mailchimp_subscribed'].includes(String(args[1]))).toBe(true);
+    const payload = (args[2] || {}) as { event_category?: string; event_label?: string; utm_content?: string };
     expect(payload.event_category).toBe('engagement');
-    // Either origin or utm_content should reflect the download origin
     expect(payload.event_label === 'leadmagnet_home' || payload.utm_content === 'leadmagnet_home' || payload.event_label === 'download').toBe(true);
+    // Success state: the guide is ready, Calendly is never opened from this branch.
+    expect(await screen.findByText(en.emailModal.downloadReady)).toBeInTheDocument();
+    expect(calendlySpy).not.toHaveBeenCalled();
   });
 
-  it('fires mailchimp_subscribed_then_calendly and opens calendly on calendly flow', async () => {
-    // Simulate URL has UTM params
-    // @ts-ignore
-    delete window.location;
-    // @ts-ignore
-    window.location = { search: '?utm_source=newsletter&utm_medium=email&utm_campaign=test_campaign&utm_content=hero_home' };
-
-    // Ensure UTM util will read the location
-    vi.spyOn(utmUtil, 'getUtm').mockImplementation(() => ({ utm_source: 'newsletter', utm_medium: 'email', utm_campaign: 'test_campaign', utm_content: 'hero_home' }));
-
-    render(
-      <EmailCollectorProvider>
-        <TestTrigger opts={{ origin: 'hero', utmContent: 'hero_home', customUrl: undefined }} />
-      </EmailCollectorProvider>
-    );
-
-    fireEvent.click(screen.getByText('Open Modal'));
-
-    const emailInput = await screen.findByPlaceholderText('you@company.com');
-    const nameInput = screen.getByPlaceholderText('Your name');
-    const submit = screen.getByRole('button', { name: /Continue to Book Call|Submitting...|Subscribe/i });
-
-    fireEvent.change(emailInput, { target: { value: 'test2@example.com' } });
-    fireEvent.change(nameInput, { target: { value: 'Tester 2' } });
-
-    fireEvent.click(submit);
-
-    // wait for calendly open to be called
-    await waitFor(() => {
-      // @ts-ignore
-      expect(window.__lastCalendly).toBeTruthy();
-    });
-
-    // Validate gtag event was called for the mailchimp->calendly flow and check payload
-    // @ts-ignore
-  const argsCal = window.__lastGtagEvent;
-    expect(argsCal[0]).toBe('event');
-    expect(argsCal[1]).toBe('mailchimp_subscribed_then_calendly');
-    const payloadCal = argsCal[2] || {};
-    expect(payloadCal.event_category).toBe('engagement');
-    expect(payloadCal.method).toBe('calendly');
-    expect(payloadCal.origin === 'hero' || payloadCal.utm_content === 'hero_home' || payloadCal.event_label === 'hero_home').toBe(true);
-
-    // The mock openCalendlyPopup should have received utmParams from the util
-    // @ts-ignore
-    const lastCalendlyCall = (calendly.openCalendlyPopup as any).mock.calls[0][0];
-    expect(lastCalendlyCall).toBeTruthy();
-    expect(lastCalendlyCall.utmParams).toBeDefined();
-    expect(lastCalendlyCall.utmParams.utm_source).toBe('newsletter');
+  it('Escape is ignored while the download submit is in flight', async () => {
+    let resolve!: (r: Response) => void;
+    fetchSpy.mockImplementation(() => new Promise<Response>((r) => { resolve = r; }));
+    renderWith(<TestTrigger opts={{ downloadUrl: '/assets/guides/free-guide.pdf' }} />);
+    openFrom(screen.getByText('Open Modal'));
+    fireEvent.change(screen.getByPlaceholderText('you@company.com'), { target: { value: 'a@b.co' } });
+    fireEvent.click(screen.getByRole('button', { name: en.emailModal.continueDownload }));
+    await screen.findByRole('button', { name: en.emailModal.submitting });
+    pressEscape(screen.getByRole('dialog'));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    await act(async () => resolve(new Response(JSON.stringify({ success: true }), { status: 200 })));
   });
 });

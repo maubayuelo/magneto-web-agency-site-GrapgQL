@@ -126,12 +126,9 @@ export const fr: Dictionary = {
       subscribeFailed: '[FR TODO] Failed to subscribe ({status})',
       unknown: '[FR TODO] Subscription failed',
     },
-    bookingTitle: '[FR TODO] Quick — before we book',
-    calendlyBody: '[FR TODO] Tell us who you are so we can prep a smarter session tailored to your goals.',
     downloadTitle: '[FR TODO] Grab your free guide',
     downloadReady: '[FR TODO] Thanks — your guide is ready for you.',
     downloadBody: '[FR TODO] Enter your name and email, so we can send marketing ideas and tips.',
-    defaultBody: '[FR TODO] Enter your name and email so we can send confirmation and reminders.',
     checking: '[FR TODO] Checking...',
     download: '[FR TODO] Download the free guide',
     openInNewTab: '[FR TODO] Open guide in new tab',
@@ -143,8 +140,18 @@ export const fr: Dictionary = {
     emailLabel: '[FR TODO] Email',
     submitting: '[FR TODO] Submitting...',
     continueDownload: '[FR TODO] Continue to Download the Guide',
-    continueBooking: '[FR TODO] Continue to Book Call',
-    subscribe: '[FR TODO] Subscribe',
+  },
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export ffec355 (FR 877/883/894/898/900/910).
+  // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
+  bookingModal: {
+    body: 'Répondez à trois courtes questions pour préparer notre échange sur votre site web. Choisissez ensuite une plage horaire pour un appel gratuit de 30 minutes.',
+    websiteHelp: 'Facultatif.',
+    problemLabel: 'Quel est le principal problème ou objectif de votre site web?',
+    problemHelp: 'Une ou deux phrases suffisent.',
+    continue: 'Continuer vers la réservation',
+    // B2 (D-1): true only once V1 + V2 confirm the answers reach Calendly (spec §5.3, AC-13).
+    privacyText:
+      'Vos réponses sont transmises à Calendly avec votre réservation afin de préparer l\'appel. Calendly vous demandera votre nom et votre adresse courriel pour effectuer la réservation. Réserver un appel ne vous abonne pas aux courriels promotionnels.',
   },
   notFound: {
     metaTitle: '[FR TODO] 404: This page could not be found.',

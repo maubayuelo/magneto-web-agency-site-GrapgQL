@@ -126,12 +126,9 @@ export const es: Dictionary = {
       subscribeFailed: '[ES TODO] Failed to subscribe ({status})',
       unknown: '[ES TODO] Subscription failed',
     },
-    bookingTitle: '[ES TODO] Quick — before we book',
-    calendlyBody: '[ES TODO] Tell us who you are so we can prep a smarter session tailored to your goals.',
     downloadTitle: '[ES TODO] Grab your free guide',
     downloadReady: '[ES TODO] Thanks — your guide is ready for you.',
     downloadBody: '[ES TODO] Enter your name and email, so we can send marketing ideas and tips.',
-    defaultBody: '[ES TODO] Enter your name and email so we can send confirmation and reminders.',
     checking: '[ES TODO] Checking...',
     download: '[ES TODO] Download the free guide',
     openInNewTab: '[ES TODO] Open guide in new tab',
@@ -143,8 +140,18 @@ export const es: Dictionary = {
     emailLabel: '[ES TODO] Email',
     submitting: '[ES TODO] Submitting...',
     continueDownload: '[ES TODO] Continue to Download the Guide',
-    continueBooking: '[ES TODO] Continue to Book Call',
-    subscribe: '[ES TODO] Subscribe',
+  },
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export ffec355 (ES 893/899/910/914/916/926).
+  // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
+  bookingModal: {
+    body: 'Responde tres preguntas breves para que podamos concentrarnos en tu sitio web durante la conversación. Después elige un horario para una llamada gratuita de 30 minutos.',
+    websiteHelp: 'Opcional.',
+    problemLabel: '¿Cuál es el principal problema u objetivo de tu sitio web?',
+    problemHelp: 'Una o dos frases son suficientes.',
+    continue: 'Continuar a la reserva',
+    // B2 (D-1): true only once V1 + V2 confirm the answers reach Calendly (spec §5.3, AC-13).
+    privacyText:
+      'Tus respuestas se transmiten a Calendly junto con tu reserva para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizarla. Agendar una llamada no te suscribe a correos promocionales.',
   },
   notFound: {
     metaTitle: '[ES TODO] 404: This page could not be found.',

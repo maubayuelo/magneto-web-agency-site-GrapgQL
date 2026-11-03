@@ -5,7 +5,8 @@
 // added line carries its source line in docs/content/magneto-copy-en.md (commit 23b620a); Mauricio confirms them
 // (AC-20). Every other line is still the V0 value.
 // Phase 5d-lite (spec §8): Contact form/page keys from docs/content/magneto-copy-en.md at ffec355; the old contactForm
-// keys (incl. the old response-time success string) are removed.
+// keys (incl. the old response-time success string) are removed. Part 2: bookingModal.* added; the 5 old emailModal booking
+// keys (bookingTitle, calendlyBody, defaultBody, continueBooking, subscribe) are removed.
 // Transforms applied to the sources: JSX `&apos;` → ', `\u2014` → —, and `${expr}` / `{expr}` → {year} {n} {title} {status}.
 import { describe, expect, it } from 'vitest';
 import { en } from './en';
@@ -92,12 +93,9 @@ const EN_FINGERPRINT: Record<string, string> = {
   "emailModal.errors.emailInvalid": "Please enter a valid email",
   "emailModal.errors.subscribeFailed": "Failed to subscribe ({status})",
   "emailModal.errors.unknown": "Subscription failed",
-  "emailModal.bookingTitle": "Quick — before we book",
-  "emailModal.calendlyBody": "Tell us who you are so we can prep a smarter session tailored to your goals.",
   "emailModal.downloadTitle": "Grab your free guide",
   "emailModal.downloadReady": "Thanks — your guide is ready for you.",
   "emailModal.downloadBody": "Enter your name and email, so we can send marketing ideas and tips.",
-  "emailModal.defaultBody": "Enter your name and email so we can send confirmation and reminders.",
   "emailModal.checking": "Checking...",
   "emailModal.download": "Download the free guide",
   "emailModal.openInNewTab": "Open guide in new tab",
@@ -109,8 +107,12 @@ const EN_FINGERPRINT: Record<string, string> = {
   "emailModal.emailLabel": "Email",
   "emailModal.submitting": "Submitting...",
   "emailModal.continueDownload": "Continue to Download the Guide",
-  "emailModal.continueBooking": "Continue to Book Call",
-  "emailModal.subscribe": "Subscribe",
+  "bookingModal.body": "Answer three short questions so we can focus the conversation on your website. Then choose a time for a free 30-minute call.", // Phase 5d-lite, magneto-copy-en.md:704 (ffec355)
+  "bookingModal.websiteHelp": "optional", // Phase 5d-lite, magneto-copy-en.md:709 (ffec355)
+  "bookingModal.problemLabel": "What is the main website problem or goal?", // Phase 5d-lite, magneto-copy-en.md:715 (ffec355)
+  "bookingModal.problemHelp": "One or two sentences is enough.", // Phase 5d-lite, magneto-copy-en.md:716 (ffec355)
+  "bookingModal.continue": "Continue to scheduling", // Phase 5d-lite, magneto-copy-en.md:718 (ffec355)
+  "bookingModal.privacyText": "Your answers are passed to Calendly with your booking to prepare for the call. Calendly will ask for your name and email to schedule it. Booking a call does not subscribe you to marketing emails.", // Phase 5d-lite, magneto-copy-en.md:885 (ffec355)
   "notFound.heading": "404",
   "notFound.body": "This page could not be found.",
   "notFound.metaTitle": "404: This page could not be found.",

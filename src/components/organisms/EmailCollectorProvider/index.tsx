@@ -1,13 +1,15 @@
 "use client";
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from 'react';
 import '@/styles/components/email-collector.scss';
-import { openCalendlyPopup, warmCalendlyResources } from '@/utils/calendly';
+import { openCalendlyPopup, warmCalendlyResources, type CalendlyPrefill } from '@/utils/calendly';
 import { gtagEvent } from '@/utils/analytics';
 import { getUtm } from '@/utils/utm';
 import { useI18n } from '@/i18n/I18nProvider';
 import { DEFAULT_LOCALE } from '@/i18n/config';
 import { format } from '@/i18n/format';
+import { localizePath } from '@/i18n/paths';
+import { NEED_CODES, NEED_KEYS, type NeedCode } from '@/utils/inquiry';
 
 type ModalOptions = {
   utmContent?: string;
@@ -24,10 +26,14 @@ interface EmailModalContextValue {
 
 const EmailModalContext = createContext<EmailModalContextValue | undefined>(undefined);
 
+/** 5d-lite §5.2: answer lengths kept short enough for a Calendly URL. */
+const BOOKING_LIMITS = { website: 2048, problem: 500 } as const;
+
 export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
-  // Strings only (Phase 4, Decision C: ADR 0002 exception). No logic or flow change.
   const { t, locale } = useI18n();
   const tm = t.emailModal;
+  const tb = t.bookingModal;
+  const tf = t.contactForm;
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,35 +43,109 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
   const [downloadCheckLoading, setDownloadCheckLoading] = useState(false);
   const [downloadChallengeUrl, setDownloadChallengeUrl] = useState<string | null>(null);
 
+  // 5d-lite §6.0 / D-9: native <dialog> + showModal() (top layer, inert page, Escape via `cancel`).
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const openRef = useRef(false);
+  const uid = useId();
+  const ids = {
+    heading: `${uid}-heading`,
+    body: `${uid}-body`,
+    website: `${uid}-website`,
+    websiteHelp: `${uid}-website-help`,
+    need: `${uid}-need`,
+    problem: `${uid}-problem`,
+    problemHelp: `${uid}-problem-help`,
+  };
+
+  const isDownload = Boolean(options?.downloadUrl);
+
   const openModal = (opts?: ModalOptions) => {
     // If this modal is being opened as part of a Calendly flow, do a lightweight warm
     // (preconnect + preload) so the full Calendly script can load faster on click.
     try {
-      const isCalendlyIntent = Boolean(
-        opts && (
-          (opts.origin && ['header', 'hero', 'package', 'finalcta'].includes(opts.origin)) ||
-          (opts.customUrl && typeof opts.customUrl === 'string' && opts.customUrl.includes('calendly')) ||
-          (opts.utmContent && String(opts.utmContent).toLowerCase().includes('calendly'))
-        )
-      );
-
-      if (isCalendlyIntent) warmCalendlyResources();
+      if (!opts?.downloadUrl) warmCalendlyResources();
     } catch (err) {
       // warming is best-effort
     }
 
+    triggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOptions(opts);
+    setError(null);
     setIsOpen(true);
   };
 
-  const closeModal = () => {
+  /** Resets state and returns focus to the trigger (or drops it, when the trigger is gone or hidden). */
+  const finishClose = useCallback(() => {
+    if (!openRef.current) return;
+    openRef.current = false;
     setIsOpen(false);
     setError(null);
     setIsSubmitting(false);
     setOptions(undefined);
+    const trigger = triggerRef.current;
+    triggerRef.current = null;
+    // Browsers don't focus an element that is removed or not rendered (e.g. inside a mobile menu that closed on
+    // click), so "focus landed" is the visibility test. Otherwise focus falls back to <body>.
+    if (trigger?.isConnected) trigger.focus();
+    if (document.activeElement !== trigger && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }, []);
+
+  /** Closes synchronously, so focus is back on the trigger before Calendly opens its own overlay. */
+  const closeModal = useCallback(() => {
+    const dialog = dialogRef.current;
+    if (dialog?.open) dialog.close();
+    finishClose();
+  }, [finishClose]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!isOpen || !dialog || dialog.open) return;
+    dialog.showModal();
+    openRef.current = true;
+    // showModal() focuses the first focusable (the close button); the spec wants the first form control.
+    const first = dialog.querySelector<HTMLElement>('input:not([type="hidden"]), select, textarea');
+    (first ?? document.getElementById(ids.heading))?.focus();
+  }, [isOpen, ids.heading]);
+
+  // Escape: the browser closes the dialog; keep it open while a download submit is in flight.
+  const onCancel: React.ReactEventHandler<HTMLDialogElement> = (e) => {
+    if (isSubmitting) e.preventDefault();
   };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleBookingSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const website = String(formData.get('website') || '').trim();
+    const need = String(formData.get('need') || '');
+    const problem = String(formData.get('problem') || '').trim();
+
+    // a2 = the label the visitor saw, in their language (§5.2).
+    const customAnswers: NonNullable<CalendlyPrefill['customAnswers']> = {};
+    if (website) customAnswers.a1 = website;
+    if ((NEED_CODES as readonly string[]).includes(need)) customAnswers.a2 = tf.needOptions[NEED_KEYS[need as NeedCode]];
+    if (problem) customAnswers.a3 = problem;
+
+    const utm = getUtm();
+    const opts = options;
+    closeModal();
+
+    await openCalendlyPopup({
+      utmContent: opts?.utmContent ?? opts?.origin ?? utm?.utm_content,
+      utmTerm: opts?.utmTerm ?? utm?.utm_term,
+      customUrl: opts?.customUrl,
+      forceNewWindow: opts?.forceNewWindow,
+      utmParams: utm,
+      // EN uses calendly.ts's defaults (the same EN dictionary values).
+      ...(locale === DEFAULT_LOCALE ? {} : { labels: t.calendly }),
+      ...(Object.keys(customAnswers).length ? { prefill: { customAnswers } } : {}),
+    });
+  };
+
+  // Download branch (lead magnet, hidden): unchanged behaviour (A5, ADR 0002).
+  const handleDownloadSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
@@ -102,8 +182,7 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
         throw new Error(msg);
       }
 
-      // On success: trigger analytics and then continue with UX flow.
-      // Emit a Mailchimp subscribe event so GA captures the conversion source (hero/header/package/download/finalcta)
+      // Emit a Mailchimp subscribe event so GA captures the conversion source
       try {
         gtagEvent('mailchimp_subscribed', {
           event_category: 'engagement',
@@ -118,219 +197,208 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
         // best-effort; don't block UX on analytics
       }
 
-      // If modal was opened with a downloadUrl, show success UI and present in-modal download CTA
-          if (options?.downloadUrl) {
-        // keep the modal open and show a success state with download button
-        setSuccess(true);
-        // kick off a quick check to make sure the PDF exists (avoid browser downloading text)
-        try {
-          setDownloadCheckLoading(true);
-              setDownloadChallengeUrl(null);
-              fetch(`/api/download-check?url=${encodeURIComponent(options.downloadUrl)}`)
-                .then((r) => r.json().catch(() => ({})))
-                .then((p) => {
-                  if (p && p.success) {
-                    setDownloadAvailable(true);
-                    setDownloadChallengeUrl(null);
-                  } else if (p && p.challenge) {
-                    // remote requires browser challenge — offer a direct link that lets the browser handle it
-                    setDownloadAvailable(false);
-                    setDownloadChallengeUrl(options.downloadUrl || null);
-                  } else {
-                    setDownloadAvailable(false);
-                    setDownloadChallengeUrl(null);
-                  }
-                })
-                .catch(() => {
-                  setDownloadAvailable(false);
-                  setDownloadChallengeUrl(null);
-                })
-                .finally(() => setDownloadCheckLoading(false));
-        } catch (err) {
-          setDownloadAvailable(false);
-          setDownloadCheckLoading(false);
-        }
-        // Also send a more specific event for downloads
-        try {
-          gtagEvent('lead_download_ready', {
-            event_category: 'engagement',
-            event_label: options?.origin || options?.utmContent || utm?.utm_content || 'download',
-            origin: options?.origin || null,
-            utm_content: options?.utmContent || utm?.utm_content || null,
-            utm_source: utm?.utm_source || null,
-            utm_medium: utm?.utm_medium || null,
-            utm_campaign: utm?.utm_campaign || null,
-            method: 'download'
-          });
-        } catch (e) {
-          // ignore
-        }
-
-        return;
-      }
-
-      // otherwise continue with existing flow (e.g. open calendly)
-      // `openCalendlyPopup` will load the full script if needed; avoid redundant eager loads here.
-      // Ensure Calendly receives a sensible utmContent (prefer explicit utmContent, otherwise use origin)
-  const calendlyUtmContent = options?.utmContent ?? options?.origin ?? utm?.utm_content;
-
+      // keep the modal open and show a success state with download button
+      setSuccess(true);
+      const downloadUrl = options?.downloadUrl || '';
+      // kick off a quick check to make sure the PDF exists (avoid browser downloading text)
       try {
-        gtagEvent('mailchimp_subscribed_then_calendly', {
+        setDownloadCheckLoading(true);
+        setDownloadChallengeUrl(null);
+        fetch(`/api/download-check?url=${encodeURIComponent(downloadUrl)}`)
+          .then((r) => r.json().catch(() => ({})))
+          .then((p) => {
+            if (p && p.success) {
+              setDownloadAvailable(true);
+              setDownloadChallengeUrl(null);
+            } else if (p && p.challenge) {
+              // remote requires browser challenge — offer a direct link that lets the browser handle it
+              setDownloadAvailable(false);
+              setDownloadChallengeUrl(downloadUrl || null);
+            } else {
+              setDownloadAvailable(false);
+              setDownloadChallengeUrl(null);
+            }
+          })
+          .catch(() => {
+            setDownloadAvailable(false);
+            setDownloadChallengeUrl(null);
+          })
+          .finally(() => setDownloadCheckLoading(false));
+      } catch (err) {
+        setDownloadAvailable(false);
+        setDownloadCheckLoading(false);
+      }
+      // Also send a more specific event for downloads
+      try {
+        gtagEvent('lead_download_ready', {
           event_category: 'engagement',
-          event_label: calendlyUtmContent || 'calendly',
+          event_label: options?.origin || options?.utmContent || utm?.utm_content || 'download',
           origin: options?.origin || null,
           utm_content: options?.utmContent || utm?.utm_content || null,
           utm_source: utm?.utm_source || null,
           utm_medium: utm?.utm_medium || null,
           utm_campaign: utm?.utm_campaign || null,
-          method: 'calendly'
+          method: 'download'
         });
       } catch (e) {
         // ignore
       }
-
-      await openCalendlyPopup({
-        utmContent: calendlyUtmContent,
-        utmTerm: options?.utmTerm ?? utm?.utm_term,
-        customUrl: options?.customUrl,
-        forceNewWindow: options?.forceNewWindow,
-        utmParams: utm,
-        // EN uses calendly.ts's defaults (the same EN dictionary values).
-        ...(locale === DEFAULT_LOCALE ? {} : { labels: t.calendly }),
-      });
-
-      // close modal after successful flow
-      closeModal();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Subscription error:', err);
-      setError(String(err?.message || err || tm.errors.unknown));
+      setError(err instanceof Error && err.message ? err.message : String(err || tm.errors.unknown));
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const renderBooking = () => (
+    <>
+      <h2 id={ids.heading} className="typo-xl-responsive m-0 ec-heading" tabIndex={-1}>{t.common.bookStrategyCall}</h2>
+      <p id={ids.body} className="typo-md-medium">{tb.body}</p>
+      <form onSubmit={handleBookingSubmit} className="ec-form" noValidate>
+        <div className="form-field">
+          <label className="form-field__label" htmlFor={ids.website}>{tf.websiteLabel}</label>
+          <input
+            id={ids.website}
+            name="website"
+            className="form-field__control"
+            type="text"
+            inputMode="url"
+            autoComplete="url"
+            maxLength={BOOKING_LIMITS.website}
+            aria-describedby={ids.websiteHelp}
+          />
+          <p id={ids.websiteHelp} className="form-field__help">{tb.websiteHelp}</p>
+        </div>
+        <div className="form-field">
+          <label className="form-field__label" htmlFor={ids.need}>{tf.needLabel}</label>
+          <select id={ids.need} name="need" className="form-field__control form-field__select" defaultValue="">
+            <option value="" disabled>{tf.selectPlaceholder}</option>
+            {NEED_CODES.map((code) => (
+              <option key={code} value={code}>{tf.needOptions[NEED_KEYS[code]]}</option>
+            ))}
+          </select>
+        </div>
+        <div className="form-field">
+          <label className="form-field__label" htmlFor={ids.problem}>{tb.problemLabel}</label>
+          <textarea
+            id={ids.problem}
+            name="problem"
+            className="form-field__control"
+            rows={3}
+            maxLength={BOOKING_LIMITS.problem}
+            aria-describedby={ids.problemHelp}
+          />
+          <p id={ids.problemHelp} className="form-field__help">{tb.problemHelp}</p>
+        </div>
+        <p className="ec-privacy">
+          {tb.privacyText} <a href={localizePath('/privacy-policy', locale)}>{t.common.privacyPolicy}</a>
+        </p>
+        <div className="ec-actions">
+          <button type="submit" className="btn btn-primary">{tb.continue}</button>
+        </div>
+      </form>
+    </>
+  );
+
+  const renderDownload = () => (
+    <>
+      <h2 id={ids.heading} className="typo-xl-responsive m-0 ec-heading" tabIndex={-1}>{tm.downloadTitle}</h2>
+      <p id={ids.body} className="typo-md-medium">{success ? tm.downloadReady : tm.downloadBody}</p>
+
+      {success ? (
+        <div className="ec-success">
+          <div className="ec-success-actions">
+            {downloadCheckLoading ? (
+              <button className="btn btn-primary" disabled>{tm.checking}</button>
+            ) : downloadAvailable === true ? (
+              <a href={options?.downloadUrl ? `/api/download?url=${encodeURIComponent(options.downloadUrl)}` : '#'} className="btn btn-primary" download>
+                {tm.download}
+              </a>
+            ) : downloadChallengeUrl ? (
+              // The server detected a challenge (e.g. Vercel bot protection). Let the browser handle it by opening the direct URL.
+              <a href={downloadChallengeUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                {tm.openInNewTab}
+              </a>
+            ) : downloadAvailable === false ? (
+              <button className="btn btn-primary" disabled>{tm.downloadUnavailable}</button>
+            ) : (
+              // null state (not checked) — show safe disabled state
+              <button className="btn btn-primary" disabled>{tm.preparing}</button>
+            )}
+            <button className="btn btn-outline" onClick={closeModal}>
+              {t.common.close}
+            </button>
+          </div>
+          {downloadAvailable === false && !downloadChallengeUrl && (
+            <div className="form-error" style={{ marginTop: 12 }}>
+              {tm.pdfNotFound}
+            </div>
+          )}
+          {downloadChallengeUrl && (
+            <div className="form-error" style={{ marginTop: 12 }}>
+              {tm.botChallenge}
+            </div>
+          )}
+        </div>
+      ) : (
+        <form onSubmit={handleDownloadSubmit} className="ec-form">
+          <div className="form-field">
+            <label className="typo-md-bold" htmlFor="ec-name">{tm.nameLabel}</label>
+            <input
+              id="ec-name"
+              className="form-field__control"
+              type="text"
+              name="name"
+              placeholder={t.forms.namePlaceholder}
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <div className="form-field">
+            <label className="typo-md-bold" htmlFor="ec-email">{tm.emailLabel}</label>
+            <input
+              id="ec-email"
+              className="form-field__control"
+              type="email"
+              name="email"
+              placeholder={t.forms.emailPlaceholder}
+              required
+              disabled={isSubmitting}
+            />
+          </div>
+
+          {error && <div className="form-error">{error}</div>}
+
+          <div className="ec-actions">
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? tm.submitting : tm.continueDownload}
+            </button>
+          </div>
+        </form>
+      )}
+    </>
+  );
 
   return (
     <EmailModalContext.Provider value={{ openModal }}>
       {props.children}
 
       {isOpen && (
-        <div className="ec-overlay" role="dialog" aria-modal="true">
+        <dialog
+          ref={dialogRef}
+          className="ec-dialog"
+          aria-modal="true"
+          aria-labelledby={ids.heading}
+          aria-describedby={ids.body}
+          onCancel={onCancel}
+          onClose={finishClose}
+        >
           <div className="ec-modal">
-            <button className="ec-close" onClick={closeModal} aria-label={t.common.close}>×</button>
-            {/* Render slightly different copy depending on how the modal was opened */}
-            {(() => {
-              const strategyOrigins = ['header', 'hero', 'package', 'finalcta'];
-              const variant = options?.downloadUrl
-                ? 'download'
-                : (options?.origin && strategyOrigins.includes(options.origin))
-                ? 'calendly'
-                : (options?.customUrl && typeof options.customUrl === 'string' && options.customUrl.includes('calendly')) || (options?.utmContent && String(options.utmContent).toLowerCase().includes('calendly'))
-                ? 'calendly'
-                : 'default';
-
-              if (variant === 'calendly') {
-                return (
-                  <>
-                   <h3 className="typo-xl-responsive m-0">{tm.bookingTitle}</h3>
-                    <p className="typo-md-medium">{tm.calendlyBody}</p>
-                  </>
-                );
-              }
-
-              if (variant === 'download') {
-                return (
-                  <>
-                    <h3 className="typo-xl-responsive m-0">{tm.downloadTitle}</h3>
-                    
-                    {success && options?.downloadUrl ? (
-                      <p className="typo-md-medium">{tm.downloadReady}</p>
-                    ) : <p className="typo-md-medium">{tm.downloadBody}</p>}
-                  </>
-                );
-              }
-
-              return (
-                <>
-                  <h3 className="typo-xl-responsive m-0">{tm.bookingTitle}</h3>
-                  <p className="typo-md-medium">{tm.defaultBody}</p>
-                </>
-              );
-            })()}
-
-            {success && options?.downloadUrl ? (
-              <div className="ec-success">
-                
-                <div className="ec-success-actions">
-                  {downloadCheckLoading ? (
-                    <button className="btn btn-primary" disabled>{tm.checking}</button>
-                  ) : downloadAvailable === true ? (
-                    <a href={options.downloadUrl ? `/api/download?url=${encodeURIComponent(options.downloadUrl)}` : '#'} className="btn btn-primary" download>
-                      {tm.download}
-                    </a>
-                  ) : downloadChallengeUrl ? (
-                    // The server detected a challenge (e.g. Vercel bot protection). Let the browser handle it by opening the direct URL.
-                    <a href={downloadChallengeUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
-                      {tm.openInNewTab}
-                    </a>
-                  ) : downloadAvailable === false ? (
-                    <button className="btn btn-primary" disabled>{tm.downloadUnavailable}</button>
-                  ) : (
-                    // null state (not checked) — show safe disabled state
-                    <button className="btn btn-primary" disabled>{tm.preparing}</button>
-                  )}
-                  <button className="btn btn-outline" onClick={closeModal}>
-                    {t.common.close}
-                  </button>
-                </div>
-                {downloadAvailable === false && !downloadChallengeUrl && (
-                  <div className="form-error" style={{ marginTop: 12 }}>
-                    {tm.pdfNotFound}
-                  </div>
-                )}
-                {downloadChallengeUrl && (
-                  <div className="form-error" style={{ marginTop: 12 }}>
-                    {tm.botChallenge}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="ec-form">
-                <div className="form-field">
-                  <label className="typo-md-bold" htmlFor="ec-name">{tm.nameLabel}</label>
-                  <input
-                    id="ec-name"
-                    className="form-field__control"
-                    type="text"
-                    name="name"
-                    placeholder={t.forms.namePlaceholder}
-                    disabled={isSubmitting}
-                  />
-                </div>
-
-                <div className="form-field">
-                  <label className="typo-md-bold" htmlFor="ec-email">{tm.emailLabel}</label>
-                  <input
-                    id="ec-email"
-                    className="form-field__control"
-                    type="email"
-                    name="email"
-                    placeholder={t.forms.emailPlaceholder}
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-
-                {error && <div className="form-error">{error}</div>}
-
-                <div className="ec-actions">
-                  <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                    {isSubmitting ? tm.submitting : (options?.downloadUrl ? tm.continueDownload : ((options?.origin && ['header','hero','package','finalcta'].includes(options.origin)) || (options?.customUrl && typeof options.customUrl === 'string' && options.customUrl.includes('calendly')) || (options?.utmContent && String(options.utmContent).toLowerCase().includes('calendly'))) ? tm.continueBooking : tm.subscribe)}
-                  </button>
-                </div>
-              </form>
-            )}
+            <button type="button" className="ec-close" onClick={closeModal} aria-label={t.common.close}>×</button>
+            {isDownload ? renderDownload() : renderBooking()}
           </div>
-        </div>
+        </dialog>
       )}
     </EmailModalContext.Provider>
   );
