@@ -146,6 +146,25 @@
         }
     }
 
+    // 5d-lite §4: Contact "Prefer to talk?" + booking button (HeroLoader children).
+    .hero-secondary {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: $spacing-10 $spacing-15;
+        margin: 0;
+        padding-top: $spacing-15;
+        color: $white;
+        text-align: center;
+        z-index: 2;
+
+        .btn:focus-visible {
+            outline: 3px solid $white;
+            outline-offset: 3px;
+        }
+    }
+
     .hero-cta-wrapper {
         padding-top: 15px;
         display: flex;
