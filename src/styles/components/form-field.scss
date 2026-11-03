@@ -20,7 +20,7 @@
 }
 
 .form-field__required {
-  color: #e74c3c;
+  color: #b42318; // 5d-lite: was #e74c3c (3.8:1 on white); the visible required cue needs 4.5:1 → 6.6:1
   font-weight: $font-weight-bold;
 }
 
@@ -89,4 +89,30 @@ textarea.form-field__control {
   &::placeholder {
     color: $gray-60;
   }
+}
+
+// 5d-lite §3: helper and error text, linked to the control with aria-describedby.
+.form-field__help {
+  @include font-style(sm, regular, md);
+  margin: 0;
+  color: $gray-90; // #606060 on white: 6.3:1 (WCAG AA)
+}
+
+.form-field__error {
+  @include font-style(sm, bold, md);
+  margin: 0;
+  color: #b42318; // on white: 6.5:1
+  // An icon as well as the colour, so colour is not the only cue. Decorative: the text carries the meaning.
+  padding-left: 22px;
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3ccircle cx='8' cy='8' r='7' fill='%23b42318'/%3e%3cpath d='M8 4v5' stroke='white' stroke-width='2' stroke-linecap='round'/%3e%3ccircle cx='8' cy='11.75' r='1.1' fill='white'/%3e%3c/svg%3e") left 0.2em / 16px 16px no-repeat;
+}
+
+// Visible keyboard focus that does not depend on the browser default (the :focus rule above removes the outline).
+.form-field__control:focus-visible {
+  outline: 3px solid $primary-color-dark;
+  outline-offset: 2px;
+}
+
+.form-field--error .form-field__control {
+  border-width: 2px;
 }

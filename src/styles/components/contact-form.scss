@@ -213,3 +213,98 @@
   0% { transform: translateY(-50%) rotate(0deg); }
   100% { transform: translateY(-50%) rotate(360deg); }
 }
+
+// 5d-lite §3 / §4: required legend, privacy line, success block, honeypot, send-failure control.
+.contact-form__required-note {
+  @include font-style(sm, regular, md);
+  margin: 0;
+  color: $gray-90;
+}
+
+.contact-form__privacy {
+  @include font-style(sm, regular, md);
+  margin: 0;
+  color: $gray-90;
+
+  a {
+    color: $primary-color-dark; // underlined, 11:1 on white
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:focus-visible {
+      outline: 3px solid $primary-color-dark;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+}
+
+.contact-form-submit:focus-visible {
+  outline: 3px solid $primary-color-dark;
+  outline-offset: 3px;
+}
+
+.contact-form-success {
+  margin-bottom: 0;
+
+  &:focus {
+    outline: 3px solid $primary-color-dark;
+    outline-offset: 3px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .contact-form-success__title {
+    @include font-style(md, bold, md);
+    margin-bottom: $spacing-5;
+  }
+}
+
+// Off-screen, not display:none: some bots skip hidden inputs.
+.contact-form__hp {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.contact-form .form-error {
+  margin-bottom: 0;
+  line-height: 1.6;
+}
+
+// The booking phrase inside the send-failure sentence (A6): inline, wraps with the text.
+.form-error__cta.btn {
+  display: inline;
+  padding: 4px 6px; // inline box ≥ 24 px tall at this font size
+  border-width: 1px;
+  border-radius: 4px;
+  font: inherit;
+  font-weight: $font-weight-bold;
+  color: $primary-color-dark; // 11:1 on the light alert background
+  border-color: $primary-color-dark;
+  text-align: left;
+  white-space: normal;
+  overflow: visible;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  vertical-align: baseline;
+
+  &:focus-visible {
+    outline: 3px solid $primary-color-dark;
+    outline-offset: 2px;
+  }
+}
+
+// Long labels wrap (problem/goal): keep the required mark right after the text, not at the far end of the row.
+.contact-form .form-field__label {
+  display: block;
+
+  .form-field__required {
+    margin-left: 4px;
+  }
+}
