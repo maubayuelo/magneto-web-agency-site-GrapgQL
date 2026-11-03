@@ -178,6 +178,12 @@ export interface CalendlyLabels {
   frameTitle: string;
 }
 
+/** Calendly custom-question prefill (5d-lite §5.2, B2): a1–a3 = the event's questions in order. */
+export type CalendlyAnswerKey = 'a1' | 'a2' | 'a3';
+export interface CalendlyPrefill {
+  customAnswers?: Partial<Record<CalendlyAnswerKey, string>>;
+}
+
 export const openCalendlyPopup = async (options?: {
   utmContent?: string;
   utmTerm?: string;
@@ -192,12 +198,14 @@ export const openCalendlyPopup = async (options?: {
   utmParams?: Record<string, string | undefined>;
   /** Localized strings for the fallback iframe modal (ADR 0005); EN dictionary values when omitted. */
   labels?: CalendlyLabels;
+  /** Booking-dialog answers, sent as URL params so the widget, the iframe fallback and a new window all receive them. */
+  prefill?: CalendlyPrefill;
 }) => {
+  // Built outside the try so the error fallback below also keeps utm + answers.
+  const targetUrl = new URL(calendlyConfig.url);
   try {
-    // If caller prefers a new window (avoids iframe/permission policies), open immediately
     // D-8 revised (free Calendly plan): one event for all locales, configured with the a1–a3 questions.
     // CMS links (ctaLinkHero, finalCtaSection.ctaLink) may still point at another event, so customUrl is not used.
-    const targetUrl = new URL(calendlyConfig.url);
     targetUrl.searchParams.set('utm_source', calendlyConfig.defaultUtm.utmSource);
     targetUrl.searchParams.set('utm_medium', calendlyConfig.defaultUtm.utmMedium);
     targetUrl.searchParams.set('utm_campaign', calendlyConfig.defaultUtm.utmCampaign);
@@ -208,6 +216,15 @@ export const openCalendlyPopup = async (options?: {
     if (options?.utmParams) {
       Object.entries(options.utmParams).forEach(([k, v]) => {
         if (v) targetUrl.searchParams.set(k, v);
+      });
+    }
+
+    // Only non-empty answers: an empty aN would overwrite nothing useful and lengthens the URL.
+    const answers = options?.prefill?.customAnswers;
+    if (answers) {
+      (['a1', 'a2', 'a3'] as const).forEach((key) => {
+        const value = answers[key]?.trim();
+        if (value) targetUrl.searchParams.set(key, value);
       });
     }
 
@@ -263,12 +280,12 @@ export const openCalendlyPopup = async (options?: {
     // navigate users away from the site. Only open a new tab/window when the
     // caller explicitly requested `forceNewWindow: true`.
     try {
-      openEmbeddedCalendlyModal(calendlyConfig.url, options?.utmContent, options?.labels);
+      openEmbeddedCalendlyModal(targetUrl.toString(), options?.utmContent, options?.labels);
     } catch (e) {
       // If creating the embedded modal somehow fails, as a last resort try
       // opening a new tab (wrap in try/catch so errors don't bubble).
       try {
-        window.open(calendlyConfig.url, '_blank', 'noopener,noreferrer');
+        window.open(targetUrl.toString(), '_blank', 'noopener,noreferrer');
       } catch (ee) {
         // swallow
       }
@@ -285,10 +302,13 @@ const openEmbeddedCalendlyModal = (url: string, label?: string, labels: Calendly
     // Avoid creating multiple overlays
     if (document.getElementById('calendly-embedded-overlay')) return;
 
+    // D-10: named dialog, focus moved to its close button, then returned. No Tab trap: the iframe is cross-origin.
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const overlay = document.createElement('div');
     overlay.id = 'calendly-embedded-overlay';
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', labels.frameTitle);
     overlay.style.position = 'fixed';
     overlay.style.inset = '0';
     overlay.style.background = 'rgba(0,0,0,0.6)';
@@ -371,6 +391,7 @@ const openEmbeddedCalendlyModal = (url: string, label?: string, labels: Calendly
       }
       if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
       document.removeEventListener('keydown', onKeyDown);
+      if (previouslyFocused && previouslyFocused.isConnected) previouslyFocused.focus();
     };
 
     const onKeyDown = (ev: KeyboardEvent) => {
@@ -388,6 +409,7 @@ const openEmbeddedCalendlyModal = (url: string, label?: string, labels: Calendly
     container.appendChild(iframe);
     overlay.appendChild(container);
     document.body.appendChild(overlay);
+    closeBtn.focus();
   } catch (err) {
     // last-resort fallback: open in new tab
     try {

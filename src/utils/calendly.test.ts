@@ -67,3 +67,97 @@ describe('openCalendlyPopup: single event (D-8 revised, Option A)', () => {
     expect(iframe!.src).not.toContain('mauriciobayuelo');
   });
 });
+
+describe('openCalendlyPopup: booking answers a1–a3 (5d-lite §5.2, B2)', () => {
+  beforeEach(() => {
+    w.Calendly = { initPopupWidget: vi.fn(), initBadgeWidget: vi.fn() };
+    document.getElementById('calendly-embedded-overlay')?.remove();
+  });
+  afterEach(() => {
+    delete w.Calendly;
+    vi.restoreAllMocks();
+  });
+
+  const widgetUrl = () => opened(w.Calendly!.initPopupWidget.mock.calls[0][0].url);
+
+  it('sets a1–a3 on the popup widget URL, utm unchanged', async () => {
+    await openCalendlyPopup({
+      utmContent: 'header',
+      prefill: { customAnswers: { a1: 'example.com', a2: 'Corriger ou améliorer mon site actuel', a3: 'Slow & old' } },
+    });
+    const url = widgetUrl();
+    expect(`${url.origin}${url.pathname}`).toBe(EVENT);
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      utm_source: 'website', utm_medium: 'cta', utm_campaign: 'strategy_call', utm_content: 'header',
+      a1: 'example.com', a2: 'Corriger ou améliorer mon site actuel', a3: 'Slow & old',
+    });
+  });
+
+  it('only non-empty answers are set', async () => {
+    await openCalendlyPopup({ prefill: { customAnswers: { a1: '', a2: '   ', a3: 'Need more leads' } } });
+    const params = widgetUrl().searchParams;
+    expect(params.has('a1')).toBe(false);
+    expect(params.has('a2')).toBe(false);
+    expect(params.get('a3')).toBe('Need more leads');
+  });
+
+  it('no prefill → no a1–a3 (existing callers unchanged)', async () => {
+    await openCalendlyPopup({ utmContent: 'hero' });
+    const keys = [...widgetUrl().searchParams.keys()];
+    expect(keys.some((k) => /^a\d$/.test(k))).toBe(false);
+  });
+
+  it('new window and iframe fallback receive the same answers', async () => {
+    const open = vi.spyOn(window, 'open').mockReturnValue(null);
+    await openCalendlyPopup({ forceNewWindow: true, prefill: { customAnswers: { a1: 'example.com' } } });
+    expect(new URL(String(open.mock.calls[0][0])).searchParams.get('a1')).toBe('example.com');
+
+    w.Calendly!.initPopupWidget.mockImplementation(() => { throw new Error('widget failed'); });
+    await openCalendlyPopup({ prefill: { customAnswers: { a2: 'Not sure yet' } } });
+    const iframe = document.querySelector<HTMLIFrameElement>('#calendly-embedded-overlay iframe')!;
+    expect(new URL(iframe.src).searchParams.get('a2')).toBe('Not sure yet');
+  });
+});
+
+describe('Calendly iframe fallback dialog a11y (5d-lite D-10)', () => {
+  beforeEach(() => {
+    w.Calendly = { initPopupWidget: vi.fn(() => { throw new Error('widget failed'); }), initBadgeWidget: vi.fn() };
+    document.getElementById('calendly-embedded-overlay')?.remove();
+  });
+  afterEach(() => {
+    delete w.Calendly;
+    vi.restoreAllMocks();
+  });
+
+  it('is named by the frame title, focuses its close button, and returns focus on close', async () => {
+    const trigger = document.createElement('button');
+    document.body.appendChild(trigger);
+    trigger.focus();
+
+    await openCalendlyPopup({ labels: { closeDialog: 'Fermer', frameTitle: 'Planifier un appel' } });
+    const overlay = document.getElementById('calendly-embedded-overlay')!;
+    expect(overlay.getAttribute('role')).toBe('dialog');
+    expect(overlay.getAttribute('aria-modal')).toBe('true');
+    expect(overlay.getAttribute('aria-label')).toBe('Planifier un appel');
+    const close = document.getElementById('calendly-embedded-close')!;
+    expect(close.getAttribute('aria-label')).toBe('Fermer');
+    expect(document.activeElement).toBe(close);
+
+    close.click();
+    expect(document.getElementById('calendly-embedded-overlay')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    trigger.remove();
+  });
+
+  it('Escape closes and returns focus too', async () => {
+    const trigger = document.createElement('button');
+    document.body.appendChild(trigger);
+    trigger.focus();
+    await openCalendlyPopup();
+    expect(document.getElementById('calendly-embedded-overlay')!.getAttribute('aria-label')).toBe('Calendly scheduling'); // EN default (en.calendly.frameTitle)
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    expect(document.getElementById('calendly-embedded-overlay')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    trigger.remove();
+  });
+});
