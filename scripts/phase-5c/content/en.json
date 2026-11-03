@@ -1,8 +1,8 @@
 {
   "source": {
     "file": "docs/content/magneto-copy-en.md",
-    "commit": "01ff73f",
-    "sha256": "870b8573013427b3ba57afc3301d864f30c9ee32fb89363eeb243c265daee16d"
+    "commit": "ffec355",
+    "sha256": "9f9d57eed41678f0441b91a338f086cfbcdc2834fb4812b095848be76e687ca9"
   },
   "spec": "docs/specs/phase-5c-loader.md rev 2 + docs/specs/phase-5b-services-packages-seo.md rev 9 §5.4 override",
   "format": "fields[].value is the raw ACF value; repeater rows are keyed by sub-field key; subfields maps sub-field key → GraphQL name (\"[]\" = GraphQL list).",
@@ -319,13 +319,13 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "EN 573",
+          "src": "EN 579",
           "value": "Tell me about your website project."
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "EN 575",
+          "src": "EN 581",
           "value": "Share a few details about your website and what you want to improve. I’ll reply with the most sensible next step."
         }
       ]
