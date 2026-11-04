@@ -1,6 +1,6 @@
 # Privacy route — `/privacy-policy` in EN / FR-CA / ES (D-L)
 
-- **Status: Approved** (rev 1.1, approved by Mauricio + Senior Architect, 2026-11-04)
+- **Status: Approved** (rev 1.2, 2026-11-04; rev 1.1 approved by Mauricio + Senior Architect, 2026-11-04)
 - Author: Architect · Reviewed by: Mauricio (+ Senior Architect)
 - Date: 2026-11-04
 - Branch: `spec/privacy-route`, **stacked on `spec/phase-5c-rev3`** (`d10108e`, 5c rev 3.1 Approved). This spec cites 5c
@@ -18,6 +18,17 @@
   Thu 12-10. Plan B = EN + FR.
 
 ## Revision
+- **rev 1.2 (2026-11-04) — Approved (amendment, Status unchanged).** Follows Mauricio's decision of 2026-11-04: GA4 +
+  consent banner live at launch through [Phase 5f](phase-5f-analytics-consent.md); fallback = launch without GA, policy
+  §5 "Version B" (`docs/content` @ `637fba7`, "Internal — ready policy blocks").
+  (a) The footer "Privacy choices" control ships **with 5f**, not with this route on 11-12 (Goal, §3, Out of scope).
+  (b) §7 item 5 and AC-10 rewritten: no request to Google **analytics** hosts before consent; if 5f is live, "Privacy
+  choices" is present and works; if not, the page uses §5 Version B.
+  (c) E12 corrected: Mailchimp env vars **did** exist in Vercel until 2026-11-04 (Mauricio deleted them that day); the
+  Cloudflare Turnstile key and the legacy GA ID exist but the new code doesn't use them.
+  (d) Gates G-4 / G-5 closed in Notion on 2026-11-04 (EN/FR/ES §4/§5, effective date 3 Dec 2026); EFVP drafted in Notion
+  with open items. Canonical copy for this route moves to `637fba7` for the §5 blocks (body line refs in E-copy stay at
+  `ffec355`; section titles govern).
 - **rev 1.1 (2026-11-04) — Approved.** D-P1…D-P9 all **A** (D-P6 B acceptable). O-3 closed (ES decision at the 12-01
   go/no-go), O-2 closed by the 11-07/11-08 re-export. Branch stacked on 5c rev 3.1. Brevo: the lead magnet may go live
   at launch if 5e passes → new conditional gate **G-4b**, §8 / R-9 / §7 / AC-16 updated. Re-export rule added (§Gates).
@@ -27,9 +38,9 @@
 ## Goal
 `/privacy-policy` renders the approved Privacy Policy in every locale enabled at launch: `/privacy-policy` (EN),
 `/fr/privacy-policy`, `/es/privacy-policy` (ES only if ES launches). Each locale reads its own WordPress page through
-WPML. The footer links to it in every locale. No consent banner and no "Privacy choices" link ship, because no
-analytics loads. When this holds in production for every enabled locale, D-L is met and the email-less footer (5b §5.5)
-ships as is.
+WPML. The footer links to it in every locale. This phase ships no consent banner and no "Privacy choices" control:
+both ship with [Phase 5f](phase-5f-analytics-consent.md) (rev 1.2). Until 5f is live, no analytics loads. When this
+holds in production for every enabled locale, D-L is met and the email-less footer (5b §5.5) ships as is.
 
 ## Evidence (facts verified 2026-11-04, unless stated)
 
@@ -65,7 +76,8 @@ ships as is.
   callers (`grep -rn "loadAnalytics\|loadGtm" src` → only their definitions). `gtagEvent` calls are no-ops without
   `window.gtag` (`analytics.ts:30-34`). No `@vercel/analytics` / speed-insights in `package.json`. Locally the GA/GTM
   env vars are placeholders only (`.env.local.example:30`). → **"No consent banner while no analytics loads" holds in code
-  today.**
+  today.** *(rev 1.2: GA4 behind a consent banner is now planned for launch in [5f](phase-5f-analytics-consent.md); this
+  route still loads no analytics.)*
 - E12. Other third parties and storage found in code (input for gate G-4/G-5):
   - Google Fonts, loaded on **every page** by CSS: `styles/typography.scss:4`
     (`@import url("https://fonts.googleapis.com/css2?…")`). Each visit sends the visitor's IP to Google.
@@ -75,8 +87,14 @@ ships as is.
   - SMTP via nodemailer (`pages/api/contact.ts:41-53`, `SMTP_HOST/USER/PASS/PORT`). The provider is not named in the repo.
     The handler does not persist submissions (no fs/DB access in `contact.ts`).
   - Mailchimp: `grep -i mailchimp src/pages/api/contact.ts` → no match (OQ-3 done in 5d-lite). Legacy
-    `/api/mailchimp` is still called by `EmailCollectorProvider/index.tsx:208` (popup/lead magnet, hidden). Vercel has no
-    Mailchimp env vars (HANDOFF.md:75, verified 2026-10-26).
+    `/api/mailchimp` is still called by `EmailCollectorProvider/index.tsx:208` (popup/lead magnet, hidden).
+    **Correction (rev 1.2):** Mailchimp env vars **did exist** in Vercel until **2026-11-04**, when Mauricio deleted them
+    (HANDOFF.md:75 "do not exist", 2026-10-26, was wrong). No redeploy since: the live pre-5a production build keeps its
+    old configuration until the release.
+  - Other legacy Vercel env vars (Mauricio, 2026-11-04): a **Cloudflare Turnstile** site key
+    (`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `.env.local.example:31`) and a **legacy `NEXT_PUBLIC_GA_ID`** (2025). Both exist
+    but the new code doesn't use them (no Turnstile code; GA not loaded, E11). 5f replaces the GA value with
+    `G-N2YZ6SG2WM` (5f AC-L1).
   - Hosting: `vercel.json` sets no region (only `NPM_FLAGS`).
 - E13. **Restore patch** `~/Documents/projects/magneto/backups/phase-5b/footer-email-restore.patch` (outside the repo,
   6469 B, 2026-10-31; 5b report :418). It patches `Footer/index.tsx` (the same `<ul>` block this phase changes),
@@ -116,10 +134,18 @@ ships as is.
 - HANDOFF.md:76 (2026-10-26): "No consent banner while no analytics loads; Mauricio removes 'Privacy choices' from the
   copy until analytics exists." **Not yet done in the export:** "Privacy choices" is still in the footers, in policy §5
   (EN :813) and in the banner block.
+  **Superseded (rev 1.2):** the 2026-11-04 decision keeps "Privacy choices" in the copy; it ships with 5f, or the policy
+  uses §5 Version B if 5f isn't live.
 
 ## Mauricio's Law 25 verification gates (before Thu 11-12 for G-1…G-7 in EN; FR/ES follow)
 Agents write no legal copy (Hard rule 4). Each gate ends as a Notion edit, **EN first, then FR-CA, then ES** (FR
 :1090). Not legal advice.
+
+**Status (rev 1.2, 2026-11-04):** **G-4 and G-5 are closed in Notion** for EN, FR and ES (§4 providers, §5 analytics,
+effective date **3 December 2026**, which also settles G-3's date). The §5 published with GA is the 5f version; "§5
+Version B" is the ready fallback block. An **EFVP** (privacy impact assessment for transfers outside Quebec) is drafted in
+Notion. Open items: the Vercel DPA + Pro plan, the Calendly / Notion / Brevo DPAs, and the Google Drive account type.
+G-1, G-2, G-6, G-7 (and G-8 for ES) keep their status from rev 1.1.
 
 **Calendar rule (rev 1.1):** budget the gates for Fri 11-06 – Sun 11-08. The **EN and FR gates are not optional** before
 Thu 11-12. If Mauricio can't close all of them by then, only **G-8 (ES final)** may move to the Tue 12-01 go/no-go
@@ -158,8 +184,8 @@ Thu 11-12. If Mauricio can't close all of them by then, only **G-8 (ES final)** 
 | **Calendly** | Strategy Call scheduling | B2 answers, name, email, booking details; cookies inside its widget | `calendly.ts:68-69`, loads on click | Location, DPA, which cookies its widget sets |
 | **Google Fonts** | Web fonts | Visitor IP and user agent on every page | `typography.scss:4` | Mention in §4/§5, or self-host later (D-P9) |
 | Email / file-storage / project-management tools | Replying and client work (EN §4 bullet 3) | Inquiry content, client files | Not in repo | Which tools, locations |
-| GA / GTM | — | None today (never loaded, E11) | `analytics.ts`, `gtm.ts` | Vercel env unset |
-| Mailchimp | — | None in production (no env in Vercel; contact no longer calls it) | E12 | Account closed or dormant; removed in 5e |
+| GA / GTM | GA4 at launch **only if 5f is live** (rev 1.2); no GTM | None today (never loaded, E11). With 5f: only after Accept | `analytics.ts`, `gtm.ts` (5f deletes it) | Legacy GA ID in Vercel replaced by `G-N2YZ6SG2WM` (5f AC-L1); DPA accepted 2026-11-04 |
+| Mailchimp | — | None from the new code (contact no longer calls it). Env vars deleted from Vercel 2026-11-04 (E12) | E12 | Account closed or dormant; removed in 5e |
 | **Brevo** | **Planned** (5e, possibly live at launch): guide delivery + optional newsletter | Email (+ name?), consent record | ADR 0002 (+ am. 1); account exists | G-4b, §8 |
 | LinkedIn | Outbound link only | None from the site | Footer | — |
 | WPML (wpml.org) | CMS licensing | No visitor data | 3b runbook | — |
@@ -234,7 +260,8 @@ Alternatives:
 `Footer/index.tsx`: the `<ul className="footer__links">` is **always** rendered. It contains LinkedIn (only when the
 CMS URL is set, unchanged) and then `<li><a href={localizePath('/privacy-policy', locale)} className="footer__link">
 {t.common.privacyPolicy}</a></li>`. Use a plain `<a>` with `localizePath`, as the Header does (Known debt D1). No
-`target`, no new dictionary key (E4). **No "Privacy choices" link** while no analytics loads (E11, G-5). The order
+`target`, no new dictionary key (E4). **No "Privacy choices" control in this phase:** 5f appends it as a third `<li>`
+(rev 1.2). The order
 follows the copy: LinkedIn · Privacy Policy (EN :133-135). Update the comments `:5-7`. `Footer.test.tsx` changes from
 "no list at all" to "Privacy link only" when there is no LinkedIn URL, and checks the href per locale (`/privacy-policy`,
 `/fr/privacy-policy`, `/es/privacy-policy`).
@@ -317,7 +344,15 @@ enabled locale L:**
    line or forward-looking §4 sentence.
 4. The footer on `/`, `/contact` and one project page in L shows "Privacy Policy" and links to that 200 page. The Contact
    form and booking modal privacy links resolve to the same page.
-5. No "Privacy choices" link and no analytics request (`googletagmanager.com`) on those routes (E11).
+5. **(rev 1.2)** No request to Google **analytics** hosts (`googletagmanager.com`, `google-analytics.com`,
+   `analytics.google.com`, `doubleclick.net`) on those routes before the visitor accepts analytics (clean profile,
+   network log; Google Fonts is a disclosed exception, 5f D-F8). Then, either:
+   - **5f live** (the deployment contains 5f **and** was built with `NEXT_PUBLIC_GA_ID`): the footer "Privacy choices"
+     control is present in L and works (it reopens the banner; Accept loads, Reject never loads; 5f AC-L2), and the page's
+     §5 is the GA version; or
+   - **5f not live:** no banner and no "Privacy choices" control, and the page in L uses **§5 Version B** (with its §2 /
+     §3 / §4 edits).
+   A mismatch (GA on with Version B, or GA off with the GA version) fails this item.
 6. **Only if the deployment includes 5e (Brevo live):** the body in L contains the published G-4b block (§8), and the
    lead magnet is not live in any locale whose page lacks it.
 
@@ -408,7 +443,7 @@ phase; not needed for 5e.
 Anything else is out of scope.
 
 ## Out of scope
-- Consent banner, "Privacy choices" link, any analytics loading (until an analytics phase).
+- Consent banner, "Privacy choices" control, any analytics loading: [Phase 5f](phase-5f-analytics-consent.md) (rev 1.2).
 - Legal text: writing, editing or translating policy copy (Mauricio + Notion, Hard rule 4). The Dev reports any gap.
 - Brevo / Mailchimp code (5e). Further ADR 0002 edits (amendment 1 is part of rev 1.1).
 - `check-translations.php` / loader changes (5c). Self-hosting Google Fonts (D-P9). `/packages` missing from the
@@ -437,8 +472,10 @@ locally) on the Dev's own port (3100), with the 3 local pages present (W-1…W-3
   editing WP), the mapper returns null and the page calls `notFound()`. With `ENABLED_LOCALES=en,fr`,
   `/es/privacy-policy` → 404 (curl).
 - [ ] AC-9 `/sitemap.xml` contains `/privacy-policy`; `/robots.txt` unchanged.
-- [ ] AC-10 No network request to `googletagmanager.com` / `google-analytics.com` on the 3 privacy routes and `/`
-  (browser network log). No banner rendered.
+- [ ] AC-10 (rev 1.2) No network request to Google analytics hosts (`googletagmanager.com`, `google-analytics.com`,
+  `analytics.google.com`, `doubleclick.net`) on the 3 privacy routes and `/` (browser network log). In this phase no
+  banner and no "Privacy choices" control render (5f is not in the branch). At release, §7 item 5 decides: "Privacy
+  choices" present and working if 5f is live, §5 Version B otherwise.
 - [ ] AC-11 EN unchanged on `/`, `/services`, `/packages`, `/projects`, `/about-magneto`, `/contact`, one project page:
   same render as before at 1440, except the footer list (Privacy link added).
 - [ ] AC-12 Guard: `ENABLED_LOCALES=en,fr,es npm run build` **without** `ALLOW_UNTRANSLATED_LOCALES` fails only because of
