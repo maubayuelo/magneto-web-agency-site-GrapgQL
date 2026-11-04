@@ -1,9 +1,16 @@
 # Phase 5f — Google Analytics 4 behind a consent banner (EN / FR-CA / ES)
 
-- **Status: Draft** (rev 1)
-- Author: Architect · Reviewed by: Mauricio (+ Senior Architect)
+- **Status: Pending final document verification** (rev 1.1, 2026-11-04).
+- Approval record: Mauricio confirmed D-F1…D-F10 before this assignment. Senior Architect's supplied verdict is
+  **CHANGES REQUIRED — Minor**. Corrections are incorporated below; final approval of rev 1.1 by both reviewers has
+  not been explicitly supplied. After both approvals, record their dates and set **Status: Approved (rev 1.1)**.
+  Decision confirmation and this revision do not substitute for final document approval.
+- Author: Architect · Reviewers: Mauricio + Senior Architect
 - Date: 2026-11-04
-- Branch: `spec/phase-5f-analytics-consent`, from `master` `d990751`.
+- Branch: `spec/phase-5f-analytics-consent`, originally from `master` `d990751`; draft + privacy rev 1.2 committed as
+  `07ad962` (HEAD at the start of this revision). Code evidence below remains the historical `d990751` baseline.
+- Architecture decision: [ADR 0007 — Consent-gated analytics](../adr/0007-consent-gated-analytics.md), Accepted by
+  Mauricio's confirmed decisions; this does not claim Senior Architect approval of the revised spec.
 - Depends on: [privacy-route](privacy-route.md) rev 1.2 (footer list, `/privacy-policy`, §7 D-L check), [5d-lite](phase-5d-lite-contact-modal.md)
   (booking `<dialog>`, D-9/D-10 focus rules), ADR [0005](../adr/0005-ui-dictionaries.md) (dictionaries + build guard),
   ADR [0003](../adr/0003-locale-routing.md) (`localizePath`). Implementation needs the privacy-route **report** (footer
@@ -14,12 +21,17 @@
   "§5 Version B" (EN :917-928, FR :1069-1080, ES :1073-1084, section "Internal — ready policy blocks").
 
 ## Revision
+- rev 1.1 (2026-11-04) — D-F1…D-F10 recorded as confirmed by Mauricio. Senior Architect corrections: cross-tab
+  fail-closed transitions, withdrawal/load race regression, deterministic non-modal focus restoration, privacy
+  provenance, effective deployment configuration + verified Version B, G-8 and the December 10 effective-date gate.
+  ADR 0007 created. Stopped for final document verification; joint approval remains unrecorded.
 - rev 1 (2026-11-04) — Draft.
 
 ## Goal
 On a deployment built with `NEXT_PUBLIC_GA_ID=G-N2YZ6SG2WM`, a first-time visitor in any enabled locale sees a
-"Privacy choices" banner with the approved copy. **Nothing is requested from Google Analytics / Tag Manager** (no
-`gtag.js`, no preconnect, no Consent Mode default, no cookieless ping) until they click "Accept analytics". "Reject
+"Privacy choices" banner with the pinned copy (ES remains draft until G-8 closes). **Nothing is requested from Google
+Analytics / Tag Manager** (no `gtag.js`, no preconnect, no Consent Mode default, no cookieless ping) until they click
+"Accept analytics". "Reject
 non-essential" is as easy as Accept and never loads anything. The choice persists, and the footer "Privacy choices"
 control reopens the banner to change or withdraw it. A build **without** `NEXT_PUBLIC_GA_ID` renders no banner, no footer
 control and loads nothing. That build is the Version B fallback, switched by env + redeploy, with no code revert.
@@ -104,7 +116,7 @@ control and loads nothing. That build is the Version B fallback, switched by env
 14 months, Google signals off, data sharing off, Data Processing Terms accepted. Vercel has a **legacy**
 `NEXT_PUBLIC_GA_ID` from 2025 that Mauricio replaces.
 
-## Assumptions and open questions
+## Assumptions and remaining release gates
 - **A1.** `NEXT_PUBLIC_*` values are inlined at **build** time. Changing `NEXT_PUBLIC_GA_ID` in Vercel needs a
   redeploy. Instant Rollback restores the previous build with its inlined value. Inlining only works for the literal
   expression `process.env.NEXT_PUBLIC_GA_ID` (no destructuring, no dynamic key).
@@ -123,12 +135,14 @@ control and loads nothing. That build is the Version B fallback, switched by env
 - **A6.** Safari/WebKit ITP caps script-written storage (`localStorage` and JS cookies) at 7 days without a visit. A
   Safari visitor who returns after more than 7 days sees the banner again, and GA counts them as a new user. This is
   accepted, not worked around.
-- **O-1. Google Fonts vs "no request to Google before consent"** (E9). The brief and privacy AC-10 speak of "Google".
-  Fonts are a Google request on every page. Either the ACs name the **analytics** hosts only (this spec does: §AC), or
-  fonts are self-hosted first (D-P9 B, a separate change). → D-F8.
+- **O-1. Resolved by D-F8 A: Google Fonts vs "no request to Google before consent"** (E9). The brief and privacy AC-10 speak of "Google".
+  Fonts remain disclosed in §4; these ACs cover **analytics** hosts only. Self-hosting is deferred until after launch.
 - **O-2. ES banner copy is BORRADOR** (:1094). It goes into `es.ts` as written (guard-safe: no TODO marker). It is final
-  only with G-8 (privacy-route). If the wording changes, it enters with a re-export as a dictionary follow-up.
-- **O-3. Showing the current choice when reopened.** The copy has no text for it. Proposed: none in rev 1 (D-F6).
+  only with explicit G-8 closure (privacy-route), covering the policy, banner and footer labels. A passing build,
+  copy lock or TODO guard does not establish editorial approval. If wording changes, Mauricio approves it in Notion;
+  re-export and re-pin the affected locks before ES launches. Without G-8 at the 12-01 go/no-go, launch EN + FR only,
+  including when Version B is selected. No canonical copy is changed by this specification.
+- **O-3. Resolved by D-F6 A:** no additional current-choice text on reopen; the copy supplies none.
 
 ## Design
 
@@ -150,32 +164,59 @@ stray placeholder (`your_ga_id_here`) or a GTM ID.
   - It isn't sent with every request (so it isn't in Vercel logs).
   - It is first-party, under "necessary technologies… remembering your privacy choice" (EN :857).
   - It is site-wide: one origin serves `/`, `/fr`, `/es`, so one choice covers every locale.
-- `readConsent()` returns `null` when the key is missing, the JSON is invalid, `v` ≠ `CONSENT_VERSION`, `analytics` is not
-  one of the two values, or `at` is older than `CONSENT_MAX_AGE_DAYS` (D-F3, proposed 365). It returns `null` too when
-  `localStorage` throws (private mode, blocked storage).
+- `CONSENT_VERSION = 1`, `CONSENT_MAX_AGE_DAYS = 365` (D-F3 A), for both granted and denied. Use one validator for
+  initial reads, cross-tab events and expiry checks. `readConsent()` returns `null` for missing data, malformed JSON,
+  a non-object / invalid schema, a version mismatch, an unknown choice, or a missing, unparseable or future `at`.
+  A record expires when `now - at >= 365 * 24 * 60 * 60 * 1000` (test the exact boundary). Storage access errors also
+  return `null`. Restoring a choice, reopening the banner and receiving a storage event never renew its timestamp.
 - `writeConsent(choice)` never throws. If storage fails, the choice still holds in memory for the current page, and the
   banner reappears on the next load (accepted).
 - `clearGaCookies(id)` expires `_ga` and `_ga_<id minus "G-">` with `path=/`, for the host and every parent domain of
   `location.hostname` (`a.b.c` → `a.b.c`, `.b.c`, `.c`; the browser ignores invalid ones). It does not touch other
   cookies.
-- Bump `CONSENT_VERSION` when a new non-essential tool is added, so everyone is asked again.
+- Bump `CONSENT_VERSION` for a consent-version or material purpose change, including a new non-essential tool or a
+  material policy change affecting consent. Old grants and denials become unknown; ask again before loading analytics.
+- **Cross-tab fail-closed contract:** handle only this origin's `localStorage` events for `magneto-consent` and
+  `key === null` (`localStorage.clear()`). Ignore unrelated keys and `sessionStorage` events. Deleted (`newValue ===
+  null`), invalid, wrong-version or expired records immediately invalidate the in-memory grant, call
+  `disableAnalytics()` and set `mode = first`. Valid denied records disable analytics and hide the banner; valid granted
+  records may load and hide it. Before honoring a grant, re-read and validate current storage so a queued old grant
+  event cannot override a newer withdrawal. A failed read closes analytics and asks again. Receiving tabs never write
+  back, invent a denial record, refresh `at`, or steal focus merely because the banner appears.
+- Revalidate the active choice at its expiry and on page visibility/focus return (including suspended tabs); expiry
+  uses the same fail-closed transition. A local in-memory choice after a failed write has the same age limit.
 
 ### 3. Analytics loader — `src/utils/analytics.ts` (rewrite, same exports minus `warmAnalytics`)
 - **Remove `warmAnalytics`**: a preconnect is a request to Google (E1). It has no callers.
-- `loadAnalytics()`: no-op if not configured. Otherwise, idempotent:
-  1. `window['ga-disable-<ID>'] = false`.
-  2. Define `window.dataLayer ||= []` and `window.gtag = function(){ dataLayer.push(arguments) }` **before** injecting the
-     script (the standard snippet order; the current code does it after).
-  3. D-F2 A: `gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
-     analytics_storage: 'granted' })`. It runs only after Accept, so it isn't a pre-consent default.
-  4. `gtag('js', new Date())`, then `gtag('config', ID, { allow_google_signals: false,
-     allow_ad_personalization_signals: false, ...(D-F4 A && !isProd ? { debug_mode: true } : {}) })`.
-  5. `thirdParty.loadScript({ src: GA_SCRIPT() })` with **no `crossOrigin`** (no SRI, nothing to gain). A load failure
-     (ad blocker) is caught and ignored; no UI error.
-  On a second Accept in the same page (after a withdrawal), the script is already loaded: redo steps 1-2 and 4 (new
-  `config`), and don't inject a second script.
-- `disableAnalytics()`: `window['ga-disable-<ID>'] = true`, `delete window.gtag` (so `gtagEvent` becomes a no-op
-  again, E5), `clearGaCookies(ID)`. No reload. The `dataLayer` array stays (harmless; the flag stops sending).
+- `loadAnalytics()`: no-op if not configured or there is no current valid grant. The provider owns consent
+  transitions; the loader tracks the current authorization and a monotonically increasing generation/token.
+  Repeated calls for the same grant share one script promise and initialize once. Set the opt-out flag to `true`
+  before the first script request and keep it true while loading; consent permits that request, not premature collection.
+  1. Capture the authorized generation; create `window.dataLayer ||= []` and the typed `window.gtag` queue stub before
+     injection. Do not queue `config`, `js`, or application events while loading. The stub must drop events until
+     initialization succeeds; keep the external `gtagEvent` no-op-without-gtag contract (E5).
+  2. Await `thirdParty.loadScript({ src: GA_SCRIPT() })` with **no `crossOrigin`**. A load failure (ad blocker) is caught;
+     no UI error. After the same generation check as step 3, keep opt-out true and remove only this generation's stub.
+  3. Immediately after every asynchronous boundary, verify that the generation still matches and the current grant
+     is valid. A stale completion must not clear opt-out, restore `gtag`, queue commands, or alter a newer grant's state.
+  4. Only for the current grant, install the active queue wrapper and clear `window['ga-disable-<ID>']` to `false`.
+     Call `gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+     analytics_storage: 'granted' })`, then `gtag('js', new Date())`, then `gtag('config', ID, {
+     allow_google_signals: false, allow_ad_personalization_signals: false, ...(!isProd ? { debug_mode: true } : {}) })`.
+     `isProd` uses the literal `process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'`; omit `debug_mode` in Production.
+     Preview builds also use `NODE_ENV=production`, so that variable cannot distinguish deployment targets.
+  Re-Accept after withdrawal uses the existing script/promise, a fresh generation and the same ad-denial/configuration
+  protections; it never injects a duplicate script or replays events captured before withdrawal. Repeated Accept while
+  already granted sends no duplicate initialization/page view.
+- `disableAnalytics()` is synchronous: invalidate the grant/generation **first**, set `window['ga-disable-<ID>'] = true`,
+  delete `window.gtag`, discard any unprocessed application analytics commands, and `clearGaCookies(ID)`. No reload.
+  Do not treat a retained `dataLayer` as automatically harmless: stale commands must not replay on re-Accept. A retained
+  wrapper reference must also check its generation before sending. Do not use a denied Consent Mode ping as withdrawal.
+- **Pending-load invariant:** Accept → Reject (or cross-tab invalidation) → delayed script success/failure leaves
+  analytics disabled. Removing a script element alone is not cancellation. An already-started script request may
+  finish; it cannot initialize measurement, recreate GA cookies or start collection after withdrawal. Requests already
+  sent cannot be recalled. A later explicit valid grant is the only way to resume. Prove this with deferred-promise
+  unit tests and a throttled real-script browser check; the opt-out flag is not a substitute for race testing.
 - `gtagEvent`: **contract unchanged** (no-op without `window.gtag`). Replace its `any` with
   `Record<string, unknown>`, and declare `gtag`/`dataLayer` on `Window` in a typed way. No new `any`.
 - Typed globals go in `src/utils/analytics.ts` (`declare global { interface Window { … } }`), not in a new file.
@@ -193,8 +234,8 @@ would let tags be added without a code review of consent, so it stays out. Delet
 |---|---|
 | not configured | render nothing, ever |
 | `readConsent()` = granted | `loadAnalytics()`, `mode = hidden` |
-| = denied | `clearGaCookies(ID)` (stale cookies, e.g. from a pre-5f build), `mode = hidden` |
-| `null` (none, expired, invalid, version bump) | `clearGaCookies(ID)`, `mode = first` |
+| = denied | `disableAnalytics()` (including stale cookies), `mode = hidden` |
+| `null` (none, expired, invalid, version bump) | `disableAnalytics()`, `mode = first` |
 
 | Action | Result |
 |---|---|
@@ -202,10 +243,10 @@ would let tags be added without a code review of consent, so it stays out. Delet
 | Reject | `writeConsent('denied')`, `disableAnalytics()`, `mode = hidden` |
 | Footer "Privacy choices" | `mode = reopened`, focus moves to the banner heading |
 | Escape (only in `reopened`) | `mode = hidden`, choice unchanged, focus back to the footer control |
-| `storage` event for `magneto-consent` from another tab | apply the new value (granted → load, denied → disable), so a withdrawal in one tab reaches the others |
+| Relevant cross-tab `storage` event (including clear) | §2 validator: current grant → load/hide; denial → disable/hide; deleted, invalid or expired → disable/first; never write back |
 
-- **SSR:** the provider renders `null` on the server and on the first client render, then decides in `useEffect`. There
-  is no hydration mismatch and no consent decision on the server.
+- **SSR:** the banner renders `null` on the server and on the first client render, then decides in `useEffect`. The
+  provider always renders its children. There is no hydration mismatch and no consent decision on the server.
 - **Markup:** `<section className="consent-banner" aria-labelledby={h} aria-describedby={b}>`, then
   `<h2 id={h} tabIndex={-1}>` heading, `<p id={b}>` body, two `<button type="button">` (Accept, Reject) and
   `<a href={localizePath('/privacy-policy', locale)}>` (`common.privacyPolicy`). It is a **non-modal region**, not a
@@ -213,12 +254,21 @@ would let tags be added without a code review of consent, so it stays out. Delet
   has none). Without a choice nothing loads, so ignoring the banner equals rejecting.
 - **DOM order:** the provider renders the banner **before** `{children}`. So it is the first thing a screen reader or a
   Tab reaches, though it is shown at the bottom.
-- **Focus:**
-  - First show: no autofocus (don't steal focus on page load).
-  - Reopened: focus the heading.
-  - After a choice in `reopened`: focus goes back to the footer control.
-  - After a choice in `first`: the banner unmounts. If focus was inside it, focus `document.body`, so the next Tab reaches
-    the header's first link (the banner was first in the DOM). The Dev documents this in the report.
+- **Focus (after the DOM commit that hides the banner):**
+  - First show: no autofocus. Capture the last connected, visible, non-inert focused page element before focus enters
+    the banner; do not count `body` as a reliable focus destination.
+  - Reopened: focus the heading; retain the actual footer trigger element.
+  - Accept / Reject in `reopened`, or Escape in `reopened`: restore the connected, visible, enabled, non-inert footer
+    trigger. Escape is handled only while focus is inside the reopened banner; it must not intercept a dialog's Escape.
+  - Accept / Reject in `first`: if focus was inside the banner, restore the captured page element if still usable;
+    otherwise focus the first visible, enabled header link. If that is unavailable, focus the current main-content
+    container using temporary `tabIndex=-1`, restoring its original attribute on blur/cleanup. Do not rely on
+    `document.body.focus()`; it is not reliably focusable. No extra copy or permanent tab stop is introduced.
+  - Use the same fallback when a reopening trigger unmounts (e.g. navigation) and when a cross-tab choice hides a banner
+    that contains focus. If focus is already elsewhere, leave it there. Never steal focus from the booking dialog or
+    Calendly overlay, including if one opens before a scheduled restoration runs.
+  - Verify `document.activeElement` after dismissal and the next Tab / Shift+Tab destination in real browsers. The
+    page's normal tab order continues from the restoration target, with no trap and no return to removed controls.
 - **Equal prominence (D-F5 A):** Accept and Reject use the **same** class (`btn btn-secondary btn-medium`, existing
   styles), size and weight, side by side (stacked full-width at 375). Accept comes first, as in the copy. The Privacy
   Policy link is a text link.
@@ -259,7 +309,8 @@ New block `consent` in `en.ts`, `fr.ts`, `es.ts`, values **verbatim** from `637f
 | `consent.reject` | :946 item 2 | :1098 item 2 | :1102 item 2 |
 | (link) `common.privacyPolicy`, existing | :946 item 3 | :1098 item 3 | :1102 item 3 |
 
-There are no TODO markers, so FR/ES TODO counts are unchanged and the readiness guard is unaffected. In
+There are no TODO markers, so FR/ES TODO counts are unchanged and the readiness guard is unaffected. **ES remains
+editorially draft until G-8 closes; guard-safe is not launch-approved** (O-2, AC-L7). In
 `dictionary.test.ts`, add a `CONSENT_COPY` table in the style of `CONTACT_COPY`, using `fromExport`:
 - FR heading/buttons: pick `after: ' : '` (the line is fully bold, so the label regex doesn't strip it).
 - Buttons: split on `' · '` in the test.
@@ -276,12 +327,43 @@ Add `consent.*` to the `en.test.ts` fingerprint with source-line comments.
 "5f live" means the promoted deployment contains this phase **and** was built with `NEXT_PUBLIC_GA_ID=G-N2YZ6SG2WM`.
 | State | Code | Vercel env | Policy §5 on WP (every enabled locale) |
 |---|---|---|---|
-| 5f live | merged | GA ID set (Production; Preview per D-F4) | GA version (EN :853-863), §2/§3/§4 GA lines kept |
-| Fallback | merged or not | **unset** in Production | **Version B**, with its §2/§3/§4 edits (EN :919) |
+| 5f live | merged | Exact GA ID verified in each effective Preview / Production build | GA version (EN :853-863), §2/§3/§4 GA lines kept |
+| Fallback | merged or not | **unset at build** in the fallback Preview and Production candidate | **Version B**, with its §2/§3/§4 edits (EN :919) |
+
+**Effective build verification (Mauricio, not performed by this document revision):**
+- Record deployment URL/ID, source commit, target (Preview / Production), build time, effective public GA ID (or absent),
+  effective `NEXT_PUBLIC_VERCEL_ENV`, and observed debug behavior. Check Preview branch overrides and inherited values.
+  Screenshots of current settings alone do not prove an existing artifact's configuration; pair build evidence with
+  browser network evidence. No private environment values belong in the report.
+- D-F4 A: Preview uses the real ID, `debug_mode: true` and a verified GA **Developer traffic / Exclude / Active** filter.
+  Verify tagged test traffic while the filter is in Testing, then verify Active state and DebugView behavior; record
+  evidence. Allow Google's documented 24–36 h filter propagation window. DebugView alone does not prove exclusion.
+  See [Google's developer-traffic filter documentation](https://support.google.com/analytics/answer/13296662?hl=en-4).
+- Verify Production independently: expected ID, production target, no debug marker on collected events, and an accepted
+  visit in Realtime with debugging extensions disabled. A preview artifact with debug behavior cannot count as a
+  passing Production build merely because its URL/domain changed. Vercel documents a rebuild for preview promotion,
+  but no rebuild for promotion of a staged production deployment or Instant Rollback; record which path actually ran.
+  See [Vercel promotion behavior](https://vercel.com/docs/deployments/promoting-a-deployment).
+- For Version B, build a fallback Preview and Production candidate with the ID absent; remove applicable branch
+  overrides too. Verify no banner/control, no analytics script/resource hint/network request and no analytics storage
+  access, even with a pre-existing valid stored grant. No new GA cookies may appear; existing cookies can remain until
+  expiry because the unconfigured build deliberately does not touch cookies. A rejection-only check is insufficient.
+  Re-run on the live domain after promotion. Changing Production settings does not disable an older configured build.
+- An environment change does not update an already-open page. If disabling an already-live GA release, record this
+  limit and verify after reload/navigation to the new build; do not describe an environment toggle as instant revocation.
+  Rollback candidates must also match the chosen policy/analytics state; do not restore a GA-on artifact with Version B.
 
 Switching later from fallback to live: (1) publish the GA version of the policy on WP, every enabled locale ("this policy
-will be updated first", EN :928); (2) set the env var; (3) redeploy and run AC-L1…L5. Turning GA off after launch is the
-reverse order: unset the env var, redeploy, then switch the policy to Version B.
+will be updated first", EN :928); (2) set the env var; (3) redeploy and run AC-L1…L7. Turning GA off after launch is the
+reverse order: unset the env var, redeploy, verify the actual served build has no analytics, then switch the policy to
+Version B. Before an initial Version B launch, publish Version B in every enabled locale and verify the disabled
+candidate before promotion. No environment or WordPress changes are authorized by this documentation assignment.
+
+**December 10 fallback date:** the pinned export has an effective / last-updated date of **3 December 2026**. If launch
+moves to **10 December 2026**, Mauricio must explicitly verify the approved effective date against actual publication
+and launch timing, resolve any required change in canonical Notion copy for every enabled locale, and verify the
+published WP dates before promote (privacy G-3 / §7 item 2). Neither retaining December 3 nor replacing it with December
+10 is automatic. This gate applies to GA-on and Version B launches; agents do not edit legal copy.
 
 ## Files the Dev may touch
 - `src/utils/consent.ts` — new: storage read/write, version, max age, `clearGaCookies`
@@ -289,7 +371,7 @@ reverse order: unset the env var, redeploy, then switch the policy to Version B.
 - `src/utils/analytics.ts` — rewrite per §3 (remove `warmAnalytics`, typed globals, `getGaId`, `isAnalyticsConfigured`,
   `loadAnalytics`, `disableAnalytics`, `gtagEvent` unchanged in behavior)
 - `src/utils/analytics.test.ts` — new
-- `src/utils/gtm.ts` — **delete** (D-F1 A; if B, leave untouched)
+- `src/utils/gtm.ts` — **delete** (D-F1 A confirmed)
 - `src/components/organisms/ConsentBanner/index.tsx`, `PrivacyChoicesButton.tsx`, `types.ts`, `ConsentBanner.scss`,
   `ConsentBanner.test.tsx` — new
 - `src/app/[locale]/layout.tsx` — wrap with `ConsentProvider` only
@@ -300,7 +382,7 @@ reverse order: unset the env var, redeploy, then switch the policy to Version B.
 - `src/i18n/dictionaries/en.test.ts`, `src/i18n/dictionary.test.ts` — locks and the `CONSENT_COPY` table
 - `.env.local.example` — comment for `NEXT_PUBLIC_GA_ID`: public GA4 Measurement ID (`G-…`), **leave empty locally**,
   set in Vercel only; empty = no banner, no analytics (Version B)
-- `docs/reports/phase-5f-analytics-consent.md` — the report (incl. the release items AC-L1…L5 for the runbook)
+- `docs/reports/phase-5f-analytics-consent.md` — the report (incl. the release items AC-L1…L7 for the runbook)
 
 Anything else is out of scope (in particular `vitest.setup.ts`, `thirdParty.ts`, `utm.ts`, `EmailCollectorProvider`,
 `calendly.ts`, `package.json`).
@@ -314,7 +396,8 @@ Anything else is out of scope (in particular `vitest.setup.ts`, `thirdParty.ts`,
 
 ## Acceptance criteria
 Local, `ENABLED_LOCALES=en,fr,es`, Dev's own port 3100. "Analytics hosts" = any request whose host matches
-`googletagmanager.com`, `google-analytics.com`, `analytics.google.com` or `doubleclick.net`. Builds A and B:
+`googletagmanager.com`, `google-analytics.com`, `analytics.google.com` or `doubleclick.net`, including their subdomains
+(e.g. `region1.google-analytics.com`). Builds A and B:
 - **A (configured, fake ID):** `NEXT_PUBLIC_GA_ID=G-LOCALTEST00 PORT=3100 npm run dev` (A2). Never the real ID locally.
 - **B (not configured):** the plain `.env.local` (GA ID empty, Hard rule 2).
 
@@ -325,15 +408,29 @@ Local, `ENABLED_LOCALES=en,fr,es`, Dev's own port 3100. "Analytics hosts" = any 
   - Before Accept, no `<script src*="googletagmanager">`, no `<link>` to an analytics host, `window.gtag` undefined,
     `dataLayer` undefined. A `fetch` / `sendBeacon` spy is not called with an analytics host.
   - Accept → exactly one script with `src = https://www.googletagmanager.com/gtag/js?id=<ID>`, no `crossorigin`, and
-    `dataLayer` in this order: consent default (D-F2), `js`, then `config` with `allow_google_signals: false` and
-    `allow_ad_personalization_signals: false`.
+    after script resolution, initialization in this order: consent default (all three ad types denied), `js`, then
+    `config` with `allow_google_signals: false` and `allow_ad_personalization_signals: false`. No config or application
+    event before successful load. Repeated Accept/Strict Mode effects initialize only once for the current grant.
   - Reject → nothing, including after a remount with stored `denied`.
   - Stored `granted` → loads with no banner. Expired / invalid / old-version value → banner, nothing loaded.
-  - Storage that throws → banner, nothing loaded, no crash.
+  - Storage that throws → banner, nothing loaded, no crash; failed write still honors the current page's explicit
+    choice. Invalid schema/date, future timestamp, exact 365-day expiry and version/purpose bump ask again for both
+    prior choices; restoration does not refresh `at`. Fake timers + visibility return prove expiry stops active GA.
+  - `NEXT_PUBLIC_VERCEL_ENV=preview` → debug config; `production` → debug field omitted; missing/unknown → debug config
+    and cannot pass the Production gate. Missing, empty, whitespace-only, placeholder and GTM IDs all disable the feature.
 - [ ] AC-3 Withdraw (unit): Accept → reopen from the footer control → Reject sets `ga-disable-<ID>` to `true`, leaves
   `window.gtag` undefined, makes `gtagEvent` a no-op, and removes `_ga` and `_ga_<suffix>` (jsdom `document.cookie`) while
-  an unrelated cookie stays. Re-Accept clears the flag and adds no second script.
-- [ ] AC-4 Not configured (unit + build B): no banner, no footer control, no `localStorage` read/write, no cookie access.
+  an unrelated cookie stays. Re-Accept clears the flag and adds no second script or stale event replay; all ad types
+  remain denied. Deferred loader regressions: Accept → withdraw → resolve, Accept → withdraw → reject, and Accept →
+  withdraw → re-Accept before resolution. Stale success/failure cannot re-enable analytics or clobber the new grant;
+  only the current grant initializes once. Assert opt-out, gtag, cookie and command/event state after settlement.
+- [ ] AC-3b Cross-tab (unit + two browser tabs on the same origin): begin with an active grant in the receiving tab.
+  Send denial, key deletion, `localStorage.clear()`, malformed JSON/schema/date, wrong version and expired grant/denial.
+  All revoke the active grant and stop future collection; denial hides, invalid/deleted/expired shows the first banner
+  without autofocus. Include these events during a deferred script load. Valid current grant loads once; stale queued
+  grant after a newer denial cannot reload; unrelated keys/sessionStorage do nothing. No receiving-tab write-back.
+- [ ] AC-4 Not configured (unit + build B): no banner, no footer control, no `localStorage` read/write, no cookie access,
+  even with a pre-seeded valid grant.
 - [ ] AC-5 Copy locks: `CONSENT_COPY` rows equal the `637fba7` export lines for en/fr/es. Heading = footer label per
   locale. The link text = `common.privacyPolicy`. The `en.test.ts` fingerprint is updated. FR/ES TODO counts are
   unchanged (AC-14 of 5d-lite still green).
@@ -346,11 +443,19 @@ Local, `ENABLED_LOCALES=en,fr,es`, Dev's own port 3100. "Analytics hosts" = any 
   `localStorage['magneto-consent']` = `denied`. Reload → no banner.
 - [ ] AC-8 Reopen, build A: the footer "Privacy choices" / "Choix de confidentialité" / "Opciones de privacidad" opens
   the banner, focus lands on its heading, and Escape closes it with focus back on the control. Accept → Reject (withdraw)
-  → no further analytics-host requests on the page and on the next navigation; `_ga*` cookies gone (Application panel).
+  → no new analytics-host requests on the page and on the next navigation; `_ga*` cookies gone (Application panel).
+  With script response delayed/throttled, Accept then withdraw before completion; release the response and verify no
+  collection, cookie recreation or reactivation. An already-started script request finishing is recorded separately,
+  not mistaken for a new request. Repeat after a cross-tab deletion/invalid record and confirm re-Accept works once.
 - [ ] AC-9 Keyboard / screen reader (build A, 1440 + 375):
   - Tab from page load reaches the banner first.
   - Both buttons and the link are reachable and have visible focus.
-  - No autofocus on first show.
+  - No autofocus on first show, including cross-tab invalidation.
+  - First-show Accept and Reject each restore a usable captured page target or the header/main fallback; assert
+    `activeElement`, then Tab / Shift+Tab follows that target's normal order. Reopened Accept, Reject and Escape each
+    return to the footer trigger. Repeat with the trigger removed and with focus already outside the banner; no
+    lost focus, body-only fallback, or focus theft. Cover these transitions in unit tests and desktop Chrome + real
+    iPhone Safari with a hardware keyboard; a synthetic event alone is not evidence of Safari tab order.
   - The region is announced with its heading.
   - With the banner visible, Tab through the whole page: no focused element is hidden behind it (2.4.11).
   - Booking dialog opened from a CTA while the banner is visible: the dialog works and Escape returns focus to the
@@ -367,21 +472,34 @@ Local, `ENABLED_LOCALES=en,fr,es`, Dev's own port 3100. "Analytics hosts" = any 
 - [ ] AC-14 UTM: `/?utm_source=test` sets `sessionStorage['utm_params_v1']` as before, in builds A and B, with any consent
   state.
 
-Launch (Mauricio, on the Vercel **preview** built with the real ID, before merge; then on production after the promote):
-- [ ] AC-L1 Vercel `NEXT_PUBLIC_GA_ID` = `G-N2YZ6SG2WM` (the legacy value replaced) in Production (and Preview per D-F4),
-  then a redeploy. The preview's `gtag/js` request shows `id=G-N2YZ6SG2WM`.
-- [ ] AC-L2 Desktop Chrome, clean profile, `/` + one locale: AC-6/7/8 network checks with the real ID. After Accept, GA
-  **DebugView** (preview, D-F4 A) or **Realtime** (production) shows the visit. After Reject, nothing shows.
-- [ ] AC-L3 iPhone Safari (real device): the banner is readable at 375, both buttons work, and the choice persists after
-  a reload. Reopen from the footer works. Booking dialog + banner: no overlap problem.
-- [ ] AC-L4 The policy §5 on WP for every enabled locale is the **GA version** (EN :853-863), and its "Accept analytics" /
-  "Privacy choices" words match the banner. If not, don't promote with the GA ID set (§9).
-- [ ] AC-L5 Privacy-route §7 D-L check, item 5 (rev 1.2): passes.
+Launch (Mauricio; record evidence, not assumptions. Preview before merge, actual Production candidate and after promote):
+- [ ] AC-L1 §9 build record complete for Preview and Production: correct commit/artifact/target, real ID
+  `G-N2YZ6SG2WM` replacing the legacy value, effective environment and debug behavior. Record any promotion rebuild's
+  new deployment ID and repeat checks on that artifact. No production pass inferred from the Preview settings.
+- [ ] AC-L2 Desktop Chrome, clean profile, `/` + every enabled locale: AC-6/7/8 and AC-3b with the real ID, including the
+  pending-load race. Preview: debug marker present, visit in DebugView, verified Developer traffic exclusion per §9.
+  Production: debug marker absent, accepted visit in Realtime. Denied/withdrawn visits initiate no collection requests;
+  absence from GA reports alone is not proof. Record filter testing/activation evidence and propagation time.
+- [ ] AC-L3 iPhone Safari (real device): readable banner, both buttons, persistence after reload, reopen, withdrawal,
+  booking-dialog coexistence and AC-9 focus/keyboard restoration pass.
+- [ ] AC-L4 GA-on: WP policy in every enabled locale uses the GA version with matching Accept / Privacy choices labels,
+  already published before GA activation. Version B: corresponding §5 plus §2/§3/§4 edits match the disabled build.
+- [ ] AC-L5 Privacy-route §7 D-L check passes, including actual analytics state and the approved effective date. If launch
+  moves to December 10, record Mauricio's date verification before promotion; do not silently carry over/change Dec 3.
+- [ ] AC-L6 Version B rehearsal: unset-ID fallback Preview and Production candidate meet §9 and AC-4, including a
+  pre-existing valid grant, navigation and reload. Evidence proves zero analytics requests and no banner/control; a
+  toggle in settings or a rejected consent state is insufficient. If selected for launch, recheck the served domain.
+- [ ] AC-L7 G-8 explicitly closed before ES is enabled: policy, banner and footer copy approved in canonical Notion and
+  any changed dictionary copy re-exported/re-pinned. Otherwise EN + FR only, for either analytics state.
+
+These launch checks are **not run** by this document revision: implementation and deployment evidence are still future
+work. No access to WordPress, GA admin or Vercel configuration is implied by the cited code/export evidence.
 
 ## Mid-phase checkpoint (day 1, ≈ 15:00; Mauricio ≈ 15 min)
 The Dev stops after `consent.ts`, `analytics.ts`, the provider and the banner in **EN only** (no footer control, no
 FR/ES), and before Footer, dictionaries FR/ES and the QA matrix:
-1. AC-2 and AC-3 green (test output).
+1. AC-2, AC-3 (including the pending-load race) and AC-3b green (test output); exercise reopen via a test harness
+   until the footer is wired.
 2. AC-6 + AC-7 in EN, build A: the network log before and after Accept, and after Reject.
 3. One screenshot at 375 and 1440 with the banner. Mauricio confirms the layout and the equal button style.
 
@@ -395,28 +513,33 @@ fix before continuing.
 | R-2 | Something loads Google analytics before consent (a future `warm*` call, a GTM tag) | `warmAnalytics` and `gtm.ts` deleted; AC-2 and AC-6 tests; no GTM (§4) |
 | R-3 | "No request to Google" read literally fails on Google Fonts (E9) | ACs name analytics hosts; D-F8 |
 | R-4 | Policy says GA is on/off but the deployment does the opposite | §9 table; AC-L4; privacy §7 item 5 |
-| R-5 | Preview traffic pollutes GA reports | D-F4 A: `debug_mode` outside production + "Developer traffic" filter (Mauricio) |
+| R-5 | Preview pollutes reports, or Production is silently filtered | §9 / AC-L1–L2: effective build target, debug marker and tested Active developer filter; verify Production separately |
 | R-6 | Safari ITP 7-day cap → banner re-shown, users re-counted (A6) | Accepted; noted in the report |
 | R-7 | Banner hides focused elements or the footer at 375 | Scroll padding (2.4.11), ≤ 50vh, AC-9/10 |
 | R-8 | Ad blockers block `gtag.js` → unhandled rejection | Load errors caught (§3); no UI |
 | R-9 | Conflicts with 5e (both edit dictionaries; 5e may touch `EmailCollectorProvider` and the footer) | 5f edits only the files listed; the later branch rebases; the `consent` block is self-contained |
 | R-10 | ES banner wording changes at G-8 (O-2) | Dictionary follow-up via re-export; copy-lock test catches drift |
 | R-11 | 5f not accepted by Mon 11-30 | Fallback = GA ID unset + Version B (§9). The 12-03 release doesn't wait |
-| R-12 | Hydration: the banner renders on the server | Provider renders `null` until `useEffect` (§5); unit test that SSR markup has no banner |
+| R-12 | Hydration: the banner renders on the server | Banner renders `null` until `useEffect` (§5); unit test that SSR markup has no banner and still contains the page |
+| R-13 | Pending load or stale storage event restores withdrawn consent | Generation checks, fail-closed validation, AC-3/3b/8 |
+| R-14 | Launch moves to December 10 but policy dates are assumed | Mauricio re-verifies G-3 and published dates; AC-L5 |
 
-## Decisions needed
-| ID | Question | Options | Recommendation |
-|---|---|---|---|
-| **D-F1** | `src/utils/gtm.ts` | A delete · B keep unused | **A** — no callers, pre-consent preconnect, GTM would bypass consent review |
-| **D-F2** | Consent Mode after Accept | A after Accept only: `consent default` with ad_* denied, analytics granted · B none, config flags only | **A** — locks out ad storage even if GA settings change later; nothing is sent before Accept |
-| **D-F3** | Choice lifetime | A 12 months (365 d), then ask again · B 6 months · C no expiry (only version bumps) | **A**. The policy states no period. Mauricio may prefer B for refusals (CNIL-style) |
-| **D-F4** | GA on previews | A GA ID in Production + Preview, with `debug_mode` when `NEXT_PUBLIC_VERCEL_ENV !== 'production'` and GA "Developer traffic" filter active · B Production only (the preview shows no banner, and AC-L2 moves to production after promote) | **A** — the preview is the merge gate (WORKFLOW), so the full flow must run there |
-| **D-F5** | Button prominence | A identical style for Accept and Reject · B Accept primary, Reject secondary | **A** — "Reject as easy as Accept" |
-| **D-F6** | Show the current choice when reopened | A no (rev 1, no copy) · B add text (needs copy ×3 from Notion) | **A** now; B later if Mauricio writes copy |
-| **D-F7** | ADR | A write ADR 0007 "Consent-gated analytics" (no tag before consent, `localStorage` choice, env switch = Version B, no GTM) · B record in this spec only | **A** (Senior Architect, short). It is a new third-party data flow and a cross-cutting rule for future tools (Brevo pixels, Calendly) |
-| **D-F8** | Google Fonts before consent | A keep, disclosed in §4; ACs name analytics hosts · B self-host fonts before launch (separate small phase, visual QA) | **A** for 12-03; B after launch |
-| **D-F9** | Unused `gtag` npm package ("Git tag shortcut", E7) | A remove in a separate `chore(deps)` PR · B leave | **A**, not in 5f (Hard rule 6) |
-| **D-F10** | Calendar | see Estimate | Mauricio |
+## Decisions confirmed
+Mauricio confirmed these decisions before this assignment (2026-11-04). They are no longer recommendations.
+Final Senior Architect approval of the corrected document remains pending; see the approval record above.
+
+| ID | Decision |
+|---|---|
+| **D-F1 A** | Delete unused `src/utils/gtm.ts`; no GTM container. |
+| **D-F2 A** | Only after a valid analytics grant, deny `ad_storage`, `ad_user_data`, `ad_personalization`; disable signals and ad personalization. |
+| **D-F3 A** | 365-day lifetime for grant and denial; re-ask on expiry or consent version / material purpose change. |
+| **D-F4 A** | GA on Preview with verified debug tagging and Developer traffic exclusion; verify effective Production configuration independently. |
+| **D-F5 A** | Equal Accept/Reject prominence: identical button styling, size and weight. |
+| **D-F6 A** | No additional current-choice copy. |
+| **D-F7 A** | Create [ADR 0007](../adr/0007-consent-gated-analytics.md), Status Accepted. |
+| **D-F8 A** | Keep and disclose Google Fonts; defer self-hosting until after launch. |
+| **D-F9 A** | Remove the unrelated `gtag` dependency in a separate PR; no dependency change in 5f. |
+| **D-F10** | Implement November 25–26; November 30 fallback gate. |
 
 ## Estimate
 | Work | Dev (agent) | Mauricio |
@@ -430,17 +553,18 @@ fix before continuing.
 | Browser matrix (AC-6…AC-14: 3 locales × 3 widths, keyboard, Lighthouse) | 1.5–2 h | — |
 | Gate + report | 1 h | 20–30 min (review) |
 | Vercel env (replace legacy ID, Preview per D-F4) + redeploy | — | 15 min |
-| Preview check AC-L1…L4 (desktop + iPhone) | — | 45–60 min |
+| Deployment checks AC-L1…L7 (desktop + iPhone) | — | 45–60 min |
 | Policy §5 state on WP at go/no-go (GA version or Version B, per locale) | — | 15–30 min |
 | **Total** | **≈ 7.5–9.5 h** | **≈ 2.5–3.5 h** |
 
-**Calendar** (estimates; D-F10):
-- **Proposed (brief): Wed 11-25 – Thu 11-26**, after 5e (Mon-Tue 11-23/24). Wed: implementation, checkpoint ≈ 15:00.
-  Thu: FR/ES, QA matrix, report. Fri 11-27: Mauricio sets the env and checks the preview (AC-L1…L4), then merges. Tue 12-01
-  go/no-go: 5f live, or fallback (GA ID unset + Version B on WP). Thu 12-03 release either way.
-- **Alternative (recommended if the week of 11-16 has two free days after 5c-rest): Tue 11-17 – Wed 11-18.** 5f reads no
-  CMS data and depends only on the privacy-route footer (11-12/13). Landing it a week earlier gives the preview check
-  slack before the release-day runbook week, keeps 11-25/26 as a buffer, and moves the fallback decision off the
-  go/no-go eve. The cost is that 5e rebases on 5f (small: dictionaries + layout).
-- **Hard limit:** if AC-L1…L4 haven't passed by **Mon 11-30**, go to the fallback. 5f then ships after launch with §9's
-  order (policy first, env second).
+**Calendar** (D-F10 confirmed; dates in 2026):
+- **Wed 11-25 – Thu 11-26:** implementation after 5e (Mon–Tue 11-23/24). Wed: EN behavior + race/storage tests,
+  checkpoint ≈ 15:00. Thu: footer, FR/ES, copy locks, focus/viewport/CLS matrix and report.
+- Start developer-filter validation early enough to allow its propagation window. Fri 11-27: Mauricio verifies
+  Preview and prepares Production / Version B build evidence. Merge only after the required Preview checks pass.
+- **Mon 11-30 hard fallback gate:** if the GA-on acceptance and Preview checks (AC-L1…L4 as applicable before release,
+  including verified developer-traffic handling) have not passed, select Version B. Verify AC-L6 and publish matching
+  policy before launch; 5f delay does not move the launch. Production-only checks remain mandatory at release.
+- Tue 12-01 go/no-go: confirm GA-on or verified Version B, policy publication, G-8 (otherwise EN + FR), and effective
+  date. Thu 12-03 release; if the wider release moves to Thu 12-10, re-verify the policy date per §9 / AC-L5.
+- Later activation follows §9: policy published first, configured build second, deployment checks before release.
