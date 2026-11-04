@@ -1,16 +1,16 @@
 # Phase 5f — Google Analytics 4 behind a consent banner (EN / FR-CA / ES)
 
-- **Status: Pending final document verification** (rev 1.1, 2026-11-04).
-- Approval record: Mauricio confirmed D-F1…D-F10 before this assignment. Senior Architect's supplied verdict is
-  **CHANGES REQUIRED — Minor**. Corrections are incorporated below; final approval of rev 1.1 by both reviewers has
-  not been explicitly supplied. After both approvals, record their dates and set **Status: Approved (rev 1.1)**.
-  Decision confirmation and this revision do not substitute for final document approval.
+- **Status: Approved (rev 1.1)** — 2026-11-04.
+- Approval record: Mauricio explicitly approved D-F1…D-F10 on 2026-11-04. Senior Architect completed the full document
+  review of `dbf9b6b` and approved the technical architecture, as explicitly confirmed in the final-approval assignment
+  dated 2026-11-04. That assignment also authorizes the D-F10 schedule acceleration below.
 - Author: Architect · Reviewers: Mauricio + Senior Architect
 - Date: 2026-11-04
 - Branch: `spec/phase-5f-analytics-consent`, originally from `master` `d990751`; draft + privacy rev 1.2 committed as
-  `07ad962` (HEAD at the start of this revision). Code evidence below remains the historical `d990751` baseline.
+  `07ad962`, followed by the reviewed revision `dbf9b6b` (HEAD before this approval update). Code evidence below remains
+  the historical `d990751` baseline.
 - Architecture decision: [ADR 0007 — Consent-gated analytics](../adr/0007-consent-gated-analytics.md), Accepted by
-  Mauricio's confirmed decisions; this does not claim Senior Architect approval of the revised spec.
+  Mauricio's confirmed decisions, with Senior Architect's technical approval recorded against `dbf9b6b`.
 - Depends on: [privacy-route](privacy-route.md) rev 1.2 (footer list, `/privacy-policy`, §7 D-L check), [5d-lite](phase-5d-lite-contact-modal.md)
   (booking `<dialog>`, D-9/D-10 focus rules), ADR [0005](../adr/0005-ui-dictionaries.md) (dictionaries + build guard),
   ADR [0003](../adr/0003-locale-routing.md) (`localizePath`). Implementation needs the privacy-route **report** (footer
@@ -24,7 +24,10 @@
 - rev 1.1 (2026-11-04) — D-F1…D-F10 recorded as confirmed by Mauricio. Senior Architect corrections: cross-tab
   fail-closed transitions, withdrawal/load race regression, deterministic non-modal focus restoration, privacy
   provenance, effective deployment configuration + verified Version B, G-8 and the December 10 effective-date gate.
-  ADR 0007 created. Stopped for final document verification; joint approval remains unrecorded.
+  ADR 0007 created. Final approval recorded above following Senior Architect's full review of `dbf9b6b`.
+  D-F10 now permits earlier implementation when dependencies, checkout ownership and capacity permit; November 25–26
+  remains the original planning window and November 30 remains the fallback deadline. D-F1…D-F9 and technical
+  implementation requirements are unchanged.
 - rev 1 (2026-11-04) — Draft.
 
 ## Goal
@@ -526,7 +529,8 @@ fix before continuing.
 
 ## Decisions confirmed
 Mauricio confirmed these decisions before this assignment (2026-11-04). They are no longer recommendations.
-Final Senior Architect approval of the corrected document remains pending; see the approval record above.
+Senior Architect approved the technical architecture after full review of `dbf9b6b`; see the approval record above.
+D-F10's scheduling authorization is updated by the final-approval assignment; D-F1…D-F9 are unchanged.
 
 | ID | Decision |
 |---|---|
@@ -539,7 +543,7 @@ Final Senior Architect approval of the corrected document remains pending; see t
 | **D-F7 A** | Create [ADR 0007](../adr/0007-consent-gated-analytics.md), Status Accepted. |
 | **D-F8 A** | Keep and disclose Google Fonts; defer self-hosting until after launch. |
 | **D-F9 A** | Remove the unrelated `gtag` dependency in a separate PR; no dependency change in 5f. |
-| **D-F10** | Implement November 25–26; November 30 fallback gate. |
+| **D-F10** | November 25–26 remains the original planning window. Earlier implementation is authorized when dependencies, checkout ownership and capacity permit. November 30 remains the fallback deadline. |
 
 ## Estimate
 | Work | Dev (agent) | Mauricio |
@@ -558,10 +562,15 @@ Final Senior Architect approval of the corrected document remains pending; see t
 | **Total** | **≈ 7.5–9.5 h** | **≈ 2.5–3.5 h** |
 
 **Calendar** (D-F10 confirmed; dates in 2026):
-- **Wed 11-25 – Thu 11-26:** implementation after 5e (Mon–Tue 11-23/24). Wed: EN behavior + race/storage tests,
-  checkpoint ≈ 15:00. Thu: footer, FR/ES, copy locks, focus/viewport/CLS matrix and report.
-- Start developer-filter validation early enough to allow its propagation window. Fri 11-27: Mauricio verifies
-  Preview and prepares Production / Version B build evidence. Merge only after the required Preview checks pass.
+- **Original window: Wed 11-25 – Thu 11-26**, originally sequenced after 5e (Mon–Tue 11-23/24). Earlier implementation
+  is now authorized when the existing dependencies are merged, checkout ownership is exclusive and capacity permits.
+  5e is a scheduling/overlap concern, not an additional hard dependency; coordinate shared-file work per R-9.
+- Keep the same two-day sequence if advanced: day 1 EN behavior + race/storage tests, checkpoint ≈ 15:00; day 2 footer,
+  FR/ES, copy locks, focus/viewport/CLS matrix and report. Reconfirm ownership/capacity at start; no concurrent work in
+  the same checkout. The privacy-route implementation/report merge prerequisite above is unchanged.
+- Start developer-filter validation early enough to allow its propagation window. Fri 11-27 remains the original
+  Preview / Production / Version B verification slot; bring it forward with implementation when capacity permits.
+  Merge only after the required Preview checks pass.
 - **Mon 11-30 hard fallback gate:** if the GA-on acceptance and Preview checks (AC-L1…L4 as applicable before release,
   including verified developer-traffic handling) have not passed, select Version B. Verify AC-L6 and publish matching
   policy before launch; 5f delay does not move the launch. Production-only checks remain mandatory at release.

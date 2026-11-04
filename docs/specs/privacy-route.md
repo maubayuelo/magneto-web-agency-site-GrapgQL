@@ -22,11 +22,13 @@
   Thu 12-10. Plan B = EN + FR.
 
 ## Revision
-- **rev 1.2 clarification (2026-11-04, Phase 5f finalization; final verification pending).** Distinguished historical
+- **rev 1.2 clarification (2026-11-04, Phase 5f finalization; technical approval recorded).** Distinguished historical
   branches/commits and `ffec355` line references from the current `637fba7` source; removed superseded re-export and
   no-analytics instructions. G-8 remains an ES launch gate. D-L now requires effective build evidence for GA-on and
-  Version B, and explicit effective-date verification for a December 10 launch. Prior approval above is historical;
-  this clarification does not claim a new joint approval.
+  Version B, and explicit effective-date verification for a December 10 launch. Senior Architect completed the full
+  document review of `dbf9b6b` and approved the technical architecture, explicitly confirmed in the 2026-11-04
+  final-approval assignment; Mauricio's Phase 5f D-F1…D-F10 approval is dated 2026-11-04. This records technical approval,
+  not a new legal-copy approval; the publication gates remain unchanged.
 - **rev 1.2 (2026-11-04) — Approved (amendment, Status unchanged).** Follows Mauricio's decision of 2026-11-04: GA4 +
   consent banner live at launch through [Phase 5f](phase-5f-analytics-consent.md); fallback = launch without GA, policy
   §5 "Version B" (`docs/content` @ `637fba7`, "Internal — ready policy blocks").
@@ -585,6 +587,7 @@ because of the original G-5 work and provider inventory; rev 1.2 supersedes the 
 - Week of 11-16: 5c-rest re-export carries any later `meta.privacy` change.
 - By Sun 11-22 (with the OQ-1 session): production pages EN + FR (ES if G-8 is done). PR preview check, merge.
 - Mon 11-23 – Tue 11-24: 5e. If it passes, paste the G-4b block on the WP pages before its deploy.
-- Wed–Thu 11-25/26: 5f implementation; Mon 11-30: its fallback gate (Version B if GA-on checks are not ready).
+- Wed–Thu 11-25/26 remains 5f's original implementation window; D-F10 now authorizes an earlier start when dependencies,
+  checkout ownership and capacity permit. Mon 11-30 remains its fallback gate (Version B if GA-on checks are not ready).
 - Tue 12-01 go/no-go: §7 checklist (+ item 6 if 5e ships) + G-8 / ES decision (O-3). Thu 12-03 release.
   If moved to Thu 12-10, re-verify G-3's approved effective date before promotion; no automatic copy edit.

@@ -2,10 +2,14 @@
 
 - Status: Accepted
 - Date: 2026-11-04
-- Decider: Mauricio — D-F1…D-F10 confirmed before the finalization assignment.
+- Decider: Mauricio — D-F1…D-F10 explicitly approved on 2026-11-04.
 - Spec: [Phase 5f](../specs/phase-5f-analytics-consent.md), rev 1.1.
-- Review provenance: Senior Architect requested minor corrections; final joint approval of the revised spec remains
-  pending document verification. Accepted records Mauricio's architecture decisions, not an invented review approval.
+- Review provenance: Senior Architect completed the full document review of `dbf9b6b` and approved the technical
+  architecture, explicitly confirmed in the final-approval assignment dated 2026-11-04. Phase 5f is Approved rev 1.1;
+  this ADR remains Accepted and its architecture decisions are unchanged.
+- Schedule reference: November 25–26 in decision 5 is the original planning window. Phase 5f D-F10 now authorizes
+  earlier implementation when dependencies, checkout ownership and capacity permit; the November 30 fallback deadline
+  is unchanged.
 
 ## Context
 
