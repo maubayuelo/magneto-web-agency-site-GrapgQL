@@ -1,16 +1,37 @@
-# Phase 5c — Content loader: local FR-CA / ES load + translation-post checklist (rev 3)
+# Phase 5c — Content loader: local FR-CA / ES load + translation-post checklist (rev 3.1)
 
-- **Status: Draft** (rev 3). Needs review by Mauricio + Senior Architect before Mon 11-09.
+- **Status: Draft** (rev 3.1). Needs review by Mauricio + Senior Architect before Mon 11-09.
 - Author: Architect · Reviewed by: Mauricio + Senior Architect · **Run by: Mauricio** (agents never write to WordPress)
 - Date: 2026-11-03 · Branch: `spec/phase-5c-rev3` (from `master` @ `f6cd045`). Implementation branch: the Dev creates one.
 - Depends on: rev 2 of this spec (EN loader, run 2026-10-31, [5b report](../reports/phase-5b-services-packages-seo.md)
   "Loader run"), [5b spec](phase-5b-services-packages-seo.md) rev 9 (§5.4 override, OQ-1, "Other specs" item 1, E16),
-  [ADR 0006](../adr/0006-phase-5-content-model.md) (decisions 4, 5; amendment 2), [ADR 0004](../adr/0004-localized-data.md),
+  [ADR 0006](../adr/0006-phase-5-content-model.md) (decisions 4, 5; amendments 2, **3**), [ADR 0004](../adr/0004-localized-data.md),
   Phase 3 report (WPML duplicate method), 5d-lite (merged, PR #24).
 - Canonical copy: `docs/content/magneto-copy-{en,fr-CA,es}.md` **as of `ffec355`** (export 2026-11-02; Notion stays
   canonical). Every `docs/content` line number below is at `ffec355`; section titles govern if a later export moves them.
 
 ## Revision
+**Rev 3.1 (2026-11-03, after Mauricio's review of rev 3):**
+1. **Decisions recorded** (Decisions section): D-1 B with three additions, D-2 A, D-3 A, D-4 A, D-5 A (only together with
+   the new "5c-rest" section), D-6 (a) + (b).
+2. **D-1 B additions:**
+   - (a) Locally, the 4 case posts (checklist rows 10-13) are created **before** the EN parity run, so the append path
+     runs for real (§1, §5, §7, calendar).
+   - (b) The dry-run prints each appended row on its own `+ append` line. Per-post totals count appended rows separately
+     (§3.3, AC-3, AC-5).
+   - (c) ADR 0006 amendment 3 records the append-only rule (written in this revision).
+3. **D-4 A note:** `ProjectDetail/index.tsx:128-130` renders an empty `<p>` when `footNote` is empty (E16). AC-8 adds a
+   screenshot check of that spacing. No `src` change.
+4. **New section "5c-rest"**: every item this spec defers, with its local state, whether it blocks launch, an estimate,
+   and a proposed slot in the week of 11-16.
+5. **New section "EN admin saves after FR/ES loads"** (§8): what WPML/ACFML do when the EN Services page is saved in admin
+   while FR/ES translations exist (E13), the required follow-up after Sat 11-14 (AC-12), and the production rule.
+6. **Correction (E15):** the Contact page renders **no** final CTA, so rev 3's R-9 pointed at the wrong route. The
+   FR/ES legacy final CTA appears on `/fr|es/projects` and on `/fr|es` (the home fallback). R-9, AC-8 and the §5 table
+   are corrected.
+7. Calendar: Wed 11-11 also holds the FR/ES dictionary fill. The Sat 11-14 EN image save and its follow-up are added.
+8. New open decisions: D-7, D-8, D-9.
+
 **Rev 3 (2026-11-03):**
 1. **FR/ES content load, local only:** new `fr.json` / `es.json` for Services, Packages, About, Contact, Dangel,
    Shamanicca, and the heroes of every page that exists in FR/ES. Same loader, with one language per run.
@@ -169,6 +190,83 @@ Format differences the test must handle:
 - Markdown links inside list items (Shamanicca delivered: `[shamanicca.com](https://…)`).
 - FR/ES headings are one `#` shallower than EN.
 
+**E13. What an EN admin save does to existing FR/ES translations** (rev 3.1; read-only reading of the plugin source in
+`~/Local Sites/magneto-cms-2/app/public/wp-content/plugins/`, WPML 4.7.6, ACFML 2.1.5; plus a read-only `SELECT` of
+`icl_sitepress_settings` → `translation-management.custom_fields_translation`):
+- **Copy sync on save.** Saving an original in admin runs
+  `wpml-post-translation.class.php:206` → `wpml-post-synchronization.class.php:262` (`sync_custom_fields`, once per
+  translation) → `sitepress.class.php:1643-1655` `copy_custom_fields`. That function iterates **only** the meta keys
+  whose preference is Copy (`WPML_COPY_CUSTOM_FIELD`). For each key, `class-wpml-sync-custom-fields.php:54-93` deletes
+  the target values that differ from the source and adds the source values. The result is that every Copy key on the
+  translation equals EN after the save.
+- **Translate keys are not touched.** The only other path (`sitepress.class.php:1668-1683`) runs when the
+  `wpml_sync_deleted_custom_fields` filter returns true. Its default is `false`, and no plugin here hooks it (grep of
+  `acfml/`: no match).
+- **Image IDs are remapped, not copied raw.** After each copied key, ACFML (`class-wpml-acf-worker.php:34, :45-87`)
+  converts post/attachment IDs to the target language's translated object, when one exists. `resolveOriginalMedia`
+  (E7) and the media report (§3.6) both compare by EN original, so either ID passes.
+- **Repeater "shuffle".** `class-wpml-acf-repeater-shuffle.php:66-67, :102-117, :127-132` moves translated sub-field
+  meta to new row indexes, but only when rows were **reordered**. It runs only if the repeater values hash the same
+  before and after the save, and it acts only on keys whose value moved to another index. Changing an image changes
+  the hash, so the shuffle is skipped. Adding, deleting or reordering rows is the case that could re-pair FR/ES text
+  with the wrong row.
+- **Preferences by concrete meta key** (local):
+  - Copy (1): `services`, `services_N_Image`, `services_N_icon`, `services_N_featured_service`,
+    `services_N_service_group`, `image`, `background_image`, `images_N_image`, `display_order`, `prefooter_cta_link`,
+    `bgimage`, `project_data`, `project_data_{challenges,solutions,results}`, and the `_`-prefixed ACF reference keys
+    (`_services`, `_services_0_Image`, …).
+  - Translate (2): `services_N_{title,heading,description_html,cta_text,cta_path,anchor_id,description}`, `hero_title`,
+    `cta_link_hero`, `hero_cta_path`, `title`, `subtitle`, `images_N_foot_note`, `project_data_*_N_item` (N ≤ 3).
+  - Totals: 625 Copy / 332 Translate / 16 ignore / 2 copy-once.
+  - `project_data_results_4_item` and `_5_item` have **no** entry yet. Keys that don't exist are never copied, so the
+    rows appended by D-1 B are never overwritten by a sync either.
+- **Consequence for Sat 11-14** (§8): an EN Services save that changes only `Image` / `icon` copies the new image IDs
+  to FR/ES Services, and the other Copy keys are no-ops because they are already equal. No FR/ES text field is written.
+  Two things not covered by this reading: WYSIWYG re-formatting of the **EN** bodies on save (5b report :241-243), and
+  WPML marking the FR/ES posts "needs update" in Translation Management (a status only; see §8 rule 4).
+
+**E14. Local state of the items deferred to 5c-rest** (GraphQL, read-only, `language` + `name`):
+- **EN home (2)** was filled by the 5a fixtures, not by the loader (`en.json` home = hero only, 3 fields):
+  - `aboutSectionTitle` "Work directly with the person…";
+  - featured services: 3 rows (BUILD/FIX/CARE + taglines);
+  - testimonials: 2 rows with `role`;
+  - `footerLine2` "Based in Montreal · Available in English, French & Spanish";
+  - final CTA "Start with a conversation." / `ctaText` "Book a Strategy Call".
+- **FR 535 / ES 536 home:**
+  - `aboutSectionTitle` "Meet Magneto";
+  - featured services: **2** legacy rows ("Sales Funnel Development", …), with no tagline;
+  - testimonials: **4** rows, all without `role`;
+  - `footerLine2` "Based in Montreal | Serving clients worldwide";
+  - final CTA "Ready to stop guessing and start converting?" / "Get Your Free Strategy Call";
+  - hero title "[FR TEST] Attract More Aligned Clients Online" (rev 3 loads the hero).
+  - So the FR/ES home row counts (2 / 4) differ from EN (3 / 2). The fixtures say production EN still has the legacy
+    shape: `local-fixtures.php:88` "row 3 reuses the web-dev icon" (2 → 3) and `:112` "the 4 placeholder rows are
+    replaced (local only)" (4 → 2).
+- **Trépied:**
+  - EN 498 `projectSubtitle` = the legacy "WordPress site … three conversion paths …". Rows: 3 / 4 / 4 challenges /
+    solutions / results; 7 images with legacy captions. The copy (EN 1020-1107) has 3 / 4 / **6** and 7 captions.
+  - FR 550 and ES 541: titles `[FR TEST] …` / `[ES TEST] …`, EN legacy body (ES subtitle prefixed `[ES TEST]`),
+    `cardDescription` null, `finalCtaSection.title` null (→ FR/ES home fallback).
+- **EN final CTAs:** `ctaText` / `secondaryCtaText` = "Book a Strategy Call" on 7 posts: home 2, services 34, packages
+  36 (secondary), about-magneto 32, cases 270 / 224 / 498. The copy says "Book a Free Strategy Call" (EN 127, 243, 415,
+  539, 995, 1106, 1241). Every EN final CTA, the About founder text and CTA, `cardDescription` and `displayOrder` exist
+  only through `scripts/phase-5a/local-fixtures.php:137-180`, which is local only. `en.json` has none of them.
+- **Post titles:**
+  - EN: 270 "Dangel Wellness — dangelwellness.ca" (copy hero 937 "Dangel Wellness"); 224 "Shamanicca’s Ecommerce"
+    (1177 "Shamanicca"); 498 "TRÉPIED — trepied.ca" (1044 "Trépied"); 32 "About Magneto".
+  - FR 535 / ES 536 "Home" and FR 558 "Projects": EN titles on existing translations, used as the hero `alt` (E8). They
+    are not in the 13-row checklist.
+
+**E15. Contact renders no final CTA** (correction to rev 3 R-9). `FinalCTASectionLoader` is used only in
+`[locale]/page.tsx:79`, `projects/page.tsx:22`, `projects/[slug]/page.tsx:71`, `packages/page.tsx:88`,
+`about-magneto/page.tsx:93` and `services/page.tsx:41`, not under `contact/`. The Contact copy has no final CTA either
+(EN 575-676 headings: Hero, Form, Supporting copy, Success, Form messages, Footer). The EN `projects` (38) and FR 558
+final CTAs are empty, so `/projects` falls back to the locale's home final CTA, which in FR/ES is legacy EN text (E14).
+
+**E16. Empty caption markup.** `ProjectDetail/index.tsx:128-130` renders `<p>{img.footNote}</p>` without a check, so
+D-4 A leaves an empty `<p>` under every gallery image. (The review cited `:127-129`; at `f6cd045` the lines are
+`:128-130`.)
+
 ## Assumptions and open questions
 - **A1 (verify at the first post, Mon):** a fresh WPML duplicate carries `_icl_lang_duplicate_of` until *Translate
   independently* is clicked. E4 shows only that detached posts have none. `check-translations.php` reports the meta
@@ -180,19 +278,30 @@ Format differences the test must handle:
   open + Update an EN original during the checklist.
 - **A4:** saving an FR/ES post in admin **after** its load can re-sync Copy structure or alter the HTML. Rule: after a
   load, don't save FR/ES posts in admin. A loader re-run restores them (idempotent), and the dry-run shows any drift.
-- **Open:** D-1 … D-6 below.
+- **A5 (rev 3.1):** E13 comes from reading the plugin source, not from a save. The Sat 11-14 follow-up (§8, AC-12) is
+  the observation that confirms it. If any FR/ES Translate value differs after the save, E13 is wrong: stop and report.
+- **A6 (rev 3.1):** production EN home row counts (featured 2, testimonials 4) are inferred from the fixture comments
+  (E14), not measured. Release-day note 5 measures them read-only.
+- **Open:** D-7, D-8, D-9 (below). D-1 … D-6 are decided.
 
 ## Design
 
 ### 1. Order of operations (local)
 ```
-EN rows final (EN parity load, D-2)  ─┐
-13 FR/ES posts created + checked     ─┼─▶ FR load (dry-run → run → read-back → dry-run 0) ─▶ ES load (same)
-                                      │    one language per run; Plan B: FR never depends on ES
+13 FR/ES posts created + checked (rows 10-13 included) ─┐
+EN parity load (D-2; grows EN case rows)                ─┼─▶ FR load (dry-run → run → read-back → dry-run 0) ─▶ ES load (same)
+                                                          │    one language per run; Plan B: FR never depends on ES
 ```
-- Posts can be created before or after the EN parity load: E10 shows EN writes don't touch FR/ES, and D-1 aligns rows
-  afterwards. That is what lets Mauricio create all 13 on Monday.
+- **Rows 10-13 (the 4 case posts) must be created before the EN parity run** (D-1 B (a)). They then duplicate the
+  current EN rows (Dangel results 3, Shamanicca solutions 3 and results 3). The EN run grows EN, and the FR/ES runs must
+  append. This is the same order production will have (OQ-1), so the append path is rehearsed for real, not only in
+  the stub harness.
+- The 9 page posts may be created before or after the EN parity run: their rows already equal EN, and E10 shows that EN
+  writes don't touch FR/ES. Creating all 13 first is simplest.
 - The EN parity load **must** run before FR/ES: content rows = EN rows is a preflight rule.
+- Before the EN parity run, `check-translations.php` must show the case rows equal to EN (3 / 4 / 3 and 3 / 3 / 3).
+  After it, FR/ES case rows are below EN (informational) until the FR/ES runs append them. Both outputs go in the
+  report.
 
 ### 2. Content files
 - New `content/fr.json` and `content/es.json`, with the same schema as `en.json`. Each sets `source.file` to its own
@@ -245,13 +354,23 @@ primary `/contact`). `prefooter_cta_link` (url, Copy) and `bgimage` are never wr
    - have **no** `_icl_lang_duplicate_of`.
    
    Each abort names the checklist row (#1-13). Read-only WPML filters only, so still no WPML writes.
-3. **Row rule (D-1, recommended option B):** for every repeater in the content, content rows = **EN** rows. Then:
+3. **Row rule (D-1 B, approved; ADR 0006 amendment 3):** for every repeater in the content, content rows = **EN** rows.
+   Then:
    - EN target: EN rows ∈ {current, content} for the D-2 growth repeaters only (`project_data_results` 3→6 on 270/224,
      `project_data_solutions` 3→4 on 224, `sections` 0|2); exact everywhere else.
-   - FR/ES target: target rows ≤ EN rows. Missing rows are **appended** (never removed; target rows > EN aborts).
-     Appending is allowed only on repeaters with no image sub-field (challenges, solutions, results, sections); any
-     other need aborts.
+   - FR/ES target: target rows ≤ EN rows. Missing rows are **appended**. Rows are never removed, and target rows > EN
+     aborts. Appending is allowed only on repeaters with no image sub-field (challenges, solutions, results, sections);
+     any other need aborts.
    - Existing rows merge by index as today. Appended rows get only the content sub-keys.
+   - **Dry-run output (D-1 B (b)):** each appended row is its own line,
+     `+ append <post>/<lang> <meta name>[<i>] <sub-key>=<first 60 chars>`, under the post's plan. The per-post totals
+     line reads `<post>/<lang>: N changes (M appended rows), K unchanged`. Appended rows are **not** counted in N, and the
+     run total adds them up the same way. The real run prints the same `+ append` lines before writing, and the
+     read-back marks them `(appended)`.
+   - **Expected appended rows** (the Dev puts the exact totals in the report before the runs):
+     - EN parity: Dangel `results` +3, Shamanicca `solutions` +1, Shamanicca `results` +3 = **7**.
+     - FR: the same 7. ES: the same 7.
+     - Re-runs (second dry-run): 0 in every language.
 4. **Group merge.** Fields nested in `project_data` are written as the whole group:
    - read raw `get_field(group, id, false)`;
    - overwrite only the content sub-keys, merging nested repeaters by index as in 3;
@@ -267,7 +386,7 @@ primary `/contact`). `prefooter_cta_link` (url, Copy) and `bgimage` are never wr
 6. **Media report (read-only):** for each image sub-field on FR/ES rows, compare the attachment's EN original ID
    (`wpml_object_id(att, 'attachment', true, 'en')`) with the EN row's ID, and print `media ok` or
    `media WARN (row i differs from EN)`. A WARN never aborts and never writes. The fix is outside the loader
-   (release-day note 6).
+   (§8, release-day note 6).
 7. **Cross-language probe (replaces `:210-221`):** before and after the write, hash the raw values of **every touched
    key** on the other two languages' posts (`no-translation` when absent). They must be equal, or FAIL with a non-zero
    exit. An FR run therefore proves EN and ES unchanged.
@@ -304,6 +423,8 @@ Pass = one node, `slug` = EN slug, `status` publish, and `translations` contains
 4. **Don't edit any ACF field** (the loader fills them). Update.
 5. **Never open + Update the EN original** (A3). After each post, run its check (§4).
 
+**Order:** rows 10-13 (cases) **before the EN parity run** (D-1 B (a), §1). Rows 1-9 any time before the FR/ES runs.
+
 **Rows** (local EN IDs; production IDs differ and are resolved by slug):
 
 | # | EN original (ID) | Type | Lang | Slug (= EN) | Title (D-6) | Groups the post must show |
@@ -335,7 +456,7 @@ duplicated from EN):
 | A `aboutData` | `calendly_url` | `section_title`, `description_html`, `link_text`, `general_text`, `about_cta_text`, `about_cta_path` | `description`, `link_url`, `calendly_text` |
 | C `contactContactTexts` | — | — | all (not rendered, ADR 0006 am. 2) |
 | PD `projectsProjectData` | `project_data` group, `project_url`, list rows, `display_order` (copy-synced), `images` rows, `image`, `ismobilescreenshot` | `project_subtitle`, `project_description`, `item` ×3 lists, `card_description`, `foot_note` (D-4) | — |
-| F `finalCtaSection` | `prefooter_cta_link`, `bgimage` | the six text fields (D-3) | — (Contact: EN empty → home fallback) |
+| F `finalCtaSection` | `prefooter_cta_link`, `bgimage` | the six text fields (D-3) on Services, Packages, About and the 2 cases | Contact: attached, never rendered (E15). ES `projects` (row 9): empty → home fallback |
 
 **Done** = `check-translations.php` prints `13/13 PASS` locally. That is the OQ-1 precondition for creating the
 production posts.
@@ -348,23 +469,69 @@ wp db export ~/Documents/projects/magneto/backups/phase-5c/magneto-cms-2_<lang>-
 wp eval-file <repo>/scripts/phase-5c/load-content.php lang=<lang> dry-run       # compare with the Dev's expected totals
 wp eval-file <repo>/scripts/phase-5c/load-content.php lang=<lang> backup=<that .sql>
 wp cache flush
-wp eval-file <repo>/scripts/phase-5c/load-content.php lang=<lang> dry-run       # must print 0 changes
+wp eval-file <repo>/scripts/phase-5c/load-content.php lang=<lang> dry-run       # must print 0 changes, 0 appended rows
 ```
-- Order: `en` (parity, D-2) → `fr` → `es`.
-- Real run only if the dry-run shows exactly the expected posts, no other field, totals ≤ expected, and no
-  `media WARN`.
+- Order: `en` (parity, D-2) → `fr` → `es`. Before `en`: `check-translations.php` with rows 10-13 PASS (§1).
+- Real run only if the dry-run shows exactly the expected posts, no other field, totals ≤ expected, **exactly 7
+  `+ append` lines** (§3.3), and no `media WARN`.
 - Rollback: `wp db import <that .sql>` + `wp cache flush`. This restores **all** languages to the state before that run,
   which is why there is one backup per language.
 
 ### 7. Mid-phase checkpoint — **Mon 11-09, end of day** (Mauricio + Senior Architect, ≈ 20 min)
 Required before Tuesday's FR/ES runs:
-1. `check-translations.php` 13/13 PASS (output in the report).
+1. `check-translations.php` 13/13 PASS (output in the report). The run **before** the EN parity load shows rows 10-13
+   with case rows equal to EN.
 2. Loader guard proofs (stub harness, AC-3) and `php -l` clean.
-3. EN parity: dry-run = expected, real run all ok, cross-language probe unchanged, second dry-run 0.
-4. `content.test.ts` green for `en` + `fr`. `es.json` may still be in progress.
+3. EN parity: dry-run = expected (7 `+ append` lines), real run all ok, cross-language probe unchanged, second dry-run
+   0 / 0.
+4. After the EN parity load, `check-translations.php` shows FR/ES case rows below EN (the append path is armed).
+5. `content.test.ts` green for `en` + `fr`. `es.json` may still be in progress.
 
-Go/no-go for Tue 11-10. If item 1 or 3 fails, FR/ES runs move by a day. ES can slip to Wed 11-11 without blocking FR
-(Plan B shape).
+Go/no-go for Tue 11-10. If item 1, 3 or 4 fails, FR/ES runs move by a day. ES can slip to Wed 11-11 without blocking
+FR (Plan B shape).
+
+### 8. EN admin saves after FR/ES loads (rev 3.1)
+**Plan.** On **Sat 11-14**, after the FR/ES loads, Mauricio sets the Services row `Image` and `icon` on the **EN**
+`services` page (34) in WP admin (5b report "decision A", :236-253). FR Services and ES Services (rows 1, 5) exist and
+are loaded by then.
+
+**What the save does (E13, from the source; A5):**
+- WPML copies every **Copy** key of page 34 to FR and ES Services. The changed `services_N_Image` / `services_N_icon`
+  are copied (ACFML remaps the IDs to the translated attachments, if any). Every other Copy key is already equal to
+  EN, so nothing changes: `services` = 7, `service_group`, `featured_service`, hero `image` / `background_image`,
+  `prefooter_cta_link`, `bgimage`, and the `_` reference keys.
+- **No Translate field is written** on FR/ES (titles, headings, bodies, CTAs, hero text, final CTA). The ACFML shuffle
+  can re-pair Translate sub-fields only when rows are reordered (E13), which rule 1 forbids.
+- The EN WYSIWYG bodies may be re-formatted by the editor (same visible text; 5b report :241-243).
+
+**Rules for the save:**
+1. Change only `Image` / `icon` fields. Don't add, delete or reorder rows, and don't touch any text field or the
+   ACFML "Synchronise translations" checkbox.
+2. Backup first: `wp db export …/phase-5c/magneto-cms-2_en-media-before_$(date +%Y%m%d-%H%M).sql`.
+3. One Update. Close the page.
+4. WPML may then show FR/ES Services as "needs update" in Translation Management. That is a status only. **Don't open
+   the WPML translation editor** and don't re-duplicate: either would overwrite the loaded FR/ES text.
+5. Every other EN admin save of a page that has FR/ES translations (e.g. an EN title change from 5c-rest) follows the
+   same rules and the same follow-up. EN Packages is never saved in admin (A3).
+
+**Required follow-up (same day, Mauricio runs, Dev reads back; AC-12):**
+1. `wp cache flush`.
+2. `check-translations.php lang=fr` and `lang=es`: 13 rows still PASS, and rows 1 and 5 print `media ok` on all 7
+   Services rows.
+3. `load-content.php lang=en dry-run`: expected 0 changes, or only `description_html` / `intro_body_html` re-formatting
+   on `services`. In that case, review it, then run `lang=en` for real with the backup from rule 2, then a 0 dry-run.
+4. `load-content.php lang=fr dry-run` and `lang=es dry-run`: **must print 0 changes, 0 appended rows**. Anything else
+   means A5 is wrong. Stop, keep the output, and report to the Architect before any re-run. Only after that review, a
+   re-run per §6 (backup, run, flush, dry-run 0) restores the loaded values.
+5. Dev, read-only: GraphQL `services` rows FR/ES vs EN. `Image` / `icon` `sourceUrl` equal after `resolveOriginalMedia`
+   semantics (AC-6 query), and Translate values equal to `fr.json` / `es.json` (AC-7 subset).
+6. Results go into the phase report as an addendum ("Sat 11-14 EN media save").
+
+**Production rule.** Set the Services row images and icons on the **production EN** page **before** the 13 production
+FR/ES posts are created (OQ-1). The Duplicate then carries the final media, and no EN save is needed after the FR/ES
+release-day loads. If an EN image is changed after the production posts exist, the same rules and follow-up apply in
+production (read-only `check-translations.php`, FR/ES dry-run 0), with the media report as the check. See D-7 for the
+live-site effect.
 
 ## Files the Dev may touch
 - `scripts/phase-5c/load-content.php`: §3.
@@ -372,19 +539,21 @@ Go/no-go for Tue 11-10. If item 1 or 3 fails, FR/ES runs move by a day. ES can s
 - `scripts/phase-5c/content/en.json`: **append only** (D-2 posts/fields); existing posts byte-identical.
 - `scripts/phase-5c/content/fr.json`, `scripts/phase-5c/content/es.json` (new).
 - `scripts/phase-5c/content.test.ts`: generalized to three languages (AC-1).
-- `docs/reports/phase-5c-loader.md` (new): runs, outputs, checkpoint, ACs.
+- `docs/reports/phase-5c-loader.md` (new): runs, outputs, checkpoint, ACs, the Sat 11-14 addendum.
 
 Anything else is out of scope, including every `src/` file, the three `src` tests that import `en.json` (they must pass
-unchanged), `state-c.json`, `local-fixtures.php`, the ACF JSON and the dictionaries.
+unchanged), `state-c.json`, `local-fixtures.php`, the ACF JSON, the dictionaries and ADR 0006 (amendment 3 is written by
+this spec revision, not by the Dev).
 
 ## Out of scope
 - Production mode and any production write (release-day notes only).
-- Trépied FR/ES/EN bodies (D-5).
-- Home body sections (About, Featured, Testimonials, footer line, final CTA) in any language; EN final-CTA labels; EN
-  post titles; `generalSettings`.
+- Everything listed in **5c-rest** below: Trépied in all three languages (D-5), Home body sections in any language, EN
+  final-CTA labels and the other EN fixture-only values, EN post titles, the FR/ES home and projects titles.
+- `generalSettings`.
 - New screenshots (Phase 8 / Mauricio).
-- Privacy pages; dictionary TODO fill (Q-D1); hreflang (Phase 7); Dangel slug rename (Backlog); orphan-meta cleanup.
-- Sanitizing `generalText` (Known debt).
+- Privacy pages; dictionary TODO fill (Q-D1, separate work on Wed 11-11); hreflang (Phase 7); Dangel slug rename
+  (Backlog); orphan-meta cleanup.
+- Sanitizing `generalText` (Known debt); the empty caption `<p>` (E16, observed only).
 
 ## Acceptance criteria
 - [ ] **AC-1 `content.test.ts`** (runs in `npm test`):
@@ -407,15 +576,19 @@ unchanged), `state-c.json`, `local-fixtures.php`, the ACF JSON and the dictionar
   - target rows > EN; content rows ≠ EN rows;
   - growth needed on a repeater with an image sub-field.
   
-  Positive cases: an FR run appends results 3→6 and keeps every image and other sub-key "(carried over)", and a second
-  dry-run prints 0. Plus one real dry-run by Mauricio with a wrong-sha copy of `fr.json`, which aborts in preflight.
+  Positive cases: an FR run appends results 3→6. The dry-run prints 3 `+ append` lines for it, and the totals line
+  shows `(3 appended rows)` with the appended rows not counted in `changes`. Every image and other sub-key reads back
+  "(carried over)", and a second dry-run prints `0 changes (0 appended rows)`. Plus one real dry-run by Mauricio with a
+  wrong-sha copy of `fr.json`, which aborts in preflight.
 - [ ] **AC-4 Read-only checker:** `grep -nE "update_|delete_|add_(post_)?meta|wp_(insert|update|delete)_|do_action|wpml_set|->query\(" scripts/phase-5c/check-translations.php`
   returns no match. Locally it prints 13/13 PASS, and the output is in the report.
 - [ ] **AC-5 Runs (EN parity, FR, ES), each with:**
-  - dry-run = the Dev's expected totals;
-  - "all read back ok", exit 0;
+  - dry-run = the Dev's expected totals, including **7 `+ append` lines** (§3.3);
+  - for FR and ES, the case posts existed before the EN parity run (`check-translations.php` output before the EN run,
+    with its timestamp, in the report);
+  - "all read back ok", with appended rows marked `(appended)`; exit 0;
   - cross-language probe unchanged;
-  - `wp cache flush`, then a second dry-run with `0 changes`;
+  - `wp cache flush`, then a second dry-run with `0 changes (0 appended rows)`;
   - backup file names recorded.
 - [ ] **AC-6 Media:** the read-back lists every image sub-field of touched rows as "(carried over)" and unchanged, and
   there is no `media WARN` locally. In the GraphQL read-back below, every FR/ES hero, service-row and gallery image
@@ -429,8 +602,13 @@ unchanged), `state-c.json`, `local-fixtures.php`, the ACF JSON and the dictionar
   - These 14 routes return 200: `/{fr,es}/{services,packages,about-magneto,contact}`, `/es/projects`, and
     `/{fr,es}/projects/{fashion-company-ecommerce,shamaniccas-ecommerce}`.
   - Their SSR `<main>` contains none of a sentinel list of 30 EN strings taken from `en.json` and the EN case/About
-    copy. Known exclusions: lead-magnet fallback, Contact's home final-CTA fallback (R-9).
+    copy. Known exclusions: the lead-magnet fallback, and the FR/ES home final-CTA fallback on `/es/projects` (R-9,
+    E15).
   - Screenshots at 375/768/1440 for FR and ES, with no horizontal scroll.
+  - **Gallery spacing with empty captions (D-4, E16):** on both cases in EN, FR and ES at 375/768/1440, the screenshots
+    show the gaps between gallery images and before "View live site". The report states whether the empty `<p>` adds
+    a visible gap compared with the spacing of a page that has no captions. No `src` change; if Mauricio finds the gap
+    wrong, it is recorded as a follow-up for a `src` spec.
   - Mauricio approves FR (FR-CA reader) and ES. The full matrix stays in the launch QA.
 - [ ] **AC-9 EN unchanged:** the EN SSR `<main>` text of `/services`, `/packages`, `/contact`, `/projects` and `/` is
   identical before the FR run and after the ES run. EN About and the two cases change only as D-2 says.
@@ -438,75 +616,98 @@ unchanged), `state-c.json`, `local-fixtures.php`, the ACF JSON and the dictionar
   `/fr|es/projects/{fashion-company-ecommerce,shamaniccas-ecommerce,trepied-trepied-ca}` (AGENTS Known debt).
 - [ ] **AC-11 Report** `docs/reports/phase-5c-loader.md`: checkpoint, outputs (tails), decisions applied, deviations.
   No claim of production readiness.
+- [ ] **AC-12 Sat 11-14 EN media save (addendum, after the report):** the §8 follow-up ran. Its outputs are in the
+  report: backup name, `check-translations` with `media ok` on rows 1 and 5, EN dry-run (0 or reviewed re-format + re-run
+  + 0), FR and ES dry-runs `0 changes (0 appended rows)`, and the Dev's GraphQL comparison. Any FR/ES drift is reported
+  as an A5 failure before it is fixed.
 
-## Decisions needed
+## Decisions
 
-**D-1. Row counts on FR/ES targets.**
-- **A.** Strict equality, with EN rows final before any translation is created. Locally this works if Mauricio creates
-  the 4 case posts only after the EN parity run. **In production it conflicts with OQ-1.** Posts created before release
-  day get EN production's old counts: `sections` 0, case lists 3. The FR/ES loads would then abort, unless every
-  FR/ES post is re-created on release day.
-- **B (recommended).** Append-only alignment up to EN (§3.3), never on repeaters with images, never shrinking. This
-  rehearses the production path locally and lets all 13 posts be created Monday. Cost ≈ +1 h agent.
-- **C.** Re-save each FR/ES translation in admin after the EN load so ACFML copies the structure. Rejected: unverified,
-  13 manual saves on release day, and risk A4.
+**Decided (Mauricio, 2026-11-03):**
+- **D-1 → B**, plus (a) case posts before the EN parity run locally (§1, §5, §7, calendar), (b) one `+ append` line per
+  appended row and separate totals (§3.3), and (c) ADR 0006 amendment 3: append-only, never shrink, never on repeaters
+  with an image sub-field, abort if target rows > EN. *This is the explicit approval to change the rev 2 guard "row count
+  fixed".*
+- **D-2 → A.** EN parity for the Dangel and Shamanicca bodies and the About body, appended to `en.json`.
+- **D-3 → A.** FR/ES final CTAs are loaded on Services, Packages, About and the 2 cases. EN final CTAs keep "Book a
+  Strategy Call" locally until 5c-rest (5c-rest item 3).
+- **D-4 → A.** `foot_note` = `""` on every existing gallery row of Dangel and Shamanicca in EN/FR/ES. Spacing check in
+  AC-8 (E16).
+- **D-5 → A, only together with the 5c-rest section below.** Trépied stays out of rev 3 (5c-rest item 1).
+- **D-6 → (a) + (b).** FR/ES page titles = the dictionary nav labels, case titles = the export's hero heading; the
+  `general_text` template reuses the existing classes for EN/FR/ES.
 
-*This changes the rev 2 guard "row count fixed", so it needs explicit approval.*
+Rejected options are kept in the rev 3 text (git history of this file, `01d7798`).
 
-**D-2. EN parity inside rev 3** (needed by D-1 in any option: content rows must equal EN rows).
-- **A (recommended).** Append Dangel and Shamanicca EN bodies (subtitle, description, lists, `card_description`
-  unchanged, captions per D-4) and the About body (`section_title`, `link_text`, `general_text`) to `en.json`. Cost
-  ≈ +1.5–2 h agent, +20 min Mauricio. EN local becomes complete for these posts, and the EN release-day content is
-  ready.
-- **B.** Only the EN rows the FR/ES loads need, i.e. cases only. Cost ≈ +1–1.5 h. EN About stays on the funnel copy
-  locally.
-- **C.** Drop the FR/ES case bodies from rev 3. FR/ES cases would then show the EN legacy text, with unsupported claims
-  (E6).
+**Open (new in rev 3.1):**
 
-**D-3. FR/ES final CTAs on the 5 posts that have one.**
-- **A (recommended).** Load them. Otherwise the Duplicate leaves EN text in the final CTA of every FR/ES page.
-- **B.** Leave them to 5c-rest.
+**D-7. Live effect of the production image rule (§8).** Setting the Services images on production EN before the FR/ES
+posts are created (W5, by Sun 11-29) makes them visible on the live `/services` within ≈ 60 s (`revalidate: 60`, ADR
+0006 context 1), next to the legacy row titles, about 10 days before release.
+- **A (recommended if the new art reads well next to the legacy titles).** Accept it, and assign by row position (5b
+  report :248-250).
+- **B.** Create the production posts first, and set the EN images on release day right after the EN load and before
+  promote. Each FR/ES Services post then receives the images through the EN save (E13), followed by the §8 follow-up in
+  production. This adds steps to release day.
 
-EN final CTAs keep "Book a Strategy Call" (5a fixtures) until 5c-rest. That is a visible EN/FR label difference
-locally.
+**D-8. Titles of the FR/ES posts that already exist** (FR 535 / ES 536 "Home", FR 558 "Projects"; E14). The titles are
+the hero `alt` (E8), and A4 forbids saving FR/ES posts in admin after their load.
+- **A (recommended).** Mauricio sets them on Monday with the checklist, before the FR/ES loads: FR "Réalisations", ES
+  "Proyectos" already approved for projects (E11), and a home title per language that he approves (the dictionaries have
+  no home nav label). ≈ 5 min.
+- **B.** Leave them to 5c-rest. That requires a loader title write or an admin save after load (A4), which is why A is
+  recommended.
 
-**D-4. Gallery captions.** The copy captions describe screenshots that don't exist yet (E6; the "current production
-screenshots" rule).
-- **A (recommended).** Write `foot_note` = `""` on every existing row in EN/FR/ES for Dangel and Shamanicca. That
-  means no EN text on FR/ES pages and no unsupported EN claims. `alt` becomes the localized generic text (E7). The new
-  captions load with the screenshot retake.
-- **B.** New captions by position on the old screenshots: mismatched, and Dangel has 5 slots for 6 captions.
-- **C.** Blank FR/ES only and keep the EN legacy captions.
+**D-9. Home rows in 5c-rest** (decided in the 5c-rest spec, listed here so it isn't missed). E14 shows FR/ES home
+testimonials 4 > EN 2, and featured services need 2 → 3 rows with an icon (image sub-field). Both are forbidden by
+amendment 3, and production EN needs the same shrink/grow on release day (A6). Options for that spec: a one-off,
+separately approved row rule for `home` only; a manual admin step (EN rows in admin, then the §8 follow-up for FR/ES);
+or re-creating the FR/ES home translations. No choice is needed for rev 3.
 
-**D-5. Trépied FR/ES** (posts exist with `[FR TEST]` / `[ES TEST]` titles and legacy body). Its rows are 3/4/4 against
-the copy's 3/4/6.
-- **A (recommended).** Not in rev 3 (outside the given scope). Defer to 5c-rest together with the EN Trépied body.
-  Until then, enabling FR/ES shows the test titles in the FR/ES grid. Fixing the two titles in admin is a 2-minute
-  manual step that Mauricio may do at any time.
-- **B.** Include it now: ≈ +1.5 h agent, +10 min Mauricio.
+No other ADR is needed: no new dependency, routing or schema change. ADR 0006 amendment 3 records D-1 B.
 
-**D-6. FR/ES titles and the About HTML template.**
-- **(a) Page titles = the approved dictionary nav labels (E11, recommended).** Page titles render as the hero image
-  `alt` (E8). The alternative is keeping the duplicated EN title (EN `alt` on FR/ES pages). Case titles = the export's
-  hero heading.
-- **(b) `general_text` template.** Reuse the classes already in the field: `h3.typo-2xl-extrabold.hero-title.m-0`,
-  `p.typo-lg-medium.hero-title.m-0`, plain `ul/li`, defined once for EN/FR/ES (recommended). No `src` change.
+## 5c-rest (must be scheduled before the release-day runbook)
+Everything this spec defers. The release-day runbook (W6, 11-30 → 12-06, 5b §11) assumes that EN, FR and ES content
+exist as loader files for every post that release day writes. Today the items marked "blocking" below exist only locally
+(5a fixtures), or nowhere.
 
-No ADR needed: no new dependency, routing or schema change. D-1 B extends ADR 0006 decision 4's loader rules, so the
-Senior Architect may annotate the ADR.
+| # | Item | Current local state (evidence) | Launch-blocking | Estimate agent / Mauricio |
+|---|---|---|---|---|
+| 1 | **Trépied EN/FR/ES body**, FR/ES titles, FR/ES `cardDescription` and final CTA, captions (D-4 rule) | EN 498: legacy subtitle, rows 3/4/4 vs copy 3/4/6, 7 legacy captions (E14; copy EN 1020-1107). FR 550 / ES 541: `[FR TEST]` / `[ES TEST]` titles, EN legacy body, `cardDescription` null, final CTA null. | **Yes.** EN: legacy text on a published case page in the grid (`displayOrder` 40). FR/ES: test titles in the grid. The copy note "Trépied does not block … publishing" (EN 1030) is about the client project; it lets Mauricio unpublish Trépied for launch instead. | 2–3 h / 30 min (titles 2 min in admin before load, 3 runs, FR/ES approval). Uses the D-1 B path: results +2 per language. |
+| 2 | **Home body sections EN/FR/ES**: about, featured services + taglines, testimonials (Dangel + Isra, role/company/city/note), footer line, home final CTA | EN 2: from 5a fixtures only (`local-fixtures.php:77-141`), not in `en.json`. FR 535 / ES 536: legacy EN text, featured 2 rows, testimonials 4 roleless rows, legacy footer line and final CTA (E14). | **Yes.** EN: production home body has no loader content for release day. FR/ES: legacy EN text on `/fr`, `/es`. | 4–6 h (content, tests, and the D-9 row design) / 1–1.5 h |
+| 3 | **EN final-CTA labels vs the approved main CTA**, and the other EN values that exist only in the 5a fixtures: final CTAs of 7 posts, About `description_html` + CTA, `cardDescription`, `displayOrder` | `ctaText` / `secondaryCtaText` "Book a Strategy Call" on home, services, packages (secondary), about, 3 cases; copy "Book a Free Strategy Call" (EN 127, 243, 415, 539, 995, 1106, 1241). Source: `local-fixtures.php:137-180` only (E14). | **Yes.** It contradicts approved EN copy (Hard rule 4), and production has no loader content for these new fields. | 1.5–2 h (append to `en.json`; the 5c-rest spec decides how fields are added to posts already in `en.json` without changing them byte-wise, E2) / 15 min |
+| 4 | **FR/ES home final-CTA fallback** (was "Contact FR/ES final CTA fallback R-9", corrected by E15) | `/fr|es/projects` and `/fr|es` show the FR/ES home final CTA = "Ready to stop guessing and start converting?" / "Get Your Free Strategy Call" (E14). Contact has no final CTA. | **Yes for FR/ES enablement**; no effect on EN. | Included in item 2 |
+| 5 | **EN post titles** | 270 "Dangel Wellness — dangelwellness.ca", 224 "Shamanicca’s Ecommerce", 498 "TRÉPIED — trepied.ca" vs copy heroes "Dangel Wellness" / "Shamanicca" / "Trépied" (937, 1177, 1044); 32 "About Magneto" (hero `alt`). ADR 0006 decision 4 lists post titles as release-day loader content. | **Yes** (case titles render, E8). | 0.5–1 h (loader title support, its own guard + read-back) / 10 min. An admin title change is an EN save and needs the §8 follow-up. |
+| 6 | **FR/ES home and FR projects titles** (D-8) | FR 535 / ES 536 "Home", FR 558 "Projects" (E14). | Yes for FR/ES (hero `alt`), minor. | 0 h / 5 min (Monday, D-8 A). Only if D-8 = B. |
+| 7 | Tracked elsewhere, listed so the runbook has them: production mode of the loader (release-day note 1), `generalSettings.title` (ADR 0006 consequences), Services media in production (§8, D-7), Privacy pages (D-L), FR/ES dictionary fill (Wed 11-11) | — | Yes, except the dictionary fill, which blocks only the locale that has TODOs (ADR 0005 guard; Plan B for ES) | Their own specs/runbooks |
+
+**Total items 1-5:** agent ≈ 8–12 h, Mauricio ≈ 2–3 h (incl. runs and approval), plus Architect ≈ 1.5–2 h for the
+5c-rest spec.
+
+**Proposed slot, week of 11-16** (5b §11 W4 "5c EN/FR/ES content + loads locally"):
+- **Mon 11-16:** Architect writes the 5c-rest spec (D-9 decided in it). Mauricio + Senior Architect review by Tue noon.
+- **Tue 11-17 (afternoon) – Wed 11-18:** Dev implements items 1-3 and 5 (content, tests, loader title support, D-9 rule).
+- **Thu 11-19:** Mauricio runs locally: EN → FR → ES, each with a backup, a dry-run, the run and a 0-change dry-run. Dev
+  reads back and renders.
+- **Fri 11-20:** report and approval. That leaves W5 for the production posts (OQ-1), with the media rule (§8) first,
+  and W6 for the release-day runbook, which consumes `en.json` / `fr.json` / `es.json` as final.
+- If 5c-rest slips past Fri 11-20, the release-day runbook rehearsal in W6 has no complete content files. That is a new
+  trigger for the 12-17 rule (5b §11).
 
 ## Risks
 | # | Risk | Mitigation |
 |---|---|---|
 | R-1 | Duplicate fails silently (Phase 3) or leaves stray posts | Translation Management method; per-post check; `$wpdb`/GraphQL row in report |
-| R-2 | Copy not detached → a later EN save overwrites FR/ES with EN | `dup_of` check (A1) blocks the loader |
+| R-2 | Copy not detached → a later EN save overwrites FR/ES with EN | `dup_of` check (A1) blocks the loader; §8 step 2 re-checks before trusting the Sat save |
 | R-3 | Group/nested write semantics differ from A2 | Stub harness + first dry-run prints raw shape; read-back by meta name; backup per language |
 | R-4 | Admin save of EN Packages (A3) or of FR/ES after load (A4) | Checklist rule; re-run loader; dry-run shows drift |
 | R-5 | EN duplicate text left in fields not loaded (legacy, Copy) | Readers use the new fields when filled (E8); AC-8 sentinel scan |
-| R-6 | Calendar: ≈ 190 values × 2 languages in one Dev day | Order of work in §7; ES may slip to Wed without blocking FR |
-| R-7 | D-1 B appends rows that a later EN reorder would mismatch | Rows never reordered (5b report :238); growth only on text-only repeaters |
-| R-8 | Trépied test titles visible when FR/ES enabled | D-5; launch QA |
-| R-9 | `/fr|es/contact` final CTA falls back to FR/ES home final CTA = old EN text until 5c-rest | Listed; excluded from AC-8 sentinel; 5c-rest |
+| R-6 | Calendar: ≈ 190 values × 2 languages in one Dev day, plus the dictionary fill on Wed 11-11 | Order of work in §7; ES may slip to Wed without blocking FR |
+| R-7 | D-1 B appends rows that a later EN reorder would mismatch | Rows never reordered (5b report :238); growth only on text-only repeaters (amendment 3) |
+| R-8 | Trépied test titles visible when FR/ES enabled | D-5; 5c-rest item 1; launch QA |
+| R-9 | `/fr|es/projects` and `/fr|es` show the FR/ES home final CTA = legacy EN text until 5c-rest (corrected, E15) | Listed; excluded from the AC-8 sentinel; 5c-rest items 2 and 4 |
+| R-10 | The Sat 11-14 EN save writes FR/ES text, contrary to E13 (A5), or WYSIWYG re-format on EN | §8 rules + follow-up: FR/ES dry-runs must be 0; backup before; stop and report on drift |
+| R-11 | 5c-rest Home needs a row shrink/grow that amendment 3 forbids (D-9) | Decided in the 5c-rest spec before any Home load; no rev 3 effect |
 
 ## Release-day notes (production; list only, not implemented in rev 3)
 1. **Production mode** needs its own runbook spec and a separate guard design: an explicit target host
@@ -515,48 +716,60 @@ Senior Architect may annotate the ADR.
 2. **OQ-1:** after 13/13 PASS locally, Mauricio creates the 13 production posts in a separate session before release
    day, with a fresh production backup. FR/ES stay disabled, so the posts are invisible (ADR 0006 decision 4).
    `check-translations.php` runs read-only in production to verify them, and again on release day.
-3. **Release-day order:** backup → EN load (rev 2 + D-2: grows `sections` 0→2 and the case rows) → cache flush → FR
-   load → ES load. Each step has dry-run, backup, read-back and a 0-change dry-run. **D-1 B is what makes the
-   pre-created posts loadable.**
+3. **Release-day order:** backup → EN load (rev 2 + D-2 + 5c-rest: grows `sections` 0→2 and the case rows) → cache
+   flush → FR load → ES load. Each step has dry-run, backup, read-back and a 0-change dry-run. **D-1 B is what makes the
+   pre-created posts loadable**; the `+ append` lines are the expected evidence.
 4. **Plan B:** with `ENABLED_LOCALES=en,fr`, the ES load is skipped or run invisibly. The FR run never depends on ES.
 5. **Production preflight:** EN IDs are resolved by slug (Dangel = 270 per 5b E15; the others are unknown). Capture
-   production EN row counts read-only first; the EN row rule must accept production's legacy counts.
-6. **Images:** posts created before any EN image change keep the old attachments. A `media WARN` is fixed by Mauricio
-   setting that image in admin (the loader never writes images) or by a WPML translation re-save **before** the FR/ES
-   load.
+   production EN row counts read-only first, including home featured services and testimonials (A6, D-9). The EN row
+   rule must accept production's legacy counts.
+6. **Images:** set the production EN Services images **before** the 13 production FR/ES posts are created (§8
+   production rule, D-7). Posts created before an EN image change keep the old attachments until an EN save copies the
+   new ones (E13). A `media WARN` is fixed by Mauricio setting that image on **EN** in admin, followed by the §8
+   follow-up (the loader never writes images), **before** the FR/ES load.
 7. WPML production key and outbound access (3b O-1/O-2). Flush the SiteGround cache after each run; Vercel revalidates
    in 60 s.
-8. Never save FR/ES posts in admin after their load (A4), and never save EN Packages (A3).
-9. Follow-ups that are not in rev 3: EN final-CTA label, EN post titles, Home body, Trépied (5c-rest).
+8. Never save FR/ES posts in admin after their load (A4), and never save EN Packages (A3). Any other EN admin save after
+   the FR/ES loads follows §8.
+9. Items not in rev 3: see **5c-rest**. The release-day runbook is written only after 5c-rest is approved and run
+   locally.
 
 ## Estimate and calendar
 | Task | Dev (agent) | Mauricio |
 |---|---:|---:|
-| Spec review (this rev) | — | 45–60 min |
-| Loader §3 (lang, targets, D-1 B, group merge, copy-sync, media report, probe) + stub harness proofs | 4–5 h | — |
+| Spec review (rev 3 + 3.1) | — | 45–60 min |
+| Loader §3 (lang, targets, D-1 B with `+ append` output, group merge, copy-sync, media report, probe) + stub harness proofs | 4–5 h | — |
 | `check-translations.php` | 0.75–1 h | — |
 | EN parity content (D-2 A) | 1.5–2 h | — |
 | `fr.json` (8 posts) | 3–4 h | — |
 | `es.json` (8 posts) | 2.5–3.5 h | — |
 | `content.test.ts` (3 languages, AC-1) | 1.5–2 h | — |
-| 13 translation posts (local) + checks | — | 2–3 h |
+| 13 translation posts (local) + checks, cases before EN parity (+ D-8 A titles, 5 min) | — | 2–3 h |
 | Runs EN / FR / ES (dry-run check, run, re-dry-run) | 0.5 h (expected totals) | 1–1.5 h |
-| GraphQL read-back, rendering, screenshots, EN-unchanged, build (AC-6…AC-10) | 2–3 h | 30–45 min (FR/ES approval) |
+| GraphQL read-back, rendering, screenshots incl. gallery spacing, EN-unchanged, build (AC-6…AC-10) | 2–3 h | 30–45 min (FR/ES approval) |
 | Checkpoint + report | 1 h | 20–30 min |
-| **Total** | **≈ 17–24 h** | **≈ 5–7 h** |
+| Sat 11-14 EN media save + §8 follow-up (AC-12) | 0.5 h (read-back, addendum) | 45–60 min (incl. the image work's save, not the image choice) |
+| **Total** | **≈ 17.5–24.5 h** | **≈ 6–8 h** |
 
 Calendar:
 - **Mon 11-09**
   - Dev, in this order: loader §3 + `check-translations.php` → EN parity content → `fr.json`.
-  - Mauricio: creates the 9 page posts (morning), then the 4 case posts. The case posts may come before or after the
-    EN parity run under D-1 B.
-  - Mauricio runs the EN parity load in the afternoon. **Checkpoint at end of day.**
+  - Mauricio, morning: creates the **4 case posts first** (rows 10-13), then the 9 page posts, and runs
+    `check-translations.php` (output kept: case rows = EN). D-8 A titles in the same session.
+  - Mauricio runs the EN parity load in the afternoon, only after rows 10-13 PASS. **Checkpoint at end of day.**
 - **Tue 11-10**
   - Dev: `es.json` + tests.
   - Mauricio: **FR run** (morning) and **ES run** (afternoon).
   - Dev: read-back, rendering, report.
-- **Wed 11-11:** buffer. The ES run moves here if `es.json` is late (no effect on FR).
+- **Wed 11-11:** buffer, **and the FR/ES dictionary fill**: Mauricio approves 58 FR / 57 ES strings (the `[FR TODO]` /
+  `[ES TODO]` values in `fr.ts` / `es.ts`, ADR 0005; separate work, not in this spec). The ES run moves here if
+  `es.json` is late (no effect on FR). If both don't fit, the ES run and the ES strings may slip together (Plan B
+  shape); the FR run and FR strings have priority.
+- **Sat 11-14:** Mauricio sets the EN Services images/icons (§8), then runs the follow-up. The Dev adds the AC-12
+  addendum.
+- **Week of 11-16:** 5c-rest (section above).
 
 The agent total exceeds one working day, and the calendar holds only if Monday's order is kept. Against 5b §11 ("5c
-rest EN/FR/ES" 15–22 h agent / 5–8 h Mauricio), rev 3 uses most of that budget. Production mode, Home body and Trépied
-are still left for 5c-rest.
+rest EN/FR/ES" 15–22 h agent / 5–8 h Mauricio), rev 3 uses most of that budget. 5c-rest (≈ 8–12 h agent / 2–3 h
+Mauricio) is therefore **additional** to that line, and the 5b §11 totals should be re-read with it at the 11-09
+checkpoint.

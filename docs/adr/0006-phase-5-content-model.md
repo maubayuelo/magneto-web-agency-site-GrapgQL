@@ -5,6 +5,8 @@
   Phase 5 export (see "Amendments").
 - Amendment 2 (2026-11-02, Senior Architect, approved by Mauricio): the Contact page no longer renders
   `contactContactTexts` (see "Amendments").
+- Amendment 3 (2026-11-03, proposed in the 5c loader spec rev 3.1, approved by Mauricio as D-1 B): the loader may
+  append repeater rows on FR/ES translations, append-only (see "Amendments").
 - Date: 2026-10-26
 - Deciders: Mauricio (lead), Senior Architect
 - Spec: `docs/specs/phase-5a-structure-shared-home-about-cases.md` (first consumer).
@@ -167,6 +169,22 @@ The Contact page no longer renders `contactContactTexts` (`mainCopy`, `tagText`,
 `CONTACT_PAGE_QUERY` no longer requests the group. Following expand/contract, the fields stay in the schema and are
 removed in the Cleanup/Contract phase. No schema change now. The `supportingHtml` row above ("5d-lite / R1 Contact
 copy") is therefore unused. Spec: `docs/specs/phase-5d-lite-contact-modal.md` rev 3.
+
+**3. Append-only row alignment in the Phase 5c loader (2026-11-03).** Decision 4 and the rev 2 loader fix the row count
+of every repeater. That rule can't hold once FR/ES translations exist before the EN load: OQ-1 creates the production
+FR/ES posts before release day, and a WPML duplicate copies the EN row counts of that moment. Repeater structure is Copy
+(1), but an `update_field` on EN doesn't sync it to existing translations (5c spec E10). So the loader may **append**
+missing rows on an FR/ES target, under these rules only:
+- Content rows = EN rows for every repeater in the content file. The EN target grows only on repeaters the spec names.
+- FR/ES target rows ≤ EN rows. Missing rows are appended at the end, with the content sub-keys only.
+- **Never shrink:** no row is ever removed, in any language.
+- **Never on a repeater that has an image sub-field** (any `image`, gallery or file type); such a need aborts.
+- **Abort if target rows > EN** (and on any content/EN mismatch), before any write.
+- The dry-run prints each appended row on its own `+ append` line, and per-post totals count appended rows separately.
+
+The other loader guards stay as they are: local guard, backup, sha pin, read-back by key, idempotent re-run, no deletes,
+and no post, title, slug, status or WPML writes. Anything outside these rules (for example the Home testimonials shrink,
+5c spec D-9) needs its own approved decision. Spec: `docs/specs/phase-5c-loader.md` rev 3.1 (§3.3, D-1).
 
 ## Consequences
 
