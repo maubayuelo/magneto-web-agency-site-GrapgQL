@@ -1,6 +1,6 @@
 # Phase 5c — Content loader: local FR-CA / ES load + translation-post checklist (rev 3.1)
 
-- **Status: Draft** (rev 3.1). Needs review by Mauricio + Senior Architect before Mon 11-09.
+- **Status: Approved** (rev 3.1, approved by Mauricio + Senior Architect, 2026-11-03).
 - Author: Architect · Reviewed by: Mauricio + Senior Architect · **Run by: Mauricio** (agents never write to WordPress)
 - Date: 2026-11-03 · Branch: `spec/phase-5c-rev3` (from `master` @ `f6cd045`). Implementation branch: the Dev creates one.
 - Depends on: rev 2 of this spec (EN loader, run 2026-10-31, [5b report](../reports/phase-5b-services-packages-seo.md)
@@ -11,6 +11,9 @@
   canonical). Every `docs/content` line number below is at `ffec355`; section titles govern if a later export moves them.
 
 ## Revision
+**Approved (2026-11-03):** rev 3.1 approved by Mauricio + Senior Architect: D-7 → B, D-8 → A, Trépied published in
+all three languages at launch, calendar re-based on the Project handoff (dates are estimates).
+
 **Rev 3.1 (2026-11-03, after Mauricio's review of rev 3):**
 1. **Decisions recorded** (Decisions section): D-1 B with three additions, D-2 A, D-3 A, D-4 A, D-5 A (only together with
    the new "5c-rest" section), D-6 (a) + (b).
@@ -282,7 +285,7 @@ D-4 A leaves an empty `<p>` under every gallery image. (The review cited `:127-1
   the observation that confirms it. If any FR/ES Translate value differs after the save, E13 is wrong: stop and report.
 - **A6 (rev 3.1):** production EN home row counts (featured 2, testimonials 4) are inferred from the fixture comments
   (E14), not measured. Release-day note 5 measures them read-only.
-- **Open:** D-7, D-8, D-9 (below). D-1 … D-6 are decided.
+- **Open:** D-9 (decided in the 5c-rest spec). D-1 … D-8 are decided.
 
 ## Design
 
@@ -425,6 +428,10 @@ Pass = one node, `slug` = EN slug, `status` publish, and `translations` contains
 
 **Order:** rows 10-13 (cases) **before the EN parity run** (D-1 B (a), §1). Rows 1-9 any time before the FR/ES runs.
 
+**Existing FR/ES titles (D-8 A, Mon 11-09, same session, before the FR/ES loads):** FR home (535) "Accueil", ES home
+(536) "Inicio", FR projects (558) "Réalisations". Change the title only (no slug, status or ACF field), Update. These
+saves come before the FR/ES loads, so A4 is respected. Not part of the 13 rows.
+
 **Rows** (local EN IDs; production IDs differ and are resolved by slug):
 
 | # | EN original (ID) | Type | Lang | Slug (= EN) | Title (D-6) | Groups the post must show |
@@ -527,11 +534,13 @@ are loaded by then.
    semantics (AC-6 query), and Translate values equal to `fr.json` / `es.json` (AC-7 subset).
 6. Results go into the phase report as an addendum ("Sat 11-14 EN media save").
 
-**Production rule.** Set the Services row images and icons on the **production EN** page **before** the 13 production
-FR/ES posts are created (OQ-1). The Duplicate then carries the final media, and no EN save is needed after the FR/ES
-release-day loads. If an EN image is changed after the production posts exist, the same rules and follow-up apply in
-production (read-only `check-translations.php`, FR/ES dry-run 0), with the media report as the check. See D-7 for the
-live-site effect.
+**Production rule (D-7 B).** The 13 production FR/ES posts are created **first** (OQ-1), with the legacy EN media. On
+release day, right after the EN load and **before promote**, Mauricio sets the Services row images and icons on the
+**production EN** page under rules 1-5 above. The EN save copies them to FR/ES Services (E13). The §8 follow-up then
+runs in production: flush, read-only `check-translations.php` (`media ok` on rows 1 and 5), EN dry-run 0. Step 4 is met
+by the FR/ES loads that follow: their dry-run totals must equal the local rehearsal's, and each ends with a 0-change
+dry-run. **Condition:** AC-12 (Sat 11-14 local EN media save) must pass. If A5 fails, D-7 is reopened before release
+day.
 
 ## Files the Dev may touch
 - `scripts/phase-5c/load-content.php`: §3.
@@ -637,26 +646,16 @@ this spec revision, not by the Dev).
 - **D-6 → (a) + (b).** FR/ES page titles = the dictionary nav labels, case titles = the export's hero heading; the
   `general_text` template reuses the existing classes for EN/FR/ES.
 
-Rejected options are kept in the rev 3 text (git history of this file, `01d7798`).
+**Decided (Mauricio + Senior Architect, 2026-11-03, approval of rev 3.1):**
+- **D-7 → B.** Production FR/ES posts are created first. The production EN Services images/icons are set on release
+  day right after the EN load and before promote, followed by the §8 follow-up in production (§8 production rule,
+  release-day notes 3 and 6). Condition: AC-12 must pass; if A5 fails, D-7 is reopened.
+- **D-8 → A.** On Mon 11-09, before the FR/ES loads, Mauricio sets FR home (535) "Accueil", ES home (536) "Inicio" and
+  FR projects (558) "Réalisations" (§5).
 
-**Open (new in rev 3.1):**
+Rejected options are kept in the rev 3 / rev 3.1 text (git history of this file, `01d7798`, `f24c90d`).
 
-**D-7. Live effect of the production image rule (§8).** Setting the Services images on production EN before the FR/ES
-posts are created (W5, by Sun 11-29) makes them visible on the live `/services` within ≈ 60 s (`revalidate: 60`, ADR
-0006 context 1), next to the legacy row titles, about 10 days before release.
-- **A (recommended if the new art reads well next to the legacy titles).** Accept it, and assign by row position (5b
-  report :248-250).
-- **B.** Create the production posts first, and set the EN images on release day right after the EN load and before
-  promote. Each FR/ES Services post then receives the images through the EN save (E13), followed by the §8 follow-up in
-  production. This adds steps to release day.
-
-**D-8. Titles of the FR/ES posts that already exist** (FR 535 / ES 536 "Home", FR 558 "Projects"; E14). The titles are
-the hero `alt` (E8), and A4 forbids saving FR/ES posts in admin after their load.
-- **A (recommended).** Mauricio sets them on Monday with the checklist, before the FR/ES loads: FR "Réalisations", ES
-  "Proyectos" already approved for projects (E11), and a home title per language that he approves (the dictionaries have
-  no home nav label). ≈ 5 min.
-- **B.** Leave them to 5c-rest. That requires a loader title write or an admin save after load (A4), which is why A is
-  recommended.
+**Open:**
 
 **D-9. Home rows in 5c-rest** (decided in the 5c-rest spec, listed here so it isn't missed). E14 shows FR/ES home
 testimonials 4 > EN 2, and featured services need 2 → 3 rows with an icon (image sub-field). Both are forbidden by
@@ -667,32 +666,35 @@ or re-creating the FR/ES home translations. No choice is needed for rev 3.
 No other ADR is needed: no new dependency, routing or schema change. ADR 0006 amendment 3 records D-1 B.
 
 ## 5c-rest (must be scheduled before the release-day runbook)
-Everything this spec defers. The release-day runbook (W6, 11-30 → 12-06, 5b §11) assumes that EN, FR and ES content
+Everything this spec defers. The release-day runbook (week of 11-23, Project handoff calendar) assumes that EN, FR and ES content
 exist as loader files for every post that release day writes. Today the items marked "blocking" below exist only locally
 (5a fixtures), or nowhere.
 
 | # | Item | Current local state (evidence) | Launch-blocking | Estimate agent / Mauricio |
 |---|---|---|---|---|
-| 1 | **Trépied EN/FR/ES body**, FR/ES titles, FR/ES `cardDescription` and final CTA, captions (D-4 rule) | EN 498: legacy subtitle, rows 3/4/4 vs copy 3/4/6, 7 legacy captions (E14; copy EN 1020-1107). FR 550 / ES 541: `[FR TEST]` / `[ES TEST]` titles, EN legacy body, `cardDescription` null, final CTA null. | **Yes.** EN: legacy text on a published case page in the grid (`displayOrder` 40). FR/ES: test titles in the grid. The copy note "Trépied does not block … publishing" (EN 1030) is about the client project; it lets Mauricio unpublish Trépied for launch instead. | 2–3 h / 30 min (titles 2 min in admin before load, 3 runs, FR/ES approval). Uses the D-1 B path: results +2 per language. |
+| 1 | **Trépied EN/FR/ES body**, FR/ES titles, FR/ES `cardDescription` and final CTA, captions (D-4 rule) | EN 498: legacy subtitle, rows 3/4/4 vs copy 3/4/6, 7 legacy captions (E14; copy EN 1020-1107). FR 550 / ES 541: `[FR TEST]` / `[ES TEST]` titles, EN legacy body, `cardDescription` null, final CTA null. | **Yes.** EN: legacy text on a published case page in the grid (`displayOrder` 40). FR/ES: test titles in the grid. Trépied is published in all three languages at launch (Mauricio, 2026-11-03). | 2–3 h / 30 min (titles 2 min in admin before load, 3 runs, FR/ES approval). Uses the D-1 B path: results +2 per language. |
 | 2 | **Home body sections EN/FR/ES**: about, featured services + taglines, testimonials (Dangel + Isra, role/company/city/note), footer line, home final CTA | EN 2: from 5a fixtures only (`local-fixtures.php:77-141`), not in `en.json`. FR 535 / ES 536: legacy EN text, featured 2 rows, testimonials 4 roleless rows, legacy footer line and final CTA (E14). | **Yes.** EN: production home body has no loader content for release day. FR/ES: legacy EN text on `/fr`, `/es`. | 4–6 h (content, tests, and the D-9 row design) / 1–1.5 h |
 | 3 | **EN final-CTA labels vs the approved main CTA**, and the other EN values that exist only in the 5a fixtures: final CTAs of 7 posts, About `description_html` + CTA, `cardDescription`, `displayOrder` | `ctaText` / `secondaryCtaText` "Book a Strategy Call" on home, services, packages (secondary), about, 3 cases; copy "Book a Free Strategy Call" (EN 127, 243, 415, 539, 995, 1106, 1241). Source: `local-fixtures.php:137-180` only (E14). | **Yes.** It contradicts approved EN copy (Hard rule 4), and production has no loader content for these new fields. | 1.5–2 h (append to `en.json`; the 5c-rest spec decides how fields are added to posts already in `en.json` without changing them byte-wise, E2) / 15 min |
 | 4 | **FR/ES home final-CTA fallback** (was "Contact FR/ES final CTA fallback R-9", corrected by E15) | `/fr|es/projects` and `/fr|es` show the FR/ES home final CTA = "Ready to stop guessing and start converting?" / "Get Your Free Strategy Call" (E14). Contact has no final CTA. | **Yes for FR/ES enablement**; no effect on EN. | Included in item 2 |
 | 5 | **EN post titles** | 270 "Dangel Wellness — dangelwellness.ca", 224 "Shamanicca’s Ecommerce", 498 "TRÉPIED — trepied.ca" vs copy heroes "Dangel Wellness" / "Shamanicca" / "Trépied" (937, 1177, 1044); 32 "About Magneto" (hero `alt`). ADR 0006 decision 4 lists post titles as release-day loader content. | **Yes** (case titles render, E8). | 0.5–1 h (loader title support, its own guard + read-back) / 10 min. An admin title change is an EN save and needs the §8 follow-up. |
-| 6 | **FR/ES home and FR projects titles** (D-8) | FR 535 / ES 536 "Home", FR 558 "Projects" (E14). | Yes for FR/ES (hero `alt`), minor. | 0 h / 5 min (Monday, D-8 A). Only if D-8 = B. |
-| 7 | Tracked elsewhere, listed so the runbook has them: production mode of the loader (release-day note 1), `generalSettings.title` (ADR 0006 consequences), Services media in production (§8, D-7), Privacy pages (D-L), FR/ES dictionary fill (Wed 11-11) | — | Yes, except the dictionary fill, which blocks only the locale that has TODOs (ADR 0005 guard; Plan B for ES) | Their own specs/runbooks |
+| 6 | **FR/ES home and FR projects titles** (D-8) | FR 535 / ES 536 "Home", FR 558 "Projects" (E14). | Yes for FR/ES (hero `alt`), minor. | Closed by D-8 A: 0 h / 5 min on Mon 11-09 (§5). |
+| 7 | Tracked elsewhere, listed so the runbook has them: production mode of the loader (release-day note 1), `generalSettings.title` (ADR 0006 consequences), Services media in production (§8, D-7 B: release day, after the EN load, before promote), Privacy pages (D-L), FR/ES dictionary fill (Wed 11-11) | — | Yes, except the dictionary fill, which blocks only the locale that has TODOs (ADR 0005 guard; Plan B for ES) | Their own specs/runbooks |
 
 **Total items 1-5:** agent ≈ 8–12 h, Mauricio ≈ 2–3 h (incl. runs and approval), plus Architect ≈ 1.5–2 h for the
 5c-rest spec.
 
-**Proposed slot, week of 11-16** (5b §11 W4 "5c EN/FR/ES content + loads locally"):
+**Proposed slot, week of 11-16** (dates are estimates; canonical calendar: Project handoff
+`claude/magneto-handoff-2026-10-31.md`, not 5b §11):
 - **Mon 11-16:** Architect writes the 5c-rest spec (D-9 decided in it). Mauricio + Senior Architect review by Tue noon.
 - **Tue 11-17 (afternoon) – Wed 11-18:** Dev implements items 1-3 and 5 (content, tests, loader title support, D-9 rule).
 - **Thu 11-19:** Mauricio runs locally: EN → FR → ES, each with a backup, a dry-run, the run and a 0-change dry-run. Dev
   reads back and renders.
-- **Fri 11-20:** report and approval. That leaves W5 for the production posts (OQ-1), with the media rule (§8) first,
-  and W6 for the release-day runbook, which consumes `en.json` / `fr.json` / `es.json` as final.
-- If 5c-rest slips past Fri 11-20, the release-day runbook rehearsal in W6 has no complete content files. That is a new
-  trigger for the 12-17 rule (5b §11).
+- **Fri 11-20:** report and approval.
+- **After 5c-rest passes locally, before Sun 11-22 (slip trigger):** production FR/ES posts (OQ-1; media on release day,
+  D-7 B).
+- **Week of 11-23:** release-day runbook, which consumes `en.json` / `fr.json` / `es.json` as final.
+- **Tue 12-01** go/no-go · **Thu 12-03** release · **Thu 12-10** fallback.
+- If 5c-rest slips past Fri 11-20, the fallback release Thu 12-10 applies.
 
 ## Risks
 | # | Risk | Mitigation |
@@ -717,16 +719,18 @@ exist as loader files for every post that release day writes. Today the items ma
    day, with a fresh production backup. FR/ES stay disabled, so the posts are invisible (ADR 0006 decision 4).
    `check-translations.php` runs read-only in production to verify them, and again on release day.
 3. **Release-day order:** backup → EN load (rev 2 + D-2 + 5c-rest: grows `sections` 0→2 and the case rows) → cache
-   flush → FR load → ES load. Each step has dry-run, backup, read-back and a 0-change dry-run. **D-1 B is what makes the
+   flush → EN Services images/icons in admin (D-7 B, §8 rules) → §8 follow-up (flush, `check-translations` `media ok`,
+   EN dry-run 0) → FR load → ES load → promote. Each step has dry-run, backup, read-back and a 0-change dry-run. **D-1 B is what makes the
    pre-created posts loadable**; the `+ append` lines are the expected evidence.
 4. **Plan B:** with `ENABLED_LOCALES=en,fr`, the ES load is skipped or run invisibly. The FR run never depends on ES.
 5. **Production preflight:** EN IDs are resolved by slug (Dangel = 270 per 5b E15; the others are unknown). Capture
    production EN row counts read-only first, including home featured services and testimonials (A6, D-9). The EN row
    rule must accept production's legacy counts.
-6. **Images:** set the production EN Services images **before** the 13 production FR/ES posts are created (§8
-   production rule, D-7). Posts created before an EN image change keep the old attachments until an EN save copies the
-   new ones (E13). A `media WARN` is fixed by Mauricio setting that image on **EN** in admin, followed by the §8
-   follow-up (the loader never writes images), **before** the FR/ES load.
+6. **Images (D-7 B):** the 13 production FR/ES posts are created first, with the legacy EN media. The production EN
+   Services images are set on release day after the EN load and before promote (note 3, §8 production rule); that EN
+   save copies the new attachments to FR/ES (E13). Condition: AC-12 passed; if A5 fails, D-7 is reopened. A
+   `media WARN` is fixed by Mauricio setting that image on **EN** in admin, followed by the §8 follow-up (the loader
+   never writes images), **before** the FR/ES load.
 7. WPML production key and outbound access (3b O-1/O-2). Flush the SiteGround cache after each run; Vercel revalidates
    in 60 s.
 8. Never save FR/ES posts in admin after their load (A4), and never save EN Packages (A3). Any other EN admin save after
@@ -751,7 +755,8 @@ exist as loader files for every post that release day writes. Today the items ma
 | Sat 11-14 EN media save + §8 follow-up (AC-12) | 0.5 h (read-back, addendum) | 45–60 min (incl. the image work's save, not the image choice) |
 | **Total** | **≈ 17.5–24.5 h** | **≈ 6–8 h** |
 
-Calendar:
+Calendar (dates are estimates and roll forward or back; canonical: Project handoff
+`claude/magneto-handoff-2026-10-31.md`):
 - **Mon 11-09**
   - Dev, in this order: loader §3 + `check-translations.php` → EN parity content → `fr.json`.
   - Mauricio, morning: creates the **4 case posts first** (rows 10-13), then the 9 page posts, and runs
