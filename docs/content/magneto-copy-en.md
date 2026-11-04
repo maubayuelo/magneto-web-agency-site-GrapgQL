@@ -1,9 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / EN
 URL: https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f
-Notion page last edited: 2026-10-31 evening (5d-lite P-1 strings, Senior Architect via the Notion connector)
-Exported: 2026-11-02 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: 01ff73f export + the Notion edits made since then (Contact form messages 4b, B2 modal privacy line, Packages system messages), applied verbatim with count-checked replacements.
+Notion page last edited: 2026-11-04 (Privacy gates G-1…G-7: effective date, §4 providers, §5 analytics, internal ready blocks — Senior Architect via the Notion connector, approved by Mauricio; lead-magnet copy edited by Mauricio 2026-11-03)
+Exported: 2026-11-04 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: fresh full-page fetch converted with the ffec355 conventions (bold/italic to Markdown, mentions as [Notion page](url), \$ and \[ \] kept escaped); diff vs ffec355 limited to the lead-magnet blocks and the Privacy Policy (dates, §4, §5, internal ready blocks).
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -108,15 +108,58 @@ Magneto's own project: an online shop and blog combined in one website, with sha
 
 *Publish only when the guide is complete and the email flow is implemented.*
 
-#### Not sure whether your website needs a fix or a rebuild?
+**Eyebrow:** Free website checkup
 
-**Fix or Rebuild? A Practical Website Checklist**
+#### Fix, rebuild or maintain? Find out what your website really needs.
 
-A short guide for service businesses to identify common website problems and understand what may be worth fixing first.
+**Fix, Rebuild or Maintain? The 10-Minute Website Checkup**
 
-**CTA:** Get the Free Guide
+A free 10-minute checkup for small businesses and independent professionals. Answer simple yes/no questions and see where your site stands. No tech knowledge needed.
 
-Sent by email. Newsletter subscription is optional.
+**What's inside:**
+
+- 25 yes/no questions on clarity, inquiries, foundations, content and upkeep
+- A result that points to fix, rebuild or maintain — or confirms your site is in good shape
+- A one-page worksheet to set your top 3 priorities
+
+**Format line:** Free PDF · about 10 pages
+
+**CTA:** Get the Free Checkup
+
+#### Download form
+
+**Field:** First name (optional)
+
+**Field:** Email address (required)
+
+**Optional checkbox, unchecked by default:** I'd also like occasional emails from **Magneto Web Consulting** about website tips and services. I can unsubscribe at any time.
+
+**Submit CTA:** Send me the checkup
+
+**Privacy line:** The checkup is sent by email. Requesting it does not subscribe you to marketing emails; the newsletter is optional. **Privacy Policy**
+
+**Identification line:** Magneto Web Consulting · \[mailing address\] · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co)
+
+**Success message:** Thank you. Your checkup is on its way to \[email\]. If it isn't in your inbox within a few minutes, check your spam folder or write to [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co).
+
+**Email error:** Please enter a valid email address.
+
+**Send failure:** Something went wrong and your request was not sent. Please try again.
+
+**Implementation notes (2026-11-03):**
+
+- Replaces the live "6 Online Strategies To Get Clients As Therapist" block and its "Get the PDF and join our tips newsletter" button, which bundled the newsletter with the download.
+- "10 minutes", "25 questions" and "about 10 pages" must match the final PDF; update them before publishing if they change.
+- The checkbox wording reuses the frozen Newsletter / lead-magnet consent copy in the Privacy section.
+- Confirm the identification line (mailing address) during the CASL review before launch.
+
+#### In-PDF closing CTA — approved UX-copy direction (2026-11-03)
+
+**Canonical copy now lives in** [Notion page](https://app.notion.com/p/40e702393b5e818aa2b8e7f7bcacdabc) → Page 9. Edit it there, not here.
+
+**Summary (v1.2):** Headline "Not sure what your website needs next?" · body offers a free 30-minute call as a second opinion on the reader's findings · three bullets on what happens in the call · button "Book a Free Strategy Call" · microcopy "Free · 30 minutes · No obligation · In English, French or Spanish. Bring your worksheet if you have it."
+
+**Mobile UX:** Keep one primary CTA, allow natural button text wrapping, and test at 320/375 px. Do not reduce text to an ambiguous “Book now”. This CTA is for the closing page of the PDF, not a replacement for the site's existing global CTA. No PDF or live website change is implied.
 
 ### 7. Final CTA
 
@@ -224,13 +267,15 @@ If your website is outdated, unclear or difficult to use — or you are not sure
 
 *Keep the existing block in the layout, but do not publish it until the new guide actually exists.*
 
-#### Not sure whether your website needs a fix or a rebuild?
+#### Not sure what your website needs?
 
-**Fix or Rebuild? A Practical Website Checklist**
+**Fix, Rebuild or Maintain? The 10-Minute Website Checkup**
 
-A short guide for service businesses to identify common website problems and understand what may be worth fixing first.
+A free yes/no checkup for small businesses and independent professionals to see whether a site needs a focused fix, a rebuild or ongoing care.
 
-**CTA:** Get the Free Guide
+**CTA:** Get the Free Checkup
+
+*Download form, consent and messages: same as Home §6.*
 
 Sent by email. Newsletter subscription is optional.
 
@@ -396,13 +441,15 @@ Advanced automation, AI systems, complex e-commerce, custom application logic or
 
 *Keep hidden until the guide and email flow are ready.*
 
-#### Not sure whether your website needs a fix or a rebuild?
+#### Not sure what your website needs?
 
-**Fix or Rebuild? A Practical Website Checklist**
+**Fix, Rebuild or Maintain? The 10-Minute Website Checkup**
 
-A short guide for service businesses to identify common website problems and understand what may be worth fixing first.
+A free yes/no checkup for small businesses and independent professionals to see whether a site needs a focused fix, a rebuild or ongoing care.
 
-**CTA:** Get the Free Guide
+**CTA:** Get the Free Checkup
+
+*Download form, consent and messages: same as Home §6.*
 
 ### 11. Final CTA
 
@@ -743,10 +790,10 @@ Answer three short questions so we can focus the conversation on your website. T
 ### Privacy Policy
 
 
-**Effective date:** 8 October 2026  
+**Effective date:** 3 December 2026  
 
 
-**Last updated:** 8 October 2026
+**Last updated:** 3 December 2026
 
 Magneto Web Consulting is operated by Mauricio Bayuelo under the registered business name **Magneto MKTNG**, based in Montreal, Quebec, Canada.
 
@@ -792,27 +839,28 @@ Magneto does not sell personal information.
 
 ### 4. Service providers and information outside Quebec
 
-Magneto uses third-party services when they are needed to operate the website or respond to you.
+Magneto uses the following service providers when they are needed to operate the website, respond to you or deliver services:
 
-These may include:
+- **Vercel** (United States): hosts the website and processes contact-form submissions.
+- **SiteGround** (data centre in the United States): hosts the website's content-management system and Magneto's email, including [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co).
+- **Calendly** (United States): schedules Strategy Calls and receives your answers to the pre-booking questions.
+- **Google Fonts** (Google, United States): delivers the fonts used on the website. Your browser connects to Google's servers, which receive your IP address.
+- **Google Analytics** (Google, United States): measures how the website is used, only if you accept analytics (see section 5).
+- **Notion** and **Google Drive** (United States): used to document client projects and share files.
 
-- **Calendly** for Strategy Call scheduling;
-- website hosting, infrastructure, content-management and form-delivery providers;
-- email, file-storage and project-management tools used to reply to inquiries and manage client work;
-- analytics providers when non-essential analytics are enabled with the visitor's consent.
-
-Some service providers may process or store information outside Quebec or Canada. Before production launch, Magneto must verify the actual provider locations, applicable safeguards and required privacy assessments or agreements. Service providers are used only for the functions needed to operate the website, communicate with you or deliver services.
+These providers may process or store information outside Quebec and Canada, mainly in the United States. Before communicating personal information outside Quebec, Magneto assesses whether it will receive adequate protection and relies on each provider's contractual data-protection terms. Providers are used only for the functions needed to operate the website, communicate with you or deliver services.
 
 ### 5. Cookies and analytics
 
-The website may use:
+The website uses:
 
-- **necessary technologies** required for basic website functions, security or your privacy preferences; and
-- **optional analytics technologies** used to understand how visitors use the website.
+- **Necessary technologies**, required for basic functions, security and remembering your privacy choice.
+- **Session storage of campaign parameters:** if you arrive through a link with campaign tags (UTM parameters), your browser keeps them until you close the tab, so Magneto can tell which link or campaign led to an inquiry.
+- **Google Analytics**, an optional tool that uses cookies to understand how visitors use the website (pages viewed, approximate location, device and browser). It is off by default and loads only if you select **Accept analytics** in the privacy banner. Analytics data is kept for up to 14 months after your last activity. Google signals is not enabled.
 
-Optional analytics are intended to be off by default and to load only if you select **Accept analytics** in the privacy banner. You can reject non-essential analytics without losing access to the website and change your choice later through the **Privacy choices** link in the footer.
+You can reject analytics without losing access to the website and change your choice at any time through the **Privacy choices** link in the footer.
 
-**Publication gate:** verify this behavior in production before publishing this policy.
+The Strategy Call scheduler (Calendly) loads only when you open it. Calendly may then use its own cookies (see section 10).
 
 ### 6. Project inquiries, bookings and marketing email
 
@@ -861,6 +909,31 @@ This policy may be updated when Magneto's website, tools or privacy practices ma
 **Title:** Privacy Policy | Magneto Web Consulting
 
 **Meta description:** How Magneto Web Consulting collects, uses and protects personal information submitted through this website, and how to contact the Privacy Officer.
+
+### Internal — ready policy blocks (DO NOT PUBLISH until activated)
+
+*Added 2026-11-04 (Senior Architect, approved by Mauricio). Not part of the published policy. Not pasted into WordPress unless activated.*
+
+#### §5 Version B — no analytics (fallback if the consent banner / 5f is not ready at launch)
+
+*If used: replace §5 with this block, remove the Google Analytics line from §4, and remove the analytics bullets from §2 ("Technical and usage information") and §3 ("understand website usage…").*
+
+The website does not use analytics or advertising cookies. It uses:
+
+- **Necessary technologies**, required for basic functions and security.
+- **Session storage of campaign parameters:** if you arrive through a link with campaign tags (UTM parameters), your browser keeps them until you close the tab, so Magneto can tell which link or campaign led to an inquiry.
+
+The Strategy Call scheduler (Calendly) loads only when you open it. Calendly may then use its own cookies (see section 10).
+
+If Magneto adds analytics, they will be off by default, load only with your consent, and this policy will be updated first.
+
+#### G-4b — Brevo block (publish only with the 5e deploy: lead magnet + newsletter)
+
+- **§2 add:** **Guide requests and newsletter:** your email address, your first name if you provide it, the guide you requested, your newsletter choice, and the date, page and language of the request.
+- **§3 add:** send a guide you requested; send occasional emails about website tips and services, only if you checked the optional newsletter box.
+- **§4 add:** **Brevo** (European Union): sends requested guides and, only with your consent, the newsletter.
+- **§6 replace the last paragraph with:** When you request a guide, Magneto emails it to you. Requesting a guide does not subscribe you to marketing emails: the newsletter box is optional and unchecked by default. Every newsletter includes an unsubscribe link, and unsubscribe requests are honoured promptly. Magneto keeps a record of your consent (date, page, wording and language of the checkbox).
+- **§7 add:** Newsletter subscribers are kept until they unsubscribe. After an unsubscribe, Magneto keeps only the information needed to honour it.
 
 ### Privacy / consent interface copy
 
