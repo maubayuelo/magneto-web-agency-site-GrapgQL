@@ -1,9 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / ES
 URL: https://app.notion.com/p/3fc702393b5e81abaf9af4c499daab27
-Notion page last edited: 2026-10-31 evening (5d-lite P-1 strings, Senior Architect via the Notion connector)
-Exported: 2026-11-02 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: 01ff73f export + the Notion edits made since then (mensajes del formulario 4b), applied verbatim with count-checked replacements.
+Notion page last edited: 2026-11-04 (Privacy gates G-1…G-7: effective date, §4 providers, §5 analytics, internal ready blocks — Senior Architect via the Notion connector, approved by Mauricio; lead-magnet copy edited by Mauricio 2026-11-03)
+Exported: 2026-11-04 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: fresh full-page fetch converted with the ffec355 conventions (bold/italic to Markdown, mentions as [Notion page](url), \$ and \[ \] kept escaped); diff vs ffec355 limited to the lead-magnet blocks and the Privacy Policy (dates, §4, §5, internal ready blocks).
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -102,15 +102,33 @@ Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda 
 
 ## 6. Guía gratuita — BLOQUE OCULTO HASTA SU ACTIVACIÓN
 
-### ¿No sabes si conviene corregir o rediseñar tu sitio web?
+### ¿Mejorar o rehacer tu sitio web?
 
-**¿Corregir o rediseñar? Una lista práctica para revisar tu sitio web**
+**¿Mejorar o rehacer? Guía para decidir**
 
-Una guía breve para ayudar a las empresas de servicios a identificar problemas frecuentes en sus sitios web y reconocer qué vale la pena corregir primero.
+Identifica los problemas prioritarios y descubre qué conviene revisar primero.
 
-**CTA: Obtener la guía gratuita**
+**CTA de descarga (móvil): Obtener la guía**
 
-Enviada por correo electrónico. La suscripción al boletín informativo es opcional.
+Enviada por correo electrónico. La suscripción al boletín es opcional.
+
+#### CTA final dentro del PDF — copy ES (2026-11-03)
+
+**Antetítulo:** Tu siguiente paso
+
+**Título:** ¿Qué hacer ahora?
+
+**Texto:** Ya identificaste posibles problemas. Revisemos si conviene mejorar, rehacer o mantener tu sitio web.
+
+**Tres beneficios:** Revisar tus hallazgos · Explorar opciones · Definir el siguiente paso.
+
+**Botón CTA (móvil): Agendar llamada gratis**
+
+**Microcopy:** Trae tu guía. Sin compromiso.
+
+**Transición desde resultados:** Esta guía es un punto de partida, no un diagnóstico técnico.
+
+*Copy compacto para móvil, sin introducir un segundo CTA ni prometer resultados. Validar 320/375 px y conservar el CTA general del sitio fuera de este bloque. El PDF y el bloque de descarga siguen ocultos hasta que el contenido y la entrega estén listos.*
 
 ## 7. CTA final
 
@@ -933,9 +951,9 @@ Tus respuestas se transmiten a Calendly junto con tu reserva para preparar la ll
 
 ## Política de privacidad
 
-**Fecha de entrada en vigor:** 8 de octubre de 2026
+**Fecha de entrada en vigor:** 3 de diciembre de 2026
 
-**Última actualización:** 8 de octubre de 2026
+**Última actualización:** 3 de diciembre de 2026
 
 Magneto Web Consulting es operada por Mauricio Bayuelo bajo el nombre comercial registrado **Magneto MKTNG**, con sede en Montreal, Quebec, Canadá.
 
@@ -977,27 +995,28 @@ Magneto no vende información personal.
 
 ### 4. Proveedores de servicios e información fuera de Quebec
 
-Magneto recurre a servicios de terceros cuando son necesarios para operar el sitio web o para responderte.
+Magneto utiliza los siguientes proveedores de servicios cuando son necesarios para operar el sitio web, responderte o prestar los servicios:
 
-Entre ellos pueden encontrarse:
+- **Vercel** (Estados Unidos): aloja el sitio web y procesa las solicitudes enviadas mediante el formulario de contacto.
+- **SiteGround** (centro de datos en Estados Unidos): aloja el sistema de gestión de contenido del sitio y el correo electrónico de Magneto, incluido [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co).
+- **Calendly** (Estados Unidos): agenda las llamadas de orientación y recibe tus respuestas a las preguntas previas a la reserva.
+- **Google Fonts** (Google, Estados Unidos): proporciona las fuentes tipográficas del sitio. Tu navegador se conecta a los servidores de Google, que reciben tu dirección IP.
+- **Google Analytics** (Google, Estados Unidos): mide el uso del sitio, solo si aceptas la analítica (ver la sección 5).
+- **Notion** y **Google Drive** (Estados Unidos): se usan para documentar los proyectos de clientes y compartir archivos.
 
-- **Calendly**, para agendar las llamadas de orientación;
-- proveedores de alojamiento web, infraestructura, gestión de contenido y envío de formularios;
-- herramientas de correo electrónico, almacenamiento de archivos y gestión de proyectos utilizadas para responder solicitudes y gestionar el trabajo con clientes;
-- proveedores de analítica, cuando la analítica no esencial esté activada con el consentimiento del visitante.
-
-Algunos proveedores pueden tratar o almacenar información fuera de Quebec o de Canadá. Antes del lanzamiento en producción, Magneto debe verificar la ubicación real de los proveedores, las medidas de protección aplicables y las evaluaciones o acuerdos de privacidad requeridos. Los proveedores de servicios se utilizan únicamente para las funciones necesarias para operar el sitio web, comunicarse contigo o prestar los servicios.
+Estos proveedores pueden tratar o almacenar información fuera de Quebec y de Canadá, principalmente en Estados Unidos. Antes de comunicar información personal fuera de Quebec, Magneto evalúa si recibirá una protección adecuada y se apoya en las condiciones contractuales de protección de datos de cada proveedor. Los proveedores de servicios se utilizan únicamente para las funciones necesarias para operar el sitio web, comunicarse contigo o prestar los servicios.
 
 ### 5. Cookies y analítica
 
-El sitio web puede utilizar:
+El sitio web utiliza:
 
-- **tecnologías necesarias** para las funciones básicas del sitio, su seguridad o la conservación de tus preferencias de privacidad; y
-- **herramientas de analítica opcionales** para comprender cómo usan el sitio los visitantes.
+- **tecnologías necesarias** para las funciones básicas del sitio, su seguridad y la conservación de tu elección de privacidad;
+- **almacenamiento de sesión de los parámetros de campaña:** si llegas mediante un enlace con parámetros de campaña (parámetros UTM), tu navegador los conserva hasta que cierras la pestaña, para que Magneto sepa qué enlace o campaña llevó a una solicitud;
+- **Google Analytics**, una herramienta de analítica opcional que usa cookies para comprender cómo usan el sitio los visitantes (páginas visitadas, ubicación aproximada, dispositivo y navegador). Está desactivada por defecto y solo se carga si seleccionas **«Aceptar la analítica»** en el banner de privacidad. Los datos de analítica se conservan hasta 14 meses después de tu última actividad. Google Signals no está activado.
 
-Las herramientas de analítica opcionales están previstas para estar desactivadas por defecto y cargarse solo si seleccionas **«Aceptar la analítica»** en el banner de privacidad. Puedes rechazar la analítica no esencial sin perder el acceso al sitio web y cambiar tu elección más adelante mediante el enlace **«Opciones de privacidad»** del pie de página.
+Puedes rechazar la analítica sin perder el acceso al sitio web y cambiar tu elección en cualquier momento mediante el enlace **«Opciones de privacidad»** del pie de página.
 
-*Condición de publicación (nota interna, no visible): verificar este comportamiento en producción antes de publicar esta política.*
+La herramienta de reserva de llamadas (Calendly) solo se carga cuando la abres. En ese momento, Calendly puede usar sus propias cookies (ver la sección 10).
 
 ### 6. Solicitudes de proyecto, reservas y correos promocionales
 
@@ -1046,6 +1065,31 @@ Esta política puede actualizarse cuando el sitio web, las herramientas o las pr
 **Título SEO:** Política de privacidad | Magneto Web Consulting
 
 **Metadescripción:** Cómo Magneto Web Consulting recopila, utiliza y protege la información personal enviada a través de este sitio web, y cómo contactar a la persona responsable de su protección.
+
+## Interno — bloques de política listos (NO PUBLICAR hasta su activación)
+
+*Añadido el 2026-11-04 (Senior Architect, aprobado por Mauricio). No forma parte de la política publicada. No pegar en WordPress salvo activación.*
+
+### §5 Versión B — sin analítica (respaldo si el banner / 5f no está listo en el lanzamiento)
+
+*Si se usa: reemplazar la §5 por este bloque, quitar la línea de Google Analytics de la §4 y quitar las viñetas de analítica de la §2 («Información técnica y de uso») y de la §3 («comprender el uso del sitio…»).*
+
+El sitio web no utiliza cookies de analítica ni de publicidad. Utiliza:
+
+- **tecnologías necesarias** para las funciones básicas del sitio y su seguridad;
+- **almacenamiento de sesión de los parámetros de campaña:** si llegas mediante un enlace con parámetros de campaña (parámetros UTM), tu navegador los conserva hasta que cierras la pestaña, para que Magneto sepa qué enlace o campaña llevó a una solicitud.
+
+La herramienta de reserva de llamadas (Calendly) solo se carga cuando la abres. En ese momento, Calendly puede usar sus propias cookies (ver la sección 10).
+
+Si Magneto añade herramientas de analítica, estarán desactivadas por defecto, solo se cargarán con tu consentimiento y esta política se actualizará antes.
+
+### G-4b — Bloque de Brevo (publicar solo con el despliegue 5e: guía + boletín)
+
+- **§2 añadir:** **Solicitudes de guía y boletín:** tu correo electrónico, tu nombre si lo proporcionas, la guía solicitada, tu elección sobre el boletín y la fecha, la página y el idioma de la solicitud.
+- **§3 añadir:** enviarte una guía que solicitaste; enviarte ocasionalmente correos con consejos web e información sobre servicios, solo si marcaste la casilla opcional del boletín.
+- **§4 añadir:** **Brevo** (Unión Europea): envía las guías solicitadas y, solo con tu consentimiento, el boletín.
+- **§6 reemplazar el último párrafo por:** Cuando solicitas una guía, Magneto te la envía por correo electrónico. Solicitar una guía no te suscribe a correos promocionales: la casilla del boletín es opcional y está desmarcada por defecto. Cada boletín incluye un enlace para darse de baja, y las solicitudes de baja se atienden con prontitud. Magneto conserva un registro de tu consentimiento (fecha, página, texto e idioma de la casilla).
+- **§7 añadir:** Las personas suscritas al boletín se conservan hasta que se dan de baja. Después de una baja, Magneto solo conserva la información necesaria para respetarla.
 
 ## Textos de interfaz — privacidad (BORRADOR)
 

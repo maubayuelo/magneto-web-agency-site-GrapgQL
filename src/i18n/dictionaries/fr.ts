@@ -141,7 +141,7 @@ export const fr: Dictionary = {
     submitting: '[FR TODO] Submitting...',
     continueDownload: '[FR TODO] Continue to Download the Guide',
   },
-  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export ffec355 (FR 877/883/894/898/900/910).
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 637fba7 (FR 901/907/918/922/924/934).
   // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
   bookingModal: {
     body: 'Répondez à trois courtes questions pour préparer notre échange sur votre site web. Choisissez ensuite une plage horaire pour un appel gratuit de 30 minutes.',

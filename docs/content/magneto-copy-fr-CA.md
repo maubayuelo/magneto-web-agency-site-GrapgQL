@@ -1,9 +1,9 @@
 <!--
 Source: Notion — Magneto's Page Copy / FR-CA
 URL: https://app.notion.com/p/3fc702393b5e8195a8c1eeede1910b62
-Notion page last edited: 2026-10-31 evening (5d-lite P-1 strings, Senior Architect via the Notion connector)
-Exported: 2026-11-02 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: 01ff73f export + the Notion edits made since then (messages du formulaire 4b), applied verbatim with count-checked replacements.
+Notion page last edited: 2026-11-04 (Privacy gates G-1…G-7: effective date, §4 providers, §5 analytics, internal ready blocks — Senior Architect via the Notion connector, approved by Mauricio; lead-magnet copy edited by Mauricio 2026-11-03)
+Exported: 2026-11-04 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
+Method: fresh full-page fetch converted with the ffec355 conventions (bold/italic to Markdown, mentions as [Notion page](url), \$ and \[ \] kept escaped); diff vs ffec355 limited to the lead-magnet blocks and the Privacy Policy (dates, §4, §5, internal ready blocks).
 Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
 re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
 -->
@@ -98,7 +98,31 @@ Projet de Magneto, et non un projet client : une boutique en ligne et un blogue 
 
 ## 6. Guide gratuit
 
-*Bloc masqué pour l'instant. Copie réutilisable dans la section « Composant partagé non publié » en bas de page.*
+*Bloc masqué jusqu'à la finalisation du PDF et de l'envoi par courriel. Ne pas publier.*
+
+**Accroche courte :** Améliorer ou refaire votre site?
+
+**Promesse :** Repérez les problèmes prioritaires et trouvez la prochaine étape adaptée.
+
+**CTA du téléchargement (mobile) :** Obtenir le guide
+
+#### CTA de fin du PDF — copie FR-CA (2026-11-03)
+
+**Sur-titre :** La prochaine étape
+
+**Titre :** Que faire ensuite?
+
+**Texte :** Vous avez repéré des points à améliorer. Voyons ensemble s'il vaut mieux corriger, refaire ou entretenir votre site.
+
+**Trois points :** Revoir vos constats · Explorer vos options · Définir la suite.
+
+**Bouton CTA (mobile) :** Réserver un appel-conseil
+
+**Précision :** Appel gratuit · Sans engagement. Apportez votre grille.
+
+**Transition depuis les résultats :** Cette grille est un point de départ, pas un diagnostic technique.
+
+*Copie compacte pour mobile ; le caractère gratuit est indiqué tout près du bouton, sans allonger son libellé. Un seul CTA principal. Tester 320/375 px. Préserver la terminologie « appel-conseil » et le CTA général du site. Ne pas confondre ce CTA de fin de PDF avec le composant web masqué.*
 
 ## 7. Appel à l'action final
 
@@ -915,9 +939,9 @@ Vos réponses sont transmises à Calendly avec votre réservation afin de prépa
 
 ## Politique de confidentialité
 
-**Date d'entrée en vigueur : 8 octobre 2026**
+**Date d'entrée en vigueur : 3 décembre 2026**
 
-**Dernière mise à jour : 8 octobre 2026**
+**Dernière mise à jour : 3 décembre 2026**
 
 Magneto Web Consulting est exploité par Mauricio Bayuelo sous le nom d'entreprise enregistré **Magneto MKTNG**, à Montréal, au Québec, au Canada.
 
@@ -959,29 +983,30 @@ Magneto ne vend pas de renseignements personnels.
 
 ### 4. Fournisseurs de services et renseignements traités à l'extérieur du Québec
 
-Magneto fait appel à des fournisseurs tiers lorsque cela est nécessaire au fonctionnement du site web ou pour vous répondre.
+Magneto fait appel aux fournisseurs de services suivants lorsque cela est nécessaire au fonctionnement du site web, pour vous répondre ou pour fournir les services :
 
-Il peut notamment s'agir :
+- **Vercel** (États-Unis) : héberge le site web et traite les demandes envoyées au moyen du formulaire de contact.
+- **SiteGround** (centre de données aux États-Unis) : héberge le système de gestion de contenu du site et le courriel de Magneto, y compris [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co).
+- **Calendly** (États-Unis) : planifie les appels-conseils et reçoit vos réponses aux questions posées avant la réservation.
+- **Google Fonts** (Google, États-Unis) : fournit les polices de caractères utilisées sur le site. Votre navigateur se connecte aux serveurs de Google, qui reçoivent votre adresse IP.
+- **Google Analytics** (Google, États-Unis) : mesure l'utilisation du site, seulement si vous acceptez les outils d'analyse (voir la section 5).
+- **Notion** et **Google Drive** (États-Unis) : servent à documenter les mandats clients et à partager des fichiers.
 
-- de **Calendly**, pour la réservation des appels-conseils;
-- de fournisseurs d'hébergement, d'infrastructure, de gestion de contenu et d'acheminement des formulaires;
-- d'outils de courriel, de stockage de fichiers et de gestion de projets utilisés pour répondre aux demandes et gérer les mandats clients;
-- de fournisseurs d'outils d'analyse lorsque les outils d'analyse non essentiels sont activés avec le consentement du visiteur.
-
-Certains fournisseurs peuvent traiter ou stocker des renseignements à l'extérieur du Québec ou du Canada. Avant la mise en ligne, Magneto doit vérifier les lieux réels de traitement ou de stockage, les mesures de protection applicables ainsi que les évaluations ou les ententes requises en matière de confidentialité.
+Ces fournisseurs peuvent traiter ou stocker des renseignements à l'extérieur du Québec et du Canada, principalement aux États-Unis. Avant de communiquer des renseignements personnels à l'extérieur du Québec, Magneto évalue s'ils bénéficieront d'une protection adéquate et s'appuie sur les conditions contractuelles de protection des données de chaque fournisseur.
 
 Les fournisseurs sont utilisés uniquement pour les fonctions nécessaires au fonctionnement du site web, aux communications avec vous ou à la prestation des services.
 
 ### 5. Témoins et outils d'analyse
 
-Le site web peut utiliser :
+Le site web utilise :
 
-- des **technologies nécessaires** aux fonctions de base du site, à sa sécurité ou à la conservation de vos choix de confidentialité;
-- des **outils d'analyse facultatifs** permettant de comprendre comment les visiteurs utilisent le site web.
+- des **technologies nécessaires** aux fonctions de base du site, à sa sécurité et à la conservation de votre choix de confidentialité;
+- le **stockage de session des paramètres de campagne** : si vous arrivez par un lien comportant des paramètres de campagne (paramètres UTM), votre navigateur les conserve jusqu'à la fermeture de l'onglet, afin que Magneto sache quel lien ou quelle campagne a mené à une demande;
+- **Google Analytics**, un outil d'analyse facultatif qui utilise des témoins pour comprendre comment les visiteurs utilisent le site (pages consultées, emplacement approximatif, appareil et navigateur). Il est désactivé par défaut et ne se charge que si vous sélectionnez **« Accepter les outils d'analyse »** dans la bannière de confidentialité. Les données d'analyse sont conservées jusqu'à 14 mois après votre dernière activité. Les signaux Google ne sont pas activés.
 
-Les outils d'analyse facultatifs sont prévus pour être désactivés par défaut et ne se charger que si vous sélectionnez **« Accepter les outils d'analyse »** dans la bannière de confidentialité.
+Vous pouvez refuser les outils d'analyse sans perdre l'accès au site web et modifier votre choix en tout temps au moyen du lien **« Choix de confidentialité »** dans le pied de page.
 
-Vous pouvez refuser les outils d'analyse non essentiels sans perdre l'accès au site web. Vous pouvez aussi modifier votre choix ultérieurement au moyen du lien **« Choix de confidentialité »** dans le pied de page.
+L'outil de réservation des appels-conseils (Calendly) se charge seulement lorsque vous l'ouvrez. Calendly peut alors utiliser ses propres témoins (voir la section 10).
 
 ### 6. Demandes de projet, réservations et courriels promotionnels
 
@@ -1036,6 +1061,31 @@ La version en vigueur, sa date d'entrée en vigueur et sa date de dernière mise
 **Balise titre :** Politique de confidentialité | Magneto Web Consulting
 
 **Méta-description :** Découvrez comment Magneto Web Consulting recueille, utilise et protège les renseignements personnels transmis au moyen de son site web et comment joindre le responsable de leur protection.
+
+## Interne — blocs de politique prêts (NE PAS PUBLIER avant activation)
+
+*Ajouté le 2026-11-04 (Senior Architect, approuvé par Mauricio). Ne fait pas partie de la politique publiée. Ne pas coller dans WordPress sauf activation.*
+
+### §5 Version B — sans outils d'analyse (solution de repli si la bannière / 5f n'est pas prête au lancement)
+
+*Si utilisée : remplacer la §5 par ce bloc, retirer la ligne Google Analytics de la §4 et retirer les puces sur l'analyse de la §2 (« Renseignements techniques et d'utilisation ») et de la §3 (« comprendre l'utilisation du site… »).*
+
+Le site web n'utilise aucun témoin d'analyse ou de publicité. Il utilise :
+
+- des **technologies nécessaires** aux fonctions de base du site et à sa sécurité;
+- le **stockage de session des paramètres de campagne** : si vous arrivez par un lien comportant des paramètres de campagne (paramètres UTM), votre navigateur les conserve jusqu'à la fermeture de l'onglet, afin que Magneto sache quel lien ou quelle campagne a mené à une demande.
+
+L'outil de réservation des appels-conseils (Calendly) se charge seulement lorsque vous l'ouvrez. Calendly peut alors utiliser ses propres témoins (voir la section 10).
+
+Si Magneto ajoute des outils d'analyse, ils seront désactivés par défaut, ne se chargeront qu'avec votre consentement, et la présente politique sera mise à jour au préalable.
+
+### G-4b — Bloc Brevo (publier seulement avec le déploiement 5e : guide + infolettre)
+
+- **§2 ajouter :** **Demandes de guide et infolettre :** votre adresse courriel, votre prénom si vous le fournissez, le guide demandé, votre choix concernant l'infolettre ainsi que la date, la page et la langue de la demande.
+- **§3 ajouter :** vous envoyer un guide que vous avez demandé; vous envoyer occasionnellement des courriels de conseils web et sur les services, seulement si vous avez coché la case facultative de l'infolettre.
+- **§4 ajouter :** **Brevo** (Union européenne) : envoie les guides demandés et, seulement avec votre consentement, l'infolettre.
+- **§6 remplacer le dernier paragraphe par :** Lorsque vous demandez un guide, Magneto vous l'envoie par courriel. Demander un guide ne vous abonne pas aux courriels promotionnels : la case de l'infolettre est facultative et décochée par défaut. Chaque infolettre comprend un lien de désabonnement, et les demandes de désabonnement sont traitées rapidement. Magneto conserve une preuve de votre consentement (date, page, libellé et langue de la case).
+- **§7 ajouter :** Les abonnés à l'infolettre sont conservés jusqu'à leur désabonnement. Après un désabonnement, Magneto ne conserve que les renseignements nécessaires pour le respecter.
 
 ## Texte d'interface partagé — confidentialité
 

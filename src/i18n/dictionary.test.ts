@@ -172,7 +172,7 @@ describe('readiness guard', () => {
   });
 });
 
-// 5d-lite §8 / AC-17: every Contact value equals its line of the committed export (ffec355). The export governs.
+// 5d-lite §8 / AC-17: every Contact value equals its line of the committed export (637fba7). The export governs.
 const EXPORTS = { en: 'magneto-copy-en.md', fr: 'magneto-copy-fr-CA.md', es: 'magneto-copy-es.md' } as const;
 const exportLines = Object.fromEntries(
   Object.entries(EXPORTS).map(([locale, file]) => [locale, readFileSync(path.resolve(__dirname, '../../docs/content', file), 'utf8').split('\n')]),
@@ -193,49 +193,49 @@ function fromExport(locale: keyof typeof EXPORTS, line: number, pick: Pick = {})
 
 // key → [EN line, FR line, ES line, options]
 const CONTACT_COPY: [string, number, number, number, Pick?][] = [
-  ['common.privacyPolicy', 642, 780, 796, { lastBold: true }],
-  ['contactPage.preferToTalk', 583, 721, 737, { before: ' **' }],
-  ['contactPage.supporting.reply', 636, 774, 790],
-  ['contactPage.supporting.languages', 638, 776, 792],
-  ['contactPage.supporting.notAQuote', 640, 778, 794],
-  ['contactForm.requiredNote', 654, 792, 808],
-  ['contactForm.nameLabel', 587, 725, 741],
-  ['contactForm.emailLabel', 591, 729, 745],
-  ['contactForm.websiteLabel', 595, 733, 749],
-  ['contactForm.websiteHelp', 599, 737, 753],
-  ['contactForm.needLabel', 601, 739, 755],
-  ['contactForm.needOptions.newSite', 607, 745, 761],
-  ['contactForm.needOptions.fixImprove', 608, 746, 762],
-  ['contactForm.needOptions.care', 609, 747, 763],
-  ['contactForm.needOptions.notSure', 610, 748, 764],
-  ['contactForm.messageLabel', 612, 750, 766],
-  ['contactForm.messageHelp', 616, 754, 770],
-  ['contactForm.budgetLabel', 618, 756, 772],
-  ['contactForm.budgetOptions.under1000', 624, 762, 778],
-  ['contactForm.budgetOptions.from1000to3500', 625, 763, 779],
-  ['contactForm.budgetOptions.from3500to8000', 626, 764, 780],
-  ['contactForm.budgetOptions.over8000', 627, 765, 781],
-  ['contactForm.budgetOptions.notSure', 628, 766, 782],
-  ['contactForm.budgetHelp', 630, 768, 784],
-  ['contactForm.selectPlaceholder', 652, 790, 806],
-  ['contactForm.submit', 632, 770, 786],
-  ['contactForm.privacyText', 642, 780, 796, { before: ' **' }],
-  ['contactForm.successTitle', 646, 784, 800],
-  ['contactForm.successBody', 648, 786, 802],
-  ['contactForm.errors.nameRequired', 656, 794, 810],
-  ['contactForm.errors.emailInvalid', 658, 796, 812],
-  ['contactForm.errors.needRequired', 660, 798, 814],
-  ['contactForm.errors.messageRequired', 662, 800, 816],
-  ['contactForm.errors.budgetRequired', 664, 802, 818],
-  ['contactForm.errors.sendFailed', 666, 804, 820],
-  // Part 2: booking dialog (variant B). Heading = common.bookStrategyCall (EN 702 / FR 875 / ES 891, pinned below).
-  ['bookingModal.body', 704, 877, 893],
-  ['bookingModal.websiteHelp', 709, 883, 899], // EN: the part after "Website URL, " (spec A3)
-  ['bookingModal.problemLabel', 715, 894, 910],
-  ['bookingModal.problemHelp', 716, 898, 914],
-  ['bookingModal.continue', 718, 900, 916],
-  ['bookingModal.privacyText', 885, 910, 926, { before: ' **' }],
-  ['common.bookStrategyCall', 702, 875, 891],
+  ['common.privacyPolicy', 689, 804, 814, { lastBold: true }],
+  ['contactPage.preferToTalk', 630, 745, 755, { before: ' **' }],
+  ['contactPage.supporting.reply', 683, 798, 808],
+  ['contactPage.supporting.languages', 685, 800, 810],
+  ['contactPage.supporting.notAQuote', 687, 802, 812],
+  ['contactForm.requiredNote', 701, 816, 826],
+  ['contactForm.nameLabel', 634, 749, 759],
+  ['contactForm.emailLabel', 638, 753, 763],
+  ['contactForm.websiteLabel', 642, 757, 767],
+  ['contactForm.websiteHelp', 646, 761, 771],
+  ['contactForm.needLabel', 648, 763, 773],
+  ['contactForm.needOptions.newSite', 654, 769, 779],
+  ['contactForm.needOptions.fixImprove', 655, 770, 780],
+  ['contactForm.needOptions.care', 656, 771, 781],
+  ['contactForm.needOptions.notSure', 657, 772, 782],
+  ['contactForm.messageLabel', 659, 774, 784],
+  ['contactForm.messageHelp', 663, 778, 788],
+  ['contactForm.budgetLabel', 665, 780, 790],
+  ['contactForm.budgetOptions.under1000', 671, 786, 796],
+  ['contactForm.budgetOptions.from1000to3500', 672, 787, 797],
+  ['contactForm.budgetOptions.from3500to8000', 673, 788, 798],
+  ['contactForm.budgetOptions.over8000', 674, 789, 799],
+  ['contactForm.budgetOptions.notSure', 675, 790, 800],
+  ['contactForm.budgetHelp', 677, 792, 802],
+  ['contactForm.selectPlaceholder', 699, 814, 824],
+  ['contactForm.submit', 679, 794, 804],
+  ['contactForm.privacyText', 689, 804, 814, { before: ' **' }],
+  ['contactForm.successTitle', 693, 808, 818],
+  ['contactForm.successBody', 695, 810, 820],
+  ['contactForm.errors.nameRequired', 703, 818, 828],
+  ['contactForm.errors.emailInvalid', 705, 820, 830],
+  ['contactForm.errors.needRequired', 707, 822, 832],
+  ['contactForm.errors.messageRequired', 709, 824, 834],
+  ['contactForm.errors.budgetRequired', 711, 826, 836],
+  ['contactForm.errors.sendFailed', 713, 828, 838],
+  // Part 2: booking dialog (variant B). Heading = common.bookStrategyCall (EN 749 / FR 899 / ES 909, pinned below).
+  ['bookingModal.body', 751, 901, 911],
+  ['bookingModal.websiteHelp', 756, 907, 917], // EN: the part after "Website URL, " (spec A3)
+  ['bookingModal.problemLabel', 762, 918, 928],
+  ['bookingModal.problemHelp', 763, 922, 932],
+  ['bookingModal.continue', 765, 924, 934],
+  ['bookingModal.privacyText', 958, 934, 944, { before: ' **' }],
+  ['common.bookStrategyCall', 749, 899, 909],
 ];
 // Line labels that are not bold-with-colon: EN "Helper text: …", FR/ES submit label inside the bold.
 const LABEL_AFTER: Record<string, string> = {
@@ -249,7 +249,7 @@ const LABEL_AFTER: Record<string, string> = {
   'es:bookingModal.continue': 'CTA: ',
 };
 
-describe('5d-lite Contact copy = export ffec355 (AC-4, AC-17)', () => {
+describe('5d-lite Contact copy = export 637fba7 (AC-4, AC-17)', () => {
   const dicts = { en, fr, es } as const;
   it.each(['en', 'fr', 'es'] as const)('%s: every Contact key equals its export line', (locale) => {
     const values = flat(dicts[locale]);
