@@ -1,23 +1,45 @@
 # Privacy route — `/privacy-policy` in EN / FR-CA / ES (D-L)
 
-- **Status: Approved** (rev 1.1, approved by Mauricio + Senior Architect, 2026-11-04)
+- **Status: Approved** (rev 1.2, 2026-11-04; rev 1.1 approved by Mauricio + Senior Architect, 2026-11-04)
 - Author: Architect · Reviewed by: Mauricio (+ Senior Architect)
 - Date: 2026-11-04
-- Branch: `spec/privacy-route`, **stacked on `spec/phase-5c-rev3`** (`d10108e`, 5c rev 3.1 Approved). This spec cites 5c
-  rev 3.1. **Merge order: the 5c spec PR first, then this one.**
+- Historical authoring branch (rev 1 / 1.1): `spec/privacy-route`, stacked on `spec/phase-5c-rev3` at `d10108e`.
+  That merge order is complete: 5c via PR #26 (`a0c783b`), privacy rev 1.1 via PR #27 (`d990751`).
+- Current revision branch: `spec/phase-5f-analytics-consent`, from `master` `d990751`; rev 1.2 + the 5f draft are in
+  `07ad962` (HEAD at the start of the 2026-11-04 finalization). This document still depends on 5c rev 3.1.
 - Depends on: [5b spec](phase-5b-services-packages-seo.md) rev 9 (§5.5 D-L, OQ-2, "Other specs" item 3, AC-20),
   [5b report](../reports/phase-5b-services-packages-seo.md) (release checklist D-L, restore patch),
   [5c loader](phase-5c-loader.md) rev 3.1 (§5 method, A3/A4, §8, calendar), [5d-lite spec](phase-5d-lite-contact-modal.md)
   (D-14 Privacy links already rendered), ADR [0003](../adr/0003-locale-routing.md), [0004](../adr/0004-localized-data.md),
   [0005](../adr/0005-ui-dictionaries.md), [0002](../adr/0002-brevo-replaces-mailchimp.md).
-- Canonical copy: `docs/content/magneto-copy-{en,fr-CA,es}.md` **as of `ffec355`** (export 2026-11-02). Notion stays
-  canonical. All `docs/content` line numbers refer to `ffec355`. If a later export moves them (the Sat 11-07/Sun 11-08
-  re-export, §Gates), section titles govern.
+- Current pinned copy export: `docs/content/magneto-copy-{en,fr-CA,es}.md` **at `637fba7`** (2026-11-04); Notion
+  remains canonical. Historical unqualified copy line references retained below refer to **`ffec355`** (2026-11-02),
+  not today's files. Use `git show ffec355:<path>` to audit those references. Explicit `637fba7` references and the
+  current-source table below govern implementation; never apply old line numbers to the new export.
+  A later authorized re-export must re-pin affected tests in the same PR; no copy is re-exported by this amendment.
 - Calendar (estimates, from 5c rev 3.1): **Mauricio's gates before Thu 11-12** (G-8 may move to 12-01, Plan B) ·
   **implementation Thu 11-12** · 5e Mon 11-23 – Tue 11-24 · go/no-go Tue 12-01 · **release Thu 12-03** · fallback
   Thu 12-10. Plan B = EN + FR.
 
 ## Revision
+- **rev 1.2 clarification (2026-11-04, Phase 5f finalization; technical approval recorded).** Distinguished historical
+  branches/commits and `ffec355` line references from the current `637fba7` source; removed superseded re-export and
+  no-analytics instructions. G-8 remains an ES launch gate. D-L now requires effective build evidence for GA-on and
+  Version B, and explicit effective-date verification for a December 10 launch. Senior Architect completed the full
+  document review of `dbf9b6b` and approved the technical architecture, explicitly confirmed in the 2026-11-04
+  final-approval assignment; Mauricio's Phase 5f D-F1…D-F10 approval is dated 2026-11-04. This records technical approval,
+  not a new legal-copy approval; the publication gates remain unchanged.
+- **rev 1.2 (2026-11-04) — Approved (amendment, Status unchanged).** Follows Mauricio's decision of 2026-11-04: GA4 +
+  consent banner live at launch through [Phase 5f](phase-5f-analytics-consent.md); fallback = launch without GA, policy
+  §5 "Version B" (`docs/content` @ `637fba7`, "Internal — ready policy blocks").
+  (a) The footer "Privacy choices" control ships **with 5f**, not with this route on 11-12 (Goal, §3, Out of scope).
+  (b) §7 item 5 and AC-10 rewritten: no request to Google **analytics** hosts before consent; if 5f is live, "Privacy
+  choices" is present and works; if not, the page uses §5 Version B.
+  (c) E12 corrected: Mailchimp env vars **did** exist in Vercel until 2026-11-04 (Mauricio deleted them that day); the
+  Cloudflare Turnstile key and the legacy GA ID exist but the new code doesn't use them.
+  (d) Gates G-4 / G-5 closed in Notion on 2026-11-04 (EN/FR/ES §4/§5, effective date 3 Dec 2026); EFVP drafted in Notion
+  with open items. Canonical copy for this route moves to `637fba7` for the §5 blocks (body line refs in E-copy stay at
+  `ffec355`; section titles govern).
 - **rev 1.1 (2026-11-04) — Approved.** D-P1…D-P9 all **A** (D-P6 B acceptable). O-3 closed (ES decision at the 12-01
   go/no-go), O-2 closed by the 11-07/11-08 re-export. Branch stacked on 5c rev 3.1. Brevo: the lead magnet may go live
   at launch if 5e passes → new conditional gate **G-4b**, §8 / R-9 / §7 / AC-16 updated. Re-export rule added (§Gates).
@@ -27,14 +49,14 @@
 ## Goal
 `/privacy-policy` renders the approved Privacy Policy in every locale enabled at launch: `/privacy-policy` (EN),
 `/fr/privacy-policy`, `/es/privacy-policy` (ES only if ES launches). Each locale reads its own WordPress page through
-WPML. The footer links to it in every locale. No consent banner and no "Privacy choices" link ship, because no
-analytics loads. When this holds in production for every enabled locale, D-L is met and the email-less footer (5b §5.5)
-ships as is.
+WPML. The footer links to it in every locale. This phase ships no consent banner and no "Privacy choices" control:
+both ship with [Phase 5f](phase-5f-analytics-consent.md) (rev 1.2). Until 5f is live, no analytics loads. When this
+holds in production for every enabled locale, D-L is met and the email-less footer (5b §5.5) ships as is.
 
 ## Evidence (facts verified 2026-11-04, unless stated)
 
-**Repo state**
-- E1. `git branch --show-current` → `spec/phase-5c-rev3`. `git branch -a | grep privacy` → nothing. `git log master..HEAD`
+**Historical repo snapshot (initial authoring, not the current branch)**
+- E1. At initial authoring, `git branch --show-current` → `spec/phase-5c-rev3`. `git branch -a | grep privacy` → nothing. `git log master..HEAD`
   → `01d7798`, `f24c90d`, `d10108e` (5c rev 3 / 3.1 + ADR 0006 am. 3). Working tree clean before this file.
 - E2. No privacy route: `src/app/[locale]/` has `about-magneto, contact, packages, projects, services, [...rest]` only.
   Today `/privacy-policy` matches `[...rest]/page.tsx:5-7` and returns `notFound()`.
@@ -65,7 +87,8 @@ ships as is.
   callers (`grep -rn "loadAnalytics\|loadGtm" src` → only their definitions). `gtagEvent` calls are no-ops without
   `window.gtag` (`analytics.ts:30-34`). No `@vercel/analytics` / speed-insights in `package.json`. Locally the GA/GTM
   env vars are placeholders only (`.env.local.example:30`). → **"No consent banner while no analytics loads" holds in code
-  today.**
+  today.** *(rev 1.2: GA4 behind a consent banner is now planned for launch in [5f](phase-5f-analytics-consent.md); this
+  route still loads no analytics.)*
 - E12. Other third parties and storage found in code (input for gate G-4/G-5):
   - Google Fonts, loaded on **every page** by CSS: `styles/typography.scss:4`
     (`@import url("https://fonts.googleapis.com/css2?…")`). Each visit sends the visitor's IP to Google.
@@ -75,8 +98,14 @@ ships as is.
   - SMTP via nodemailer (`pages/api/contact.ts:41-53`, `SMTP_HOST/USER/PASS/PORT`). The provider is not named in the repo.
     The handler does not persist submissions (no fs/DB access in `contact.ts`).
   - Mailchimp: `grep -i mailchimp src/pages/api/contact.ts` → no match (OQ-3 done in 5d-lite). Legacy
-    `/api/mailchimp` is still called by `EmailCollectorProvider/index.tsx:208` (popup/lead magnet, hidden). Vercel has no
-    Mailchimp env vars (HANDOFF.md:75, verified 2026-10-26).
+    `/api/mailchimp` is still called by `EmailCollectorProvider/index.tsx:208` (popup/lead magnet, hidden).
+    **Correction (rev 1.2):** Mailchimp env vars **did exist** in Vercel until **2026-11-04**, when Mauricio deleted them
+    (HANDOFF.md:75 "do not exist", 2026-10-26, was wrong). No redeploy since: the live pre-5a production build keeps its
+    old configuration until the release.
+  - Other legacy Vercel env vars (Mauricio, 2026-11-04): a **Cloudflare Turnstile** site key
+    (`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `.env.local.example:31`) and a **legacy `NEXT_PUBLIC_GA_ID`** (2025). Both exist
+    but the new code doesn't use them (no Turnstile code; GA not loaded, E11). 5f replaces the GA value with
+    `G-N2YZ6SG2WM` (5f AC-L1).
   - Hosting: `vercel.json` sets no region (only `NPM_FLAGS`).
 - E13. **Restore patch** `~/Documents/projects/magneto/backups/phase-5b/footer-email-restore.patch` (outside the repo,
   6469 B, 2026-10-31; 5b report :418). It patches `Footer/index.tsx` (the same `<ul>` block this phase changes),
@@ -96,7 +125,18 @@ ships as is.
   Unauthenticated GraphQL only returns published posts. A WordPress-core draft "Privacy Policy" page (slug
   `privacy-policy`, created at install) would not show here. See A2.
 
-**Copy (where the privacy text lives today)**
+**Current source map (`637fba7`; read-only verification during Phase 5f finalization)**
+
+| Item | EN | FR-CA | ES |
+|---|---|---|---|
+| Policy body (includes dates; excludes internal notes / SEO) | :793-905 | :942-1057 | :954-1061 (draft; G-8) |
+| Effective / last-updated date | :793 / :796, 3 December 2026 | :942 / :944, 3 décembre 2026 | :954 / :956, 3 de diciembre de 2026 |
+| SEO title / description | :909 / :911 | :1061 / :1063 | :1065 / :1067 |
+| GA §5 | :853-863 | :999-1009 | :1009-1019 |
+| Version B | :917-928 | :1069-1080 | :1073-1084 |
+| Banner heading / body / buttons | :942 / :944 / :946 | :1094 / :1096 / :1098 | :1098 / :1100 / :1102 (BORRADOR at :1094) |
+
+**Historical copy inventory (`ffec355`; retained for provenance, not current publication instructions)**
 
 | Item | EN | FR-CA | ES |
 |---|---|---|---|
@@ -116,20 +156,30 @@ ships as is.
 - HANDOFF.md:76 (2026-10-26): "No consent banner while no analytics loads; Mauricio removes 'Privacy choices' from the
   copy until analytics exists." **Not yet done in the export:** "Privacy choices" is still in the footers, in policy §5
   (EN :813) and in the banner block.
+  **Superseded (rev 1.2):** the 2026-11-04 decision keeps "Privacy choices" in the copy; it ships with 5f, or the policy
+  uses §5 Version B if 5f isn't live.
 
 ## Mauricio's Law 25 verification gates (before Thu 11-12 for G-1…G-7 in EN; FR/ES follow)
 Agents write no legal copy (Hard rule 4). Each gate ends as a Notion edit, **EN first, then FR-CA, then ES** (FR
 :1090). Not legal advice.
 
-**Calendar rule (rev 1.1):** budget the gates for Fri 11-06 – Sun 11-08. The **EN and FR gates are not optional** before
-Thu 11-12. If Mauricio can't close all of them by then, only **G-8 (ES final)** may move to the Tue 12-01 go/no-go
-(Plan B decision, O-3).
+**Status (rev 1.2, 2026-11-04):** **G-4 and G-5 are closed in Notion** for EN, FR and ES (§4 providers, §5 analytics,
+effective date **3 December 2026**, which also settles G-3's date). The §5 published with GA is the 5f version; "§5
+Version B" is the ready fallback block. An **EFVP** (privacy impact assessment for transfers outside Quebec) is drafted in
+Notion. Open items: the Vercel DPA + Pro plan, the Calendly / Notion / Brevo DPAs, and the Google Drive account type.
+The supplied 2026-11-04 handoff reports **G-1…G-7 closed by Mauricio + Senior Architect**; this revision verifies the
+exported text, not external legal/provider evidence. G-4b remains conditional on 5e. **G-8 remains open:** ES policy and
+banner labels remain BORRADOR in `637fba7`; no marker-free dictionary or passing test closes editorial approval.
 
-**Re-export rule (rev 1.1):**
-- **One** copy re-export to `docs/content`, Sat 11-07 or Sun 11-08 (Senior Architect), before 5c. It includes the
-  lead-magnet copy changes (closes O-2).
-- The policy **body never goes through the export**: Mauricio pastes it from Notion into WP (§6). Gate edits to the
-  policy text may continue in Notion after the re-export.
+**Current calendar rule:** G-1…G-7 closure is reported above; the earlier Fri 11-06 – Sun 11-08 work slot is historical.
+EN/FR implementation verification and provider/EFVP follow-ups still apply. G-8 may remain open until Tue 12-01;
+without explicit approval of the ES policy, banner and footer labels then, use Plan B (EN + FR), even with Version B.
+
+**Re-export rule (current, supersedes the rev 1.1 11-07/08 proposal):**
+- The current export already exists at `637fba7` (2026-11-04); do not schedule another just to satisfy the obsolete
+  11-07/08 slot. Later approved copy changes follow the 5c-rest export plan (week of 11-16) with test re-pinning.
+- Policy bodies are included in the export as evidence, but publication does **not** use a repo loader: Mauricio
+  pastes final Notion copy into WP (§6). Later gate edits may continue in Notion; publication still requires approval.
 - The implementation uses `meta.privacy` from that export. If later gate work changes the SEO lines, they enter with the
   5c-rest re-export (week of 11-16) as a dictionary follow-up.
 - **Never re-export during 5c (Mon 11-09 – Wed 11-11).**
@@ -138,13 +188,13 @@ Thu 11-12. If Mauricio can't close all of them by then, only **G-8 (ES final)** 
 |---|---|---|---|
 | **G-1 Legal business name** | That "Magneto MKTNG" is the exact registered name (Registraire des entreprises du Québec), and that "operated by Mauricio Bayuelo under the registered business name" describes the legal form | Stated in EN :753, :762. FR gate :1090 asks for exactly this. | Intro, §1 ×3 |
 | **G-2 Privacy Officer + public contact** | Designation (Mauricio). Whether `contact@magnetomarketing.co` is monitored. Whether a public address is needed (FR :1090 mentions "l'adresse publique"; the copy has none) | §1 has name + email (E-copy). The footer has no email (5b D-L), so this page is the public contact. | §1 ×3 |
-| **G-3 Effective date** | The copy shows "8 October 2026", the text's freeze date. It must be the real date the policy takes effect (the release day 12-03, or 12-10 on fallback), and the same in all three languages. "Last updated" = same day. | FR :1090 raises the question. | Header ×3 |
+| **G-3 Effective date** | Approved source at `637fba7` says 3 December 2026 in all three languages. If launch moves to December 10, Mauricio must explicitly verify the approved effective date against actual publication/launch timing, approve any required Notion update and check published WP dates before promotion. No automatic carry-over or date replacement. | Current-source table; historical `ffec355` showed 8 October. Applies with GA or Version B. | Header ×3 |
 | **G-4 Providers (§4)** | Per provider: role, data, processing/storage location, agreement/DPA, and whether a transfer-outside-Quebec assessment is needed. Then replace the forward-looking sentence ("Before production launch, Magneto must verify…", EN :804, FR :971) with a factual statement. | See provider inventory below. | §4 (+ §2 if a flow changes) ×3 |
 | **G-4b Brevo (conditional, for 5e)** | Now: verify Brevo's processing/storage location and DPA (transfer outside Quebec → assessment, as G-4). Prepare the §8 policy changes in Notion **EN → FR → ES** as a **ready block**, not yet part of the published text. Publish the block on the WP privacy pages (every enabled locale) **before the 5e deploy**, whether that is 12-03 or later. If 5e doesn't ship, the block stays in Notion. | Mauricio has a Brevo account (2026-11-04). ADR 0002 am. 1. §8 | §2, §3, §4, §6, §7 (+ §5 if Brevo runs scripts) ×3, at 5e |
-| **G-5 Cookies / analytics (§5)** | No analytics at launch (E11). §5 currently promises a banner and a "Privacy choices" link (EN :806-815) that won't exist. Rewrite §5 to describe what really runs: necessary technologies, Google Fonts (E12), the UTM `sessionStorage` key (E12), and Calendly only on click. Remove "Privacy choices" from the footers. Park the banner copy for the analytics phase. Also check the analytics-dependent bullets in §2 (:774), §3 (:786) and §4 (:801). Confirm `NEXT_PUBLIC_GA_ID` / `NEXT_PUBLIC_GTM_ID` are unset in Vercel Production. | E11, E12. HANDOFF :76. | §2-§5, footers ×3 |
+| **G-5 Cookies / analytics (§5)** | Supersedes rev 1.1's no-analytics/removal instruction: ship the GA §5 only when 5f's actual build and consent checks pass; otherwise publish Version B and its §2/§3/§4 edits with analytics genuinely disabled. Keep canonical Privacy choices copy; show the control only with configured 5f. Google Fonts remains disclosed. | `637fba7`; 5f §9 and AC-L1…L6. Environment settings alone do not verify a deployment. | §2-§5, footer behavior ×3 |
 | **G-6 Retention (§7)** | Keep the current wording (internal schedule after launch, no public periods; FR :1093 "ne pas inventer de délais"), or publish periods. Confirm the wording is true: where inquiry emails land (the SMTP recipient mailbox) and how long they stay; Calendly bookings; Vercel logs. | `/api/contact` stores nothing (E12). The recipient mailbox is not identifiable from the repo. | §7 ×3 |
 | **G-7 Strategy Call flow (§2, §4)** | The B2 line is approved (EN :885): answers go to Calendly with the booking. Confirm that §2 "Strategy Call information" still matches the live 5d-lite flow. | 5d-lite merged (PR #24). | §2 ×3 |
-| **G-8 ES final** | The ES draft becomes final, including G-1…G-7, before ES can launch. May move to the Tue 12-01 go/no-go (rev 1.1). If not final then, Plan B: no ES page, ES not enabled. | ES :932 BORRADOR | ES all |
+| **G-8 ES final** | The ES draft becomes final, including G-1…G-7, before ES can launch. May move to the Tue 12-01 go/no-go (rev 1.1). If not final then, Plan B: no ES page, ES not enabled. | `637fba7` ES :948 / :1094 BORRADOR; includes banner and footer labels | ES all |
 | **G-9 Optional review** | Review by a privacy professional (FR :1093 "idéalement"). Mauricio's call. | — | — |
 
 **Provider inventory** (what the repo shows; Mauricio fills location / agreement)
@@ -158,8 +208,8 @@ Thu 11-12. If Mauricio can't close all of them by then, only **G-8 (ES final)** 
 | **Calendly** | Strategy Call scheduling | B2 answers, name, email, booking details; cookies inside its widget | `calendly.ts:68-69`, loads on click | Location, DPA, which cookies its widget sets |
 | **Google Fonts** | Web fonts | Visitor IP and user agent on every page | `typography.scss:4` | Mention in §4/§5, or self-host later (D-P9) |
 | Email / file-storage / project-management tools | Replying and client work (EN §4 bullet 3) | Inquiry content, client files | Not in repo | Which tools, locations |
-| GA / GTM | — | None today (never loaded, E11) | `analytics.ts`, `gtm.ts` | Vercel env unset |
-| Mailchimp | — | None in production (no env in Vercel; contact no longer calls it) | E12 | Account closed or dormant; removed in 5e |
+| GA / GTM | GA4 at launch **only if 5f is live** (rev 1.2); no GTM | None today (never loaded, E11). With 5f: only after Accept | `analytics.ts`, `gtm.ts` (5f deletes it) | Legacy GA ID in Vercel replaced by `G-N2YZ6SG2WM` (5f AC-L1); DPA accepted 2026-11-04 |
+| Mailchimp | — | None from the new code (contact no longer calls it). Env vars deleted from Vercel 2026-11-04 (E12) | E12 | Account closed or dormant; removed in 5e |
 | **Brevo** | **Planned** (5e, possibly live at launch): guide delivery + optional newsletter | Email (+ name?), consent record | ADR 0002 (+ am. 1); account exists | G-4b, §8 |
 | LinkedIn | Outbound link only | None from the site | Footer | — |
 | WPML (wpml.org) | CMS licensing | No visitor data | 3b runbook | — |
@@ -178,9 +228,9 @@ Thu 11-12. If Mauricio can't close all of them by then, only **G-8 (ES final)** 
 - **O-1.** Does `cms.magnetomarketing.co` show published pages through a theme (e.g. `/privacy-policy/` on the CMS
   domain)? If it does, publishing the production pages before the release exposes them there early. Mauricio checks
   read-only, in a browser.
-- **O-2. Closed (rev 1.1).** Lead-magnet name: the human brief says "Fix, Rebuild or Maintain?". The `ffec355` export
-  says "Fix or Rebuild? A Practical Website Checklist" (EN :113, :229, :401). The Sat 11-07/Sun 11-08 re-export
-  includes the lead-magnet copy changes and settles it (5e input).
+- **O-2. Historical rev 1.1 resolution:** the lead-magnet title was to be settled by a later re-export. `ffec355` and
+  the 11-07/08 proposal are historical; `637fba7` is now the baseline. Further FR/ES title alignment belongs to 5e /
+  5c-rest and its authorized export, not this route or 5f. Do not infer completion from the old scheduled date.
 - **O-3. Closed (rev 1.1).** The ES Plan B decision is taken at the **Tue 12-01 go/no-go** (5b had Fri 12-04, against a
   12-10 release).
 
@@ -234,18 +284,19 @@ Alternatives:
 `Footer/index.tsx`: the `<ul className="footer__links">` is **always** rendered. It contains LinkedIn (only when the
 CMS URL is set, unchanged) and then `<li><a href={localizePath('/privacy-policy', locale)} className="footer__link">
 {t.common.privacyPolicy}</a></li>`. Use a plain `<a>` with `localizePath`, as the Header does (Known debt D1). No
-`target`, no new dictionary key (E4). **No "Privacy choices" link** while no analytics loads (E11, G-5). The order
+`target`, no new dictionary key (E4). **No "Privacy choices" control in this phase:** 5f appends it as a third `<li>`
+(rev 1.2). The order
 follows the copy: LinkedIn · Privacy Policy (EN :133-135). Update the comments `:5-7`. `Footer.test.tsx` changes from
 "no list at all" to "Privacy link only" when there is no LinkedIn URL, and checks the href per locale (`/privacy-policy`,
 `/fr/privacy-policy`, `/es/privacy-policy`).
 
 ### 4. Metadata, sitemap, robots
-- `meta.privacy = { title, description }` in `en.ts`, `fr.ts`, `es.ts`, **verbatim** from EN :861/:863, FR :1036/:1038,
-  ES :1046/:1048. No TODO values, so the guard is unaffected (E9). Add the verbatim rows to `dictionary.test.ts` (the
+- `meta.privacy = { title, description }` in `en.ts`, `fr.ts`, `es.ts`, **verbatim** from `637fba7`: EN :909/:911,
+  FR :1061/:1063, ES :1065/:1067. No TODO values, so the guard is unaffected (E9). Add the verbatim rows to `dictionary.test.ts` (the
   pattern at `:196`) and the EN lock to `en.test.ts`. `generateMetadata` → `pageMetadata(t.meta.privacy)`. Indexable,
   like other pages. Canonical, hreflang and `og:locale` are Phase 7.
-- The Dev uses `meta.privacy` from the Sat 11-07/Sun 11-08 re-export (Re-export rule). SEO-line changes after it enter
-  with the 5c-rest re-export (week of 11-16), not in this phase.
+- Use the current pinned export and lock its commit + lines in tests. Later approved SEO-line changes enter with
+  the authorized 5c-rest re-export (week of 11-16); section titles locate moved text, not permission to skip re-pinning.
 - Sitemap (D-P3 A): add `'/privacy-policy'` to both `staticPaths` arrays (`route.ts:12`, `:35`). EN only, like every
   other entry. Per-locale sitemap is Phase 7.
 - robots: no change.
@@ -299,7 +350,7 @@ not rendered). Publish.
   production.
 - **Calendar collision:** Mon 11-09 (13 posts), Tue 11-10 (FR/ES loads), Wed 11-11 (dictionary fill). The 3 local
   privacy pages fit **Wed 11-11 afternoon** (≈ 45-60 min), **after** the FR/ES loads, so they can't disturb the loader
-  runs. If the gates aren't done by then, the local pages are created from the **current** `ffec355` text, to unblock
+  runs. If the gates aren't done by then, the local pages are created from the **current pinned** `637fba7` text, to unblock
   Thursday's implementation. They are re-pasted after the gates (local only; it is not production).
 - **Production (Mauricio only):** after the gates pass, pasting the final texts from Notion (not from the export), at the latest before
   the PR's Vercel preview check (the preview builds against production WP: WORKFLOW "Release process"). This is
@@ -312,12 +363,25 @@ not rendered). Publish.
 enabled locale L:**
 1. `GET {L-prefix}/privacy-policy` → **200**, `<html lang>` = `en` / `fr-CA` / `es`, the H1 in L.
 2. The body shows §1 with the Privacy Officer **Mauricio Bayuelo** and a working `mailto:contact@magnetomarketing.co`,
-   and the effective date from G-3 (not "8 October 2026" unless G-3 decided it).
+   and the approved effective / last-updated dates from G-3 (`637fba7`: December 3). A December 10 launch requires
+   Mauricio's explicit verification of that approved effective date and any required canonical / published update.
 3. The body is the **final** text for L: gates G-1…G-7 applied (and G-8 for ES). No internal note, "Publication gate"
    line or forward-looking §4 sentence.
 4. The footer on `/`, `/contact` and one project page in L shows "Privacy Policy" and links to that 200 page. The Contact
    form and booking modal privacy links resolve to the same page.
-5. No "Privacy choices" link and no analytics request (`googletagmanager.com`) on those routes (E11).
+5. **(rev 1.2)** No request to Google **analytics** hosts (`googletagmanager.com`, `google-analytics.com`,
+   `analytics.google.com`, `doubleclick.net`, including subdomains) on those routes before the visitor accepts analytics (clean profile,
+   network log; Google Fonts is a disclosed exception, 5f D-F8). Then, either:
+   - **5f live** (the deployment contains 5f **and** was built with `NEXT_PUBLIC_GA_ID`): the footer "Privacy choices"
+     control is present in L and works (it reopens the banner; Accept loads, Reject never loads; 5f AC-L2), and the page's
+     §5 is the GA version; or
+   - **5f not live:** no banner and no "Privacy choices" control, and the page in L uses **§5 Version B** (with its §2 /
+     §3 / §4 edits).
+   Record the actual deployment ID/commit, build target, effective GA ID and debug behavior in Preview and Production
+   (5f §9 / AC-L1…L6). Version B must pass even with a pre-existing valid stored grant: no analytics script, hints,
+   requests or newly created GA cookies. An unset Production setting alone does not disable an existing build; verify
+   the fallback Preview / Production artifact and the served domain. No GA admin/deployment verification is claimed by
+   this document revision. A mismatch (GA on with Version B, or GA off with the GA version) fails this item.
 6. **Only if the deployment includes 5e (Brevo live):** the body in L contains the published G-4b block (§8), and the
    lead magnet is not live in any locale whose page lacks it.
 
@@ -408,7 +472,7 @@ phase; not needed for 5e.
 Anything else is out of scope.
 
 ## Out of scope
-- Consent banner, "Privacy choices" link, any analytics loading (until an analytics phase).
+- Consent banner, "Privacy choices" control, any analytics loading: [Phase 5f](phase-5f-analytics-consent.md) (rev 1.2).
 - Legal text: writing, editing or translating policy copy (Mauricio + Notion, Hard rule 4). The Dev reports any gap.
 - Brevo / Mailchimp code (5e). Further ADR 0002 edits (amendment 1 is part of rev 1.1).
 - `check-translations.php` / loader changes (5c). Self-hosting Google Fonts (D-P9). `/packages` missing from the
@@ -423,8 +487,8 @@ locally) on the Dev's own port (3100), with the 3 local pages present (W-1…W-3
   the baseline at the start of the phase (record the numbers). No new `any`.
 - [ ] AC-2 A1 evidence in the report: the `content` query and a trimmed response for en/fr/es.
 - [ ] AC-3 `/privacy-policy`, `/fr/privacy-policy`, `/es/privacy-policy` → 200; one `<h1>` = WP title in that language;
-  `<html lang>` `en` / `fr-CA` / `es`; `<title>` and meta description = `meta.privacy` verbatim (EN :861/:863,
-  FR :1036/:1038, ES :1046/:1048, or as moved by the 11-07/11-08 re-export; section titles govern).
+  `<html lang>` `en` / `fr-CA` / `es`; `<title>` and meta description = `meta.privacy` verbatim (EN :909/:911,
+  FR :1061/:1063, ES :1065/:1067 at `637fba7`, or a later authorized export with re-pinned tests).
 - [ ] AC-4 Heading order: H1 then H2 sections, with no skipped level (axe or a manual outline). Links are underlined or
   otherwise distinct, focus is visible, contrast is AA. Check the `mailto:` link works.
 - [ ] AC-5 Viewports 375 / 768 / 1440 for each of the 3 locales: no horizontal scroll, readable measure. Screenshots in
@@ -437,8 +501,10 @@ locally) on the Dev's own port (3100), with the 3 local pages present (W-1…W-3
   editing WP), the mapper returns null and the page calls `notFound()`. With `ENABLED_LOCALES=en,fr`,
   `/es/privacy-policy` → 404 (curl).
 - [ ] AC-9 `/sitemap.xml` contains `/privacy-policy`; `/robots.txt` unchanged.
-- [ ] AC-10 No network request to `googletagmanager.com` / `google-analytics.com` on the 3 privacy routes and `/`
-  (browser network log). No banner rendered.
+- [ ] AC-10 (rev 1.2) No network request to Google analytics hosts (`googletagmanager.com`, `google-analytics.com`,
+  `analytics.google.com`, `doubleclick.net`) on the 3 privacy routes and `/` (browser network log). In this phase no
+  banner and no "Privacy choices" control render (5f is not in the branch). At release, §7 item 5 decides: "Privacy
+  choices" present and working if 5f is live, verified analytics-disabled build + §5 Version B otherwise (5f AC-L6).
 - [ ] AC-11 EN unchanged on `/`, `/services`, `/packages`, `/projects`, `/about-magneto`, `/contact`, one project page:
   same render as before at 1440, except the footer list (Privacy link added).
 - [ ] AC-12 Guard: `ENABLED_LOCALES=en,fr,es npm run build` **without** `ALLOW_UNTRANSLATED_LOCALES` fails only because of
@@ -497,7 +563,7 @@ No ADR is needed for this phase: no dependency, routing or data-model change. D-
 |---|---:|---:|
 | Spec review | — | 30–45 min |
 | Gates G-1…G-7 (research: registry, providers/locations/DPAs, retention wording, effective date) | — | 2.5–4 h |
-| Notion edits EN → FR (→ ES final, G-8), incl. §4/§5 rewrite, "Privacy choices" removal | — | 1.5–2.5 h |
+| Historical Notion work estimate: §4/§5 alignment EN → FR; ES final (G-8) still required | — | 1.5–2.5 h |
 | G-4b: Brevo location/DPA + ready block EN → FR → ES | — | 1–1.5 h (not in the total) |
 | Local pages W-0…W-3 (+ backup) | read-only check 10 min | 45–60 min |
 | Route + api + types + tests | 2–3 h | — |
@@ -510,16 +576,18 @@ No ADR is needed for this phase: no dependency, routing or data-model change. D-
 | **Total** | **≈ 6–8.5 h** | **≈ 6.5–10 h** |
 
 Against 5b §11 ("Privacy route EN/FR/ES (D-L)": 6–9 h agent / 5–8 h Mauricio): agent within range. Mauricio is +1–2 h
-because of G-5 (the §5 rewrite and "Privacy choices" removal across the three languages) and the provider inventory.
+because of the original G-5 work and provider inventory; rev 1.2 supersedes the Privacy choices removal instruction.
 
 **Calendar** (estimates):
 - Wed 11-04: approved (rev 1.1). D-P1…D-P9 decided; ADR 0002 amendment 1.
-- Fri 11-06 – Sun 11-08: Mauricio closes G-1…G-7 in Notion EN, then FR (not optional), and G-4b (Brevo check + ready
-  block). G-8 (ES) may move to the 12-01 go/no-go. **Sat 11-07/Sun 11-08: the one re-export** (incl. lead-magnet copy).
-  No re-export Mon 11-09 – Wed 11-11 (5c).
+- G-1…G-7 are reported closed 11-04; `637fba7` is the completed 11-04 export, replacing the old 11-07/08 plan.
+  G-4b / provider follow-ups continue; G-8 may move to 12-01. No re-export Mon 11-09 – Wed 11-11 (5c).
 - Wed 11-11 afternoon: local pages W-0…W-3 (after the FR/ES loads and the dictionary fill).
 - **Thu 11-12: implementation**, checkpoint ≈ 13:00, report end of day (footer part may slip to Fri 11-13).
 - Week of 11-16: 5c-rest re-export carries any later `meta.privacy` change.
 - By Sun 11-22 (with the OQ-1 session): production pages EN + FR (ES if G-8 is done). PR preview check, merge.
 - Mon 11-23 – Tue 11-24: 5e. If it passes, paste the G-4b block on the WP pages before its deploy.
-- Tue 12-01 go/no-go: §7 checklist (+ item 6 if 5e ships) + the ES decision (O-3). Thu 12-03 release.
+- Wed–Thu 11-25/26 remains 5f's original implementation window; D-F10 now authorizes an earlier start when dependencies,
+  checkout ownership and capacity permit. Mon 11-30 remains its fallback gate (Version B if GA-on checks are not ready).
+- Tue 12-01 go/no-go: §7 checklist (+ item 6 if 5e ships) + G-8 / ES decision (O-3). Thu 12-03 release.
+  If moved to Thu 12-10, re-verify G-3's approved effective date before promotion; no automatic copy edit.
