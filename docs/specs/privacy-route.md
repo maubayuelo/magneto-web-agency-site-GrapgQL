@@ -1,21 +1,28 @@
 # Privacy route — `/privacy-policy` in EN / FR-CA / ES (D-L)
 
-- **Status: Draft** (rev 1, 2026-11-04)
+- **Status: Approved** (rev 1.1, approved by Mauricio + Senior Architect, 2026-11-04)
 - Author: Architect · Reviewed by: Mauricio (+ Senior Architect)
 - Date: 2026-11-04
-- Branch: intended `spec/privacy-route` from `master`. **The branch does not exist yet**: on 2026-11-04 the checkout is
-  `spec/phase-5c-rev3` (3 commits ahead of `master` @ `f6cd045`; the 5c rev 3.1 spec and ADR 0006 amendment 3 are only
-  there). This file is untracked and unstaged, so it moves with `git switch -c spec/privacy-route master`. This spec
-  cites 5c **rev 3.1** (`d10108e`). Merge `spec/phase-5c-rev3` first, or the §5 it cites isn't on `master`.
+- Branch: `spec/privacy-route`, **stacked on `spec/phase-5c-rev3`** (`d10108e`, 5c rev 3.1 Approved). This spec cites 5c
+  rev 3.1. **Merge order: the 5c spec PR first, then this one.**
 - Depends on: [5b spec](phase-5b-services-packages-seo.md) rev 9 (§5.5 D-L, OQ-2, "Other specs" item 3, AC-20),
   [5b report](../reports/phase-5b-services-packages-seo.md) (release checklist D-L, restore patch),
   [5c loader](phase-5c-loader.md) rev 3.1 (§5 method, A3/A4, §8, calendar), [5d-lite spec](phase-5d-lite-contact-modal.md)
   (D-14 Privacy links already rendered), ADR [0003](../adr/0003-locale-routing.md), [0004](../adr/0004-localized-data.md),
   [0005](../adr/0005-ui-dictionaries.md), [0002](../adr/0002-brevo-replaces-mailchimp.md).
 - Canonical copy: `docs/content/magneto-copy-{en,fr-CA,es}.md` **as of `ffec355`** (export 2026-11-02). Notion stays
-  canonical. All `docs/content` line numbers refer to `ffec355`. If a later export moves them, section titles govern.
-- Calendar (estimates, from 5c rev 3.1): **Mauricio's gates before Thu 11-12** · **implementation Thu 11-12** · go/no-go
-  Tue 12-01 · **release Thu 12-03** · fallback Thu 12-10. Plan B = EN + FR.
+  canonical. All `docs/content` line numbers refer to `ffec355`. If a later export moves them (the Sat 11-07/Sun 11-08
+  re-export, §Gates), section titles govern.
+- Calendar (estimates, from 5c rev 3.1): **Mauricio's gates before Thu 11-12** (G-8 may move to 12-01, Plan B) ·
+  **implementation Thu 11-12** · 5e Mon 11-23 – Tue 11-24 · go/no-go Tue 12-01 · **release Thu 12-03** · fallback
+  Thu 12-10. Plan B = EN + FR.
+
+## Revision
+- **rev 1.1 (2026-11-04) — Approved.** D-P1…D-P9 all **A** (D-P6 B acceptable). O-3 closed (ES decision at the 12-01
+  go/no-go), O-2 closed by the 11-07/11-08 re-export. Branch stacked on 5c rev 3.1. Brevo: the lead magnet may go live
+  at launch if 5e passes → new conditional gate **G-4b**, §8 / R-9 / §7 / AC-16 updated. Re-export rule added (§Gates).
+  ADR 0002 amendment 1 (D-P7) written. Calendar: G-8 may slip to the 12-01 go/no-go; EN and FR gates are not optional.
+- rev 1 (2026-11-04) — Draft.
 
 ## Goal
 `/privacy-policy` renders the approved Privacy Policy in every locale enabled at launch: `/privacy-policy` (EN),
@@ -112,7 +119,20 @@ ships as is.
 
 ## Mauricio's Law 25 verification gates (before Thu 11-12 for G-1…G-7 in EN; FR/ES follow)
 Agents write no legal copy (Hard rule 4). Each gate ends as a Notion edit, **EN first, then FR-CA, then ES** (FR
-:1090), followed by a re-export to `docs/content` by the Senior Architect. Not legal advice.
+:1090). Not legal advice.
+
+**Calendar rule (rev 1.1):** budget the gates for Fri 11-06 – Sun 11-08. The **EN and FR gates are not optional** before
+Thu 11-12. If Mauricio can't close all of them by then, only **G-8 (ES final)** may move to the Tue 12-01 go/no-go
+(Plan B decision, O-3).
+
+**Re-export rule (rev 1.1):**
+- **One** copy re-export to `docs/content`, Sat 11-07 or Sun 11-08 (Senior Architect), before 5c. It includes the
+  lead-magnet copy changes (closes O-2).
+- The policy **body never goes through the export**: Mauricio pastes it from Notion into WP (§6). Gate edits to the
+  policy text may continue in Notion after the re-export.
+- The implementation uses `meta.privacy` from that export. If later gate work changes the SEO lines, they enter with the
+  5c-rest re-export (week of 11-16) as a dictionary follow-up.
+- **Never re-export during 5c (Mon 11-09 – Wed 11-11).**
 
 | Gate | What to verify / decide | Already known in the repo | Copy affected |
 |---|---|---|---|
@@ -120,10 +140,11 @@ Agents write no legal copy (Hard rule 4). Each gate ends as a Notion edit, **EN 
 | **G-2 Privacy Officer + public contact** | Designation (Mauricio). Whether `contact@magnetomarketing.co` is monitored. Whether a public address is needed (FR :1090 mentions "l'adresse publique"; the copy has none) | §1 has name + email (E-copy). The footer has no email (5b D-L), so this page is the public contact. | §1 ×3 |
 | **G-3 Effective date** | The copy shows "8 October 2026", the text's freeze date. It must be the real date the policy takes effect (the release day 12-03, or 12-10 on fallback), and the same in all three languages. "Last updated" = same day. | FR :1090 raises the question. | Header ×3 |
 | **G-4 Providers (§4)** | Per provider: role, data, processing/storage location, agreement/DPA, and whether a transfer-outside-Quebec assessment is needed. Then replace the forward-looking sentence ("Before production launch, Magneto must verify…", EN :804, FR :971) with a factual statement. | See provider inventory below. | §4 (+ §2 if a flow changes) ×3 |
+| **G-4b Brevo (conditional, for 5e)** | Now: verify Brevo's processing/storage location and DPA (transfer outside Quebec → assessment, as G-4). Prepare the §8 policy changes in Notion **EN → FR → ES** as a **ready block**, not yet part of the published text. Publish the block on the WP privacy pages (every enabled locale) **before the 5e deploy**, whether that is 12-03 or later. If 5e doesn't ship, the block stays in Notion. | Mauricio has a Brevo account (2026-11-04). ADR 0002 am. 1. §8 | §2, §3, §4, §6, §7 (+ §5 if Brevo runs scripts) ×3, at 5e |
 | **G-5 Cookies / analytics (§5)** | No analytics at launch (E11). §5 currently promises a banner and a "Privacy choices" link (EN :806-815) that won't exist. Rewrite §5 to describe what really runs: necessary technologies, Google Fonts (E12), the UTM `sessionStorage` key (E12), and Calendly only on click. Remove "Privacy choices" from the footers. Park the banner copy for the analytics phase. Also check the analytics-dependent bullets in §2 (:774), §3 (:786) and §4 (:801). Confirm `NEXT_PUBLIC_GA_ID` / `NEXT_PUBLIC_GTM_ID` are unset in Vercel Production. | E11, E12. HANDOFF :76. | §2-§5, footers ×3 |
 | **G-6 Retention (§7)** | Keep the current wording (internal schedule after launch, no public periods; FR :1093 "ne pas inventer de délais"), or publish periods. Confirm the wording is true: where inquiry emails land (the SMTP recipient mailbox) and how long they stay; Calendly bookings; Vercel logs. | `/api/contact` stores nothing (E12). The recipient mailbox is not identifiable from the repo. | §7 ×3 |
 | **G-7 Strategy Call flow (§2, §4)** | The B2 line is approved (EN :885): answers go to Calendly with the booking. Confirm that §2 "Strategy Call information" still matches the live 5d-lite flow. | 5d-lite merged (PR #24). | §2 ×3 |
-| **G-8 ES final** | The ES draft becomes final, including G-1…G-7, before ES can launch. If not, Plan B: no ES page, ES not enabled. | ES :932 BORRADOR | ES all |
+| **G-8 ES final** | The ES draft becomes final, including G-1…G-7, before ES can launch. May move to the Tue 12-01 go/no-go (rev 1.1). If not final then, Plan B: no ES page, ES not enabled. | ES :932 BORRADOR | ES all |
 | **G-9 Optional review** | Review by a privacy professional (FR :1093 "idéalement"). Mauricio's call. | — | — |
 
 **Provider inventory** (what the repo shows; Mauricio fills location / agreement)
@@ -139,7 +160,7 @@ Agents write no legal copy (Hard rule 4). Each gate ends as a Notion edit, **EN 
 | Email / file-storage / project-management tools | Replying and client work (EN §4 bullet 3) | Inquiry content, client files | Not in repo | Which tools, locations |
 | GA / GTM | — | None today (never loaded, E11) | `analytics.ts`, `gtm.ts` | Vercel env unset |
 | Mailchimp | — | None in production (no env in Vercel; contact no longer calls it) | E12 | Account closed or dormant; removed in 5e |
-| **Brevo** | **Future** (5e): guide delivery + optional newsletter | Email (+ name?), consent record | ADR 0002 | See "Brevo" section |
+| **Brevo** | **Planned** (5e, possibly live at launch): guide delivery + optional newsletter | Email (+ name?), consent record | ADR 0002 (+ am. 1); account exists | G-4b, §8 |
 | LinkedIn | Outbound link only | None from the site | Footer | — |
 | WPML (wpml.org) | CMS licensing | No visitor data | 3b runbook | — |
 
@@ -157,11 +178,11 @@ Agents write no legal copy (Hard rule 4). Each gate ends as a Notion edit, **EN 
 - **O-1.** Does `cms.magnetomarketing.co` show published pages through a theme (e.g. `/privacy-policy/` on the CMS
   domain)? If it does, publishing the production pages before the release exposes them there early. Mauricio checks
   read-only, in a browser.
-- **O-2.** Lead-magnet name: the human brief says "Fix, Rebuild or Maintain?". The `ffec355` export says "Fix or Rebuild?
-  A Practical Website Checklist" (EN :113, :229, :401). If Notion changed after 11-02, a re-export is needed (5e input,
-  not this phase).
-- **O-3.** Plan B date: 5b set the ES go/no-go for Fri 12-04, against a 12-10 release. With the release on Thu 12-03
-  (5c rev 3.1), the ES decision must move to the Tue 12-01 go/no-go or earlier. Senior Architect to confirm.
+- **O-2. Closed (rev 1.1).** Lead-magnet name: the human brief says "Fix, Rebuild or Maintain?". The `ffec355` export
+  says "Fix or Rebuild? A Practical Website Checklist" (EN :113, :229, :401). The Sat 11-07/Sun 11-08 re-export
+  includes the lead-magnet copy changes and settles it (5e input).
+- **O-3. Closed (rev 1.1).** The ES Plan B decision is taken at the **Tue 12-01 go/no-go** (5b had Fri 12-04, against a
+  12-10 release).
 
 ## Design
 
@@ -223,7 +244,8 @@ follows the copy: LinkedIn · Privacy Policy (EN :133-135). Update the comments 
   ES :1046/:1048. No TODO values, so the guard is unaffected (E9). Add the verbatim rows to `dictionary.test.ts` (the
   pattern at `:196`) and the EN lock to `en.test.ts`. `generateMetadata` → `pageMetadata(t.meta.privacy)`. Indexable,
   like other pages. Canonical, hreflang and `og:locale` are Phase 7.
-- If G-1…G-5 change the SEO lines in Notion, the re-export governs and the Dev uses the new lines.
+- The Dev uses `meta.privacy` from the Sat 11-07/Sun 11-08 re-export (Re-export rule). SEO-line changes after it enter
+  with the 5c-rest re-export (week of 11-16), not in this phase.
 - Sitemap (D-P3 A): add `'/privacy-policy'` to both `staticPaths` arrays (`route.ts:12`, `:35`). EN only, like every
   other entry. Per-locale sitemap is Phase 7.
 - robots: no change.
@@ -279,7 +301,7 @@ not rendered). Publish.
   privacy pages fit **Wed 11-11 afternoon** (≈ 45-60 min), **after** the FR/ES loads, so they can't disturb the loader
   runs. If the gates aren't done by then, the local pages are created from the **current** `ffec355` text, to unblock
   Thursday's implementation. They are re-pasted after the gates (local only; it is not production).
-- **Production (Mauricio only):** after the gates pass and the final FR/ES texts are re-exported, at the latest before
+- **Production (Mauricio only):** after the gates pass, pasting the final texts from Notion (not from the export), at the latest before
   the PR's Vercel preview check (the preview builds against production WP: WORKFLOW "Release process"). This is
   invisible on the live frontend: production still serves the pre-5a site, which has no route for the path. Check O-1
   for the CMS domain. Run it in the same separate session as the 13 production posts (5c OQ-1), or right after.
@@ -296,6 +318,8 @@ enabled locale L:**
 4. The footer on `/`, `/contact` and one project page in L shows "Privacy Policy" and links to that 200 page. The Contact
    form and booking modal privacy links resolve to the same page.
 5. No "Privacy choices" link and no analytics request (`googletagmanager.com`) on those routes (E11).
+6. **Only if the deployment includes 5e (Brevo live):** the body in L contains the published G-4b block (§8), and the
+   lead magnet is not live in any locale whose page lacks it.
 
 **If any item fails for a locale L** (D-P4):
 - **Recommended (A):** don't launch L. For FR/ES that is Plan B (`ENABLED_LOCALES` without L). If EN fails, the release
@@ -307,16 +331,18 @@ enabled locale L:**
   block) nor after the dictionary fill (`fr.ts` context line). D-P5 refreshes it.
 
 ### 8. Brevo (lead magnet + optional newsletter) — policy impact only
-Not part of this phase and not live at launch: the lead magnet stays hidden (EN :109 "Publish only when the guide is
-complete and the email flow is implemented"; HANDOFF Q1). The launch policy must describe only real flows (G-4). So the
-Brevo changes below are published **with** 5e, before its deploy (EN :906).
+Not part of this phase. The lead magnet **may go live at launch (12-03) if 5e passes** (plan: 5e implemented Mon 11-23 –
+Tue 11-24), otherwise days later (EN :109 "Publish only when the guide is complete and the email flow is implemented").
+Mauricio now has a Brevo account. The policy must describe only real flows (G-4), so the changes below are prepared now
+as the **G-4b ready block** in Notion (EN → FR → ES) and published on the WP pages **before the 5e deploy**, whether
+that is 12-03 or later (EN :906). Pasting them is a WP edit only (§6), no re-export and no code change.
 
 **Brevo in the provider inventory** (5e adds it to §4 when live): role = sending the requested guide and, only with
 separate consent, marketing emails. Data = email (plus name if the form asks), consent record, campaign events
-(opens/clicks if enabled). Location / agreement = Mauricio verifies (Brevo is an EU company; transfer outside Quebec →
-assessment per G-4).
+(opens/clicks if enabled). Location / agreement = Mauricio verifies **now** (G-4b; Brevo is an EU company; transfer
+outside Quebec → assessment per G-4).
 
-**Policy changes 5e must make (Notion EN → FR → ES, Mauricio):**
+**G-4b ready block — policy changes for 5e (Notion EN → FR → ES, Mauricio; published before the 5e deploy):**
 | § | Change |
 |---|---|
 | §2 | New bullet: guide request / newsletter: email (+ name), the consent choice, and the date and source of the request |
@@ -334,7 +360,7 @@ and policy §6 says "Submitting an inquiry or booking a call does not automatica
 newsletter checkbox … for the first version" of the modal (EN :734). Approved copy wins (Hard rule 4). 5b OQ-3 already
 applied the same principle to `/api/contact`.
 
-**D-P7 — recommended (A):** the Senior Architect amends ADR 0002: Calendly bookings and Project Inquiries are **never**
+**D-P7 — decided A (rev 1.1); ADR 0002 amendment 1 written:** Calendly bookings and Project Inquiries are **never**
 added to a marketing list. The only path into the Brevo marketing list is the unchecked optional box. Alternatives:
 (B) keep the ADR and change the approved copy + add a marketing checkbox to the booking flow. This contradicts EN :734
 and reopens frozen copy; not recommended. (C) Later, bookings may go to a **non-marketing** Brevo contact list (CRM
@@ -342,9 +368,9 @@ only, never in campaigns). That would be a new data flow needing its own policy 
 phase; not needed for 5e.
 
 **What a separate "5e — lead magnet + Brevo" spec must cover:**
-1. ADR 0002 amendment (D-P7) and Mailchimp removal: `pages/api/mailchimp.ts`, the `EmailCollectorProvider` call `:208`,
+1. ADR 0002 amendment 1 (D-P7, done) as a constraint, and Mailchimp removal: `pages/api/mailchimp.ts`, the `EmailCollectorProvider` call `:208`,
    consumers, env vars, tests (ADR 0002 Consequences).
-2. Brevo account/list setup by Mauricio (no agent access). Env vars in `.env.local.example`, server-only (no `NEXT_PUBLIC_`).
+2. Brevo list setup by Mauricio (the account exists; no agent access). Env vars in `.env.local.example`, server-only (no `NEXT_PUBLIC_`).
    A local mode that never calls Brevo (like `DISABLE_SMTP=1`).
 3. Server route (Pages Router `pages/api/*`, the router split): validation, rate limit/abuse protection, two separate
    actions (deliver guide; subscribe only if the box is checked), idempotency, errors without leaking provider detail.
@@ -354,8 +380,8 @@ phase; not needed for 5e.
    Consent record fields. Double opt-in decision. Language attribute per contact.
 6. CASL items to verify (Mauricio): sender identification and a **mailing address** in every marketing email (copy has
    none today, G-2), unsubscribe link and timing, how long proof of consent is kept.
-7. Policy update ×3 (table above), published before the 5e deploy. Re-run of this spec's D-L/AC checks on the updated
-   page.
+7. Policy update ×3 = the G-4b ready block, published on the WP pages before the 5e deploy (a deploy precondition).
+   Re-run of this spec's §7 checks (incl. item 6) on the updated pages.
 8. The lead-magnet section rebuild: server loader (Known debt I-9), the missing-env-var swallow (Known debt), copy ×3,
    hidden until the guide exists.
 9. Tests: no Brevo request without the box checked; no marketing subscription from `/api/contact` or the booking modal
@@ -384,7 +410,7 @@ Anything else is out of scope.
 ## Out of scope
 - Consent banner, "Privacy choices" link, any analytics loading (until an analytics phase).
 - Legal text: writing, editing or translating policy copy (Mauricio + Notion, Hard rule 4). The Dev reports any gap.
-- Brevo / Mailchimp code (5e). ADR 0002 edits (Senior Architect).
+- Brevo / Mailchimp code (5e). Further ADR 0002 edits (amendment 1 is part of rev 1.1).
 - `check-translations.php` / loader changes (5c). Self-hosting Google Fonts (D-P9). `/packages` missing from the
   sitemap, per-locale sitemap, hreflang, canonical, `og:locale` (Phase 7). Nav links to `next/link` (Known debt D1).
 - Any WordPress write by agents; any production action.
@@ -398,7 +424,7 @@ locally) on the Dev's own port (3100), with the 3 local pages present (W-1…W-3
 - [ ] AC-2 A1 evidence in the report: the `content` query and a trimmed response for en/fr/es.
 - [ ] AC-3 `/privacy-policy`, `/fr/privacy-policy`, `/es/privacy-policy` → 200; one `<h1>` = WP title in that language;
   `<html lang>` `en` / `fr-CA` / `es`; `<title>` and meta description = `meta.privacy` verbatim (EN :861/:863,
-  FR :1036/:1038, ES :1046/:1048, or the re-export if the gates changed them).
+  FR :1036/:1038, ES :1046/:1048, or as moved by the 11-07/11-08 re-export; section titles govern).
 - [ ] AC-4 Heading order: H1 then H2 sections, with no skipped level (axe or a manual outline). Links are underlined or
   otherwise distinct, focus is visible, contrast is AA. Check the `mailto:` link works.
 - [ ] AC-5 Viewports 375 / 768 / 1440 for each of the 3 locales: no horizontal scroll, readable measure. Screenshots in
@@ -422,8 +448,10 @@ locally) on the Dev's own port (3100), with the 3 local pages present (W-1…W-3
   release-day runbook.
 
 Launch (Mauricio, production / preview, not the Dev):
-- [ ] AC-15 Gates G-1…G-7 closed in Notion EN → FR (→ ES), re-exported. Production pages W-0…W-3 created after a backup.
-- [ ] AC-16 §7 items 1-5 pass on the deployment to be promoted, for every enabled locale. Otherwise apply D-P4.
+- [ ] AC-15 Gates G-1…G-7 closed in Notion EN → FR before Thu 11-12 (ES: G-8 by the 12-01 go/no-go at the latest).
+  Production pages W-0…W-3 pasted from Notion after a backup. G-4b block ready in Notion EN → FR → ES.
+- [ ] AC-16 §7 items 1-5 pass on the deployment to be promoted, for every enabled locale; item 6 too if that deployment
+  includes 5e (G-4b block published first). Otherwise apply D-P4 (or hold 5e).
 
 ## Mid-phase checkpoint — Thu 11-12, ≈ 13:00 (Mauricio, ≈ 15 min)
 The Dev stops after the route works and before touching the footer:
@@ -444,31 +472,33 @@ fixes the WP body; no code change.
 | R-6 | Pages published early on the CMS domain (O-1) | Mauricio checks O-1 before production W-1 |
 | R-7 | Pasted HTML carries Notion artefacts (empty paragraphs, odd headings) | Content contract; checkpoint item 3; WP-side fix only |
 | R-8 | Preview fails "main routes 200" because the production EN page doesn't exist yet | Production W-1 before the preview check (§6) |
-| R-9 | Brevo integrated later without the policy update | 5e item 7; EN :906 |
+| R-9 | Brevo goes live (at launch or later) before the policy describes it | G-4b: location/DPA verified now, block ready in Notion EN → FR → ES; published on the WP pages before the 5e deploy; §7 item 6; 5e item 7; EN :906 |
 | R-10 | Thu 11-12 collides with 5c follow-ups or 5c-rest prep | 6-9 h agent fits one long day. The footer part can slip to Fri 11-13 without affecting the release |
 
 ## Decisions needed
-| ID | Question | Options | Recommendation |
+Decided 2026-11-04 (rev 1.1, Mauricio + Senior Architect).
+
+| ID | Question | Options | Decision |
 |---|---|---|---|
 | **D-P1** | Data source | A WP page per language (post content) · B static repo content · C new ACF field | **A** |
 | **D-P2** | Page layout | A document (H1 + body), no Hero, no final CTA · B Hero + final CTA (needs hero copy ×3 that doesn't exist) | **A** |
 | **D-P3** | Sitemap | A add `/privacy-policy` (EN) · B leave out | **A** |
 | **D-P4** | A locale fails the §7 D-L check at promote | A don't launch that locale (Plan B; EN → 12-10) · B launch with email restored (patch v2), links broken | **A** |
-| **D-P5** | Restore patch | A Dev writes v2 outside the repo + `--check` · B regenerate only if needed on release day | **A** (it costs 15 min now; on release day it costs more) |
-| **D-P6** | FR/ES page creation | A 5c §5 Duplicate → Translate independently → replace body · B WPML "+" with the native editor (blank page, no duplicate risk) | **A** (one method for all posts), **B** acceptable if Mauricio prefers |
-| **D-P7** | ADR 0002 "bookings feed Brevo" vs approved copy | A amend ADR (never) · B change copy + checkbox · C non-marketing CRM list later | **A** (Senior Architect) |
-| **D-P8** | When to create the production pages | A after gates, before the PR preview check, in the OQ-1 session · B on release day | **A** (preview needs it; release day is full) |
-| **D-P9** | Google Fonts (visitor IP to Google on every page) | A name it in the policy (G-4/G-5) · B self-host fonts in a later phase, then drop it from the policy | **A** now; B optional later |
+| **D-P5** | Restore patch | A Dev writes v2 outside the repo + `--check` · B regenerate only if needed on release day | **A** |
+| **D-P6** | FR/ES page creation | A 5c §5 Duplicate → Translate independently → replace body · B WPML "+" with the native editor (blank page, no duplicate risk) | **A** (B acceptable if Mauricio prefers) |
+| **D-P7** | ADR 0002 "bookings feed Brevo" vs approved copy | A amend ADR (never) · B change copy + checkbox · C non-marketing CRM list later | **A** — ADR 0002 amendment 1 |
+| **D-P8** | When to create the production pages | A after gates, before the PR preview check, in the OQ-1 session · B on release day | **A** |
+| **D-P9** | Google Fonts (visitor IP to Google on every page) | A name it in the policy (G-4/G-5) · B self-host fonts in a later phase, then drop it from the policy | **A** (B optional later) |
 
-No ADR is needed for this phase: no dependency, routing or data-model change. D-P7 is an amendment to ADR 0002 by the
-Senior Architect.
+No ADR is needed for this phase: no dependency, routing or data-model change. D-P7 is ADR 0002 amendment 1.
 
 ## Estimate
 | Work | Dev (agent) | Mauricio |
 |---|---:|---:|
 | Spec review | — | 30–45 min |
 | Gates G-1…G-7 (research: registry, providers/locations/DPAs, retention wording, effective date) | — | 2.5–4 h |
-| Notion edits EN → FR (→ ES final, G-8), incl. §4/§5 rewrite, "Privacy choices" removal | — (Senior Architect re-export) | 1.5–2.5 h |
+| Notion edits EN → FR (→ ES final, G-8), incl. §4/§5 rewrite, "Privacy choices" removal | — | 1.5–2.5 h |
+| G-4b: Brevo location/DPA + ready block EN → FR → ES | — | 1–1.5 h (not in the total) |
 | Local pages W-0…W-3 (+ backup) | read-only check 10 min | 45–60 min |
 | Route + api + types + tests | 2–3 h | — |
 | Checkpoint | 0.25 h | 15 min |
@@ -483,10 +513,13 @@ Against 5b §11 ("Privacy route EN/FR/ES (D-L)": 6–9 h agent / 5–8 h Maurici
 because of G-5 (the §5 rewrite and "Privacy choices" removal across the three languages) and the provider inventory.
 
 **Calendar** (estimates):
-- Thu 11-05 – Fri 11-06: spec review. D-P1…D-P9 decided. Senior Architect: D-P7 (ADR 0002 amendment).
-- Fri 11-06 – Tue 11-10: Mauricio closes G-1…G-7 in Notion EN, then FR. Re-export. (Mon/Tue are 5c days; budget the
-  gates for Fri–Sun.)
+- Wed 11-04: approved (rev 1.1). D-P1…D-P9 decided; ADR 0002 amendment 1.
+- Fri 11-06 – Sun 11-08: Mauricio closes G-1…G-7 in Notion EN, then FR (not optional), and G-4b (Brevo check + ready
+  block). G-8 (ES) may move to the 12-01 go/no-go. **Sat 11-07/Sun 11-08: the one re-export** (incl. lead-magnet copy).
+  No re-export Mon 11-09 – Wed 11-11 (5c).
 - Wed 11-11 afternoon: local pages W-0…W-3 (after the FR/ES loads and the dictionary fill).
 - **Thu 11-12: implementation**, checkpoint ≈ 13:00, report end of day (footer part may slip to Fri 11-13).
+- Week of 11-16: 5c-rest re-export carries any later `meta.privacy` change.
 - By Sun 11-22 (with the OQ-1 session): production pages EN + FR (ES if G-8 is done). PR preview check, merge.
-- Tue 12-01 go/no-go: §7 checklist + the ES decision (O-3). Thu 12-03 release.
+- Mon 11-23 – Tue 11-24: 5e. If it passes, paste the G-4b block on the WP pages before its deploy.
+- Tue 12-01 go/no-go: §7 checklist (+ item 6 if 5e ships) + the ES decision (O-3). Thu 12-03 release.
