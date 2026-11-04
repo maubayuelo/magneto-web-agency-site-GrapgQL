@@ -4,7 +4,7 @@
 // Phase 5a (spec Part 2 item 12, D1): keys changed, added or removed on purpose for the 2026 copy. Each changed or
 // added line carries its source line in docs/content/magneto-copy-en.md (commit 23b620a); Mauricio confirms them
 // (AC-20). Every other line is still the V0 value.
-// Phase 5d-lite (spec §8): Contact form/page keys from docs/content/magneto-copy-en.md at ffec355; the old contactForm
+// Phase 5d-lite (spec §8): Contact form/page keys from docs/content/magneto-copy-en.md at 637fba7; the old contactForm
 // keys (incl. the old response-time success string) are removed. Part 2: bookingModal.* added; the 5 old emailModal booking
 // keys (bookingTitle, calendlyBody, defaultBody, continueBooking, subscribe) are removed.
 // Transforms applied to the sources: JSX `&apos;` → ', `\u2014` → —, and `${expr}` / `{expr}` → {year} {n} {title} {status}.
@@ -18,7 +18,7 @@ const EN_FINGERPRINT: Record<string, string> = {
   "common.checkIconAlt": "Check icon",
   "common.loading": "Loading...",
   "common.close": "Close",
-  "common.privacyPolicy": "Privacy Policy", // Phase 5d-lite, magneto-copy-en.md:642 (ffec355)
+  "common.privacyPolicy": "Privacy Policy", // Phase 5d-lite, magneto-copy-en.md:689 (637fba7)
   "nav.about": "About",
   "nav.services": "Services",
   "nav.packages": "Packages",
@@ -55,41 +55,41 @@ const EN_FINGERPRINT: Record<string, string> = {
   "calendly.frameTitle": "Calendly scheduling",
   "forms.namePlaceholder": "Your name",
   "forms.emailPlaceholder": "you@company.com",
-  "contactForm.requiredNote": "Fields marked * are required.", // Phase 5d-lite, magneto-copy-en.md:654 (ffec355)
-  "contactForm.nameLabel": "Name", // Phase 5d-lite, magneto-copy-en.md:587 (ffec355)
-  "contactForm.emailLabel": "Email", // Phase 5d-lite, magneto-copy-en.md:591 (ffec355)
-  "contactForm.websiteLabel": "Your website (if you have one)", // Phase 5d-lite, magneto-copy-en.md:595 (ffec355)
-  "contactForm.websiteHelp": "Optional if you do not have a website yet.", // Phase 5d-lite, magneto-copy-en.md:599 (ffec355)
-  "contactForm.needLabel": "What do you need help with?", // Phase 5d-lite, magneto-copy-en.md:601 (ffec355)
-  "contactForm.needOptions.newSite": "A new website or rebuild", // Phase 5d-lite, magneto-copy-en.md:607 (ffec355)
-  "contactForm.needOptions.fixImprove": "Fix or improve my current website", // Phase 5d-lite, magneto-copy-en.md:608 (ffec355)
-  "contactForm.needOptions.care": "Ongoing website care", // Phase 5d-lite, magneto-copy-en.md:609 (ffec355)
-  "contactForm.needOptions.notSure": "Not sure yet", // Phase 5d-lite, magneto-copy-en.md:610 (ffec355)
-  "contactForm.messageLabel": "What is happening with your website, and what would you like to improve?", // Phase 5d-lite, magneto-copy-en.md:612 (ffec355)
-  "contactForm.messageHelp": "A few sentences is enough.", // Phase 5d-lite, magneto-copy-en.md:616 (ffec355)
-  "contactForm.budgetLabel": "Approximate budget", // Phase 5d-lite, magneto-copy-en.md:618 (ffec355)
-  "contactForm.budgetOptions.under1000": "Under C$1,000", // Phase 5d-lite, magneto-copy-en.md:624 (ffec355)
-  "contactForm.budgetOptions.from1000to3500": "Around C$1,000–3,500", // Phase 5d-lite, magneto-copy-en.md:625 (ffec355)
-  "contactForm.budgetOptions.from3500to8000": "Around C$3,500–8,000", // Phase 5d-lite, magneto-copy-en.md:626 (ffec355)
-  "contactForm.budgetOptions.over8000": "More than C$8,000", // Phase 5d-lite, magneto-copy-en.md:627 (ffec355)
-  "contactForm.budgetOptions.notSure": "Not sure yet", // Phase 5d-lite, magneto-copy-en.md:628 (ffec355)
-  "contactForm.budgetHelp": "A rough range is enough. It helps me suggest a realistic next step and does not create a quote. Choose Not sure yet if you are asking about ongoing care.", // Phase 5d-lite, magneto-copy-en.md:630 (ffec355)
-  "contactForm.selectPlaceholder": "Select an option", // Phase 5d-lite, magneto-copy-en.md:652 (ffec355)
-  "contactForm.submit": "Send project details", // Phase 5d-lite, magneto-copy-en.md:632 (ffec355)
-  "contactForm.privacyText": "I’ll use the information you provide to review and respond to your project inquiry. Sending this form does not subscribe you to marketing emails.", // Phase 5d-lite, magneto-copy-en.md:642 (ffec355)
-  "contactForm.successTitle": "Thank you. Your project details were sent.", // Phase 5d-lite, magneto-copy-en.md:646 (ffec355)
-  "contactForm.successBody": "I’ll review them and reply by email with a recommended next step.", // Phase 5d-lite, magneto-copy-en.md:648 (ffec355)
-  "contactForm.errors.nameRequired": "Please enter your name.", // Phase 5d-lite, magneto-copy-en.md:656 (ffec355)
-  "contactForm.errors.emailInvalid": "Please enter a valid email address.", // Phase 5d-lite, magneto-copy-en.md:658 (ffec355)
-  "contactForm.errors.needRequired": "Please choose what you need help with.", // Phase 5d-lite, magneto-copy-en.md:660 (ffec355)
-  "contactForm.errors.messageRequired": "Please tell me a little about your website or project.", // Phase 5d-lite, magneto-copy-en.md:662 (ffec355)
-  "contactForm.errors.budgetRequired": "Please choose an approximate budget, or Not sure yet.", // Phase 5d-lite, magneto-copy-en.md:664 (ffec355)
-  "contactForm.errors.sendFailed": "Something went wrong and your message was not sent. Please try again, or book a free strategy call instead.", // Phase 5d-lite, magneto-copy-en.md:666 (ffec355)
+  "contactForm.requiredNote": "Fields marked * are required.", // Phase 5d-lite, magneto-copy-en.md:701 (637fba7)
+  "contactForm.nameLabel": "Name", // Phase 5d-lite, magneto-copy-en.md:634 (637fba7)
+  "contactForm.emailLabel": "Email", // Phase 5d-lite, magneto-copy-en.md:638 (637fba7)
+  "contactForm.websiteLabel": "Your website (if you have one)", // Phase 5d-lite, magneto-copy-en.md:642 (637fba7)
+  "contactForm.websiteHelp": "Optional if you do not have a website yet.", // Phase 5d-lite, magneto-copy-en.md:646 (637fba7)
+  "contactForm.needLabel": "What do you need help with?", // Phase 5d-lite, magneto-copy-en.md:648 (637fba7)
+  "contactForm.needOptions.newSite": "A new website or rebuild", // Phase 5d-lite, magneto-copy-en.md:654 (637fba7)
+  "contactForm.needOptions.fixImprove": "Fix or improve my current website", // Phase 5d-lite, magneto-copy-en.md:655 (637fba7)
+  "contactForm.needOptions.care": "Ongoing website care", // Phase 5d-lite, magneto-copy-en.md:656 (637fba7)
+  "contactForm.needOptions.notSure": "Not sure yet", // Phase 5d-lite, magneto-copy-en.md:657 (637fba7)
+  "contactForm.messageLabel": "What is happening with your website, and what would you like to improve?", // Phase 5d-lite, magneto-copy-en.md:659 (637fba7)
+  "contactForm.messageHelp": "A few sentences is enough.", // Phase 5d-lite, magneto-copy-en.md:663 (637fba7)
+  "contactForm.budgetLabel": "Approximate budget", // Phase 5d-lite, magneto-copy-en.md:665 (637fba7)
+  "contactForm.budgetOptions.under1000": "Under C$1,000", // Phase 5d-lite, magneto-copy-en.md:671 (637fba7)
+  "contactForm.budgetOptions.from1000to3500": "Around C$1,000–3,500", // Phase 5d-lite, magneto-copy-en.md:672 (637fba7)
+  "contactForm.budgetOptions.from3500to8000": "Around C$3,500–8,000", // Phase 5d-lite, magneto-copy-en.md:673 (637fba7)
+  "contactForm.budgetOptions.over8000": "More than C$8,000", // Phase 5d-lite, magneto-copy-en.md:674 (637fba7)
+  "contactForm.budgetOptions.notSure": "Not sure yet", // Phase 5d-lite, magneto-copy-en.md:675 (637fba7)
+  "contactForm.budgetHelp": "A rough range is enough. It helps me suggest a realistic next step and does not create a quote. Choose Not sure yet if you are asking about ongoing care.", // Phase 5d-lite, magneto-copy-en.md:677 (637fba7)
+  "contactForm.selectPlaceholder": "Select an option", // Phase 5d-lite, magneto-copy-en.md:699 (637fba7)
+  "contactForm.submit": "Send project details", // Phase 5d-lite, magneto-copy-en.md:679 (637fba7)
+  "contactForm.privacyText": "I’ll use the information you provide to review and respond to your project inquiry. Sending this form does not subscribe you to marketing emails.", // Phase 5d-lite, magneto-copy-en.md:689 (637fba7)
+  "contactForm.successTitle": "Thank you. Your project details were sent.", // Phase 5d-lite, magneto-copy-en.md:693 (637fba7)
+  "contactForm.successBody": "I’ll review them and reply by email with a recommended next step.", // Phase 5d-lite, magneto-copy-en.md:695 (637fba7)
+  "contactForm.errors.nameRequired": "Please enter your name.", // Phase 5d-lite, magneto-copy-en.md:703 (637fba7)
+  "contactForm.errors.emailInvalid": "Please enter a valid email address.", // Phase 5d-lite, magneto-copy-en.md:705 (637fba7)
+  "contactForm.errors.needRequired": "Please choose what you need help with.", // Phase 5d-lite, magneto-copy-en.md:707 (637fba7)
+  "contactForm.errors.messageRequired": "Please tell me a little about your website or project.", // Phase 5d-lite, magneto-copy-en.md:709 (637fba7)
+  "contactForm.errors.budgetRequired": "Please choose an approximate budget, or Not sure yet.", // Phase 5d-lite, magneto-copy-en.md:711 (637fba7)
+  "contactForm.errors.sendFailed": "Something went wrong and your message was not sent. Please try again, or book a free strategy call instead.", // Phase 5d-lite, magneto-copy-en.md:713 (637fba7)
   "contactForm.errors.sendFailedCta": "book a free strategy call", // Phase 5d-lite rev 3 A6: derived substring of magneto-copy-en.md:666
-  "contactPage.preferToTalk": "Prefer to talk?", // Phase 5d-lite, magneto-copy-en.md:583 (ffec355)
-  "contactPage.supporting.reply": "I read every inquiry personally and reply by email with a recommended next step.", // Phase 5d-lite, magneto-copy-en.md:636 (ffec355)
-  "contactPage.supporting.languages": "You can write in English, French or Spanish.", // Phase 5d-lite, magneto-copy-en.md:638 (ffec355)
-  "contactPage.supporting.notAQuote": "This is not a quote or an automatic sales call.", // Phase 5d-lite, magneto-copy-en.md:640 (ffec355)
+  "contactPage.preferToTalk": "Prefer to talk?", // Phase 5d-lite, magneto-copy-en.md:630 (637fba7)
+  "contactPage.supporting.reply": "I read every inquiry personally and reply by email with a recommended next step.", // Phase 5d-lite, magneto-copy-en.md:683 (637fba7)
+  "contactPage.supporting.languages": "You can write in English, French or Spanish.", // Phase 5d-lite, magneto-copy-en.md:685 (637fba7)
+  "contactPage.supporting.notAQuote": "This is not a quote or an automatic sales call.", // Phase 5d-lite, magneto-copy-en.md:687 (637fba7)
   "emailModal.errors.emailInvalid": "Please enter a valid email",
   "emailModal.errors.subscribeFailed": "Failed to subscribe ({status})",
   "emailModal.errors.unknown": "Subscription failed",
@@ -107,12 +107,12 @@ const EN_FINGERPRINT: Record<string, string> = {
   "emailModal.emailLabel": "Email",
   "emailModal.submitting": "Submitting...",
   "emailModal.continueDownload": "Continue to Download the Guide",
-  "bookingModal.body": "Answer three short questions so we can focus the conversation on your website. Then choose a time for a free 30-minute call.", // Phase 5d-lite, magneto-copy-en.md:704 (ffec355)
-  "bookingModal.websiteHelp": "optional", // Phase 5d-lite, magneto-copy-en.md:709 (ffec355)
-  "bookingModal.problemLabel": "What is the main website problem or goal?", // Phase 5d-lite, magneto-copy-en.md:715 (ffec355)
-  "bookingModal.problemHelp": "One or two sentences is enough.", // Phase 5d-lite, magneto-copy-en.md:716 (ffec355)
-  "bookingModal.continue": "Continue to scheduling", // Phase 5d-lite, magneto-copy-en.md:718 (ffec355)
-  "bookingModal.privacyText": "Your answers are passed to Calendly with your booking to prepare for the call. Calendly will ask for your name and email to schedule it. Booking a call does not subscribe you to marketing emails.", // Phase 5d-lite, magneto-copy-en.md:885 (ffec355)
+  "bookingModal.body": "Answer three short questions so we can focus the conversation on your website. Then choose a time for a free 30-minute call.", // Phase 5d-lite, magneto-copy-en.md:751 (637fba7)
+  "bookingModal.websiteHelp": "optional", // Phase 5d-lite, magneto-copy-en.md:756 (637fba7)
+  "bookingModal.problemLabel": "What is the main website problem or goal?", // Phase 5d-lite, magneto-copy-en.md:762 (637fba7)
+  "bookingModal.problemHelp": "One or two sentences is enough.", // Phase 5d-lite, magneto-copy-en.md:763 (637fba7)
+  "bookingModal.continue": "Continue to scheduling", // Phase 5d-lite, magneto-copy-en.md:765 (637fba7)
+  "bookingModal.privacyText": "Your answers are passed to Calendly with your booking to prepare for the call. Calendly will ask for your name and email to schedule it. Booking a call does not subscribe you to marketing emails.", // Phase 5d-lite, magneto-copy-en.md:958 (637fba7)
   "notFound.heading": "404",
   "notFound.body": "This page could not be found.",
   "notFound.metaTitle": "404: This page could not be found.",

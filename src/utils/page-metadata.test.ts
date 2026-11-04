@@ -1,7 +1,8 @@
 /// <reference types="vitest" />
 // 5b §6, AC-10/11/25: every route's generateMetadata returns the approved SEO copy of its locale, mirrored to Open Graph
-// and Twitter. Expected values are read from the copy export (docs/content @ ffec355; 5b spec E6 lines re-pinned after the
-// 2026-11-02 re-export: EN +24 from old 644, +26 from old 861; FR/ES +18 from old 788/804), not retyped.
+// and Twitter. Expected values are read from the copy export (docs/content @ 637fba7; 5b spec E6 lines re-pinned after the
+// 2026-11-04 re-export: EN +43 from old 120, +45 from old 228, +47 from old 406, +73 from old 865; FR +24 from old 102;
+// ES +18 from old 114), not retyped.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { Metadata } from 'next';
@@ -22,9 +23,9 @@ import { generateMetadata as caseMeta } from '@/app/[locale]/projects/[slug]/pag
 const FILES: Record<Locale, string> = { en: 'magneto-copy-en.md', fr: 'magneto-copy-fr-CA.md', es: 'magneto-copy-es.md' };
 // SEO block heading line; title = +2, description = +4 (E6).
 const BLOCKS = {
-  en: { home: 139, projects: 156, about: 253, services: 427, packages: 549, contact: 676, dangel: 997, trepied: 1108, shamanicca: 1243 },
-  fr: { home: 119, projects: 125, about: 212, services: 371, packages: 488, contact: 814, dangel: 561, trepied: 633, shamanicca: 705 },
-  es: { home: 131, projects: 137, about: 224, services: 383, packages: 498, contact: 830, dangel: 573, trepied: 647, shamanicca: 721 },
+  en: { home: 182, projects: 199, about: 298, services: 474, packages: 596, contact: 723, dangel: 1070, trepied: 1181, shamanicca: 1316 },
+  fr: { home: 143, projects: 149, about: 236, services: 395, packages: 512, contact: 838, dangel: 585, trepied: 657, shamanicca: 729 },
+  es: { home: 149, projects: 155, about: 242, services: 401, packages: 516, contact: 848, dangel: 591, trepied: 665, shamanicca: 739 },
 } as const;
 type Block = keyof (typeof BLOCKS)['en'];
 
@@ -56,7 +57,7 @@ describe('page generateMetadata (EN/FR/ES)', () => {
     });
   }
 
-  it.each(LOCALES)('%s fallbackDescription = the Home meta description (EN 143 / FR 123 / ES 135)', (locale) => {
+  it.each(LOCALES)('%s fallbackDescription = the Home meta description (EN 186 / FR 147 / ES 153)', (locale) => {
     expect(getDictionary(locale).meta.site.fallbackDescription).toBe(exported(locale, 'home').description);
   });
 

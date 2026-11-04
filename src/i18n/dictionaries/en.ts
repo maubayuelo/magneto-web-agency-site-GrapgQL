@@ -75,7 +75,7 @@ export const en = {
     emailPlaceholder: 'you@company.com',
   },
   contactForm: {
-    // 5d-lite §8 (spec docs/specs/phase-5d-lite-contact-modal.md): verbatim from docs/content/magneto-copy-en.md (ffec355).
+    // 5d-lite §8 (spec docs/specs/phase-5d-lite-contact-modal.md): verbatim from docs/content/magneto-copy-en.md (637fba7).
     // Option labels for the stable codes in src/utils/inquiry.ts.
     requiredNote: 'Fields marked * are required.',
     nameLabel: 'Name',
@@ -147,7 +147,7 @@ export const en = {
     submitting: 'Submitting...',
     continueDownload: 'Continue to Download the Guide',
   },
-  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export ffec355 (EN 704/709/715/716/718/885).
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 637fba7 (EN 751/756/762/763/765/958).
   // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
   bookingModal: {
     body: 'Answer three short questions so we can focus the conversation on your website. Then choose a time for a free 30-minute call.',

@@ -1,8 +1,8 @@
 {
   "source": {
     "file": "docs/content/magneto-copy-en.md",
-    "commit": "ffec355",
-    "sha256": "9f9d57eed41678f0441b91a338f086cfbcdc2834fb4812b095848be76e687ca9"
+    "commit": "637fba7",
+    "sha256": "d3516151842b7c099831ec6e99218c973120617eb3809996d532de251145ecd0"
   },
   "spec": "docs/specs/phase-5c-loader.md rev 2 + docs/specs/phase-5b-services-packages-seo.md rev 9 §5.4 override",
   "format": "fields[].value is the raw ACF value; repeater rows are keyed by sub-field key; subfields maps sub-field key → GraphQL name (\"[]\" = GraphQL list).",
@@ -15,55 +15,55 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "EN 272",
+          "src": "EN 317",
           "value": "Web services built around what your business actually needs."
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "EN 274",
+          "src": "EN 319",
           "value": "Build a stronger website, improve the one you already have, or keep it working with reliable ongoing care."
         },
         {
           "key": "field_689a2e0960321",
           "label": "heroContent.ctaTextHero",
-          "src": "EN 276 (5b §5.4 override)",
+          "src": "EN 321 (5b §5.4 override)",
           "value": "Book a Free Strategy Call"
         },
         {
           "key": "field_68cb1f8940e08",
           "label": "pageintrotext.pageIntroText",
-          "src": "EN 280",
+          "src": "EN 325",
           "value": "Start with the problem — not a package."
         },
         {
           "key": "field_p5_pageintrotext_intro_body_html",
           "label": "pageintrotext.introBodyHtml",
-          "src": "EN 282-286",
+          "src": "EN 327-331",
           "value": "<p>Magneto helps Montreal service businesses choose the most sensible path for their website.</p>\n<p>That may mean building something new, fixing specific problems in an existing site, or providing ongoing care once the website is stable.</p>\n<p>The three core services are <strong>BUILD, FIX and CARE</strong>.</p>"
         },
         {
           "key": "field_p5_servicesservicedetails_core_heading",
           "label": "servicesServiceDetails.coreHeading",
-          "src": "EN 288",
+          "src": "EN 333",
           "value": "Core Services"
         },
         {
           "key": "field_p5_servicesservicedetails_supporting_heading",
           "label": "servicesServiceDetails.supportingHeading",
-          "src": "EN 353",
+          "src": "EN 398",
           "value": "Included Where Your Project Needs It"
         },
         {
           "key": "field_p5_servicesservicedetails_supporting_intro",
           "label": "servicesServiceDetails.supportingIntro",
-          "src": "EN 355",
+          "src": "EN 400",
           "value": "These are supporting capabilities, not separate Magneto packages. They are included or scoped when they support the website and business goal."
         },
         {
           "key": "field_689a5f0dc2a9b",
           "label": "servicesServiceDetails.services",
-          "src": "EN 290-312, 313-340, 341-352, 357-366, 367-378, 379-386, 387-394",
+          "src": "EN 335-357, 358-385, 386-397, 402-411, 412-423, 424-431, 432-439",
           "subfields": {
             "field_689a5f28c2a9c": "title",
             "field_p5_servicesservicedetails_services_heading": "heading",
@@ -149,37 +149,37 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "EN 448",
+          "src": "EN 495",
           "value": "Website Packages & Pricing"
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "EN 450 + 452",
+          "src": "EN 497 + 499",
           "value": "Clear starting points for building, improving or caring for your website.\n\nEvery project starts with understanding the problem. The prices and plan details below show where your project may fit before a proposal is prepared."
         },
         {
           "key": "field_689a2e0960321",
           "label": "heroContent.ctaTextHero",
-          "src": "EN 454",
+          "src": "EN 501",
           "value": "Tell me about your project"
         },
         {
           "key": "field_p5_herocontent_hero_cta_path",
           "label": "heroContent.ctaPath",
-          "src": "EN 454 (B1: /contact)",
+          "src": "EN 501 (B1: /contact)",
           "value": "/contact"
         },
         {
           "key": "field_p5_pageintrotext_intro_body_html",
           "label": "pageintrotext.introBodyHtml",
-          "src": "EN 456",
+          "src": "EN 503",
           "value": "<p>All prices are in Canadian dollars. Applicable taxes are added when required.</p>"
         },
         {
           "key": "field_689a4b0bfdf48",
           "label": "packagesPackageFeatures.packagesElements",
-          "src": "EN 460-471, 472-483, 484-501",
+          "src": "EN 507-518, 519-530, 531-548",
           "subfields": {
             "field_689a4b21fdf49": "name",
             "field_p5_packagespackagefeatures_packages_elements_heading": "heading",
@@ -218,7 +218,7 @@
         {
           "key": "field_p5_packagescontentsections_sections",
           "label": "packagesContentSections.sections",
-          "src": "EN 502-511, 512-528",
+          "src": "EN 549-558, 559-575",
           "subfields": {
             "field_p5_packagescontentsections_sections_heading": "heading",
             "field_p5_packagescontentsections_sections_body_html": "bodyHtml"
@@ -269,19 +269,19 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "EN 166",
+          "src": "EN 209",
           "value": "About Magneto Web Consulting"
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "EN 168",
+          "src": "EN 211",
           "value": "Website strategy, UX/UI and development with one point of contact from the first conversation through launch."
         },
         {
           "key": "field_689a2e0960321",
           "label": "heroContent.ctaTextHero",
-          "src": "EN 170 (5b §5.4 override)",
+          "src": "EN 213 (5b §5.4 override)",
           "value": "Book a Free Strategy Call"
         }
       ]
@@ -319,13 +319,13 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "EN 579",
+          "src": "EN 626",
           "value": "Tell me about your website project."
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "EN 581",
+          "src": "EN 628",
           "value": "Share a few details about your website and what you want to improve. I’ll reply with the most sensible next step."
         }
       ]
