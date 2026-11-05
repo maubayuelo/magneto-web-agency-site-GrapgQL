@@ -1,14 +1,17 @@
 # Phase 5e — Lead magnet + Brevo MVP
 
-- **Status: Draft (rev 0.4)** — 2026-11-05; Mauricio's written acceptance of §6.3 residual risks R-1…R-11, decisions
-  D-E10/D-E11 and Senior Architect review of this revision pending.
+- **Status: Approved (rev 0.5)** — 2026-11-05. Senior Architect reviewed rev 0.4 (`469e7f6`) in full and approved it
+  with no required fixes. Mauricio accepted §6.3 residual risks R-1…R-11 in writing on 2026-11-05. D-E10 = yes
+  ([ADR 0008](../adr/0008-turnstile-lead-magnet.md), Accepted); D-E11 = A (Managed + `appearance: interaction-only`).
 - **Branch:** `spec/phase-5e-lead-magnet-brevo`; inspected HEAD `3d2b15d` (rev 0.3). Application code evidence in §2 is
   unchanged since `e04dae3`; §2 adds three Turnstile-related rows checked at `3d2b15d`.
 - **Review provenance:** Senior Architect verdict on rev 0.1: **CHANGES REQUIRED**. Mauricio supplied the product
   decisions in §1 on November 4. On November 5, the Senior Architect directed a **proportionate "lean Option A"** for
   D-E4. The Senior Architect then reviewed rev 0.3 (`3d2b15d`) in full and **accepted it with changes**: Mauricio's
   decisions of November 5 (Cloudflare Turnstile, no persistent per-email limits, Brevo Free retry queue, 15-minute
-  idempotency bucket, Brevo support ticket), applied in this revision. None of these is technical approval of rev 0.4.
+  idempotency bucket, Brevo support ticket), applied in this revision. None of these is technical approval of rev 0.4. On
+  2026-11-05 the Senior Architect reviewed rev 0.4 (`469e7f6`) in full and **approved it with no required fixes**;
+  rev 0.5 records that approval and the closing decisions without changing the design.
 - **Authority:** `AGENTS.md`, [Privacy Route rev 1.2 §8](privacy-route.md#8-brevo-lead-magnet--optional-newsletter--policy-impact-only),
   [ADR 0002 amendment 1](../adr/0002-brevo-replaces-mailchimp.md), [ADR 0005](../adr/0005-ui-dictionaries.md).
 - **Copy authority for implementation:** the **upcoming 5c-rest canonical re-export**, with its actual commit and
@@ -18,6 +21,10 @@
 
 ## Revision history
 
+- **rev 0.5 (2026-11-05) — Approved.** Senior Architect approved rev 0.4 (`469e7f6`) in full, no required fixes.
+  Recorded: Mauricio's written acceptance of R-1…R-11 on 2026-11-05 (§6, §6.3, §11 D-E4); D-E10 = yes →
+  [ADR 0008](../adr/0008-turnstile-lead-magnet.md) written, Accepted; D-E11 = A (Managed + `interaction-only`); B-1 done
+  (§12); hosting note added (§14). No design, scope, acceptance or estimate change.
 - **rev 0.4 (2026-11-05)** — Senior Architect accepted rev 0.3 with changes; Mauricio's decisions of November 5 applied:
   (1) **Cloudflare Turnstile**, server-verified, added as a lean-A control in front of **both** the guide send and the DOI
   call; fail closed (§6.1, §8.1). No npm dependency: plain script loaded on demand + `fetch` to siteverify (§5 F-10…F-15).
@@ -195,7 +202,7 @@ are configured — items marked **Verify** are checked once in the account or th
 | F-10 | Turnstile server verification | `POST https://challenges.cloudflare.com/turnstile/v0/siteverify`, JSON or form body; required `secret`, `response`; optional `remoteip`, `idempotency_key`. Response: `success`, `challenge_ts`, `hostname`, `action`, `cdata`, `error-codes`. "The client-side widget alone does not protect your forms" | [C1] | Server verifies every request before any Brevo call. Check `success`, `hostname` = trusted origin host, `action` = `lead_magnet`. **Do not send `remoteip`** (optional; keeps "the application handles no IP" true, §7.1). No `idempotency_key`: we never retry siteverify |
 | F-11 | Token lifetime and reuse | Token valid **300 s**, **single use**; replay or expiry → `timeout-or-duplicate`; max length **2,048** chars | [C1] | Reject missing/oversize tokens without calling siteverify. Every submission, including a user re-submission after a partial outcome (R-8), needs a fresh token: client resets the widget after each response |
 | F-12 | Error codes | `missing-input-secret`, `invalid-input-secret` (configuration); `missing-input-response`, `invalid-input-response`, `timeout-or-duplicate` (token); `bad-request`; `internal-error` ("retry the request") | [C1] | Token codes → 403 `verification_failed`, no sends. Secret codes, `bad-request`, `internal-error`, network error, timeout, non-2xx or unparsable body → **fail closed**: 503 "temporarily unavailable", no sends, **no retry** (lean A; accepted as R-11) |
-| F-13 | Client script and modes | Script must be loaded from exactly `https://challenges.cloudflare.com/turnstile/v0/api.js` — "proxying or caching this file will cause Turnstile to fail". Explicit rendering (`?render=explicit`, `turnstile.render/reset/remove`) is recommended for SPAs and conditional forms. Widget **modes** are a dashboard setting per widget: **Managed** (recommended; checkbox only for risky visitors), Non-interactive, **Invisible**. Client `appearance`: `always` / `execute` / `interaction-only`; options `action` (≤32 chars), `language` (`auto` or ISO code), `refresh-expired` (default `auto`), `retry`, `tabindex`. Invisible mode: "you must reference Cloudflare's Turnstile Privacy Addendum in your own privacy policy" | [C2], [C3] | No npm wrapper: load the script on demand with the existing `thirdParty.loadScript` and render explicitly in the guide dialog. Mode is D-E11 (recommended **Managed + `appearance: interaction-only`**). `language`: EN → `en`, FR-CA → `fr` (Cloudflare lists `fr`/`fr-fr`, no `fr-ca`), ES → `es` [C8] |
+| F-13 | Client script and modes | Script must be loaded from exactly `https://challenges.cloudflare.com/turnstile/v0/api.js` — "proxying or caching this file will cause Turnstile to fail". Explicit rendering (`?render=explicit`, `turnstile.render/reset/remove`) is recommended for SPAs and conditional forms. Widget **modes** are a dashboard setting per widget: **Managed** (recommended; checkbox only for risky visitors), Non-interactive, **Invisible**. Client `appearance`: `always` / `execute` / `interaction-only`; options `action` (≤32 chars), `language` (`auto` or ISO code), `refresh-expired` (default `auto`), `retry`, `tabindex`. Invisible mode: "you must reference Cloudflare's Turnstile Privacy Addendum in your own privacy policy" | [C2], [C3] | No npm wrapper: load the script on demand with the existing `thirdParty.loadScript` and render explicitly in the guide dialog. Mode: D-E11 = A, **Managed + `appearance: interaction-only`**. `language`: EN → `en`, FR-CA → `fr` (Cloudflare lists `fr`/`fr-fr`, no `fr-ca`), ES → `es` [C8] |
 | F-14 | Keys, hostnames, testing, plan | Free plan: up to 20 widgets, unlimited challenges, **10 hostnames per widget**, no "any hostname" widget. A hostname authorizes itself **and all its subdomains**; no wildcards. Dummy keys for tests/local: site `1x00000000000000000000BB` (invisible pass) / `2x00000000000000000000BB` (invisible fail); secret `1x…AA` (pass), `2x…AA` (fail), `3x…AA` ("token already spent"); dummy site keys work on any domain, including `localhost` | [C4], [C5] | **Verify** the existing Vercel `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (legacy site): owner account, hostnames, mode, matching secret. Never add `vercel.app` as a hostname (authorizes every Vercel site); add only the exact Preview host used for the controlled test. Local and CI use dummy keys / mocks |
 | F-15 | Cloudflare data handling | Turnstile Privacy Addendum (last updated June 18, 2025): processes "Signals" such as **client IP address, TLS fingerprint, User-Agent, sitekey and origin**; does not access form entries. Cloudflare is **processor** for bot detection (site operator = controller) and **controller** for improving Turnstile (legitimate interests). Signals described as "strictly necessary". Cloudflare states Turnstile is WCAG 2.2 AA compliant | [C6], [C7] | Cloudflare is a new provider: EFVP row and G-4b line (§7.2, §8). Not analytics: not gated by the 5f consent banner, but disclosed. Transfer/location and DPA applicability to a free self-serve widget: **to verify** (Mauricio, EFVP). Accessibility is checked, not assumed (E-7) |
 
@@ -263,7 +270,7 @@ reduces nothing. A written answer that describes a §6.2 blocker is treated as o
 existing Brevo + Vercel features **plus Cloudflare Turnstile** as one additional provider. No new store, npm
 dependency, queue or persistent per-email limit. Rev 0.2's options B (shared TTL counters/reservations) and C (defer as
 the default) remain withdrawn; deferral remains the outcome only if a §6.2 blocker is observed.
-**Pending:** Mauricio's written acceptance of §6.3 residual risks R-1…R-11 (recorded in §11 when given).
+**Accepted:** Mauricio accepted §6.3 residual risks R-1…R-11 in writing on 2026-11-05 (§11, D-E4).
 
 ### 6.1 Controls
 
@@ -297,7 +304,7 @@ demonstrations, reservation holding after crash, and control-outage behavior for
 If one is observed, 5e stays off (website unaffected) and the spec returns for review. Do not work around it with
 direct subscription or suppression changes.
 
-### 6.3 Accepted residual risks — for Mauricio's approval
+### 6.3 Accepted residual risks — accepted by Mauricio in writing, 2026-11-05
 
 | ID | Residual risk | Why accepted / bound | Mitigation that remains |
 | --- | --- | --- | --- |
@@ -310,7 +317,7 @@ direct subscription or suppression changes.
 | R-7 | The Vercel WAF rule protects **Production only**; Preview relies on validation, honeypot, origin, Turnstile (only where the widget lists the Preview host; otherwise Preview cannot verify and fails closed) and quota | Preview URLs are not publicised; Preview real sends are limited to Mauricio's controlled test | Feature off in Preview except during the controlled test |
 | R-8 | **Partial outcomes** (guide sent, DOI failed, or the reverse) are shown as such; the visitor may re-submit (with a fresh Turnstile token) to retry DOI, which re-sends nothing for the guide within the same 15-min bucket (`duplicate`) but may send a second DOI | Independent actions by design (§3) | Approved partial-outcome copy |
 | R-9 | **Brevo retry queue (new)**: once the 300/day quota is used, up to 1,000 sends may be queued and delivered **late**; beyond that they are **not delivered**, possibly while the API still reports acceptance (behavior **to verify**, F-6). The visitor may see "accepted" and receive nothing | Free plan; traffic far below quota in normal use; exhaustion implies abuse (R-4) | "Accepted" copy never promises immediate/guaranteed receipt (§1 item 2); Mauricio watches Brevo's quota/log; kill switches |
-| R-10 | **Turnstile false positives (new)**: some real visitors cannot obtain or pass a token — JavaScript disabled, `challenges.cloudflare.com` blocked by an extension/network/firewall, privacy browsers, VPN/Tor, unsupported browsers, or a managed challenge they cannot complete — and so **cannot request the guide**. In Invisible mode a failing visitor has no interactive fallback | Bounded loss of a free guide; no data harm | Recommended Managed + `interaction-only` (D-E11) gives a checkbox fallback; neutral "could not verify — try again" copy; the site, booking and Contact work without Turnstile |
+| R-10 | **Turnstile false positives (new)**: some real visitors cannot obtain or pass a token — JavaScript disabled, `challenges.cloudflare.com` blocked by an extension/network/firewall, privacy browsers, VPN/Tor, unsupported browsers, or a managed challenge they cannot complete — and so **cannot request the guide**. In Invisible mode a failing visitor has no interactive fallback | Bounded loss of a free guide; no data harm | Managed + `interaction-only` (D-E11 = A) gives a checkbox fallback; neutral "could not verify — try again" copy; the site, booking and Contact work without Turnstile |
 | R-11 | **Cloudflare dependency (new)**: a Turnstile/siteverify outage or a hostname/key misconfiguration makes the guide **unavailable** (fail closed by design). Cloudflare also processes visitor signals (IP, TLS fingerprint, UA) and acts as **controller** for improving Turnstile (F-15) | Fail-closed is required (Mauricio decision 1); disclosure via G-4b and EFVP | "Temporarily unavailable" copy; E-18 config check; feature flag; EFVP row (§7.2) |
 
 ## 7. Consent evidence, retention, CASL and EFVP
@@ -444,7 +451,8 @@ After technical approval, the MVP may touch:
 - `.env.local.example` placeholders (incl. `TURNSTILE_SECRET_KEY` and the `NEXT_PUBLIC_TURNSTILE_SITE_KEY` comment),
   focused booking/Contact isolation tests, and `docs/reports/phase-5e-lead-magnet-brevo.md` (includes the §7.1 export
   procedure, the observed Brevo/WAF/Turnstile results and any written Brevo ticket answer, §5.2).
-- If D-E10 = ADR: `docs/adr/0008-turnstile-lead-magnet.md` (written by the Architect/Senior, not the Dev).
+- D-E10 = yes: `docs/adr/0008-turnstile-lead-magnet.md` is written (Accepted, 2026-11-05). The Dev reads it and does
+  not edit it.
 
 No ACF schema/WordPress loader change, framework migration, new npm package, CSP/`next.config.ts` change or unrelated
 known-debt cleanup. Retain Nodemailer for Contact. No Turnstile on Contact/booking (5d-lite §7 stays as written).
@@ -479,28 +487,28 @@ observed counts; redact test PII. Rebase and recheck shared files after 5c-rest/
 
 ## 11. Decision register
 
-| ID | Status at rev 0.4 | Remaining action |
+| ID | Status at rev 0.5 | Remaining action |
 | --- | --- | --- |
 | D-E1 | **Resolved A — Mauricio, November 4** | Test both operations (E-1) |
 | D-E2 | **Confirmed A — Mauricio, November 4**; native DOI, only Newsletter | E-11/E-12 observations (or written Brevo answer, §5.2); no single-opt-in alternative |
 | D-E3 | **Confirmed A — Mauricio, November 4**; immutable static same-origin PDFs | Supply and approve each language asset/template; retire proxies |
-| D-E4 | **Resolved lean A + Turnstile — Senior Architect direction and Mauricio decisions, November 5** (§6). Option B withdrawn, no shared store | **Mauricio accepts R-1…R-11 in writing** (date here); Senior review of rev 0.4 |
+| D-E4 | **Resolved lean A + Turnstile — Senior Architect direction and Mauricio decisions, November 5** (§6). Option B withdrawn, no shared store | **Done:** Mauricio accepted R-1…R-11 in writing on **2026-11-05** (§6.3); Senior Architect approved rev 0.4 (`469e7f6`), no required fixes |
 | D-E5 | **Reuse section/modal confirmed; final content mapping OPEN** | Map later 5c-rest copy to existing ACF/dictionaries |
 | D-E6 | **PARTIAL — address updated in Notion; DPA/EFVP research advanced** | Retention decisions + EFVP sign-off incl. **Cloudflare row** (§7.2); §7.1 export procedure accepted |
 | D-E7 | **OPEN — final release package** | Approve PDFs, guide/DOI templates, outcome copy (**7 states**, §3.2), DOI redirect page, optional form-level Turnstile notice |
 | D-E8 | **OPEN — initial offered locales** | Independent readiness gates; FR-CA/ES editorial approval pending |
 | D-E9 | **OPEN — capacity/window** | Agree checkout ownership and capacity (§13) |
-| **D-E10** | **OPEN — ADR for Turnstile?** Turnstile adds a third-party runtime script and a data processor (no npm package). 5d-lite §7 recorded that Turnstile "needs an ADR, a Privacy Policy provider entry and consent review". **Architect recommends a short ADR 0008** (scope: lead-magnet form only; fail closed; not consent-gated; no wrapper package; reuse conditions for Contact later) | Senior Architect decides; if yes, ADR drafted before implementation starts |
-| **D-E11** | **OPEN — widget mode.** Options: (A) **Managed + `appearance: interaction-only`** — most visitors see nothing, risky ones get a checkbox (Cloudflare's recommended mode; lower R-10); (B) **Invisible** — never visible, no fallback for false positives, privacy-addendum reference mandatory. **Recommended: A** | Mauricio sets the mode in the Cloudflare dashboard; recorded in E-18 |
+| **D-E10** | **Resolved: yes — Senior Architect, 2026-11-05.** [ADR 0008](../adr/0008-turnstile-lead-magnet.md) (Accepted): lead-magnet form only; server-verified, fail closed; not consent-gated (security/necessary purpose, disclosed in the privacy policy); no npm wrapper; hostnames = Production + exact Preview host, never `vercel.app`; reuse for Contact needs a new decision | None; Privacy Policy provider entry stays in G-4b (B-6) |
+| **D-E11** | **Resolved A — 2026-11-05: Managed mode + `appearance: interaction-only`** (most visitors see nothing; risky ones get a checkbox; lower R-10). Invisible (B) rejected | Mauricio sets Managed in the Cloudflare dashboard (B-4); recorded in E-18 |
 
 ADR status: lean A adds no npm dependency, routing change or data model; Turnstile adds a provider/runtime script →
-see D-E10. (`@vercel/firewall` would still need one — §14.)
+ADR 0008 (D-E10). (`@vercel/firewall` would still need one — §14.)
 
 ## 12. Remaining 5e launch blockers and checkpoints
 
 | Blocker | Owner / evidence required |
 | --- | --- |
-| B-1 Technical approval | Senior Architect: rev 0.4 + D-E10. Mauricio: R-1…R-11 accepted; D-E11 chosen |
+| B-1 Technical approval | **Done 2026-11-05.** Senior Architect approved rev 0.4 (`469e7f6`), no required fixes; D-E10 = ADR 0008 Accepted. Mauricio accepted R-1…R-11 in writing; D-E11 = A |
 | B-2 Later canonical export and mapping | Content owner/Dev: 5c-rest export SHA, approved locale text (7 states), synchronized address, D-E5 mapping and re-pinned tests |
 | B-3 Per-language assets/templates | Mauricio/editorial: final PDF, guide/DOI/outcome copy, destinations; FR-CA/ES pending |
 | B-4 Brevo/Vercel/Cloudflare configuration | Mauricio: Newsletter only, DOI templates, 4 attributes, sender, tracking off, quota + queue figures; WAF rule on Production; **Turnstile widget verified or created** (owner account, hostnames = Production + exact Preview host, mode per D-E11), `TURNSTILE_SECRET_KEY` added server-only in Vercel, site key confirmed for Production and Preview scopes |
@@ -510,15 +518,15 @@ see D-E10. (`@vercel/firewall` would still need one — §14.)
 | B-8 Rollout authorization | Mauricio + Senior: offered locales and deliberate activation; website launch independent |
 | Checkpoint — Brevo ticket (§5.2) | Mauricio: forward any written answer to the Dev before the controlled Preview; Senior agrees any reduction of E-11/E-12 |
 
-Sequence: review rev 0.4 + D-E10/D-E11 + risk acceptance → (ADR 0008 if chosen) → copy mapping → implement with feature
+Sequence: ~~review rev 0.4 + D-E10/D-E11 + risk acceptance → ADR 0008~~ (done 2026-11-05) → copy mapping → implement with feature
 off → Brevo/WAF/Cloudflare configuration → G-4b → controlled Preview and report → deliberate activation. A failed gate
 delays 5e, not the website.
 
 ## 13. Schedule and revised effort (excluding PDF production)
 
 Preserve Phase 5c November 9–11 and Privacy Route November 12. Mock-level implementation (API route, validation,
-Turnstile helper, outcome mapping, modal state) can start after rev 0.4 approval (and ADR 0008 if D-E10 requires it)
-and Privacy's checkpoint, with spare capacity, in an independently owned checkout. Copy integration waits for the actual
+Turnstile helper, outcome mapping, modal state) can start now that rev 0.4 is approved and ADR 0008 is
+Accepted, after Privacy's checkpoint, with spare capacity, in an independently owned checkout. Copy integration waits for the actual
 5c-rest export. Practical shared-checkout baseline remains **November 23 onward**; coordinate dictionary/provider overlap
 with 5f (November 30 fallback). If any 5e gate is missing, the website launches December 3 with 5e hidden.
 
@@ -555,8 +563,11 @@ blocker, another new processor, ACF changes or revised copy architecture require
 - New consent groups/preference centre, CRM imports, campaigns or list architecture.
 - ACF/schema redesign, new copy system, signed/private downloads, generated attachments or fillable PDFs.
 
+**Hosting note.** The site stays on Vercel; 5e changes no hosting. If a future hosting migration is chosen, Mauricio
+has a Cloudflare account available. The hosting study is a separate task, outside 5e.
+
 ## 15. Review stop
 
-Return **Draft rev 0.4** for Senior Architect review (incl. D-E10) and Mauricio's written acceptance of R-1…R-11 and
-choice of D-E11. No implementation, account/CMS/environment/WAF/Cloudflare work, provisioning, re-export, staging,
+**Approved rev 0.5** (2026-11-05). Implementation follows the §12 sequence, in a Dev assignment that names this spec
+and ADR 0008. No implementation, account/CMS/environment/WAF/Cloudflare work, provisioning, re-export, staging,
 commit or push follows this assignment.
