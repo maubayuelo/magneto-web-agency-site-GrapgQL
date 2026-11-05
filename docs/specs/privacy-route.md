@@ -442,14 +442,17 @@ phase; not needed for 5e.
    `/api/download` / `download-check` routes reused or removed.
 5. Consent: unchecked optional box (EN :891-893, ES :1064-1066, FR equivalent to export), separate from delivery.
    Consent record fields. Double opt-in decision. Language attribute per contact.
-6. CASL items to verify (Mauricio): sender identification and a **mailing address** in every marketing email (copy has
-   none today, G-2), unsubscribe link and timing, how long proof of consent is kept.
+6. CASL items to verify (Mauricio): sender identification and the approved **mailing address** in every marketing email
+   (address copy updated in Notion per Mauricio, 2026-11-04; propagate through the 5c-rest export/template review),
+   unsubscribe link and timing, how long proof of consent is kept. No retention period or legal sign-off is inferred.
 7. Policy update ×3 = the G-4b ready block, published on the WP pages before the 5e deploy (a deploy precondition).
    Re-run of this spec's §7 checks (incl. item 6) on the updated pages.
 8. The lead-magnet section rebuild: server loader (Known debt I-9), the missing-env-var swallow (Known debt), copy ×3,
    hidden until the guide exists.
-9. Tests: no Brevo request without the box checked; no marketing subscription from `/api/contact` or the booking modal
-   (as OQ-3).
+9. Tests (D-E1 clarification, Mauricio, 2026-11-04): transactional Brevo delivery of the requested guide is permitted
+   regardless of the optional newsletter checkbox. An unchecked submission must not initiate native double opt-in,
+   marketing contact/list enrollment or campaigns; only an explicitly checked box may initiate native DOI and eventual
+   enrollment in the single `Newsletter` list. No marketing subscription from `/api/contact` or the booking modal (as OQ-3).
 10. Production checks on a preview: a real end-to-end run by Mauricio only.
 
 ## Files the Dev may touch
