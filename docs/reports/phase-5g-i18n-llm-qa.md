@@ -254,6 +254,50 @@ Other differences, recorded here (none changes behaviour that the spec fixes):
 - **AC-10.** First real run with the winner; triage the `error` findings (real / false positive / accepted).
 - **AC-5, full-run part.** `git status --porcelain` before and after the real run.
 
+## Addendum 2026-11-09: identical-to-en allow-list after the dictionary fill
+This addendum covers the branch after merging `master` with the filled FR/ES dictionaries (PR #33, merge `00b5b0f`).
+
+**Change.** In `config/glossary.json` `identicalAllowed` (the allow-list matches values per language), approved by
+Mauricio on 2026-11-09:
+- FR adds "Menu" (`header.menuOpen`) and "Logo" (`header.logoAlt`);
+- ES adds "Popular" (`packages.popularBadge`) and "Logo" (`header.logoAlt`).
+
+"Logo" is temporary: `header.logoAlt` becomes the brand name "Magneto" in the design round (dictionary-fill report
+F-1), and then the "Logo" entries can go. The glossary `source` line records the approval.
+
+**Runs**, with `env -u MAGNETO_QA_ANTHROPIC_API_KEY npm run qa:i18n -- --deterministic-only`, no `--llm`:
+
+| | Findings | By severity | By check | Exit |
+|---|---|---|---|---|
+| Before (`…/qa/i18n/20261109-173301/`) | 53 | info 49 · warning 4 | kept-terms 3 · identical-to-en 4 · length 46 | 0 |
+| After (`…/qa/i18n/20261109-173329/`) | 49 | info 49 | kept-terms 3 · length 46 | 0 |
+
+- The 4 warnings before were exactly FR/ES `header.logoAlt`, FR `header.menuOpen` and ES `packages.popularBadge`.
+  After the change: **identical-to-en 0**.
+- placeholder: 0. `findTodoKeys` is 0 / 0 after the fill, so this resolves the "58 FR / 57 ES TODO keys" issue below.
+- The 3 kept-terms findings are `info` (Shamanicca content and case title; a different count, not a missing term).
+  The 3 kept-terms *errors* listed under Issues (K1–K3) are resolved by the fill.
+
+**cli.test.ts fix** (approved by Mauricio, 2026-11-09). After the master merge, 2 tests in
+`scripts/qa-i18n/cli.test.ts` failed because they assumed FR/ES still carried TODO markers (the same 2 failed with the
+glossary edit stashed, so the merge caused them, not the glossary change). Fixed in the test file only:
+- `deterministic run … (AC-4)` now asserts `findTodoKeys(fr)` and `findTodoKeys(es)` are `[]` and expects exit **0**.
+  The placeholder ⇔ `findTodoKeys` equality checks are kept unchanged.
+- `report.json validates, report.md …` now runs with the eval fixture dictionaries
+  (`scripts/qa-i18n/evals/fixture/dictionaries/`), which already plant `[FR TODO] Explore {name}` at
+  `featuredServices.explore`. It expects exit **1** and the matching `| error | … fixture/dictionaries/fr.ts ·
+  featuredServices.explore | [det] placeholder | …` row. The real `fr.ts` is not touched. A temp-dir copy of `fr.ts`
+  was tried first, but Vitest cannot import a `.ts` file from outside the project root.
+
+**Gate after the fix** (no `--llm`; key removed from the environment):
+
+| Check | Result | Evidence |
+|---|---|---|
+| tests (`npm test -- --run`) | passed | 652 / 652, 44 files; `scripts/qa-i18n` 74 / 74 |
+| lint (`npm run lint`) | passed | 88 errors / 94 warnings, equal to the ceiling (AC-1) |
+| typecheck (`npm run typecheck`) | passed | exit 0 |
+| build | not run | no `src/` or config change in this update |
+
 ## Proposed commits
 Nothing is staged.
 - `chore(deps): add @anthropic-ai/sdk 1.6.0 and zod 4.6.7 as devDependencies for qa-i18n` (`package.json`

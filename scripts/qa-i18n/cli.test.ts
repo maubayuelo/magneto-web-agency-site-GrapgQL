@@ -30,11 +30,17 @@ function harness(env: Record<string, string> = {}, client?: LlmClient) {
 }
 const readReport = (dir: string) => JSON.parse(readFileSync(path.join(dir, 'report.json'), 'utf8')) as Report;
 
+// The real dictionaries carry no TODO keys any more: the planted [FR TODO] marker lives in the eval fixture.
+const fixtureDict = (lang: 'en' | 'fr' | 'es') => path.join(REPO_ROOT, `scripts/qa-i18n/evals/fixture/dictionaries/${lang}.ts`);
+const PLANTED_DICTIONARIES = { en: fixtureDict('en'), fr: fixtureDict('fr'), es: fixtureDict('es') };
+
 describe('deterministic run on the current repo files (AC-4)', () => {
-  it('exits 1; placeholder findings equal findTodoKeys(fr) + findTodoKeys(es) exactly; no client', async () => {
+  it('exits 0 with no TODO keys; placeholder findings equal findTodoKeys(fr) + findTodoKeys(es) exactly; no client', async () => {
     const out = tmpOut();
     const h = harness({ [KEY_VAR]: PLANTED }); // key set, no --llm → never used
-    expect(await main(['--out', out], h.deps)).toBe(1);
+    expect(findTodoKeys(fr)).toEqual([]);
+    expect(findTodoKeys(es)).toEqual([]);
+    expect(await main(['--out', out], h.deps)).toBe(0);
     expect(h.loadClient).not.toHaveBeenCalled();
     const report = readReport(out);
     expect(ReportSchema.safeParse(report).success).toBe(true);
@@ -129,11 +135,13 @@ describe('LLM run through the CLI with a fake client', () => {
 describe('outputs and arguments', () => {
   it('report.json validates, report.md starts with the flags-only line, --out writes exactly two files', async () => {
     const out = tmpOut();
-    await main(['--out', out], harness().deps);
+    const h = harness();
+    h.deps.inputs = { ...REPO_INPUTS, dictionaries: PLANTED_DICTIONARIES };
+    expect(await main(['--out', out], h.deps)).toBe(1);
     expect(readdirSync(out).sort()).toEqual(['report.json', 'report.md']);
     const md = readFileSync(path.join(out, 'report.md'), 'utf8');
     expect(md.split('\n')[0]).toBe(FLAGS_ONLY);
-    expect(md).toMatch(/\| error \| src\/i18n\/dictionaries\/fr\.ts · common\.goHome \| \[det\] placeholder \| Go Home \| \[FR TODO\] Go Home \|/);
+    expect(md).toMatch(/\| error \| scripts\/qa-i18n\/evals\/fixture\/dictionaries\/fr\.ts · featuredServices\.explore \| \[det\] placeholder \| Explore \{name\} \| \[FR TODO\] Explore \{name\} \|/);
   });
   it('--out inside the repo → exit 2, nothing written', async () => {
     for (const out of ['./tmp-qa', REPO_ROOT, path.join(REPO_ROOT, 'scripts/qa-i18n/out')]) {

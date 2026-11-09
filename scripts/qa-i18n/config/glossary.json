@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "Mauricio, D-9, 2026-11-09 (phase-5g spec rev 0.3 §3.3); additions WordPress, WooCommerce, Calendly, Brevo, Magneto MKTNG approved by Mauricio 2026-11-09",
+  "source": "Mauricio, D-9, 2026-11-09 (phase-5g spec rev 0.3 §3.3); additions WordPress, WooCommerce, Calendly, Brevo, Magneto MKTNG approved by Mauricio 2026-11-09; identicalAllowed FR Menu/Logo, ES Popular/Logo approved by Mauricio 2026-11-09 (Logo = header.logoAlt until it becomes Magneto, F-1)",
   "approved": { "by": "Mauricio", "on": "2026-11-09" },
   "register": {
     "fr": { "rule": "vous", "description": "Address the reader as vous (vous / votre / vos). Never tu / toi / ton / ta / tes." },
@@ -27,6 +27,6 @@
     { "dictKey": "header.scheduleCall", "note": "header CTA; ES 'Reservar consulta' differs from the main CTA on purpose" }
   ],
   "required": [],
-  "identicalAllowed": { "fr": ["Services", "Contact", "Solutions"], "es": [] },
+  "identicalAllowed": { "fr": ["Services", "Contact", "Solutions", "Menu", "Logo"], "es": ["Popular", "Logo"] },
   "urlExceptions": []
 }
