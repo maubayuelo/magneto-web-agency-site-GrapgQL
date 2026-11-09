@@ -108,46 +108,33 @@ describe('formatParts', () => {
   });
 });
 
+// Q-D1 (2026-11-09): FR/ES are fully translated, so the marker-blocking checks run on small fixtures that still
+// carry markers, never on the real dictionaries.
+const withMarkers = (dict: Dictionary, marker: '[FR TODO]' | '[ES TODO]'): Dictionary => ({
+  ...dict,
+  common: { ...dict.common, goHome: `${marker} Go Home`, loading: `${marker} Loading...` },
+});
+
 describe('readiness guard', () => {
-  it('EN has no TODO markers; FR/ES list every key except the ones the copy provides', () => {
-    // Phase 5a (spec "Dictionary changes", AC-21): exactly these keys left TODO. The brand is a proper name (O3).
-    const phase5a = [
-      'common.bookStrategyCall', 'nav.about', 'nav.services', 'nav.packages', 'nav.projects', 'nav.contact',
-      'header.scheduleCall', 'home.recentProjects', 'home.projectsIntro', 'footer.copyright', 'footer.linkedin',
-      'featuredServices.explore', 'projectDetail.challenges', 'projectDetail.solutions',
-      'projectDetail.results', 'projectDetail.viewLiveSite', 'cmsFallback.finalCta.title',
-      'cmsFallback.finalCta.subtitle', 'meta.site.fallbackTitle',
-    ];
-    // Phase 5b (spec §6, E14): the 13 metadata keys per locale + the new case-study keys. meta.project.title stays TODO (Q-D1).
-    const phase5b = [
-      'meta.site.fallbackDescription',
-      ...['home', 'services', 'packages', 'projects', 'about', 'contact'].flatMap((p) => [`meta.${p}.title`, `meta.${p}.description`]),
-      ...['dangel', 'trepied', 'shamanicca'].flatMap((c) => [`meta.caseStudies.${c}.title`, `meta.caseStudies.${c}.description`]),
-    ];
-    // Phase 5d-lite (spec §8): every new Contact form/page key (Part 1) and booking-dialog key (Part 2) is filled in FR and ES.
-    const phase5d = Object.keys(flat(en)).filter(
-      (k) => k.startsWith('contactForm.') || k.startsWith('contactPage.') || k.startsWith('bookingModal.') || k === 'common.privacyPolicy',
-    );
-    const doneFr = new Set([...phase5a, ...phase5b, ...phase5d]); // testimonials.title stays [FR TODO] (O2)
-    const doneEs = new Set([...phase5a, ...phase5b, ...phase5d, 'testimonials.title']);
+  it('EN, FR and ES have no TODO markers (Q-D1 fill), so a launch build with every locale passes', () => {
     expect(findTodoKeys(en)).toEqual([]);
-    expect(findTodoKeys(fr)).toEqual(Object.keys(flat(fr)).filter((k) => !doneFr.has(k)));
-    expect(findTodoKeys(es)).toEqual(Object.keys(flat(es)).filter((k) => !doneEs.has(k)));
+    expect(findTodoKeys(fr)).toEqual([]);
+    expect(findTodoKeys(es)).toEqual([]);
+    expect(() => assertLocalesReady(['en', 'fr', 'es'], { allowUntranslated: false })).not.toThrow();
   });
 
-  it('5d-lite AC-14: FR 58 / ES 57 after the phase; Packages error keys still block a launch build', () => {
-    // 5b left FR 83 / ES 82. Part 1 removed the 20 old contactForm leaves → 63 / 62. Part 2 removes the 5 emailModal
-    // booking keys → 58 / 57. The new bookingModal keys are all filled.
-    for (const [locale, dict, count] of [['fr', fr, 58], ['es', es, 57]] as const) {
+  it('5d-lite AC-14: the old emailModal booking keys stay gone; a marker in a Packages error key blocks a launch build', () => {
+    for (const [locale, dict, marker] of [['fr', fr, '[FR TODO]'], ['es', es, '[ES TODO]']] as const) {
       for (const gone of ['bookingTitle', 'calendlyBody', 'defaultBody', 'continueBooking', 'subscribe']) {
         expect(Object.keys(flat(dict))).not.toContain(`emailModal.${gone}`);
       }
-      expect(findTodoKeys(dict)).toHaveLength(count);
-      for (const key of ['packages.errorTitle', 'packages.errorBody']) {
-        expect(findTodoKeys(dict)).toContain(key);
-        // Even when every other key is translated, either error key must block a launch build.
-        const isolated = { ...en, packages: { ...en.packages, [key.split('.')[1]]: flat(dict)[key] } };
-        expect(() => assertLocalesReady([locale], { allowUntranslated: false }, { en, fr: isolated, es: isolated })).toThrow(key);
+      for (const field of ['errorTitle', 'errorBody'] as const) {
+        // Fixture: the real dictionary with only this one key marked.
+        const isolated = { ...dict, packages: { ...dict.packages, [field]: `${marker} ${en.packages[field]}` } };
+        expect(findTodoKeys(isolated)).toEqual([`packages.${field}`]);
+        expect(() => assertLocalesReady([locale], { allowUntranslated: false }, { en, fr: isolated, es: isolated })).toThrow(
+          `packages.${field}`,
+        );
       }
     }
   });
@@ -159,11 +146,12 @@ describe('readiness guard', () => {
   });
 
   it('throws for an enabled locale with markers and names it with its count', () => {
-    const count = findTodoKeys(fr).length;
-    expect(() => assertLocalesReady(['en', 'fr'], { allowUntranslated: false })).toThrow(
-      new RegExp(`enables fr, but its dictionary has ${count} untranslated keys \\(\\[FR TODO\\]\\): common\\.goHome`),
+    const fixture = { en, fr: withMarkers(fr, '[FR TODO]'), es: withMarkers(es, '[ES TODO]') };
+    expect(() => assertLocalesReady(['en', 'fr'], { allowUntranslated: false }, fixture)).toThrow(
+      /enables fr, but its dictionary has 2 untranslated keys \(\[FR TODO\]\): common\.goHome, common\.loading/,
     );
-    expect(() => assertLocalesReady(['en', 'fr', 'es'])).toThrow(/enables fr.*enables es/);
+    expect(() => assertLocalesReady(['en', 'fr', 'es'], {}, fixture)).toThrow(/enables fr.*enables es/);
+    expect(() => assertLocalesReady(['en', 'fr', 'es'], { allowUntranslated: true }, fixture)).not.toThrow();
   });
 
   it('passes for a dictionary without markers', () => {

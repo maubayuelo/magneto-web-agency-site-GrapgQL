@@ -1,14 +1,15 @@
-// FR UI microcopy. Placeholder values (Decision B): "[FR TODO] " + the EN value, until Mauricio writes the
-// real copy. The build refuses to enable this locale while any marker remains (assertLocalesReady, spec §2.1a).
+// FR UI microcopy. Every value is approved copy (Q-D1 fill approved by Mauricio, 2026-11-09; sources per key in
+// docs/reports/i18n-dictionary-fill.md). The build refuses to enable this locale if a "[FR TODO]" marker ever
+// comes back (assertLocalesReady, spec §2.1a).
 import type { Dictionary } from '../dictionary';
 
 export const fr: Dictionary = {
   common: {
     bookStrategyCall: 'Réserver un appel-conseil gratuit',
-    goHome: '[FR TODO] Go Home',
-    checkIconAlt: '[FR TODO] Check icon',
-    loading: '[FR TODO] Loading...',
-    close: '[FR TODO] Close',
+    goHome: "Retour à l'accueil",
+    checkIconAlt: 'Icône de crochet',
+    loading: 'Chargement...',
+    close: 'Fermer',
     privacyPolicy: 'Politique de confidentialité',
   },
   nav: {
@@ -19,59 +20,59 @@ export const fr: Dictionary = {
     contact: 'Contact',
   },
   header: {
-    logoAlt: '[FR TODO] Logo',
+    logoAlt: 'Logo',
     scheduleCall: 'Réserver un appel-conseil',
-    menuOpen: '[FR TODO] Menu',
-    menuClose: '[FR TODO] Close',
-    languageSwitcher: '[FR TODO] Language',
+    menuOpen: 'Menu',
+    menuClose: 'Fermer',
+    languageSwitcher: 'Langue',
   },
   home: {
     recentProjects: 'Réalisations web',
     projectsIntro: 'Des expériences web pour le bien-être, les services professionnels et le commerce en ligne, adaptées aux besoins de chaque entreprise.',
   },
   services: {
-    errorTitle: '[FR TODO] Services',
-    errorBody: '[FR TODO] Sorry, we couldn\'t load the services right now. Please try again later.',
-    featuredBadge: '[FR TODO] Featured Service',
+    errorTitle: 'Services',
+    errorBody: 'Impossible de charger les services pour le moment. Réessayez plus tard.',
+    featuredBadge: 'Service en vedette',
   },
   about: {
-    linkedinIconAlt: '[FR TODO] LinkedIn Icon',
+    linkedinIconAlt: 'Icône LinkedIn',
   },
   footer: {
     copyright: 'Magneto Web Consulting © {year}',
     linkedin: 'Mauricio Bayuelo sur LinkedIn',
   },
   testimonials: {
-    title: '[FR TODO] Client feedback',
+    title: 'Témoignages de clients',
   },
   featuredServices: {
     explore: 'Découvrir {name}',
   },
   projects: {
-    emptyTitle: '[FR TODO] Everything unfolds in its sacred time.',
-    emptySubtitle: '[FR TODO] We’re planting and cultivating new digital projects with wonderful clients.',
-    emptyQuestion: '[FR TODO] Do you have a project in mind?',
+    emptyTitle: 'Tout se déploie en son temps sacré.',
+    emptySubtitle: 'Nous semons et cultivons de nouveaux projets numériques avec des clients formidables.',
+    emptyQuestion: 'Vous avez un projet en tête?',
   },
   projectDetail: {
     challenges: 'Défis',
     solutions: 'Solutions',
     results: 'Livrables',
     viewLiveSite: 'Voir {domain}',
-    backToProjects: '[FR TODO] ← Back to Projects',
+    backToProjects: '← Retour aux réalisations',
   },
   packages: {
-    popularBadge: '[FR TODO] Popular',
-    included: '[FR TODO] What\'s included:',
-    errorTitle: '[FR TODO] Packages',
-    errorBody: '[FR TODO] Sorry, we couldn\'t load the packages right now. Please try again later.',
+    popularBadge: 'Populaire',
+    included: 'Ce qui est inclus :',
+    errorTitle: 'Forfaits',
+    errorBody: 'Impossible de charger les forfaits pour le moment. Réessayez plus tard.',
   },
   calendly: {
-    closeDialog: '[FR TODO] Close scheduling dialog',
-    frameTitle: '[FR TODO] Calendly scheduling',
+    closeDialog: 'Fermer la fenêtre de réservation',
+    frameTitle: 'Réservation Calendly',
   },
   forms: {
-    namePlaceholder: '[FR TODO] Your name',
-    emailPlaceholder: '[FR TODO] you@company.com',
+    namePlaceholder: 'Votre nom',
+    emailPlaceholder: 'vous@entreprise.com',
   },
   contactForm: {
     requiredNote: "Les champs marqués d'un * sont obligatoires.",
@@ -122,24 +123,26 @@ export const fr: Dictionary = {
   },
   emailModal: {
     errors: {
-      emailInvalid: '[FR TODO] Please enter a valid email',
-      subscribeFailed: '[FR TODO] Failed to subscribe ({status})',
-      unknown: '[FR TODO] Subscription failed',
+      emailInvalid: 'Veuillez entrer une adresse courriel valide.',
+      subscribeFailed: "Échec de l'inscription ({status})",
+      unknown: "L'inscription a échoué",
     },
-    downloadTitle: '[FR TODO] Grab your free guide',
-    downloadReady: '[FR TODO] Thanks — your guide is ready for you.',
-    downloadBody: '[FR TODO] Enter your name and email, so we can send marketing ideas and tips.',
-    checking: '[FR TODO] Checking...',
-    download: '[FR TODO] Download the free guide',
-    openInNewTab: '[FR TODO] Open guide in new tab',
-    downloadUnavailable: '[FR TODO] Download unavailable',
-    preparing: '[FR TODO] Preparing download...',
-    pdfNotFound: '[FR TODO] Sorry — we couldn\'t find the PDF on the source site. If this keeps happening, contact us at contact@magnetomarketing.co',
-    botChallenge: '[FR TODO] The file appears to be protected by the host (bot challenge). Click "Open guide in new tab" to let your browser complete the challenge and download the file.',
-    nameLabel: '[FR TODO] Name',
-    emailLabel: '[FR TODO] Email',
-    submitting: '[FR TODO] Submitting...',
-    continueDownload: '[FR TODO] Continue to Download the Guide',
+    downloadTitle: 'Obtenez votre guide gratuit',
+    downloadReady: 'Merci — votre guide est prêt.',
+    // Neutral on purpose (not a translation of EN): matches the approved privacy copy. True only after 5e (Brevo);
+    // the current Mailchimp flow subscribes. Keep the lead magnet hidden until then.
+    downloadBody: 'Entrez votre nom et votre adresse courriel pour recevoir le guide. Demander un guide ne vous abonne pas aux courriels promotionnels.',
+    checking: 'Vérification...',
+    download: 'Obtenir le guide gratuit',
+    openInNewTab: 'Ouvrir le guide dans un nouvel onglet',
+    downloadUnavailable: 'Téléchargement non disponible',
+    preparing: 'Préparation du téléchargement...',
+    pdfNotFound: "Désolé — nous n'avons pas trouvé le PDF sur le site source. Si le problème persiste, écrivez-nous à contact@magnetomarketing.co",
+    botChallenge: "Le fichier semble protégé par l'hébergeur (vérification anti-robot). Cliquez sur « Ouvrir le guide dans un nouvel onglet » pour permettre à votre navigateur de terminer la vérification et de télécharger le fichier.",
+    nameLabel: 'Nom',
+    emailLabel: 'Courriel',
+    submitting: 'Envoi en cours...',
+    continueDownload: 'Continuer vers le téléchargement',
   },
   // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 637fba7 (FR 901/907/918/922/924/934).
   // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
@@ -154,31 +157,31 @@ export const fr: Dictionary = {
       'Vos réponses sont transmises à Calendly avec votre réservation afin de préparer l\'appel. Calendly vous demandera votre nom et votre adresse courriel pour effectuer la réservation. Réserver un appel ne vous abonne pas aux courriels promotionnels.',
   },
   notFound: {
-    metaTitle: '[FR TODO] 404: This page could not be found.',
-    heading: '[FR TODO] 404',
-    body: '[FR TODO] This page could not be found.',
+    metaTitle: '404 : cette page est introuvable.',
+    heading: '404',
+    body: 'Cette page est introuvable.',
   },
   projectNotFound: {
-    metaTitle: '[FR TODO] Project Not Found',
-    heading: '[FR TODO] Project Not Found',
-    body: '[FR TODO] The project you\'re looking for doesn\'t exist or may have been moved.',
-    viewAll: '[FR TODO] View All Projects',
+    metaTitle: 'Réalisation introuvable',
+    heading: 'Réalisation introuvable',
+    body: "La réalisation que vous cherchez n'existe pas ou a peut-être été déplacée.",
+    viewAll: 'Voir toutes les réalisations',
   },
   cmsFallback: {
     leadMagnet: {
-      overTitle: '[FR TODO] Not ready to book a call?',
-      title: '[FR TODO] Download our free guide:',
-      subtitle: '[FR TODO] 5 Mistakes That Kill Funnel Conversions',
+      overTitle: 'Vous préférez attendre avant de réserver un appel?',
+      title: 'Téléchargez notre guide gratuit :',
+      subtitle: '5 erreurs qui nuisent aux conversions de votre tunnel de vente',
     },
-    requestQuote: '[FR TODO] Request Free Quote',
+    requestQuote: 'Demander une soumission gratuite',
     finalCta: {
-      bgAlt: '[FR TODO] Background',
+      bgAlt: 'Arrière-plan',
       title: 'Commençons par en parler.',
       subtitle: 'Expliquez ce qui fonctionne et ce qui ne fonctionne pas sur votre site web. Magneto vous aidera à déterminer si la prochaine étape la plus sensée est un nouveau site, une correction ciblée, un entretien continu — ou aucune intervention majeure pour le moment.',
     },
-    heroImageAlt: '[FR TODO] Hero Image',
-    socialIconAlt: '[FR TODO] Social Icon',
-    galleryImageAlt: '[FR TODO] Gallery image {n}',
+    heroImageAlt: "Image d'en-tête",
+    socialIconAlt: 'Icône de réseau social',
+    galleryImageAlt: 'Image de la galerie {n}',
   },
   meta: {
     site: {
@@ -203,14 +206,15 @@ export const fr: Dictionary = {
     },
     about: {
       title: 'À propos de Magneto | Consultation web à Montréal',
-      description: 'Découvrez Mauricio Bayuelo, fondateur de Magneto à Montréal : stratégie web, UX/UI et développement pour les entreprises de services, en français, en anglais et en espagnol.',
+      // K1 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting", ≤ 160 chars. Differs from export FR 240.
+      description: 'Mauricio Bayuelo, fondateur de Magneto Web Consulting à Montréal : stratégie web, UX/UI et développement pour entreprises de services, en trois langues.',
     },
     contact: {
       title: 'Contacter Magneto | Projets web à Montréal',
       description: "Contactez Magneto Web Consulting à Montréal. Présentez votre projet de création, d'amélioration ou d'entretien de site web et découvrez la prochaine étape, en français, en anglais ou en espagnol.",
     },
     project: {
-      title: '[FR TODO] {title} | Magneto Projects',
+      title: '{title} | Réalisations Magneto',
     },
     // Case-study pages by slug (5b §6): see CASE_STUDY_KEYS in src/utils/page-metadata.ts.
     caseStudies: {
