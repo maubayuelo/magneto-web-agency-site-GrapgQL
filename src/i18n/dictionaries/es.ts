@@ -1,14 +1,15 @@
-// ES UI microcopy. Placeholder values (Decision B): "[ES TODO] " + the EN value, until Mauricio writes the
-// real copy. The build refuses to enable this locale while any marker remains (assertLocalesReady, spec §2.1a).
+// ES UI microcopy. Every value is approved copy (Q-D1 fill approved by Mauricio, 2026-11-09; sources per key in
+// docs/reports/i18n-dictionary-fill.md). The build refuses to enable this locale if a "[ES TODO]" marker ever
+// comes back (assertLocalesReady, spec §2.1a).
 import type { Dictionary } from '../dictionary';
 
 export const es: Dictionary = {
   common: {
     bookStrategyCall: 'Agendar una llamada de orientación gratuita',
-    goHome: '[ES TODO] Go Home',
-    checkIconAlt: '[ES TODO] Check icon',
-    loading: '[ES TODO] Loading...',
-    close: '[ES TODO] Close',
+    goHome: 'Volver al inicio',
+    checkIconAlt: 'Ícono de verificación',
+    loading: 'Cargando...',
+    close: 'Cerrar',
     privacyPolicy: 'Política de privacidad',
   },
   nav: {
@@ -19,23 +20,23 @@ export const es: Dictionary = {
     contact: 'Contacto',
   },
   header: {
-    logoAlt: '[ES TODO] Logo',
+    logoAlt: 'Logo',
     scheduleCall: 'Reservar consulta',
-    menuOpen: '[ES TODO] Menu',
-    menuClose: '[ES TODO] Close',
-    languageSwitcher: '[ES TODO] Language',
+    menuOpen: 'Menú',
+    menuClose: 'Cerrar',
+    languageSwitcher: 'Idioma',
   },
   home: {
     recentProjects: 'Proyectos web destacados',
     projectsIntro: 'Experiencias web para el sector del bienestar, los servicios profesionales y el comercio digital, desarrolladas según las necesidades de cada negocio.',
   },
   services: {
-    errorTitle: '[ES TODO] Services',
-    errorBody: '[ES TODO] Sorry, we couldn\'t load the services right now. Please try again later.',
-    featuredBadge: '[ES TODO] Featured Service',
+    errorTitle: 'Servicios',
+    errorBody: 'Lo sentimos, no pudimos cargar los servicios en este momento. Inténtalo de nuevo más tarde.',
+    featuredBadge: 'Servicio destacado',
   },
   about: {
-    linkedinIconAlt: '[ES TODO] LinkedIn Icon',
+    linkedinIconAlt: 'Ícono de LinkedIn',
   },
   footer: {
     copyright: 'Magneto Web Consulting © {year}',
@@ -48,30 +49,30 @@ export const es: Dictionary = {
     explore: 'Conocer {name}',
   },
   projects: {
-    emptyTitle: '[ES TODO] Everything unfolds in its sacred time.',
-    emptySubtitle: '[ES TODO] We’re planting and cultivating new digital projects with wonderful clients.',
-    emptyQuestion: '[ES TODO] Do you have a project in mind?',
+    emptyTitle: 'Todo se despliega en su tiempo sagrado.',
+    emptySubtitle: 'Estamos sembrando y cultivando nuevos proyectos digitales con clientes maravillosos.',
+    emptyQuestion: '¿Tienes un proyecto en mente?',
   },
   projectDetail: {
     challenges: 'Retos',
     solutions: 'Soluciones',
     results: 'Entregables',
     viewLiveSite: 'Ver {domain}',
-    backToProjects: '[ES TODO] ← Back to Projects',
+    backToProjects: '← Volver a proyectos',
   },
   packages: {
-    popularBadge: '[ES TODO] Popular',
-    included: '[ES TODO] What\'s included:',
-    errorTitle: '[ES TODO] Packages',
-    errorBody: '[ES TODO] Sorry, we couldn\'t load the packages right now. Please try again later.',
+    popularBadge: 'Popular',
+    included: 'Qué incluye:',
+    errorTitle: 'Paquetes',
+    errorBody: 'Lo sentimos, no pudimos cargar los paquetes en este momento. Inténtalo de nuevo más tarde.',
   },
   calendly: {
-    closeDialog: '[ES TODO] Close scheduling dialog',
-    frameTitle: '[ES TODO] Calendly scheduling',
+    closeDialog: 'Cerrar la ventana de reserva',
+    frameTitle: 'Reserva en Calendly',
   },
   forms: {
-    namePlaceholder: '[ES TODO] Your name',
-    emailPlaceholder: '[ES TODO] you@company.com',
+    namePlaceholder: 'Tu nombre',
+    emailPlaceholder: 'tu@empresa.com',
   },
   contactForm: {
     requiredNote: 'Los campos marcados con * son obligatorios.',
@@ -122,24 +123,26 @@ export const es: Dictionary = {
   },
   emailModal: {
     errors: {
-      emailInvalid: '[ES TODO] Please enter a valid email',
-      subscribeFailed: '[ES TODO] Failed to subscribe ({status})',
-      unknown: '[ES TODO] Subscription failed',
+      emailInvalid: 'Escribe un correo electrónico válido.',
+      subscribeFailed: 'Error en la suscripción ({status})',
+      unknown: 'La suscripción falló',
     },
-    downloadTitle: '[ES TODO] Grab your free guide',
-    downloadReady: '[ES TODO] Thanks — your guide is ready for you.',
-    downloadBody: '[ES TODO] Enter your name and email, so we can send marketing ideas and tips.',
-    checking: '[ES TODO] Checking...',
-    download: '[ES TODO] Download the free guide',
-    openInNewTab: '[ES TODO] Open guide in new tab',
-    downloadUnavailable: '[ES TODO] Download unavailable',
-    preparing: '[ES TODO] Preparing download...',
-    pdfNotFound: '[ES TODO] Sorry — we couldn\'t find the PDF on the source site. If this keeps happening, contact us at contact@magnetomarketing.co',
-    botChallenge: '[ES TODO] The file appears to be protected by the host (bot challenge). Click "Open guide in new tab" to let your browser complete the challenge and download the file.',
-    nameLabel: '[ES TODO] Name',
-    emailLabel: '[ES TODO] Email',
-    submitting: '[ES TODO] Submitting...',
-    continueDownload: '[ES TODO] Continue to Download the Guide',
+    downloadTitle: 'Obtén tu guía gratuita',
+    downloadReady: 'Gracias, tu guía está lista.',
+    // Neutral on purpose (not a translation of EN): matches the approved privacy copy. True only after 5e (Brevo);
+    // the current Mailchimp flow subscribes. Keep the lead magnet hidden until then.
+    downloadBody: 'Escribe tu nombre y tu correo electrónico para recibir la guía. Solicitar una guía no te suscribe a correos promocionales.',
+    checking: 'Verificando...',
+    download: 'Descargar la guía gratuita',
+    openInNewTab: 'Abrir la guía en una pestaña nueva',
+    downloadUnavailable: 'Descarga no disponible',
+    preparing: 'Preparando la descarga...',
+    pdfNotFound: 'Lo sentimos: no encontramos el PDF en el sitio de origen. Si esto sigue ocurriendo, escríbenos a contact@magnetomarketing.co',
+    botChallenge: 'El archivo parece estar protegido por el servidor (verificación contra bots). Haz clic en "Abrir la guía en una pestaña nueva" para que tu navegador complete la verificación y descargue el archivo.',
+    nameLabel: 'Nombre',
+    emailLabel: 'Correo electrónico',
+    submitting: 'Enviando...',
+    continueDownload: 'Continuar con la descarga',
   },
   // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 637fba7 (ES 911/917/928/932/934/944).
   // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
@@ -154,31 +157,31 @@ export const es: Dictionary = {
       'Tus respuestas se transmiten a Calendly junto con tu reserva para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizarla. Agendar una llamada no te suscribe a correos promocionales.',
   },
   notFound: {
-    metaTitle: '[ES TODO] 404: This page could not be found.',
-    heading: '[ES TODO] 404',
-    body: '[ES TODO] This page could not be found.',
+    metaTitle: '404: no se encontró esta página.',
+    heading: '404',
+    body: 'No se encontró esta página.',
   },
   projectNotFound: {
-    metaTitle: '[ES TODO] Project Not Found',
-    heading: '[ES TODO] Project Not Found',
-    body: '[ES TODO] The project you\'re looking for doesn\'t exist or may have been moved.',
-    viewAll: '[ES TODO] View All Projects',
+    metaTitle: 'Proyecto no encontrado',
+    heading: 'Proyecto no encontrado',
+    body: 'El proyecto que buscas no existe o es posible que se haya movido.',
+    viewAll: 'Ver todos los proyectos',
   },
   cmsFallback: {
     leadMagnet: {
-      overTitle: '[ES TODO] Not ready to book a call?',
-      title: '[ES TODO] Download our free guide:',
-      subtitle: '[ES TODO] 5 Mistakes That Kill Funnel Conversions',
+      overTitle: '¿Todavía no quieres agendar una llamada?',
+      title: 'Descarga nuestra guía gratuita:',
+      subtitle: '5 errores que arruinan las conversiones de tu embudo de ventas',
     },
-    requestQuote: '[ES TODO] Request Free Quote',
+    requestQuote: 'Solicitar una cotización gratuita',
     finalCta: {
-      bgAlt: '[ES TODO] Background',
+      bgAlt: 'Fondo',
       title: 'Empecemos con una conversación.',
       subtitle: 'Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas, optar por mantenimiento continuo o, por ahora, no realizar cambios importantes.',
     },
-    heroImageAlt: '[ES TODO] Hero Image',
-    socialIconAlt: '[ES TODO] Social Icon',
-    galleryImageAlt: '[ES TODO] Gallery image {n}',
+    heroImageAlt: 'Imagen principal',
+    socialIconAlt: 'Ícono de red social',
+    galleryImageAlt: 'Imagen de la galería {n}',
   },
   meta: {
     site: {
@@ -203,14 +206,16 @@ export const es: Dictionary = {
     },
     about: {
       title: 'Sobre Magneto | Consultoría web en Montreal',
-      description: 'Conoce a Mauricio Bayuelo, fundador de Magneto en Montreal. Estrategia web, diseño UX/UI y desarrollo para empresas de servicios, en español, francés e inglés.',
+      // K2 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting", ≤ 160 chars. Differs from export ES 246.
+      description: 'Mauricio Bayuelo, fundador de Magneto Web Consulting en Montreal: estrategia web, diseño UX/UI y desarrollo para empresas de servicios, en tres idiomas.',
     },
     contact: {
       title: 'Contacta a Magneto | Proyectos web en Montreal',
-      description: 'Contacta a Magneto en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu sitio web. Atención en español, francés e inglés.',
+      // K3 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting". Differs from export ES 852.
+      description: 'Contacta a Magneto Web Consulting en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu sitio web. Atención en español, francés e inglés.',
     },
     project: {
-      title: '[ES TODO] {title} | Magneto Projects',
+      title: '{title} | Proyectos Magneto',
     },
     // Case-study pages by slug (5b §6): see CASE_STUDY_KEYS in src/utils/page-metadata.ts.
     caseStudies: {
