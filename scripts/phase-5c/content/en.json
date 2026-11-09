@@ -329,6 +329,229 @@
           "value": "Share a few details about your website and what you want to improve. I’ll reply with the most sensible next step."
         }
       ]
+    },
+    {
+      "type": "page",
+      "slug": "about-magneto",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689bae6dc2660",
+          "label": "aboutData.sectionTitle",
+          "src": "EN 217",
+          "value": "The Founder"
+        },
+        {
+          "key": "field_689baec9c2662",
+          "label": "aboutData.linkText",
+          "src": "EN 223",
+          "value": "View Mauricio's LinkedIn"
+        },
+        {
+          "key": "field_689baf03953b6",
+          "label": "aboutData.generalText",
+          "src": "EN 229-262 (D-6 template)",
+          "value": "<h3 class=\"typo-2xl-extrabold hero-title m-0\">What Magneto delivers</h3>\n<ul>\n<li>Clear, professional websites that make services easier to understand and act on.</li>\n<li>Focused improvements when an existing website can be fixed without an unnecessary rebuild.</li>\n<li>Ongoing website care for businesses that need reliable maintenance and support.</li>\n<li>Multilingual websites in English, French and Spanish when the project needs them.</li>\n<li>Practical guidance from strategy through launch.</li>\n</ul>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">Who Magneto works best with</h3>\n<p class=\"typo-lg-medium hero-title m-0\">Magneto works mainly with wellness professionals, therapists and professional service businesses — and with other Montreal service businesses when the project is a good fit.</p>\n<p class=\"typo-lg-medium hero-title m-0\">The best fit is a business that values clarity, thoughtful design, reliable implementation and direct communication with the person doing the work.</p>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">Recommend first. Build second.</h3>\n<p class=\"typo-lg-medium hero-title m-0\">Every project starts by understanding the actual business and website problem.</p>\n<p class=\"typo-lg-medium hero-title m-0\">Sometimes the right answer is a new website. Sometimes it is a focused fix. Sometimes the existing site needs only small improvements or ongoing care.</p>\n<p class=\"typo-lg-medium hero-title m-0\">Magneto's role is to recommend the most sensible path first — then design and build what the business actually needs.</p>\n<ul>\n<li>One point of contact from strategy through implementation</li>\n<li>UX/UI and development handled together</li>\n<li>Multilingual capability when the project requires it</li>\n<li>No unnecessary rebuilds or unsupported promises</li>\n</ul>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">Have a website project in mind?</h3>\n<p class=\"typo-lg-medium hero-title m-0\">If your website is outdated, unclear or difficult to use — or you are not sure what needs to change — send a few details and Magneto will suggest a sensible next step.</p>"
+        }
+      ]
+    },
+    {
+      "type": "project",
+      "slug": "fashion-company-ecommerce",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689bb68e09f8a",
+          "label": "projectsProjectData.projectData",
+          "src": "EN 1010, 1016-1022, 1026-1028, 1032-1035, 1039-1044",
+          "subfields": {
+            "field_689bb6b409f8b": "projectSubtitle",
+            "field_689bb6ca09f8c": "projectDescription",
+            "field_689bb6e509f8d": "challenges[]",
+            "field_689bb6ff09f8e": "item",
+            "field_689bb725dc084": "solutions[]",
+            "field_689bb725dc085": "item",
+            "field_689bb738dc086": "results[]",
+            "field_689bb738dc087": "item"
+          },
+          "value": {
+            "field_689bb6b409f8b": "A French, English and Spanish website for a Montreal wellness professional, built to explain several services clearly and give visitors direct ways to get in touch or book.",
+            "field_689bb6ca09f8c": "<p>Dangel is a holistic and intuitive therapist in Montreal who works with clients in French, English and Spanish.</p>\n<p>The website needed to present several therapeutic services without overwhelming visitors, work clearly across three languages, and remain editable by the owner.</p>\n<p>Magneto handled the project from strategy through launch, including UX/UI design, development, multilingual implementation, booking and contact paths, cookie-consent controls, measurement of form submissions and booking-link clicks, and a written administration guide.</p>\n<p><strong>BUILD · Strategy · UX/UI Design · Development · French, English and Spanish</strong></p>",
+            "field_689bb6e509f8d": [
+              {
+                "field_689bb6ff09f8e": "Several services needed to be understandable without turning the page into a long list of disconnected treatments."
+              },
+              {
+                "field_689bb6ff09f8e": "A trust-based wellness service needed clear information and a direct next step without unsupported promises."
+              },
+              {
+                "field_689bb6ff09f8e": "French, English and Spanish needed to work within one manageable website."
+              }
+            ],
+            "field_689bb725dc084": [
+              {
+                "field_689bb725dc085": "Organized the services around clear information visitors can compare before deciding what to explore or book."
+              },
+              {
+                "field_689bb725dc085": "Built one multilingual website so the same structure can serve French, English and Spanish visitors."
+              },
+              {
+                "field_689bb725dc085": "Kept booking and contact paths visible across the responsive experience."
+              },
+              {
+                "field_689bb725dc085": "Added cookie-consent controls and measurement for form submissions and booking-link clicks."
+              }
+            ],
+            "field_689bb738dc086": [
+              {
+                "field_689bb738dc087": "A live website in French, English and Spanish"
+              },
+              {
+                "field_689bb738dc087": "Responsive service presentation and navigation"
+              },
+              {
+                "field_689bb738dc087": "Booking and contact paths"
+              },
+              {
+                "field_689bb738dc087": "Editable website content with a written administration guide"
+              },
+              {
+                "field_689bb738dc087": "Cookie-consent controls"
+              },
+              {
+                "field_689bb738dc087": "Measurement of form submissions and booking-link clicks"
+              }
+            ]
+          }
+        },
+        {
+          "key": "field_689a6d04467f9",
+          "label": "projectsProjectData.images",
+          "src": "EN 1046-1056 (D-4: foot_note empty on every existing row)",
+          "subfields": {
+            "field_689a6d4d467fb": "footNote"
+          },
+          "value": [
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "project",
+      "slug": "shamaniccas-ecommerce",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689bb68e09f8a",
+          "label": "projectsProjectData.projectData",
+          "src": "EN 1250, 1256-1262, 1266-1268, 1272-1275, 1279-1284",
+          "subfields": {
+            "field_689bb6b409f8b": "projectSubtitle",
+            "field_689bb6ca09f8c": "projectDescription",
+            "field_689bb6e509f8d": "challenges[]",
+            "field_689bb6ff09f8e": "item",
+            "field_689bb725dc084": "solutions[]",
+            "field_689bb725dc085": "item",
+            "field_689bb738dc086": "results[]",
+            "field_689bb738dc087": "item"
+          },
+          "value": {
+            "field_689bb6b409f8b": "Magneto's own project: an online shop and blog combined in one website, with one search across both and a newsletter signup.",
+            "field_689bb6ca09f8c": "<p>Shamanicca is Mauricio's own brand, not a client project. Its shop offers apparel, accessories and objects with mystical themes, and its blog publishes articles on spiritual practice.</p>\n<p>The site had to bring a shop and a blog together under one brand, stay easy to extend as products and articles are added, and give visitors a way to stay in touch by email.</p>\n<p>Magneto designed and developed the website, and continues maintaining and developing it as a live project.</p>\n<p><strong>Own project · BUILD · Strategy · UX/UI Design · Development · Online shop · Blog</strong></p>",
+            "field_689bb6e509f8d": [
+              {
+                "field_689bb6ff09f8e": "A shop and a blog had to feel like one website, not two."
+              },
+              {
+                "field_689bb6ff09f8e": "New products and articles had to be added without redesigning pages each time."
+              },
+              {
+                "field_689bb6ff09f8e": "The project needed a way to stay in touch with visitors by email, not only through social media."
+              }
+            ],
+            "field_689bb725dc084": [
+              {
+                "field_689bb725dc085": "Put the shop and the blog under one navigation and one search that covers both products and articles."
+              },
+              {
+                "field_689bb725dc085": "Built the shopping experience around category pages, product pages with images and size choice, a wishlist and a shopping bag."
+              },
+              {
+                "field_689bb725dc085": "Kept products and articles managed in WordPress and WooCommerce, with shared page layouts so new items do not need a new design each time."
+              },
+              {
+                "field_689bb725dc085": "Added a newsletter signup, cookie-consent choice and privacy policy."
+              }
+            ],
+            "field_689bb738dc086": [
+              {
+                "field_689bb738dc087": "An online shop and blog, live at shamanicca.com, on desktop and mobile"
+              },
+              {
+                "field_689bb738dc087": "Category and product pages with images, sizes, wishlist and shopping bag"
+              },
+              {
+                "field_689bb738dc087": "A blog with related articles"
+              },
+              {
+                "field_689bb738dc087": "One search across products and articles"
+              },
+              {
+                "field_689bb738dc087": "A newsletter signup"
+              },
+              {
+                "field_689bb738dc087": "A cookie-consent choice and privacy policy"
+              }
+            ]
+          }
+        },
+        {
+          "key": "field_689a6d04467f9",
+          "label": "projectsProjectData.images",
+          "src": "EN 1286-1296 (D-4: foot_note empty on every existing row)",
+          "subfields": {
+            "field_689a6d4d467fb": "footNote"
+          },
+          "value": [
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
