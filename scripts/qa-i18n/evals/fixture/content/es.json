@@ -1,0 +1,122 @@
+{
+  "note": "MUTATED TEST DATA, NOT COPY. Small copies of real units with planted defects for the phase-5g eval. Never load into WordPress; never import from src.",
+  "posts": [
+    {
+      "type": "page",
+      "slug": "packages",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "ES 413",
+          "value": "Paquetes y precios para tu sitio web"
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "ES 419",
+          "value": "Cuéntame sobre tu proyecto"
+        },
+        {
+          "key": "field_p5_herocontent_hero_cta_path",
+          "label": "heroContent.ctaPath",
+          "src": "ES 419 (B1: /contact)",
+          "value": "/contact"
+        },
+        {
+          "key": "field_p5_pageintrotext_intro_body_html",
+          "label": "pageintrotext.introBodyHtml",
+          "src": "ES 421",
+          "value": "<p>Todos los precios están expresados en dólares canadienses. Se añaden los impuestos aplicables cuando corresponda.</p>"
+        },
+        {
+          "key": "field_689a4b0bfdf48",
+          "label": "packagesPackageFeatures.packagesElements",
+          "src": "ES 425-435, 437-447, 449-465",
+          "subfields": {
+            "field_689a4b21fdf49": "name",
+            "field_p5_packagespackagefeatures_packages_elements_heading": "heading",
+            "field_p5_packagespackagefeatures_packages_elements_description_html": "descriptionHtml",
+            "field_p5_packagespackagefeatures_packages_elements_cta_text": "ctaText",
+            "field_p5_packagespackagefeatures_packages_elements_cta_path": "ctaPath",
+            "field_p5_packagespackagefeatures_packages_elements_anchor_id": "anchorId"
+          },
+          "value": [
+            {
+              "field_689a4b21fdf49": "BUILD — Sitio web nuevo o rediseño",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "Para crear un sitio web, hacer un rediseño importante o desarrollar una página de destino específica.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<ul><li><strong>Página de destino específica, en un solo idioma:</strong> desde <strong>3 500 CAD</strong>.</li><li><strong>Sitio web completo, de aproximadamente 5 a 10 páginas, generalmente en dos o tres idiomas:</strong> <strong>5 000–8 000 CAD</strong>.</li><li><strong>Proyectos más grandes o complejos:</strong> <strong>10 000 CAD o más</strong>, con cotización individual.</li></ul>\n<p>Incluye estrategia, diseño, desarrollo, lanzamiento y entrega al cliente.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Hablemos de tu proyecto BUILD",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "build"
+            },
+            {
+              "field_689a4b21fdf49": "FIX — Mejora de un sitio web existente",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p>FIX puede resolver problemas como páginas difíciles de entender o lentas, dificultades de uso en dispositivos móviles y formularios o sistemas de reservas que no funcionan correctamente.</p>\n<p>Recibes una lista por escrito de lo que se corregirá y un precio fijo antes de que comience cualquier trabajo. Después se verifica el resultado.</p>\n<p><strong>Desde 1 000 CAD.</strong></p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Hablemos de tu proyecto FIX",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "fix"
+            },
+            {
+              "field_689a4b21fdf49": "CARE — Mantenimiento continuo de sitios web",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "Para un sitio web que ya funciona bien y necesita mantenerse así.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p><strong>Desde 200 CAD al mes.</strong></p>\n<p><strong>CARE Essential:</strong> actualizaciones, supervisión, verificaciones periódicas del funcionamiento de los formularios y sistemas de reservas, e informe sobre el estado del sitio web.</p>\n<p><strong>CARE Partner:</strong> todo lo incluido en Essential, además de pequeños cambios, respuesta prioritaria y una revisión trimestral.</p>\n<p>El precio del plan mensual se confirma después de que usted nos permita revisar su sitio web.</p>\n<p>La reparación de problemas existentes y las nuevas funcionalidades se cotizan por separado.</p>\n<p><strong>¿Tu sitio no fue desarrollado por Magneto?</strong> Se requiere un <strong>Diagnóstico pagado del sitio web</strong> antes de aceptarlo en CARE. Es posible que primero deban estabilizarse los problemas existentes mediante FIX.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Hablemos de CARE",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "care"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "services",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "ES 258 (5b §5.4 override: main CTA label)",
+          "value": "Agenda una llamada gratuita"
+        },
+        {
+          "key": "field_689a5f0dc2a9b",
+          "label": "servicesServiceDetails.services",
+          "src": "ES 272-293, 295-321, 323-333, 339-347, 349-359, 361-367, 369-375",
+          "subfields": {
+            "field_689a5f28c2a9c": "title",
+            "field_p5_servicesservicedetails_services_heading": "heading",
+            "field_p5_servicesservicedetails_services_description_html": "descriptionHtml",
+            "field_p5_servicesservicedetails_services_cta_text": "ctaText",
+            "field_p5_servicesservicedetails_services_cta_path": "ctaPath",
+            "field_p5_servicesservicedetails_services_anchor_id": "anchorId",
+            "field_p5_servicesservicedetails_services_service_group": "serviceGroup[]"
+          },
+          "value": [
+            {
+              "field_689a5f28c2a9c": "BUILD — Creación y rediseño de sitios web",
+              "field_p5_servicesservicedetails_services_heading": "Un sitio web que facilita que tus visitantes entiendan tu negocio, confíen en él y se comuniquen contigo.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>BUILD está pensado para empresas que necesitan un sitio web nuevo, un rediseño importante o una página de destino específica.</p>\n<p>El trabajo integra estrategia, estructura, diseño UX/UI y desarrollo para que el resultado sea una experiencia web coherente.</p>\n<p><strong>Según el proyecto, el alcance puede incluir:</strong></p>\n<ul><li>Estrategia web y estructura del contenido</li><li>Diseño UX/UI</li><li>Desarrollo adaptable a distintos dispositivos</li><li>Sistema de gestión de contenido (CMS), cuando sea necesario</li><li>Formularios, reservas e integraciones habituales</li><li>Implementación multilingüe, cuando se requiera</li><li>Bases de analítica y posicionamiento en buscadores</li><li>Control de calidad, lanzamiento y entrega al cliente</li></ul>\n<p><strong>Inversión:</strong> desde <strong>3 500 CAD</strong> por una página de destino específica en un solo idioma. Inversión habitual para un sitio web: <strong>5 000–8 000 CAD</strong>. Proyectos a medida: <strong>10 000 CAD o más</strong>. Todos los precios están expresados en dólares canadienses. Se añaden los impuestos aplicables cuando corresponda.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "Ver precios de BUILD",
+              "field_p5_servicesservicedetails_services_cta_path": "/paquetes#build",
+              "field_p5_servicesservicedetails_services_anchor_id": "build",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "FIX — Optimización y recuperación de sitios web",
+              "field_p5_servicesservicedetails_services_heading": "Mejora el sitio web que ya tienes, without rebuilding it unnecessarily.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>FIX está pensado para sitios que funcionan en lo esencial, pero tienen problemas específicos que afectan su claridad, facilidad de uso o confiabilidad.</p>\n<p>Por ejemplo: una experiencia confusa en dispositivos móviles, páginas lentas, formularios o reservas que fallan, problemas con WordPress u otros aspectos técnicos, dificultades con la analítica, bases de accesibilidad por mejorar u otros obstáculos técnicos.</p>\n<p>Magneto sigue un proceso sencillo:</p>\n<p><strong>Diagnosticar → Priorizar → Aprobar → Corregir → Verificar</strong></p>\n<p>Sabes qué se va a corregir antes de empezar el trabajo y el resultado se verifica al terminar.</p>\n<p><strong>Algunas intervenciones habituales de FIX son:</strong></p>\n<ul><li>Problemas en dispositivos móviles y de usabilidad</li><li>Fallas en formularios y sistemas de reservas</li><li>Mejoras de rendimiento</li><li>Problemas con WordPress u otros aspectos técnicos</li><li>Configuración o corrección de la analítica</li><li>Bases de accesibilidad</li><li>Problemas de confiabilidad técnica</li></ul>\n<p>La mayoría de los problemas bien delimitados pueden pasar directamente a una cotización FIX. Si el sitio necesita una revisión técnica más profunda para definir responsablemente el alcance de los trabajos, puede recomendarse primero un <strong>Diagnóstico pagado del sitio web</strong>.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "Ver cómo funciona FIX",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#fix",
+              "field_p5_servicesservicedetails_services_anchor_id": "fix",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
