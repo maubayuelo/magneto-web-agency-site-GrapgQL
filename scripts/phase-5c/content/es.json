@@ -1,0 +1,760 @@
+{
+  "source": {
+    "file": "docs/content/magneto-copy-es.md",
+    "commit": "637fba7",
+    "sha256": "83332a1b84daecfdd041127cd5d8d752ddd5b9c5e671958690860a2f18c7e857"
+  },
+  "spec": "docs/specs/phase-5c-loader.md rev 3.1 (§2; 5b §5.4 override folded in)",
+  "format": "fields[].value is the raw ACF value; repeater rows are keyed by sub-field key; subfields maps sub-field key → GraphQL name (\"[]\" = GraphQL list).",
+  "posts": [
+    {
+      "type": "page",
+      "slug": "services",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "ES 254",
+          "value": "Servicios web diseñados en función de lo que tu negocio realmente necesita."
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "ES 256",
+          "value": "Crea un sitio web más sólido, mejora el que ya tienes o asegúrate de que siga funcionando con un mantenimiento continuo y confiable."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "ES 258 (5b §5.4 override: main CTA label)",
+          "value": "Agendar una llamada de orientación gratuita"
+        },
+        {
+          "key": "field_68cb1f8940e08",
+          "label": "pageintrotext.pageIntroText",
+          "src": "ES 262",
+          "value": "Empezar por el problema, no por el paquete."
+        },
+        {
+          "key": "field_p5_pageintrotext_intro_body_html",
+          "label": "pageintrotext.introBodyHtml",
+          "src": "ES 264-268",
+          "value": "<p>Magneto ayuda a las empresas de servicios de Montreal a elegir la solución más sensata para su sitio web.</p>\n<p>Puede tratarse de crear un sitio nuevo, corregir problemas específicos de uno existente o darle mantenimiento continuo una vez que esté estable.</p>\n<p>Los tres servicios principales son <strong>BUILD, FIX y CARE</strong>.</p>"
+        },
+        {
+          "key": "field_p5_servicesservicedetails_core_heading",
+          "label": "servicesServiceDetails.coreHeading",
+          "src": "ES 270",
+          "value": "Los tres servicios principales"
+        },
+        {
+          "key": "field_p5_servicesservicedetails_supporting_heading",
+          "label": "servicesServiceDetails.supportingHeading",
+          "src": "ES 335",
+          "value": "Incluido según lo que necesite tu proyecto"
+        },
+        {
+          "key": "field_p5_servicesservicedetails_supporting_intro",
+          "label": "servicesServiceDetails.supportingIntro",
+          "src": "ES 337",
+          "value": "Estas son capacidades complementarias, no paquetes independientes de Magneto. Se incluyen o se definen dentro del alcance del proyecto cuando contribuyen a las necesidades del sitio web y los objetivos del negocio."
+        },
+        {
+          "key": "field_689a5f0dc2a9b",
+          "label": "servicesServiceDetails.services",
+          "src": "ES 272-293, 295-321, 323-333, 339-347, 349-359, 361-367, 369-375",
+          "subfields": {
+            "field_689a5f28c2a9c": "title",
+            "field_p5_servicesservicedetails_services_heading": "heading",
+            "field_p5_servicesservicedetails_services_description_html": "descriptionHtml",
+            "field_p5_servicesservicedetails_services_cta_text": "ctaText",
+            "field_p5_servicesservicedetails_services_cta_path": "ctaPath",
+            "field_p5_servicesservicedetails_services_anchor_id": "anchorId",
+            "field_p5_servicesservicedetails_services_service_group": "serviceGroup[]"
+          },
+          "value": [
+            {
+              "field_689a5f28c2a9c": "BUILD — Creación y rediseño de sitios web",
+              "field_p5_servicesservicedetails_services_heading": "Un sitio web que facilita que tus visitantes entiendan tu negocio, confíen en él y se comuniquen contigo.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>BUILD está pensado para empresas que necesitan un sitio web nuevo, un rediseño importante o una página de destino específica.</p>\n<p>El trabajo integra estrategia, estructura, diseño UX/UI y desarrollo para que el resultado sea una experiencia web coherente.</p>\n<p><strong>Según el proyecto, el alcance puede incluir:</strong></p>\n<ul><li>Estrategia web y estructura del contenido</li><li>Diseño UX/UI</li><li>Desarrollo adaptable a distintos dispositivos</li><li>Sistema de gestión de contenido (CMS), cuando sea necesario</li><li>Formularios, reservas e integraciones habituales</li><li>Implementación multilingüe, cuando se requiera</li><li>Bases de analítica y posicionamiento en buscadores</li><li>Control de calidad, lanzamiento y entrega al cliente</li></ul>\n<p><strong>Inversión:</strong> desde <strong>3 500 CAD</strong> por una página de destino específica en un solo idioma. Inversión habitual para un sitio web: <strong>5 000–8 000 CAD</strong>. Proyectos a medida: <strong>10 000 CAD o más</strong>. Todos los precios están expresados en dólares canadienses. Se añaden los impuestos aplicables cuando corresponda.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "Ver precios de BUILD",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#build",
+              "field_p5_servicesservicedetails_services_anchor_id": "build",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "FIX — Optimización y recuperación de sitios web",
+              "field_p5_servicesservicedetails_services_heading": "Mejora el sitio web que ya tienes, sin rehacerlo innecesariamente.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>FIX está pensado para sitios que funcionan en lo esencial, pero tienen problemas específicos que afectan su claridad, facilidad de uso o confiabilidad.</p>\n<p>Por ejemplo: una experiencia confusa en dispositivos móviles, páginas lentas, formularios o reservas que fallan, problemas con WordPress u otros aspectos técnicos, dificultades con la analítica, bases de accesibilidad por mejorar u otros obstáculos técnicos.</p>\n<p>Magneto sigue un proceso sencillo:</p>\n<p><strong>Diagnosticar → Priorizar → Aprobar → Corregir → Verificar</strong></p>\n<p>Sabes qué se va a corregir antes de empezar el trabajo y el resultado se verifica al terminar.</p>\n<p><strong>Algunas intervenciones habituales de FIX son:</strong></p>\n<ul><li>Problemas en dispositivos móviles y de usabilidad</li><li>Fallas en formularios y sistemas de reservas</li><li>Mejoras de rendimiento</li><li>Problemas con WordPress u otros aspectos técnicos</li><li>Configuración o corrección de la analítica</li><li>Bases de accesibilidad</li><li>Problemas de confiabilidad técnica</li></ul>\n<p>La mayoría de los problemas bien delimitados pueden pasar directamente a una cotización FIX. Si el sitio necesita una revisión técnica más profunda para definir responsablemente el alcance de los trabajos, puede recomendarse primero un <strong>Diagnóstico pagado del sitio web</strong>.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "Ver cómo funciona FIX",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#fix",
+              "field_p5_servicesservicedetails_services_anchor_id": "fix",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "CARE — Mantenimiento de sitios web",
+              "field_p5_servicesservicedetails_services_heading": "Mantén tu sitio web actualizado, supervisado y con soporte continuo.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>CARE ofrece soporte continuo para sitios web que ya se encuentran en buenas condiciones de funcionamiento.</p>\n<p>Según el plan, CARE puede incluir mantenimiento habitual, supervisión, verificación de formularios críticos o procesos de reserva, revisión del estado del sitio, pequeños cambios y soporte web continuo.</p>\n<p>Los sitios desarrollados por Magneto pueden pasar a CARE después de su lanzamiento, cuando sea apropiado. Si el sitio existente no fue desarrollado por Magneto, se requiere un <strong>Diagnóstico pagado del sitio web antes de su aceptación en CARE</strong>. Es posible que los problemas existentes deban estabilizarse primero mediante FIX.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "Comparar los planes CARE",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#care",
+              "field_p5_servicesservicedetails_services_anchor_id": "care",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "Páginas de destino específicas",
+              "field_p5_servicesservicedetails_services_heading": "Un público. Una oferta. Un siguiente paso claro.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>Una página de destino específica es un <strong>proyecto BUILD</strong> para un servicio, una campaña o una oferta concreta, cuando no hace falta desarrollar un sitio web completo.</p>\n<p>Puede incluir una estructura de página enfocada, diseño UX/UI orientado hacia un siguiente paso claro, formularios o reservas, bases de analítica e implementación multilingüe cuando se necesite.</p>\n<p>Estas páginas pueden recibir visitantes que llegan por recomendación, desde buscadores o a través de campañas publicitarias pagadas. Magneto desarrolla la página; <strong>la gestión de campañas publicitarias no está incluida</strong>.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "",
+              "field_p5_servicesservicedetails_services_cta_path": "",
+              "field_p5_servicesservicedetails_services_anchor_id": "",
+              "field_p5_servicesservicedetails_services_service_group": "supporting"
+            },
+            {
+              "field_689a5f28c2a9c": "Sitios web multilingües",
+              "field_p5_servicesservicedetails_services_heading": "Comunica tu oferta con claridad en español, francés e inglés.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>La implementación multilingüe puede incluir la adaptación de textos web ya aprobados entre español, francés e inglés cuando esté contemplada en el alcance del proyecto.</p>\n<p>Magneto puede estructurar y desarrollar experiencias multilingües y mantener la coherencia de la navegación, la jerarquía del contenido y los llamados a la acción entre idiomas.</p>\n<p>La cantidad de idiomas influye en la complejidad del proyecto y se evalúa como parte del trabajo BUILD, FIX o CARE correspondiente.</p>\n<p><strong>No se incluyen traducciones certificadas ni especializadas.</strong> El cliente debe aprobar la versión final de los textos adaptados.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "",
+              "field_p5_servicesservicedetails_services_cta_path": "",
+              "field_p5_servicesservicedetails_services_anchor_id": "",
+              "field_p5_servicesservicedetails_services_service_group": "supporting"
+            },
+            {
+              "field_689a5f28c2a9c": "Reservas, formularios y captación de contactos",
+              "field_p5_servicesservicedetails_services_heading": "Facilita que el visitante adecuado dé el siguiente paso.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>Según las necesidades de tu negocio, el sitio web puede conectar a tus visitantes con formularios de contacto, sistemas de reservas, Calendly, suscripciones al boletín informativo o captación de correos electrónicos, WhatsApp y otros canales habituales para enviar consultas.</p>\n<p>El objetivo no es añadir herramientas por añadirlas. El recorrido adecuado depende de lo que el visitante necesite hacer después.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "",
+              "field_p5_servicesservicedetails_services_cta_path": "",
+              "field_p5_servicesservicedetails_services_anchor_id": "",
+              "field_p5_servicesservicedetails_services_service_group": "supporting"
+            },
+            {
+              "field_689a5f28c2a9c": "Bases de analítica, posicionamiento en buscadores y accesibilidad",
+              "field_p5_servicesservicedetails_services_heading": "Dale a tu sitio web las bases técnicas que necesita para funcionar de manera responsable.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>Cuando el proyecto lo requiera, Magneto puede incluir configuración de analítica, bases de SEO y de accesibilidad, configuración del sistema de gestión de contenido (CMS) e integraciones habituales con servicios de terceros.</p>\n<p>La automatización avanzada, los sistemas de inteligencia artificial, el comercio electrónico complejo, la lógica de aplicaciones a medida o una infraestructura poco habitual requieren una evaluación por separado y podrían convertirse en un proyecto a medida.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "",
+              "field_p5_servicesservicedetails_services_cta_path": "",
+              "field_p5_servicesservicedetails_services_anchor_id": "",
+              "field_p5_servicesservicedetails_services_service_group": "supporting"
+            }
+          ]
+        },
+        {
+          "key": "field_689a58f65e417",
+          "label": "finalCtaSection.title",
+          "src": "ES 383",
+          "value": "¿No sabes qué opción le conviene a tu sitio web?"
+        },
+        {
+          "key": "field_689a592f5e419",
+          "label": "finalCtaSection.subtitle",
+          "src": "ES 385 + 387",
+          "value": "No necesitas elegir entre BUILD, FIX o CARE antes de ponerte en contacto con Magneto. Empieza por explicar qué está pasando con tu sitio web. Magneto te recomendará el siguiente paso más sensato antes de definir el alcance del proyecto."
+        },
+        {
+          "key": "field_689a59405e41a",
+          "label": "finalCtaSection.ctaText",
+          "src": "ES 389",
+          "value": "Agendar una llamada de orientación gratuita"
+        },
+        {
+          "key": "field_p5_finalctasection_cta_path",
+          "label": "finalCtaSection.ctaPath",
+          "src": "ES 389 (path as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_text",
+          "label": "finalCtaSection.secondaryCtaText",
+          "src": "ES 391",
+          "value": "Cuéntame sobre tu proyecto"
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_path",
+          "label": "finalCtaSection.secondaryCtaPath",
+          "src": "ES 391 (path as EN)",
+          "value": "/contact"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "packages",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "ES 413",
+          "value": "Paquetes y precios para tu sitio web"
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "ES 415 + 417",
+          "value": "Puntos de partida claros para crear, mejorar o mantener tu sitio web.\n\nCada proyecto comienza por entender el problema que hay que resolver. Los precios y detalles que encontrarás a continuación te ayudan a identificar dónde podría encajar tu proyecto antes de recibir una propuesta."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "ES 419",
+          "value": "Cuéntame sobre tu proyecto"
+        },
+        {
+          "key": "field_p5_herocontent_hero_cta_path",
+          "label": "heroContent.ctaPath",
+          "src": "ES 419 (B1: /contact)",
+          "value": "/contact"
+        },
+        {
+          "key": "field_p5_pageintrotext_intro_body_html",
+          "label": "pageintrotext.introBodyHtml",
+          "src": "ES 421",
+          "value": "<p>Todos los precios están expresados en dólares canadienses. Se añaden los impuestos aplicables cuando corresponda.</p>"
+        },
+        {
+          "key": "field_689a4b0bfdf48",
+          "label": "packagesPackageFeatures.packagesElements",
+          "src": "ES 425-435, 437-447, 449-465",
+          "subfields": {
+            "field_689a4b21fdf49": "name",
+            "field_p5_packagespackagefeatures_packages_elements_heading": "heading",
+            "field_p5_packagespackagefeatures_packages_elements_description_html": "descriptionHtml",
+            "field_p5_packagespackagefeatures_packages_elements_cta_text": "ctaText",
+            "field_p5_packagespackagefeatures_packages_elements_cta_path": "ctaPath",
+            "field_p5_packagespackagefeatures_packages_elements_anchor_id": "anchorId"
+          },
+          "value": [
+            {
+              "field_689a4b21fdf49": "BUILD — Sitio web nuevo o rediseño",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "Para crear un sitio web, hacer un rediseño importante o desarrollar una página de destino específica.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<ul><li><strong>Página de destino específica, en un solo idioma:</strong> desde <strong>3 500 CAD</strong>.</li><li><strong>Sitio web completo, de aproximadamente 5 a 10 páginas, generalmente en dos o tres idiomas:</strong> <strong>5 000–8 000 CAD</strong>.</li><li><strong>Proyectos más grandes o complejos:</strong> <strong>10 000 CAD o más</strong>, con cotización individual.</li></ul>\n<p>Incluye estrategia, diseño, desarrollo, lanzamiento y entrega al cliente.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Hablemos de tu proyecto BUILD",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "build"
+            },
+            {
+              "field_689a4b21fdf49": "FIX — Mejora de un sitio web existente",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "Para sitios que necesitan mejoras específicas, sin un rediseño innecesario.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p>FIX puede resolver problemas como páginas difíciles de entender o lentas, dificultades de uso en dispositivos móviles y formularios o sistemas de reservas que no funcionan correctamente.</p>\n<p>Recibes una lista por escrito de lo que se corregirá y un precio fijo antes de que comience cualquier trabajo. Después se verifica el resultado.</p>\n<p><strong>Desde 1 000 CAD.</strong> El precio definitivo se confirma antes de empezar el trabajo.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Hablemos de tu proyecto FIX",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "fix"
+            },
+            {
+              "field_689a4b21fdf49": "CARE — Mantenimiento continuo de sitios web",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "Para un sitio web que ya funciona bien y necesita mantenerse así.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p><strong>Desde 200 CAD al mes.</strong></p>\n<p><strong>CARE Essential:</strong> actualizaciones, supervisión, verificaciones periódicas del funcionamiento de los formularios y sistemas de reservas, e informe sobre el estado del sitio web.</p>\n<p><strong>CARE Partner:</strong> todo lo incluido en Essential, además de pequeños cambios, respuesta prioritaria y una revisión trimestral.</p>\n<p>El precio del plan mensual se confirma después de una breve revisión de tu sitio web.</p>\n<p>La reparación de problemas existentes y las nuevas funcionalidades se cotizan por separado.</p>\n<p><strong>¿Tu sitio no fue desarrollado por Magneto?</strong> Se requiere un <strong>Diagnóstico pagado del sitio web</strong> antes de aceptarlo en CARE. Es posible que primero deban estabilizarse los problemas existentes mediante FIX.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Hablemos de CARE",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "care"
+            }
+          ]
+        },
+        {
+          "key": "field_p5_packagescontentsections_sections",
+          "label": "packagesContentSections.sections",
+          "src": "ES 469-477, 479-494",
+          "subfields": {
+            "field_p5_packagescontentsections_sections_heading": "heading",
+            "field_p5_packagescontentsections_sections_body_html": "bodyHtml"
+          },
+          "value": [
+            {
+              "field_p5_packagescontentsections_sections_heading": "Diagnóstico pagado del sitio web",
+              "field_p5_packagescontentsections_sections_body_html": "<p>La mayoría de los proyectos comienzan con una conversación y una revisión de lo que es públicamente visible en tu sitio web.</p>\n<p>El Diagnóstico pagado del sitio web se utiliza cuando existen aspectos técnicos desconocidos que impiden preparar una cotización responsable, o bien antes de comenzar CARE en un sitio que Magneto no desarrolló.</p>\n<p><strong>Tarifa fija: 450 CAD.</strong> Apruebas este importe antes de que comience el diagnóstico.</p>\n<p>Recibes los hallazgos documentados, las prioridades y una recomendación sobre el camino a seguir.</p>"
+            },
+            {
+              "field_p5_packagescontentsections_sections_heading": "Lo que conviene saber antes de preparar tu presupuesto",
+              "field_p5_packagescontentsections_sections_body_html": "<h3>Qué influye en el precio</h3>\n<ul><li>El número de páginas y la cantidad de contenido.</li><li>La cantidad de idiomas.</li><li>La presencia de una tienda en línea o funciones de pago.</li><li>La conexión con otros sistemas, más allá de formularios y reservas habituales.</li><li>La migración de una gran cantidad de contenido desde un sitio web anterior.</li></ul>\n<h3>Lo que proporcionas o contratas por separado</h3>\n<ul><li>Los textos y las fotografías para tu sitio web. La redacción completa de contenidos y el servicio de fotografía se cotizan por separado.</li><li>La traducción certificada o especializada. Magneto puede incluir la adaptación multilingüe de textos en el alcance del proyecto, sujeta a tu aprobación.</li><li>La gestión continua de SEO, contenidos o campañas publicitarias.</li><li>El alojamiento web, el dominio y las herramientas de terceros, que pagas directamente desde tus propias cuentas.</li></ul>"
+            }
+          ]
+        },
+        {
+          "key": "field_689a58f65e417",
+          "label": "finalCtaSection.title",
+          "src": "ES 498",
+          "value": "¿No sabes qué paquete se adapta a tu proyecto?"
+        },
+        {
+          "key": "field_689a592f5e419",
+          "label": "finalCtaSection.subtitle",
+          "src": "ES 500 + 502",
+          "value": "No necesitas elegir entre BUILD, FIX o CARE antes de ponerte en contacto con Magneto. Explica qué está pasando con tu sitio web y qué quieres mejorar. Magneto te orientará hacia la opción y el rango de inversión más adecuados."
+        },
+        {
+          "key": "field_689a59405e41a",
+          "label": "finalCtaSection.ctaText",
+          "src": "ES 504",
+          "value": "Cuéntame sobre tu proyecto"
+        },
+        {
+          "key": "field_p5_finalctasection_cta_path",
+          "label": "finalCtaSection.ctaPath",
+          "src": "ES 504 (path as EN)",
+          "value": "/contact"
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_text",
+          "label": "finalCtaSection.secondaryCtaText",
+          "src": "ES 506",
+          "value": "Agendar una llamada de orientación gratuita"
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_path",
+          "label": "finalCtaSection.secondaryCtaPath",
+          "src": "ES 506 (path as EN)",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "home",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "ES 25",
+          "value": "Estrategia, diseño y desarrollo web para empresas de servicios en Montreal."
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "ES 27",
+          "value": "Crea un sitio web más sólido, corrige lo que limita tu sitio actual o asegúrate de que siga funcionando con un mantenimiento continuo y confiable."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "ES 29 (5b §5.4 override)",
+          "value": "Agendar una llamada de orientación gratuita"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "about-magneto",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "ES 167",
+          "value": "Sobre Magneto Web Consulting"
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "ES 169",
+          "value": "Estrategia web, diseño UX/UI y desarrollo con una sola persona de contacto, desde la primera conversación hasta el lanzamiento."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "ES 171 (5b §5.4 override: main CTA label)",
+          "value": "Agendar una llamada de orientación gratuita"
+        },
+        {
+          "key": "field_689bae6dc2660",
+          "label": "aboutData.sectionTitle",
+          "src": "ES 175",
+          "value": "El fundador"
+        },
+        {
+          "key": "field_p5_aboutdata_description_html",
+          "label": "aboutData.descriptionHtml",
+          "src": "ES 177-179",
+          "value": "<p>Magneto es la consultoría web de <strong>Mauricio Bayuelo</strong>, consultor web, diseñador UX/UI y desarrollador front-end radicado en Montreal.</p>\n<p>Trabajas directamente con Mauricio desde la primera conversación y durante la estrategia, el diseño, el desarrollo y el lanzamiento. Tienes una sola persona de contacto, y quien te recomienda la solución también participa en su desarrollo.</p>"
+        },
+        {
+          "key": "field_689baec9c2662",
+          "label": "aboutData.linkText",
+          "src": "ES 181",
+          "value": "Ver el perfil de Mauricio en LinkedIn"
+        },
+        {
+          "key": "field_689baf03953b6",
+          "label": "aboutData.generalText",
+          "src": "ES 185-218 (D-6 template)",
+          "value": "<h3 class=\"typo-2xl-extrabold hero-title m-0\">Lo que ofrece Magneto</h3>\n<ul>\n<li>Sitios web claros y profesionales que ayudan a entender tus servicios y facilitan que los visitantes den el siguiente paso.</li>\n<li>Mejoras específicas cuando es posible corregir un sitio existente sin hacer un rediseño innecesario.</li>\n<li>Mantenimiento continuo para negocios que necesitan soporte y seguimiento confiables.</li>\n<li>Sitios web en español, francés e inglés cuando el proyecto requiere varios idiomas.</li>\n<li>Acompañamiento práctico, desde la estrategia hasta el lanzamiento.</li>\n</ul>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">Con quién trabaja mejor Magneto</h3>\n<p class=\"typo-lg-medium hero-title m-0\">Magneto trabaja principalmente con profesionales del bienestar, terapeutas y empresas de servicios profesionales, así como con otras empresas de servicios de Montreal cuando el proyecto encaja bien.</p>\n<p class=\"typo-lg-medium hero-title m-0\">La colaboración es especialmente adecuada para empresas que valoran la claridad, el diseño bien pensado, una implementación confiable y la comunicación directa con quien realiza el trabajo.</p>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">Recomendar primero. Diseñar y desarrollar después.</h3>\n<p class=\"typo-lg-medium hero-title m-0\">Cada proyecto comienza por comprender el negocio y el problema real que debe resolver su sitio web.</p>\n<p class=\"typo-lg-medium hero-title m-0\">A veces, la mejor opción es crear un sitio nuevo. Otras veces, basta con hacer correcciones específicas. También puede ocurrir que el sitio actual solo necesite pequeños ajustes o mantenimiento continuo.</p>\n<p class=\"typo-lg-medium hero-title m-0\">El papel de Magneto es recomendar primero el camino más sensato y, después, diseñar y desarrollar lo que el negocio realmente necesita.</p>\n<ul>\n<li>Una sola persona de contacto, desde la estrategia hasta la implementación.</li>\n<li>Diseño UX/UI y desarrollo integrados.</li>\n<li>Capacidad de trabajar en varios idiomas cuando el proyecto lo requiere.</li>\n<li>Sin rediseños innecesarios ni promesas sin fundamento.</li>\n</ul>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">¿Tienes un proyecto web en mente?</h3>\n<p class=\"typo-lg-medium hero-title m-0\">¿Tu sitio está desactualizado, no comunica claramente lo que ofreces o es difícil de usar? ¿Todavía no sabes qué necesitas cambiar? Comparte algunos detalles y Magneto te propondrá un siguiente paso adecuado.</p>"
+        },
+        {
+          "key": "field_p5_aboutdata_cta_text",
+          "label": "aboutData.ctaText",
+          "src": "ES 220",
+          "value": "Cuéntame sobre tu proyecto"
+        },
+        {
+          "key": "field_p5_aboutdata_cta_path",
+          "label": "aboutData.ctaPath",
+          "src": "ES 220 (/contact)",
+          "value": "/contact"
+        },
+        {
+          "key": "field_689a58f65e417",
+          "label": "finalCtaSection.title",
+          "src": "ES 228",
+          "value": "Empecemos con una conversación."
+        },
+        {
+          "key": "field_689a592f5e419",
+          "label": "finalCtaSection.subtitle",
+          "src": "ES 230",
+          "value": "Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar cuál es el siguiente paso más conveniente."
+        },
+        {
+          "key": "field_689a59405e41a",
+          "label": "finalCtaSection.ctaText",
+          "src": "ES 232",
+          "value": "Agendar una llamada de orientación gratuita"
+        },
+        {
+          "key": "field_p5_finalctasection_cta_path",
+          "label": "finalCtaSection.ctaPath",
+          "src": "ES 232 (path as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_text",
+          "label": "finalCtaSection.secondaryCtaText",
+          "src": "ES 232 (none, as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_path",
+          "label": "finalCtaSection.secondaryCtaPath",
+          "src": "ES 232 (path as EN)",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "projects",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "ES 69",
+          "value": "Proyectos web destacados"
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "ES 73",
+          "value": "Experiencias web para el sector del bienestar, los servicios profesionales y el comercio digital, desarrolladas según las necesidades de cada negocio."
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "ES 29 (Home §4; 5b §5.4 override: main CTA label)",
+          "value": "Agendar una llamada de orientación gratuita"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "contact",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "ES 751",
+          "value": "Cuéntame sobre tu proyecto web."
+        },
+        {
+          "key": "field_689a2dbb60320",
+          "label": "heroContent.subtitleHero",
+          "src": "ES 753",
+          "value": "Comparte algunos detalles sobre tu proyecto y lo que quieres crear o mejorar. Te responderé con una recomendación sobre el siguiente paso más conveniente."
+        }
+      ]
+    },
+    {
+      "type": "project",
+      "slug": "fashion-company-ecommerce",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689bb68e09f8a",
+          "label": "projectsProjectData.projectData",
+          "src": "ES 532, 538-544, 548-550, 554-557, 561-566",
+          "subfields": {
+            "field_689bb6b409f8b": "projectSubtitle",
+            "field_689bb6ca09f8c": "projectDescription",
+            "field_689bb6e509f8d": "challenges[]",
+            "field_689bb6ff09f8e": "item",
+            "field_689bb725dc084": "solutions[]",
+            "field_689bb725dc085": "item",
+            "field_689bb738dc086": "results[]",
+            "field_689bb738dc087": "item"
+          },
+          "value": {
+            "field_689bb6b409f8b": "Un sitio web en español, francés e inglés para un profesional del bienestar en Montreal, desarrollado para presentar claramente sus diferentes servicios y ofrecer formas directas de comunicarse o reservar una cita.",
+            "field_689bb6ca09f8c": "<p>Dangel es un terapeuta holístico e intuitivo de Montreal que atiende a su clientela en español, francés e inglés.</p>\n<p>Su sitio necesitaba presentar varios servicios terapéuticos sin abrumar al visitante, ofrecer una experiencia clara en tres idiomas y permitir que el propietario actualizara el contenido por su cuenta.</p>\n<p>Magneto se encargó del proyecto desde la estrategia hasta el lanzamiento: diseño UX/UI, desarrollo, implementación multilingüe, opciones de reserva y contacto, controles de consentimiento para cookies, medición de los envíos de formularios y de los clics en los enlaces de reserva, y una guía de administración escrita.</p>\n<p><strong>BUILD · Estrategia · Diseño UX/UI · Desarrollo · Español, francés e inglés</strong></p>",
+            "field_689bb6e509f8d": [
+              {
+                "field_689bb6ff09f8e": "Explicar varios servicios de forma comprensible sin convertir la página en una larga lista de tratamientos sin relación entre sí."
+              },
+              {
+                "field_689bb6ff09f8e": "Presentar una oferta de bienestar basada en la confianza, con información clara y un siguiente paso directo, sin promesas sin fundamento."
+              },
+              {
+                "field_689bb6ff09f8e": "Reunir español, francés e inglés en un solo sitio web fácil de administrar."
+              }
+            ],
+            "field_689bb725dc084": [
+              {
+                "field_689bb725dc085": "Organizar los servicios con información clara que los visitantes pueden comparar antes de decidir cuál explorar o reservar."
+              },
+              {
+                "field_689bb725dc085": "Desarrollar un solo sitio multilingüe con una estructura compartida para visitantes de los tres idiomas."
+              },
+              {
+                "field_689bb725dc085": "Mantener visibles las opciones de reserva y contacto en computadoras y dispositivos móviles."
+              },
+              {
+                "field_689bb725dc085": "Incorporar controles de consentimiento para cookies y medición de envíos de formularios y clics en enlaces de reserva."
+              }
+            ],
+            "field_689bb738dc086": [
+              {
+                "field_689bb738dc087": "Un sitio web publicado en español, francés e inglés."
+              },
+              {
+                "field_689bb738dc087": "Presentación de servicios y navegación adaptadas a diferentes tamaños de pantalla."
+              },
+              {
+                "field_689bb738dc087": "Opciones de reserva y contacto."
+              },
+              {
+                "field_689bb738dc087": "Contenido editable por el propietario, acompañado de una guía de administración escrita."
+              },
+              {
+                "field_689bb738dc087": "Controles de consentimiento para cookies."
+              },
+              {
+                "field_689bb738dc087": "Medición de envíos de formularios y clics en enlaces de reserva."
+              }
+            ]
+          }
+        },
+        {
+          "key": "field_p5_projectsprojectdata_card_description",
+          "label": "projectsProjectData.cardDescription",
+          "src": "ES 77 (Home §4 card)",
+          "value": "Un sitio web en español, francés e inglés para un profesional del bienestar en Montreal. El sitio presenta claramente sus diferentes servicios y ofrece opciones directas para comunicarse o reservar una cita."
+        },
+        {
+          "key": "field_689a6d04467f9",
+          "label": "projectsProjectData.images",
+          "src": "ES 568-577 (D-4: foot_note empty on every existing row)",
+          "subfields": {
+            "field_689a6d4d467fb": "footNote"
+          },
+          "value": [
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            }
+          ]
+        },
+        {
+          "key": "field_689a58f65e417",
+          "label": "finalCtaSection.title",
+          "src": "ES 585",
+          "value": "¿Necesitas un sitio web que facilite entender tus diferentes servicios y dar el siguiente paso?"
+        },
+        {
+          "key": "field_689a592f5e419",
+          "label": "finalCtaSection.subtitle",
+          "src": "ES 587",
+          "value": "Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo."
+        },
+        {
+          "key": "field_689a59405e41a",
+          "label": "finalCtaSection.ctaText",
+          "src": "ES 589",
+          "value": "Agendar una llamada de orientación gratuita"
+        },
+        {
+          "key": "field_p5_finalctasection_cta_path",
+          "label": "finalCtaSection.ctaPath",
+          "src": "ES 589 (path as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_text",
+          "label": "finalCtaSection.secondaryCtaText",
+          "src": "ES 589 (none, as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_path",
+          "label": "finalCtaSection.secondaryCtaPath",
+          "src": "ES 589 (path as EN)",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "type": "project",
+      "slug": "shamaniccas-ecommerce",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689bb68e09f8a",
+          "label": "projectsProjectData.projectData",
+          "src": "ES 679, 685-691, 695-697, 701-704, 708-713",
+          "subfields": {
+            "field_689bb6b409f8b": "projectSubtitle",
+            "field_689bb6ca09f8c": "projectDescription",
+            "field_689bb6e509f8d": "challenges[]",
+            "field_689bb6ff09f8e": "item",
+            "field_689bb725dc084": "solutions[]",
+            "field_689bb725dc085": "item",
+            "field_689bb738dc086": "results[]",
+            "field_689bb738dc087": "item"
+          },
+          "value": {
+            "field_689bb6b409f8b": "Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda en línea y un blog reunidos en un solo sitio web, con un buscador para productos y artículos y suscripción al boletín informativo.",
+            "field_689bb6ca09f8c": "<p>Shamanicca es la marca propia de Mauricio: un <strong>proyecto propio de Magneto, no un trabajo realizado para un cliente</strong>. Su tienda ofrece prendas, accesorios y objetos de temática mística, mientras que el blog publica artículos sobre prácticas espirituales.</p>\n<p>El sitio debía reunir una tienda y un blog bajo la misma marca, permitir añadir nuevos productos y artículos sin complicar la estructura y ofrecer a los visitantes un medio para mantenerse en contacto por correo electrónico.</p>\n<p>Magneto diseñó y desarrolló el sitio, y continúa manteniéndolo y ampliándolo como proyecto activo.</p>\n<p><strong>Proyecto propio · BUILD · Estrategia · Diseño UX/UI · Desarrollo · Tienda en línea · Blog</strong></p>",
+            "field_689bb6e509f8d": [
+              {
+                "field_689bb6ff09f8e": "Conseguir que la tienda y el blog se percibieran como un solo sitio web, y no como dos experiencias separadas."
+              },
+              {
+                "field_689bb6ff09f8e": "Añadir productos y artículos nuevos sin tener que rediseñar las páginas cada vez."
+              },
+              {
+                "field_689bb6ff09f8e": "Ofrecer una vía para mantener el contacto por correo electrónico sin depender únicamente de las redes sociales."
+              }
+            ],
+            "field_689bb725dc084": [
+              {
+                "field_689bb725dc085": "Reunir la tienda y el blog bajo una navegación común y un buscador que incluye tanto productos como artículos."
+              },
+              {
+                "field_689bb725dc085": "Diseñar la experiencia de compra con páginas de categorías y de productos, fotografías, selección de talla, lista de favoritos y carrito de compras."
+              },
+              {
+                "field_689bb725dc085": "Administrar los productos y artículos mediante WordPress y WooCommerce, con plantillas compartidas para añadir contenidos sin diseñar de nuevo cada página."
+              },
+              {
+                "field_689bb725dc085": "Incorporar la suscripción al boletín informativo, una opción de consentimiento para cookies y una política de privacidad."
+              }
+            ],
+            "field_689bb738dc086": [
+              {
+                "field_689bb738dc087": "Tienda en línea y blog publicados en shamanicca.com, accesibles desde escritorio y dispositivos móviles."
+              },
+              {
+                "field_689bb738dc087": "Páginas de categorías y fichas de producto con imágenes, tallas, lista de favoritos y carrito de compras."
+              },
+              {
+                "field_689bb738dc087": "Blog con artículos relacionados."
+              },
+              {
+                "field_689bb738dc087": "Un buscador común para productos y artículos."
+              },
+              {
+                "field_689bb738dc087": "Suscripción al boletín informativo."
+              },
+              {
+                "field_689bb738dc087": "Opción de consentimiento para cookies y política de privacidad."
+              }
+            ]
+          }
+        },
+        {
+          "key": "field_p5_projectsprojectdata_card_description",
+          "label": "projectsProjectData.cardDescription",
+          "src": "ES 85 (Home §4 card)",
+          "value": "Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda en línea y un blog integrados en un mismo sitio web, con un buscador común y suscripción al boletín informativo."
+        },
+        {
+          "key": "field_689a6d04467f9",
+          "label": "projectsProjectData.images",
+          "src": "ES 715-725 (D-4: foot_note empty on every existing row)",
+          "subfields": {
+            "field_689a6d4d467fb": "footNote"
+          },
+          "value": [
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            }
+          ]
+        },
+        {
+          "key": "field_689a58f65e417",
+          "label": "finalCtaSection.title",
+          "src": "ES 733",
+          "value": "¿Necesitas un sitio web que integre claramente diferentes partes de tu negocio?"
+        },
+        {
+          "key": "field_689a592f5e419",
+          "label": "finalCtaSection.subtitle",
+          "src": "ES 735",
+          "value": "Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo."
+        },
+        {
+          "key": "field_689a59405e41a",
+          "label": "finalCtaSection.ctaText",
+          "src": "ES 737",
+          "value": "Agendar una llamada de orientación gratuita"
+        },
+        {
+          "key": "field_p5_finalctasection_cta_path",
+          "label": "finalCtaSection.ctaPath",
+          "src": "ES 737 (path as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_text",
+          "label": "finalCtaSection.secondaryCtaText",
+          "src": "ES 737 (none, as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_path",
+          "label": "finalCtaSection.secondaryCtaPath",
+          "src": "ES 737 (path as EN)",
+          "value": ""
+        }
+      ]
+    }
+  ]
+}
