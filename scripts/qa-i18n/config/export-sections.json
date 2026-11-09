@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "note": "Comparable sections of docs/content/magneto-copy-{en,fr-CA,es}.md (export 637fba7). Anchor = exact heading line, level included; a section runs to the next heading of the same or a higher level. Internal blocks (structure/constraints, VÉRIFICATIONS, Interne — NE PAS PUBLIER, case-study claims/verification gates) are not listed; whole-line italic editor notes are stripped. coveredBy content-json = deterministic checks only (D-7). Built by the Dev 2026-11-09; Mauricio reviews.",
+  "reviewed": {
+    "by": null,
+    "on": null
+  },
+  "sections": [
+    {
+      "id": "packages.card-build",
+      "anchors": {
+        "en": "### 2. BUILD — New Website or Rebuild",
+        "fr": "### 2. BUILD — Nouveau site web ou refonte",
+        "es": "### 2. BUILD — Sitio web nuevo o rediseño"
+      },
+      "coveredBy": "content-json"
+    },
+    {
+      "id": "packages.card-fix",
+      "anchors": {
+        "en": "### 3. FIX — Improve an Existing Website",
+        "fr": "### 3. FIX — Amélioration d'un site existant",
+        "es": "### 3. FIX — Mejora de un sitio web existente"
+      },
+      "coveredBy": "content-json"
+    },
+    {
+      "id": "packages.card-care",
+      "anchors": {
+        "en": "### 4. CARE — Ongoing Website Care",
+        "fr": "### 4. CARE — Entretien continu de sites web",
+        "es": "### 4. CARE — Mantenimiento continuo de sitios web"
+      },
+      "coveredBy": "content-json"
+    },
+    {
+      "id": "privacy.s1",
+      "anchors": {
+        "en": "### 1. Who is responsible for your information?",
+        "fr": "### 1. Qui est responsable de vos renseignements personnels?",
+        "es": "### 1. ¿Quién es responsable de tu información personal?"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s2",
+      "anchors": {
+        "en": "### 2. Information I may collect",
+        "fr": "### 2. Quels renseignements peuvent être recueillis?",
+        "es": "### 2. Qué información puedo recopilar"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s3",
+      "anchors": {
+        "en": "### 3. Why I collect it",
+        "fr": "### 3. Pourquoi ces renseignements sont-ils recueillis?",
+        "es": "### 3. Por qué la recopilo"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s4",
+      "anchors": {
+        "en": "### 4. Service providers and information outside Quebec",
+        "fr": "### 4. Fournisseurs de services et renseignements traités à l'extérieur du Québec",
+        "es": "### 4. Proveedores de servicios e información fuera de Quebec"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s5",
+      "anchors": {
+        "en": "### 5. Cookies and analytics",
+        "fr": "### 5. Témoins et outils d'analyse",
+        "es": "### 5. Cookies y analítica"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s6",
+      "anchors": {
+        "en": "### 6. Project inquiries, bookings and marketing email",
+        "fr": "### 6. Demandes de projet, réservations et courriels promotionnels",
+        "es": "### 6. Solicitudes de proyecto, reservas y correos promocionales"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s7",
+      "anchors": {
+        "en": "### 7. How long information is kept",
+        "fr": "### 7. Combien de temps les renseignements sont-ils conservés?",
+        "es": "### 7. Cuánto tiempo se conserva la información"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s8",
+      "anchors": {
+        "en": "### 8. How information is protected",
+        "fr": "### 8. Comment les renseignements sont-ils protégés?",
+        "es": "### 8. Cómo se protege la información"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s9",
+      "anchors": {
+        "en": "### 9. Your choices and rights",
+        "fr": "### 9. Vos choix et vos droits",
+        "es": "### 9. Tus opciones y derechos"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s10",
+      "anchors": {
+        "en": "### 10. External services and links",
+        "fr": "### 10. Services et liens externes",
+        "es": "### 10. Servicios y enlaces externos"
+      },
+      "coveredBy": null
+    },
+    {
+      "id": "privacy.s11",
+      "anchors": {
+        "en": "### 11. Changes to this policy",
+        "fr": "### 11. Modifications à la présente politique",
+        "es": "### 11. Cambios en esta política"
+      },
+      "coveredBy": null
+    }
+  ]
+}
