@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-  "build": "next build",
+    "build": "next build",
     "start": "next start",
     "agent:build": "node scripts/agent-gate.mjs build",
     "agent:start": "node scripts/agent-gate.mjs start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "vitest"
+    "test": "vitest",
+    "qa:i18n": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/qa-i18n/qa-i18n.ts",
+    "qa:i18n:eval": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/qa-i18n/evals/eval.ts"
   },
   "dependencies": {
     "@apollo/client": "^4.0.0",
@@ -25,6 +27,7 @@
     "rxjs": "7.8.1"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "1.6.0",
     "@eslint/eslintrc": "^3",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^14.3.1",
@@ -37,6 +40,7 @@
     "sass": "^1.89.2",
     "typescript": "^5",
     "vitest": "^1.6.1",
-    "whatwg-fetch": "^3.6.20"
+    "whatwg-fetch": "^3.6.20",
+    "zod": "4.6.7"
   }
 }
