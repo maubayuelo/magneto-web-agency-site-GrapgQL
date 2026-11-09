@@ -22,8 +22,10 @@ CLAUDE.md → AGENTS.md import is active.
 
 ## Current phase
 
-Phase 4 — UI microcopy dictionaries: closed. Merged and in production (2026-10-25).
-Scope: `docs/specs/phase-4-ui-microcopy.md`, ADR 0005.
-Report: `docs/reports/phase-4-ui-microcopy.md`.
-Next: Phase 5 (no spec yet; gap analysis of the 2026 Notion copy vs ACF/components first).
-(Update this line when a phase closes.)
+Phase 5 — 2026 content, trilingual (in progress). Launch target 2026-12-03 (fallback 2026-12-10).
+Closed (merged to master, not yet promoted):
+- 5c — FR-CA/ES content loader and local loads: `docs/specs/phase-5c-loader.md` rev 3.1, ADR 0006 am. 3, report `docs/reports/phase-5c-loader.md` (PR #30, 2026-11-09).
+- Q-D1 — FR/ES UI dictionary fill (0 TODO keys): report `docs/reports/i18n-dictionary-fill.md` (PR #33, 2026-11-09).
+- 5g — i18n copy QA tool (deterministic + opt-in LLM): `docs/specs/phase-5g-i18n-llm-qa.md` rev 0.3, ADR 0009, report `docs/reports/phase-5g-i18n-llm-qa.md`, `scripts/qa-i18n/README.md` (PR #32, 2026-11-09).
+Next: privacy route (Thu 11-12) → design round (Fri 11-13) → 5c-rest export + loads (week of 11-16) → 5e / 5f implementation → release runbook.
+(Update this block when a phase closes.)
