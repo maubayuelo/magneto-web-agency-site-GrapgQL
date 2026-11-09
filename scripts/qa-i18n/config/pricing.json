@@ -1,0 +1,16 @@
+{
+  "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+  "date": "2026-11-09",
+  "currency": "USD",
+  "unit": "per million tokens (MTok), standard first-party API, global routing",
+  "models": {
+    "claude-opus-5-5": { "input": 4, "output": 20, "cacheWrite5m": 5, "cacheRead": 0.2 },
+    "claude-haiku-5-5": {
+      "input": 0.1,
+      "output": 0.5,
+      "cacheWrite5m": 0.125,
+      "cacheRead": 0.01,
+      "note": "Prices for prompts up to 100,000 tokens. Over 100,000 tokens: input 0.50, output 2.50 (one request here is far below)."
+    }
+  }
+}

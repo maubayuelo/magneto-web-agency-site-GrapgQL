@@ -1,0 +1,122 @@
+{
+  "note": "MUTATED TEST DATA, NOT COPY. Small copies of real units with planted defects for the phase-5g eval. Never load into WordPress; never import from src.",
+  "posts": [
+    {
+      "type": "page",
+      "slug": "packages",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "EN 495",
+          "value": "Website Packages & Pricing"
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "EN 501",
+          "value": "Tell me about your project"
+        },
+        {
+          "key": "field_p5_herocontent_hero_cta_path",
+          "label": "heroContent.ctaPath",
+          "src": "EN 501 (B1: /contact)",
+          "value": "/contact"
+        },
+        {
+          "key": "field_p5_pageintrotext_intro_body_html",
+          "label": "pageintrotext.introBodyHtml",
+          "src": "EN 503",
+          "value": "<p>All prices are in Canadian dollars. Applicable taxes are added when required.</p>"
+        },
+        {
+          "key": "field_689a4b0bfdf48",
+          "label": "packagesPackageFeatures.packagesElements",
+          "src": "EN 507-518, 519-530, 531-548",
+          "subfields": {
+            "field_689a4b21fdf49": "name",
+            "field_p5_packagespackagefeatures_packages_elements_heading": "heading",
+            "field_p5_packagespackagefeatures_packages_elements_description_html": "descriptionHtml",
+            "field_p5_packagespackagefeatures_packages_elements_cta_text": "ctaText",
+            "field_p5_packagespackagefeatures_packages_elements_cta_path": "ctaPath",
+            "field_p5_packagespackagefeatures_packages_elements_anchor_id": "anchorId"
+          },
+          "value": [
+            {
+              "field_689a4b21fdf49": "BUILD — New Website or Rebuild",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "For a new website, a substantial rebuild or a focused landing page.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<ul><li><strong>Focused landing page, one language:</strong> from <strong>C$3,500</strong></li><li><strong>Full website, about 5–10 pages, typically in two or three languages:</strong> <strong>C$5,000–8,000</strong></li><li><strong>Larger or more complex projects:</strong> <strong>C$10,000+</strong>, quoted individually</li></ul>\n<p>Includes strategy, design, development, launch and handoff.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Discuss a BUILD project",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "build"
+            },
+            {
+              "field_689a4b21fdf49": "FIX — Improve an Existing Website",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "For a website that needs focused improvements, not an unnecessary rebuild.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p>FIX can address pages that are confusing or slow, problems on mobile, or forms and booking that do not work properly.</p>\n<p>You receive a written list of what will be fixed and a fixed price before any work starts. The result is checked afterward.</p>\n<p><strong>Starting at C$1,000.</strong> Final price is confirmed before work begins.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Discuss a FIX project",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "fix"
+            },
+            {
+              "field_689a4b21fdf49": "CARE — Ongoing Website Care",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "For a website that already works well and needs to stay that way.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p><strong>Starting at C$200/month.</strong></p>\n<p><strong>CARE Essential:</strong> updates, monitoring, regular checks that forms and booking work, and a website health report.</p>\n<p><strong>CARE Partner:</strong> everything in Essential, plus small changes, priority response and a quarterly review.</p>\n<p>Monthly-plan pricing is confirmed after a short review of your website.</p>\n<p>Repairs to existing problems and new features are quoted separately.</p>\n<p><strong>Existing website?</strong> If the site was not built by Magneto, a Paid Website Diagnostic is required before CARE acceptance. Existing problems may need to be stabilized through FIX first.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Ask about CARE",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "care"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "services",
+      "lang": "en",
+      "fields": [
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "EN 321 (5b §5.4 override)",
+          "value": "Book a Free Strategy Call"
+        },
+        {
+          "key": "field_689a5f0dc2a9b",
+          "label": "servicesServiceDetails.services",
+          "src": "EN 335-357, 358-385, 386-397, 402-411, 412-423, 424-431, 432-439",
+          "subfields": {
+            "field_689a5f28c2a9c": "title",
+            "field_p5_servicesservicedetails_services_heading": "heading",
+            "field_p5_servicesservicedetails_services_description_html": "descriptionHtml",
+            "field_p5_servicesservicedetails_services_cta_text": "ctaText",
+            "field_p5_servicesservicedetails_services_cta_path": "ctaPath",
+            "field_p5_servicesservicedetails_services_anchor_id": "anchorId",
+            "field_p5_servicesservicedetails_services_service_group": "serviceGroup[]"
+          },
+          "value": [
+            {
+              "field_689a5f28c2a9c": "BUILD — Website Build / Rebuild",
+              "field_p5_servicesservicedetails_services_heading": "Build a website that makes your business easier to understand, trust and contact.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>BUILD is for businesses that need a new website, a substantial rebuild, or a focused landing page.</p>\n<p>The work brings strategy, structure, UX/UI and development together so the finished website works as one coherent experience.</p>\n<p><strong>Typical scope can include:</strong></p>\n<ul><li>Website strategy and content structure</li><li>UX/UI design</li><li>Responsive development</li><li>CMS when needed</li><li>Forms, booking and standard integrations</li><li>Multilingual implementation when required</li><li>Analytics and search foundations</li><li>QA, launch and handoff</li></ul>\n<p><strong>Investment:</strong> Starting at <strong>C$3,500</strong> for a focused one-language landing page. Typical website investment: <strong>C$5,000–8,000</strong>. Custom projects: <strong>C$10,000+</strong>. All prices are in Canadian dollars. Applicable taxes are added when required.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "See BUILD pricing",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#build",
+              "field_p5_servicesservicedetails_services_anchor_id": "build",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "FIX — Website Optimization & Rescue",
+              "field_p5_servicesservicedetails_services_heading": "Improve the website you already have — without rebuilding it unnecessarily.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>FIX is for websites that are fundamentally usable but have specific problems affecting clarity, usability or reliability.</p>\n<p>That may include a confusing mobile experience, slow pages, broken forms or booking, WordPress or other technical problems, analytics issues, accessibility foundations or other technical friction.</p>\n<p>Magneto follows a simple process:</p>\n<p><strong>Diagnose → Prioritize → Approve → Fix → Verify</strong></p>\n<p>You know what is being fixed before the work starts, and the result is checked afterward.</p>\n<p><strong>Common FIX work can include:</strong></p>\n<ul><li>Mobile and usability problems</li><li>Forms and booking issues</li><li>Performance improvements</li><li>WordPress or other technical problems</li><li>Analytics setup or corrections</li><li>Accessibility foundations</li><li>Technical reliability issues</li></ul>\n<p>Most bounded issues can move directly to a FIX estimate. If the website needs a deeper technical review before the work can be responsibly scoped, a Paid Website Diagnostic may be recommended first.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "See how FIX works",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#fix",
+              "field_p5_servicesservicedetails_services_anchor_id": "fix",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

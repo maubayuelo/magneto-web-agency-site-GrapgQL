@@ -1,0 +1,26 @@
+{
+  "note": "MUTATED TEST DATA, NOT COPY. Planted defects in evals/fixture (phase-5g spec §6.2). A defect counts as found when a finding has the same unitId and lang and a check listed in accept.",
+  "threshold": { "deterministicRecall": 6, "llmRecallMin": 7, "controlErrorsMax": 0, "unplantedWarningOrAboveMax": 3 },
+  "defects": [
+    { "id": "D1", "layer": "deterministic", "check": "numbers", "accept": ["numbers"], "unitId": "content:packages/packagesPackageFeatures.packagesElements[0].descriptionHtml", "lang": "fr", "description": "price changed: 3 500 $ CA → 3 050 $ CA" },
+    { "id": "D2", "layer": "deterministic", "check": "structural-equality", "accept": ["structural-equality"], "unitId": "content:services/servicesServiceDetails.services[0].ctaPath", "lang": "es", "description": "cta_path changed: /packages#build → /paquetes#build" },
+    { "id": "D3", "layer": "deterministic", "check": "kept-terms", "accept": ["kept-terms", "glossary"], "unitId": "content:packages/packagesPackageFeatures.packagesElements[0].name", "lang": "fr", "description": "BUILD translated as CONSTRUCTION" },
+    { "id": "D4", "layer": "deterministic", "check": "placeholder", "accept": ["placeholder"], "unitId": "dict:featuredServices.explore", "lang": "fr", "description": "leftover [FR TODO] marker" },
+    { "id": "D5", "layer": "deterministic", "check": "empty", "accept": ["empty"], "unitId": "content:packages/packagesPackageFeatures.packagesElements[1].heading", "lang": "es", "description": "value emptied" },
+    { "id": "D6", "layer": "deterministic", "check": "main-cta", "accept": ["main-cta", "label-consistency", "glossary"], "unitId": "content:services/heroContent.ctaTextHero", "lang": "es", "description": "main CTA variant: Agenda una llamada gratuita" },
+    { "id": "L1", "layer": "llm", "check": "meaning-drift", "accept": ["meaning-drift", "omission", "addition"], "unitId": "content:services/servicesServiceDetails.services[1].descriptionHtml", "lang": "fr", "description": "who decides: EN 'You know what is being fixed before the work starts' → FR says Magneto decides alone, without consulting the client" },
+    { "id": "L2", "layer": "llm", "check": "omission", "accept": ["omission", "meaning-drift"], "unitId": "content:packages/packagesPackageFeatures.packagesElements[1].descriptionHtml", "lang": "es", "description": "condition sentence dropped: 'Final price is confirmed before work begins.'" },
+    { "id": "L3", "layer": "llm", "check": "addition", "accept": ["addition", "meaning-drift"], "unitId": "content:packages/packagesPackageFeatures.packagesElements[2].descriptionHtml", "lang": "fr", "description": "added claim: the first month of care is free" },
+    { "id": "L4", "layer": "llm", "check": "meaning-drift", "accept": ["meaning-drift", "omission", "addition"], "unitId": "content:packages/pageintrotext.introBodyHtml", "lang": "fr", "description": "tax condition reversed: taxes added when required → taxes included in the prices" },
+    { "id": "L5", "layer": "llm", "check": "register", "accept": ["register"], "unitId": "content:services/servicesServiceDetails.services[1].heading", "lang": "fr", "description": "FR tu ('Améliore ton site') inside a vous page" },
+    { "id": "L6", "layer": "llm", "check": "register", "accept": ["register"], "unitId": "content:packages/packagesPackageFeatures.packagesElements[2].descriptionHtml", "lang": "es", "description": "ES usted ('que usted nos permita revisar su sitio web') inside a tú unit" },
+    { "id": "L7", "layer": "llm", "check": "untranslated", "accept": ["untranslated"], "unitId": "content:services/servicesServiceDetails.services[0].heading", "lang": "fr", "description": "EN fragment left in FR: 'to understand, trust and contact your business'" },
+    { "id": "L8", "layer": "llm", "check": "untranslated", "accept": ["untranslated"], "unitId": "content:services/servicesServiceDetails.services[1].heading", "lang": "es", "description": "EN fragment left in ES: 'without rebuilding it unnecessarily'" }
+  ],
+  "controls": [
+    "content:packages/heroContent.heroTitle",
+    "content:packages/heroContent.ctaTextHero",
+    "content:services/servicesServiceDetails.services[0].title",
+    "dict:contactForm.budgetOptions.from3500to8000"
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "note": "MUTATED TEST DATA, NOT COPY. Small copies of real units with planted defects for the phase-5g eval. Never load into WordPress; never import from src.",
+  "posts": [
+    {
+      "type": "page",
+      "slug": "packages",
+      "lang": "fr",
+      "fields": [
+        {
+          "key": "field_689a2d9a6031f",
+          "label": "heroContent.heroTitle",
+          "src": "FR 409",
+          "value": "Forfaits et tarifs de sites web"
+        },
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "FR 415",
+          "value": "Parlez-moi de votre projet"
+        },
+        {
+          "key": "field_p5_herocontent_hero_cta_path",
+          "label": "heroContent.ctaPath",
+          "src": "FR 415 (B1: /contact)",
+          "value": "/contact"
+        },
+        {
+          "key": "field_p5_pageintrotext_intro_body_html",
+          "label": "pageintrotext.introBodyHtml",
+          "src": "FR 417",
+          "value": "<p>Tous les prix sont en dollars canadiens. Les taxes applicables sont incluses dans les prix.</p>"
+        },
+        {
+          "key": "field_689a4b0bfdf48",
+          "label": "packagesPackageFeatures.packagesElements",
+          "src": "FR 421-431, 433-443, 445-461",
+          "subfields": {
+            "field_689a4b21fdf49": "name",
+            "field_p5_packagespackagefeatures_packages_elements_heading": "heading",
+            "field_p5_packagespackagefeatures_packages_elements_description_html": "descriptionHtml",
+            "field_p5_packagespackagefeatures_packages_elements_cta_text": "ctaText",
+            "field_p5_packagespackagefeatures_packages_elements_cta_path": "ctaPath",
+            "field_p5_packagespackagefeatures_packages_elements_anchor_id": "anchorId"
+          },
+          "value": [
+            {
+              "field_689a4b21fdf49": "CONSTRUCTION — Nouveau site web ou refonte",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "Pour créer un site web, réaliser une refonte importante ou concevoir une page de destination ciblée.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<ul><li><strong>Page de destination ciblée, en une seule langue :</strong> à partir de <strong>3 050 $ CA</strong></li><li><strong>Site web complet d'environ 5 à 10 pages, habituellement en deux ou trois langues :</strong> <strong>5 000 à 8 000 $ CA</strong></li><li><strong>Projets plus grands ou plus complexes :</strong> <strong>10 000 $ CA et plus</strong>, sur soumission personnalisée</li></ul>\n<p>Comprend la stratégie, la conception, le développement, la mise en ligne et le transfert au client.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Discutons de votre projet BUILD",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "build"
+            },
+            {
+              "field_689a4b21fdf49": "FIX — Amélioration d'un site existant",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "Pour un site web qui a besoin de correctifs ciblés, sans refonte inutile.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p>FIX peut corriger des pages difficiles à comprendre ou lentes, des problèmes d'affichage et d'utilisation sur mobile, ou encore des formulaires et des systèmes de réservation qui ne fonctionnent pas correctement.</p>\n<p>Vous recevez une liste écrite des correctifs prévus ainsi qu'un prix fixe avant le début des travaux. Le résultat est vérifié par la suite.</p>\n<p><strong>À partir de 1 000 $ CA.</strong> Le prix définitif est confirmé avant tout travail.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Discutons de votre projet FIX",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "fix"
+            },
+            {
+              "field_689a4b21fdf49": "CARE — Entretien continu de sites web",
+              "field_p5_packagespackagefeatures_packages_elements_heading": "Pour un site web qui fonctionne déjà bien et qui doit le rester.",
+              "field_p5_packagespackagefeatures_packages_elements_description_html": "<p><strong>À partir de 200 $ CA par mois.</strong></p>\n<p>Le premier mois d'entretien est offert gratuitement.</p>\n<p><strong>CARE Essential :</strong> mises à jour, surveillance, vérification régulière du bon fonctionnement des formulaires et des systèmes de réservation, et rapport de santé du site web.</p>\n<p><strong>CARE Partner :</strong> tout ce qui est compris dans Essential, ainsi que de petites modifications, une réponse prioritaire et un bilan trimestriel.</p>\n<p>Le tarif mensuel est confirmé après un court examen de votre site web.</p>\n<p>La correction des problèmes existants et l'ajout de nouvelles fonctionnalités font l'objet de soumissions distinctes.</p>\n<p><strong>Votre site n'a pas été créé par Magneto?</strong> Un <strong>Diagnostic payant de site web</strong> est obligatoire avant son admission à CARE. Les problèmes existants pourraient devoir être stabilisés au moyen de FIX au préalable.</p>",
+              "field_p5_packagespackagefeatures_packages_elements_cta_text": "Discutons de CARE",
+              "field_p5_packagespackagefeatures_packages_elements_cta_path": "/contact",
+              "field_p5_packagespackagefeatures_packages_elements_anchor_id": "care"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "slug": "services",
+      "lang": "fr",
+      "fields": [
+        {
+          "key": "field_689a2e0960321",
+          "label": "heroContent.ctaTextHero",
+          "src": "FR 252 (5b §5.4 override: main CTA label)",
+          "value": "Réserver un appel-conseil gratuit"
+        },
+        {
+          "key": "field_689a5f0dc2a9b",
+          "label": "servicesServiceDetails.services",
+          "src": "FR 266-287, 289-315, 317-327, 333-341, 343-353, 355-361, 363-369",
+          "subfields": {
+            "field_689a5f28c2a9c": "title",
+            "field_p5_servicesservicedetails_services_heading": "heading",
+            "field_p5_servicesservicedetails_services_description_html": "descriptionHtml",
+            "field_p5_servicesservicedetails_services_cta_text": "ctaText",
+            "field_p5_servicesservicedetails_services_cta_path": "ctaPath",
+            "field_p5_servicesservicedetails_services_anchor_id": "anchorId",
+            "field_p5_servicesservicedetails_services_service_group": "serviceGroup[]"
+          },
+          "value": [
+            {
+              "field_689a5f28c2a9c": "BUILD — Création et refonte de sites web",
+              "field_p5_servicesservicedetails_services_heading": "Un site web qui aide vos visiteurs to understand, trust and contact your business.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>BUILD s'adresse aux entreprises qui ont besoin d'un nouveau site web, d'une refonte importante ou d'une page de destination ciblée.</p>\n<p>Le travail réunit stratégie, structure, conception UX/UI et développement afin de créer une expérience web cohérente.</p>\n<p><strong>Selon le projet, le mandat peut comprendre :</strong></p>\n<ul><li>Stratégie web et structure du contenu</li><li>Conception UX/UI</li><li>Développement adaptatif (ordinateur, tablette et mobile)</li><li>Système de gestion de contenu (CMS), au besoin</li><li>Formulaires, prise de rendez-vous et intégrations courantes</li><li>Mise en œuvre multilingue, au besoin</li><li>Bases d'analytique et de référencement</li><li>Vérifications qualité, mise en ligne et transfert au client</li></ul>\n<p><strong>Investissement :</strong> à partir de <strong>3 500 $ CA</strong> pour une page de destination ciblée, en une seule langue. Investissement habituel pour un site web : <strong>5 000 à 8 000 $ CA</strong>. Projets sur mesure : <strong>10 000 $ CA et plus</strong>. Tous les prix sont en dollars canadiens. Les taxes applicables sont ajoutées s'il y a lieu.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "Voir les tarifs BUILD",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#build",
+              "field_p5_servicesservicedetails_services_anchor_id": "build",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            },
+            {
+              "field_689a5f28c2a9c": "FIX — Optimisation et remise en état de sites web",
+              "field_p5_servicesservicedetails_services_heading": "Améliore ton site actuel, sans le refaire inutilement.",
+              "field_p5_servicesservicedetails_services_description_html": "<p>FIX s'adresse aux sites fondamentalement utilisables, mais qui présentent des problèmes précis de clarté, de facilité d'utilisation ou de fiabilité.</p>\n<p>Il peut s'agir, entre autres, d'une expérience mobile confuse, de pages lentes, de formulaires ou d'un système de réservation défaillants, de problèmes WordPress ou d'autres difficultés techniques, de soucis d'analytique, de bases d'accessibilité à améliorer ou d'autres obstacles techniques.</p>\n<p>Magneto suit un processus simple :</p>\n<p><strong>Diagnostiquer → Prioriser → Approuver → Corriger → Vérifier</strong></p>\n<p>Magneto décide seule de ce qui sera corrigé, sans vous consulter, et le résultat est vérifié par la suite.</p>\n<p><strong>Interventions courantes de FIX :</strong></p>\n<ul><li>Problèmes sur mobile et difficultés d'utilisation</li><li>Problèmes de formulaires et de prise de rendez-vous</li><li>Améliorations de performance</li><li>Problèmes liés à WordPress ou à d'autres aspects techniques</li><li>Configuration ou correction des outils d'analytique</li><li>Bases d'accessibilité</li><li>Problèmes de fiabilité technique</li></ul>\n<p>La plupart des problèmes bien délimités peuvent faire directement l'objet d'une estimation FIX. Si une analyse technique plus approfondie est nécessaire pour établir la portée des travaux de façon responsable, un <strong>Diagnostic payant de site web</strong> peut être recommandé au préalable.</p>",
+              "field_p5_servicesservicedetails_services_cta_text": "Voir comment fonctionne FIX",
+              "field_p5_servicesservicedetails_services_cta_path": "/packages#fix",
+              "field_p5_servicesservicedetails_services_anchor_id": "fix",
+              "field_p5_servicesservicedetails_services_service_group": "core"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

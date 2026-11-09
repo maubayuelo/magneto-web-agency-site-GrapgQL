@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "source": "Mauricio, D-9, 2026-11-09 (phase-5g spec rev 0.3 §3.3); additions WordPress, WooCommerce, Calendly, Brevo, Magneto MKTNG approved by Mauricio 2026-11-09; identicalAllowed FR Menu/Logo, ES Popular/Logo approved by Mauricio 2026-11-09 (Logo = header.logoAlt until it becomes Magneto, F-1)",
+  "approved": { "by": "Mauricio", "on": "2026-11-09" },
+  "register": {
+    "fr": { "rule": "vous", "description": "Address the reader as vous (vous / votre / vos). Never tu / toi / ton / ta / tes." },
+    "es": { "rule": "tú", "description": "Address the reader as tú (tú / tu / tus / te / ti). Never usted / ustedes, and never su / sus as a form of address." }
+  },
+  "keep": [
+    { "term": "BUILD", "match": "word-exact-case" },
+    { "term": "FIX", "match": "word-exact-case" },
+    { "term": "CARE", "match": "word-exact-case" },
+    { "term": "Magneto Web Consulting", "match": "exact" },
+    { "term": "Magneto MKTNG", "match": "exact" },
+    { "term": "Magneto", "match": "word-exact-case" },
+    { "term": "Mauricio Bayuelo", "match": "exact" },
+    { "term": "Dangel Wellness", "match": "exact" },
+    { "term": "Shamanicca", "match": "word-exact-case" },
+    { "term": "Trépied", "match": "word-case-insensitive" },
+    { "term": "WordPress", "match": "word-exact-case" },
+    { "term": "WooCommerce", "match": "word-exact-case" },
+    { "term": "Calendly", "match": "word-exact-case" },
+    { "term": "Brevo", "match": "word-exact-case" }
+  ],
+  "ctaLabels": [
+    { "dictKey": "common.bookStrategyCall", "note": "main CTA; value per locale read from the dictionaries at runtime" },
+    { "dictKey": "header.scheduleCall", "note": "header CTA; ES 'Reservar consulta' differs from the main CTA on purpose" }
+  ],
+  "required": [],
+  "identicalAllowed": { "fr": ["Services", "Contact", "Solutions", "Menu", "Logo"], "es": ["Popular", "Logo"] },
+  "urlExceptions": []
+}
