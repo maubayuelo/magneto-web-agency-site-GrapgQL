@@ -29,13 +29,25 @@ const BLOCKS = {
 } as const;
 type Block = keyof (typeof BLOCKS)['en'];
 
+// Q-D1 K1–K3: these three descriptions add the kept term "Magneto Web Consulting", so they differ from the 637fba7
+// export. Notion updated 2026-11-09 to match; remove this exception when the 5c-rest export re-pins the copy.
+const DESCRIPTION_EXCEPTIONS: Partial<Record<`${Locale}:${Block}`, string>> = {
+  'fr:about': 'Mauricio Bayuelo, fondateur de Magneto Web Consulting à Montréal : stratégie web, UX/UI et développement pour entreprises de services, en trois langues.',
+  'es:about': 'Mauricio Bayuelo, fundador de Magneto Web Consulting en Montreal: estrategia web, diseño UX/UI y desarrollo para empresas de servicios, en tres idiomas.',
+  'es:contact': 'Contacta a Magneto Web Consulting en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu sitio web. Atención en español, francés e inglés.',
+};
+
 const lines = (locale: Locale) => readFileSync(resolve(process.cwd(), 'docs/content', FILES[locale]), 'utf8').split('\n');
 const value = (line: string) => line.replace(/^\*\*[^*]+\*\*\s?/, '').trim().replace(/\\([$&|*_])/g, '$1');
-function exported(locale: Locale, block: Block) {
+function fromExport(locale: Locale, block: Block) {
   const all = lines(locale);
   const n = BLOCKS[locale][block];
   expect(all[n - 1], `${locale} ${block} heading`).toMatch(/SEO/);
   return { title: value(all[n + 1]), description: value(all[n + 3]) };
+}
+function exported(locale: Locale, block: Block) {
+  const copy = fromExport(locale, block);
+  return { ...copy, description: DESCRIPTION_EXCEPTIONS[`${locale}:${block}`] ?? copy.description };
 }
 function expectMeta(meta: Metadata, expected: { title: string; description: string }) {
   expect(meta.title).toBe(expected.title);
@@ -59,6 +71,15 @@ describe('page generateMetadata (EN/FR/ES)', () => {
 
   it.each(LOCALES)('%s fallbackDescription = the Home meta description (EN 186 / FR 147 / ES 153)', (locale) => {
     expect(getDictionary(locale).meta.site.fallbackDescription).toBe(exported(locale, 'home').description);
+  });
+
+  it('the K1–K3 exception covers exactly 3 descriptions, each still different from the export (else remove it)', () => {
+    expect(Object.keys(DESCRIPTION_EXCEPTIONS).sort()).toEqual(['es:about', 'es:contact', 'fr:about']);
+    for (const [key, description] of Object.entries(DESCRIPTION_EXCEPTIONS)) {
+      const [locale, block] = key.split(':') as [Locale, Block];
+      expect(fromExport(locale, block).description, key).not.toBe(description);
+      expect(description, key).toContain('Magneto Web Consulting');
+    }
   });
 
   it('an unknown locale segment falls back to EN', async () => {
