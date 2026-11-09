@@ -135,6 +135,7 @@ export async function evalMain(argv: string[], deps: Deps): Promise<number> {
     const outDir = guardOutDir(opts.out ?? path.join(DEFAULT_OUT_ROOT, `eval-${timestamp(deps.now())}`));
 
     let client: LlmClient | undefined;
+    let estimatedUsd: number | null = null;
     if (opts.llm) {
       if (!key || key.trim() === '') {
         err(MISSING_KEY_MESSAGE);
@@ -150,6 +151,7 @@ export async function evalMain(argv: string[], deps: Deps): Promise<number> {
       }
       planLines(plan, pricing).forEach(out);
       out(`× ${repeat} run(s)`);
+      estimatedUsd = plan.estimatedUsd === null ? null : plan.estimatedUsd * repeat;
       client = await deps.loadClient(key);
     }
 
@@ -166,7 +168,7 @@ export async function evalMain(argv: string[], deps: Deps): Promise<number> {
       usage.cacheCreationInputTokens += r.llm.usage.cacheCreationInputTokens;
       usage.cacheReadInputTokens += r.llm.usage.cacheReadInputTokens;
     });
-    const cost = opts.llm ? costLine(pricing, model, null, usage) : 'no LLM request (deterministic half)';
+    const cost = opts.llm ? costLine(pricing, model, estimatedUsd, usage) : 'no LLM request (deterministic half)';
     const md = renderMarkdown({ runs, worst, defects, model, withLlm: opts.llm, cost });
     mkdirSync(outDir, { recursive: true });
     const json = {

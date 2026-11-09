@@ -2,8 +2,8 @@
   "version": 1,
   "note": "Comparable sections of docs/content/magneto-copy-{en,fr-CA,es}.md (export 637fba7). Anchor = exact heading line, level included; a section runs to the next heading of the same or a higher level. Internal blocks (structure/constraints, VÉRIFICATIONS, Interne — NE PAS PUBLIER, case-study claims/verification gates) are not listed; whole-line italic editor notes are stripped. coveredBy content-json = deterministic checks only (D-7). Built by the Dev 2026-11-09; Mauricio reviews.",
   "reviewed": {
-    "by": null,
-    "on": null
+    "by": "Mauricio",
+    "on": "2026-11-09"
   },
   "sections": [
     {

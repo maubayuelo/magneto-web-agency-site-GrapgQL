@@ -20,7 +20,7 @@ import {
 
 export const TOOL_VERSION = '1.0.0';
 export const KEY_VAR = 'MAGNETO_QA_ANTHROPIC_API_KEY';
-export const DEFAULT_MODEL = 'claude-haiku-5-5'; // provisional until the AC-9 eval (D-4: the cheapest model that meets D-8)
+export const DEFAULT_MODEL = 'claude-haiku-5-5'; // D-4 decided 2026-11-09: cheapest model that passed the AC-9 eval (D-8)
 export const DEFAULT_SOURCES: Source[] = ['content-json', 'dictionary', 'export'];
 export const MISSING_KEY_MESSAGE = `--llm needs ${KEY_VAR} in the environment. Run without --llm for the deterministic checks only.`;
 

@@ -1,6 +1,6 @@
 // Seeded-defect eval: the deterministic half runs in npm test / CI (spec §6.2); the LLM half's plumbing is checked
 // with a fake client. No key, no network, no SDK.
-import { mkdtempSync, readdirSync } from 'node:fs';
+import { mkdtempSync, readFileSync, readdirSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -76,6 +76,8 @@ describe('LLM half plumbing with a fake client', () => {
     const perRun = review.mock.calls.length / 2;
     expect(perRun).toBeGreaterThan(0);
     expect(stdout.join('\n')).not.toContain('sk-test-eval');
+    // The final cost line carries the plan estimate × runs, not $0.00.
+    expect(readFileSync(path.join(out, 'eval.md'), 'utf8')).not.toMatch(/est\. before run: \$0\.00/);
   });
 
   it('a reviewer that finds nothing fails the threshold (exit 1); --llm without the key → exit 2, no client', async () => {
