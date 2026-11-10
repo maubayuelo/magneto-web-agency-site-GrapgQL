@@ -216,6 +216,11 @@ export const en = {
       title: 'Contact Magneto | Website Projects in Montreal',
       description: 'Contact Magneto Web Consulting in Montreal. Tell me what you need built, fixed or maintained and get a clear next step, in English, French or Spanish.',
     },
+    // Privacy route (spec §4): magneto-copy-en.md:909 / :911 (637fba7).
+    privacy: {
+      title: 'Privacy Policy | Magneto Web Consulting',
+      description: 'How Magneto Web Consulting collects, uses and protects personal information submitted through this website, and how to contact the Privacy Officer.',
+    },
     project: {
       title: '{title} | Magneto Projects',
     },

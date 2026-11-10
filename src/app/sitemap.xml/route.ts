@@ -9,7 +9,7 @@ export async function GET() {
     const data = await fetchWPGraphQL(typeof GET_PROJECTS === 'string' ? GET_PROJECTS : GET_PROJECTS.loc?.source.body || '');
     const projects = data?.projects?.nodes || [];
 
-    const staticPaths = ['/', '/about-magneto', '/services', '/projects', '/contact'];
+    const staticPaths = ['/', '/about-magneto', '/services', '/projects', '/contact', '/privacy-policy'];
 
     const projectUrls = (projects as any[]).map((p) => {
       const slug = p.slug;
@@ -32,7 +32,7 @@ export async function GET() {
   } catch (e) {
     console.error('Failed to build sitemap dynamically', e);
     // fallback to a minimal static sitemap
-    const staticPaths = ['/', '/about-magneto', '/services', '/projects', '/contact'];
+    const staticPaths = ['/', '/about-magneto', '/services', '/projects', '/contact', '/privacy-policy'];
     const urlset = staticPaths.map((p) => formatSitemapEntry(p, new Date().toISOString())).join('\n');
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlset}\n</urlset>`;
     return new NextResponse(xml, {

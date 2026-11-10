@@ -144,6 +144,8 @@ const EN_FINGERPRINT: Record<string, string> = {
   "meta.about.description": "Meet Mauricio Bayuelo, founder of Magneto Web Consulting in Montreal. Web strategy, UX/UI and development for service businesses in English, French and Spanish.", // Phase 5b, magneto-copy-en.md:257 (01ff73f)
   "meta.contact.title": "Contact Magneto | Website Projects in Montreal", // Phase 5b, magneto-copy-en.md:654 (01ff73f)
   "meta.contact.description": "Contact Magneto Web Consulting in Montreal. Tell me what you need built, fixed or maintained and get a clear next step, in English, French or Spanish.", // Phase 5b, magneto-copy-en.md:656 (01ff73f)
+  "meta.privacy.title": "Privacy Policy | Magneto Web Consulting", // Privacy route, magneto-copy-en.md:909 (637fba7)
+  "meta.privacy.description": "How Magneto Web Consulting collects, uses and protects personal information submitted through this website, and how to contact the Privacy Officer.", // Privacy route, magneto-copy-en.md:911 (637fba7)
   "meta.project.title": "{title} | Magneto Projects",
   "meta.caseStudies.dangel.title": "Dangel Wellness — Trilingual Website | Magneto", // Phase 5b, magneto-copy-en.md:973 (01ff73f)
   "meta.caseStudies.dangel.description": "A French, English and Spanish website for a Montreal wellness professional: clear service information, booking and contact paths, and owner-editable content.", // Phase 5b, magneto-copy-en.md:975 (01ff73f)

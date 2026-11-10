@@ -1,0 +1,86 @@
+// Privacy policy page: a long legal document (H1 + WordPress post content). Mobile first.
+@import "../variables";
+@import "../mixins";
+
+.privacy-policy {
+    // ~70 characters per line at the 17px body size (`70ch` gave ~85–90: DM Sans's "0" is wide). H1 aligns with the body.
+    max-width: 40rem;
+    margin: 0 auto;
+    color: $black;
+    overflow-wrap: break-word;
+}
+
+// Space below the H1 > space above each H2, ≈ 2.25–2.4× the paragraph gap (Mauricio, checkpoint 2026-11-10).
+// No `m-0` helper on the H1: it is `margin: 0 !important` and would cancel this.
+.privacy-policy__title {
+    margin: 0 0 $spacing-45;
+
+    @include media-desktop-up {
+        margin-bottom: $spacing-60;
+    }
+}
+
+.privacy-policy__body {
+    font-size: 1rem;
+    line-height: 1.6;
+
+    @include media-desktop-up {
+        font-size: 1.0625rem;
+    }
+
+    h2 {
+        margin: $spacing-30 0 $spacing-10;
+        font-size: 1.5rem;
+        line-height: 1.3;
+        font-weight: $font-weight-bold;
+
+        @include media-desktop-up {
+            margin-top: $spacing-45;
+        }
+    }
+
+    h3 {
+        margin: $spacing-20 0 $spacing-10;
+        font-size: 1.2rem;
+        line-height: 1.35;
+        font-weight: $font-weight-bold;
+    }
+
+    p {
+        margin: 0 0 $spacing-20;
+
+        @include media-desktop-up {
+            margin-bottom: $spacing-25;
+        }
+    }
+
+    // Content contract (spec §1): the body opens with "Effective date" then "Last updated"; keep them grouped.
+    > p:first-child {
+        margin-bottom: $spacing-5;
+    }
+
+    ul,
+    ol {
+        margin: 0 0 $spacing-15;
+        padding-left: $spacing-25;
+    }
+
+    // typography.scss gives every `ul li` the lg size; list items match the paragraphs here (as packages-sections__body).
+    li {
+        font: inherit;
+        color: inherit;
+        margin-bottom: $spacing-5;
+    }
+
+    a {
+        color: $primary-color-dark; // underlined, 11:1 on white
+        text-decoration: underline;
+        text-underline-offset: 2px;
+
+        &:focus-visible {
+            outline: 3px solid $primary-color-dark;
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+    }
+}

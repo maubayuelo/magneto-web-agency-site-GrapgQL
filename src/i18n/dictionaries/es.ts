@@ -214,6 +214,11 @@ export const es: Dictionary = {
       // K3 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting". Differs from export ES 852.
       description: 'Contacta a Magneto Web Consulting en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu sitio web. Atención en español, francés e inglés.',
     },
+    // Privacy route (spec §4): magneto-copy-es.md:1065 / :1067 (637fba7).
+    privacy: {
+      title: 'Política de privacidad | Magneto Web Consulting',
+      description: 'Cómo Magneto Web Consulting recopila, utiliza y protege la información personal enviada a través de este sitio web, y cómo contactar a la persona responsable de su protección.',
+    },
     project: {
       title: '{title} | Proyectos Magneto',
     },
