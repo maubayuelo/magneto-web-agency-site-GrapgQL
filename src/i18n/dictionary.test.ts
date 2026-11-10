@@ -266,3 +266,26 @@ describe('5d-lite Contact copy = export 637fba7 (AC-4, AC-17)', () => {
     }
   });
 });
+
+// Privacy route spec §4 / AC-3: meta.privacy = the SEO lines of the committed export (637fba7), verbatim.
+// A later authorized re-export must re-pin these lines in the same PR.
+const PRIVACY_META: Record<keyof typeof EXPORTS, { title: number; description: number }> = {
+  en: { title: 909, description: 911 },
+  fr: { title: 1061, description: 1063 },
+  es: { title: 1065, description: 1067 },
+};
+
+describe('Privacy route meta.privacy = export 637fba7 (spec §4, AC-3)', () => {
+  const dicts = { en, fr, es } as const;
+  it.each(['en', 'fr', 'es'] as const)('%s: title and description equal their export lines', (locale) => {
+    const lines = PRIVACY_META[locale];
+    expect(dicts[locale].meta.privacy.title, `${EXPORTS[locale]}:${lines.title}`).toBe(fromExport(locale, lines.title));
+    expect(dicts[locale].meta.privacy.description, `${EXPORTS[locale]}:${lines.description}`).toBe(fromExport(locale, lines.description));
+  });
+
+  it('the three titles end with the brand and differ per locale', () => {
+    const titles = [en, fr, es].map((d) => d.meta.privacy.title);
+    for (const title of titles) expect(title.endsWith(' | Magneto Web Consulting')).toBe(true);
+    expect(new Set(titles).size).toBe(3);
+  });
+});

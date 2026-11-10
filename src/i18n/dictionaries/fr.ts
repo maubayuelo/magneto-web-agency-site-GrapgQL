@@ -213,6 +213,11 @@ export const fr: Dictionary = {
       title: 'Contacter Magneto | Projets web à Montréal',
       description: "Contactez Magneto Web Consulting à Montréal. Présentez votre projet de création, d'amélioration ou d'entretien de site web et découvrez la prochaine étape, en français, en anglais ou en espagnol.",
     },
+    // Privacy route (spec §4): magneto-copy-fr-CA.md:1061 / :1063 (637fba7).
+    privacy: {
+      title: 'Politique de confidentialité | Magneto Web Consulting',
+      description: 'Découvrez comment Magneto Web Consulting recueille, utilise et protège les renseignements personnels transmis au moyen de son site web et comment joindre le responsable de leur protection.',
+    },
     project: {
       title: '{title} | Réalisations Magneto',
     },
