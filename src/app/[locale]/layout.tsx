@@ -155,6 +155,8 @@ export default async function RootLayout({
       {...({ 'data-lt-installed': 'true', suppressHydrationWarning: true } as any)}
     >
       <body>
+        {/* Design round A1: first focusable element; jumps past the header to <main>. */}
+        <a className="skip-link" href="#main-content">{t.common.skipToContent}</a>
         {/* Only this locale's dictionary reaches the client (ADR 0005). Renders no DOM. */}
         <I18nProvider locale={locale} dictionary={t}>
         {/* Header: site navigation and branding. This is a shared component used across pages. */}
@@ -169,8 +171,10 @@ export default async function RootLayout({
             }
           />
 
-          {/* children is where page-specific content is rendered (each page's content). */}
-          {children}
+          {/* The only <main> (design round A1): each route's content, including its final CTA. */}
+          <main id="main-content" tabIndex={-1}>
+            {children}
+          </main>
 
           {/* Footer on every route. The final CTA is rendered by each route page (ADR 0006, decision 3); the lead
               magnet is not rendered until its guide is rebuilt (Phase 5a, Part 2 item 2). */}

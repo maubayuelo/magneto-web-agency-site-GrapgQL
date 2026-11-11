@@ -188,7 +188,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           {features.map((feature, index) => (
             <li key={index} className="package-card__feature-item">
               <div className="package-card__check-icon">
-                <IconComponent src="/assets/images/ico-check.svg" alt={t.common.checkIconAlt} size="sm" className="package-card__check" />
+                <IconComponent src="/assets/images/ico-check.svg" alt="" size="sm" className="package-card__check" />
               </div>
               <span className="typo-sm-medium">{feature.text}</span>
             </li>

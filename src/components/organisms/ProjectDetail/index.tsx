@@ -95,7 +95,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, locale })
                       <div className="project-detail__check-icon">
                         <Image
                           src="/assets/images/ico-check.svg"
-                          alt={t.common.checkIconAlt}
+                          alt=""
                           width={18}
                           height={18}
                           className="project-detail__check"
@@ -125,9 +125,8 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, locale })
                     height={isMobileScreenshot ? 866 : 600}
                     className={`project-detail__main-image${isMobileScreenshot ? ' project-detail__main-image--mobile' : ''}`}
                   />
-                  <p>
-                  {img.footNote}
-                  </p>
+                  {/* Design round A5: no empty caption <p> (its margin left a gap under uncaptioned images). */}
+                  {img.footNote?.trim() ? <p>{img.footNote}</p> : null}
                 </div>
               );
             })}

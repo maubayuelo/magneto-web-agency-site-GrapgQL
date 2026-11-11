@@ -27,7 +27,7 @@ function ServiceRow({ service, index, locale, grouped }: { service: ServiceItem;
         </div>
       )}
       <div className={`service-content ${reverse ? 'service-content--right' : ''}`}>
-        {service.icon ? <IconComponent src={service.icon.src} alt={service.icon.alt} size="md" /> : null}
+        {service.icon ? <IconComponent src={service.icon.src} alt="" size="md" /> : null}
         {service.title ? <Title className={`${supporting ? 'typo-2xl-extrabold' : 'typo-3xl-extrabold'} m-0 mb-15`}>{service.title}</Title> : null}
         {service.heading ? <p className="service-heading typo-xl-medium m-0">{service.heading}</p> : null}
         {service.featured ? <div className="badge"><span className="typo-sm-bold">{getDictionary(locale).services.featuredBadge}</span></div> : null}

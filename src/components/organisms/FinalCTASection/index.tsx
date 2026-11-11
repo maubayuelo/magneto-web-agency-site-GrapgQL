@@ -60,11 +60,13 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
           <div className="final-cta-section__bg">
             <WpResponsiveImage
               image={data?.bgimage?.node as any}
-              alt={data?.title || t.cmsFallback.finalCta.bgAlt}
+              alt=""
               className="final-cta-section__bg-image"
               omitSizeAttributes={false}
               priority
               fill
+              // Design round A4: q75 bands the gradient; q90 only for this background (and the hero's).
+              quality={90}
             />
             <div className="final-cta-section__overlay" />
           </div>

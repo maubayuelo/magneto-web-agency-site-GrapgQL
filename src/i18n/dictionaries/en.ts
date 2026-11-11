@@ -7,10 +7,10 @@ export const en = {
   common: {
     bookStrategyCall: 'Book a Free Strategy Call',
     goHome: 'Go Home',
-    checkIconAlt: 'Check icon',
     loading: 'Loading...',
     close: 'Close',
     privacyPolicy: 'Privacy Policy',
+    skipToContent: 'Skip to main content',
   },
   nav: {
     about: 'About',
@@ -20,11 +20,12 @@ export const en = {
     contact: 'Contact',
   },
   header: {
-    logoAlt: 'Logo',
+    logoAlt: 'Magneto',
     scheduleCall: 'Book a Strategy Call',
     menuOpen: 'Menu',
     menuClose: 'Close',
     languageSwitcher: 'Language',
+    navLabel: 'Main',
   },
   home: {
     recentProjects: 'Selected Web Projects',
@@ -179,7 +180,6 @@ export const en = {
     },
     requestQuote: 'Request Free Quote',
     finalCta: {
-      bgAlt: 'Background',
       title: 'Start with a conversation.',
       subtitle: 'Share what is and is not working with your website. Magneto will help determine whether the sensible next step is a new website, a focused fix, ongoing care — or no major intervention yet.',
     },
