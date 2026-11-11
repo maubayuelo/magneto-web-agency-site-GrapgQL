@@ -2,7 +2,9 @@
 
 import React, { createContext, useCallback, useContext, useEffect, useId, useRef, useState } from 'react';
 import '@/styles/components/email-collector.scss';
-import { openCalendlyPopup, warmCalendlyResources, type CalendlyPrefill } from '@/utils/calendly';
+import '@/styles/components/calendly.scss';
+import { openCalendlyPopup, type CalendlyPrefill } from '@/utils/calendly';
+import { lockPageScroll } from '@/utils/scroll-lock';
 import { gtagEvent } from '@/utils/analytics';
 import { getUtm } from '@/utils/utm';
 import { useI18n } from '@/i18n/I18nProvider';
@@ -28,38 +30,6 @@ const EmailModalContext = createContext<EmailModalContextValue | undefined>(unde
 
 /** 5d-lite §5.2: answer lengths kept short enough for a Calendly URL. */
 const BOOKING_LIMITS = { website: 2048, problem: 500 } as const;
-
-/**
- * Locks page scroll while the dialog is open and returns the unlock function.
- * iOS Safari still scrolls the page behind a modal <dialog> and ignores `overflow: hidden` on <body> for touch
- * scrolling, so the body is pinned with `position: fixed` at the current offset. Unlock restores the exact inline
- * styles and the scroll position. The padding stands in for the desktop scrollbar so the page doesn't shift.
- */
-function lockPageScroll(): () => void {
-  const html = document.documentElement;
-  const body = document.body;
-  const x = window.scrollX;
-  const y = window.scrollY;
-  const scrollbar = window.innerWidth - html.clientWidth;
-  const prevHtml = html.getAttribute('style');
-  const prevBody = body.getAttribute('style');
-
-  html.style.overflow = 'hidden';
-  body.style.position = 'fixed';
-  body.style.top = `${-y}px`;
-  body.style.left = '0';
-  body.style.right = '0';
-  body.style.overflow = 'hidden';
-  if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
-
-  return () => {
-    const restore = (el: HTMLElement, prev: string | null) =>
-      prev === null ? el.removeAttribute('style') : el.setAttribute('style', prev);
-    restore(html, prevHtml);
-    restore(body, prevBody);
-    window.scrollTo(x, y);
-  };
-}
 
 export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (props) => {
   const { t, locale } = useI18n();
@@ -94,14 +64,6 @@ export const EmailCollectorProvider: React.FC<React.PropsWithChildren<{}>> = (pr
   const isDownload = Boolean(options?.downloadUrl);
 
   const openModal = (opts?: ModalOptions) => {
-    // If this modal is being opened as part of a Calendly flow, do a lightweight warm
-    // (preconnect + preload) so the full Calendly script can load faster on click.
-    try {
-      if (!opts?.downloadUrl) warmCalendlyResources();
-    } catch (err) {
-      // warming is best-effort
-    }
-
     triggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOptions(opts);
     setError(null);

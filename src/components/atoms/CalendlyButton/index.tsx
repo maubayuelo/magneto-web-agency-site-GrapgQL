@@ -4,7 +4,7 @@
  'use client';
 
 import { useState } from 'react';
-import { openCalendlyPopup, loadCalendlyScript, warmCalendlyResources } from '@/utils/calendly';
+import { openCalendlyPopup } from '@/utils/calendly';
 import { gtagEvent } from '@/utils/analytics';
 import { useOptionalEmailModal } from '@/components/organisms/EmailCollectorProvider';
 import { useI18n } from '@/i18n/I18nProvider';
@@ -88,17 +88,6 @@ export function CalendlyButton({
     }
   };
 
-  // Preload Calendly script on hover/focus to reduce perceived wait time
-  const handlePreload = () => {
-    // Warm resources on intent (preconnect + preload). This is cheap and
-    // avoids executing heavy 3rd-party JS until the user clicks.
-    try {
-      warmCalendlyResources();
-    } catch (e) {
-      // swallow
-    }
-  };
-
   // Build CSS classes
   const baseClasses = 'btn';
   const variantClasses = `btn-${variant}`;
@@ -116,8 +105,6 @@ export function CalendlyButton({
   return (
     <button
       onClick={handleClick}
-      onMouseEnter={handlePreload}
-      onFocus={handlePreload}
       className={allClasses}
       disabled={disabled || isLoading}
       aria-busy={isLoading}

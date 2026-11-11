@@ -1,0 +1,74 @@
+@import "../variables";
+
+// Design round A6-alt: the Calendly booking modal built by src/utils/calendly.ts (openEmbeddedCalendlyModal).
+// Imported by EmailCollectorProvider (rendered by the layout), so it ships on every page.
+// No 100vh: on iOS Safari it ignores the toolbars and pushes the close bar off-screen; 100% of the padded overlay +
+// dvh follow the visible viewport. env(safe-area-inset-*) is 0 without viewport-fit=cover, so max() keeps 12px.
+.calendly-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000; // above the 5f consent banner (1000); 5f AC-9 relies on it
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+           max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  background: rgba(0, 0, 0, 0.6);
+  overscroll-behavior: contain;
+
+  &__dialog {
+    width: 100%;
+    max-width: 760px;
+    height: min(640px, 100%);
+    max-height: 100%;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  &__bar {
+    flex: 0 0 52px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    padding: 0 4px;
+    background: $white;
+  }
+
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: $white;
+    color: $black;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover { background: $gray-20; }
+
+    &:focus-visible {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+  }
+
+  &__close-icon { display: block; pointer-events: none; }
+
+  &__frame {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    border: 0;
+    display: block;
+  }
+}

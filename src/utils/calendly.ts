@@ -3,35 +3,7 @@
 
 // EN only (the defaults); never import the FR/ES dictionaries in client code (ADR 0005).
 import { en } from '@/i18n/dictionaries/en';
-
-declare global {
-  interface Window {
-    Calendly: {
-      initPopupWidget: (options: CalendlyPopupOptions) => void;
-      initBadgeWidget: (options: CalendlyBadgeOptions) => void;
-      closePopupWidget: () => void;
-    };
-  }
-}
-
-export interface CalendlyPopupOptions {
-  url: string;
-  utm?: {
-    utmCampaign?: string;
-    utmSource?: string;
-    utmMedium?: string;
-    utmContent?: string;
-    utmTerm?: string;
-  };
-}
-
-export interface CalendlyBadgeOptions {
-  url: string;
-  text: string;
-  color: string;
-  textColor: string;
-  branding?: boolean;
-}
+import { lockPageScroll } from '@/utils/scroll-lock';
 
 export interface CalendlyConfig {
   // Replace with your actual Calendly URL
@@ -55,124 +27,12 @@ export const calendlyConfig: CalendlyConfig = {
     utmCampaign: 'strategy_call'
   }
   ,
-  // Default to opening via the embedded popup/modal widget. Consumers can override by
-  // passing `forceNewWindow: true` to `openCalendlyPopup` or the CalendlyButton.
-  // Historically (2025-09-19) the CTA opened Calendly inside an on-page modal. Use
-  // an embedded modal by default to avoid opening blank new tabs.
+  // Default to our embedded modal. Consumers can override by passing `forceNewWindow: true`
+  // to `openCalendlyPopup` or the CalendlyButton.
   preferNewWindow: false
 };
 
-/**
- * Load Calendly widget script dynamically
- */
-export const CALENDLY_CSS = 'https://assets.calendly.com/assets/external/widget.css';
-export const CALENDLY_SCRIPT = 'https://assets.calendly.com/assets/external/widget.js';
-
-// Module-level singleton promise so multiple callers can await the same load.
-let _loadPromise: Promise<void> | null = null;
-export const loadCalendlyScript = (): Promise<void> => {
-  // If Calendly is already present, return resolved promise
-  if (typeof window !== 'undefined' && (window as any).Calendly) {
-    return Promise.resolve();
-  }
-
-  // Return existing promise if load already started
-  if (_loadPromise) return _loadPromise;
-
-  _loadPromise = new Promise<void>((resolve, reject) => {
-    try {
-      // If script tag already exists, wait for Calendly global to appear
-      const existing = document.querySelector(`script[src="${CALENDLY_SCRIPT}"]`);
-      if (existing) {
-        const check = () => {
-          if ((window as any).Calendly) resolve();
-          else setTimeout(check, 100);
-        };
-        check();
-        return;
-      }
-
-      // Load CSS (best-effort; allow browser to cache)
-  const link = document.createElement('link');
-  link.href = CALENDLY_CSS;
-  link.rel = 'stylesheet';
-  // Explicitly set crossorigin so browser can match credentials mode with preloads
-  // and reuse the fetched resource when the script/style is later used.
-  link.crossOrigin = 'anonymous';
-  document.head.appendChild(link);
-
-      // Create script but do not execute immediately where possible; mark as defer
-  const script = document.createElement('script');
-  script.src = CALENDLY_SCRIPT;
-  script.async = true;
-  // set defer as a hint that execution can be deferred until parser is idle
-  // note: for dynamically inserted scripts, defer has no effect in some browsers,
-  // but async=true keeps it non-blocking. We maintain idempotency via _loadPromise.
-  script.defer = true;
-  // Ensure the credentials mode matches preloaded resources so the browser
-  // will reuse the preload instead of discarding it.
-  script.crossOrigin = 'anonymous';
-
-      script.onload = () => {
-        // Small grace period for the Calendly global to initialize
-        setTimeout(() => {
-          if ((window as any).Calendly) resolve();
-          else reject(new Error('Calendly failed to initialize'));
-        }, 100);
-      };
-
-      script.onerror = () => reject(new Error('Failed to load Calendly script'));
-
-      // Append as late as possible; callers control when to call this loader.
-      document.head.appendChild(script);
-    } catch (err) {
-      reject(err);
-    }
-  })
-    .catch((err) => {
-      // Reset promise so future attempts can retry
-      _loadPromise = null;
-      throw err;
-    });
-
-  return _loadPromise!;
-};
-
-// Lightweight warm-up: preconnect + preload Calendly assets on user intent (hover/focus)
-let _calendlyWarmed = false;
-export const warmCalendlyResources = (): void => {
-  try {
-    if (typeof document === 'undefined' || _calendlyWarmed) return;
-    _calendlyWarmed = true;
-
-    const origins = ['https://assets.calendly.com', 'https://calendly.com'];
-    origins.forEach((href) => {
-      // preconnect helps reduce DNS/TCP/SSL overhead
-      const preconnect = document.createElement('link');
-      preconnect.rel = 'preconnect';
-      preconnect.href = href;
-      // use anonymous to match the script/style crossOrigin, avoiding credential mismatches
-      preconnect.crossOrigin = 'anonymous';
-      document.head.appendChild(preconnect);
-
-      // dns-prefetch as a graceful fallback for older browsers
-      const dns = document.createElement('link');
-      dns.rel = 'dns-prefetch';
-      dns.href = href;
-      document.head.appendChild(dns);
-    });
-
-    // Avoid preloading CSS/JS to prevent browser warnings when users don't
-    // open Calendly shortly after load. Keep only preconnect/dns-prefetch.
-  } catch (e) {
-    // swallow - warm-up should never throw
-  }
-};
-
-/**
- * Open Calendly popup with tracking
- */
-/** Strings of the fallback iframe modal. Built with DOM APIs, so they are passed in rather than read from React. */
+/** Strings of the booking modal. Built with DOM APIs, so they are passed in rather than read from React. */
 export interface CalendlyLabels {
   closeDialog: string;
   frameTitle: string;
@@ -184,6 +44,23 @@ export interface CalendlyPrefill {
   customAnswers?: Partial<Record<CalendlyAnswerKey, string>>;
 }
 
+type Gtag = (...args: unknown[]) => void;
+
+/** Raw gtag on purpose: a no-op until 5f defines window.gtag. */
+const sendOpenedEvent = (label: string | undefined, method: 'new_tab' | 'embedded_modal') => {
+  const gtag = (window as unknown as { gtag?: Gtag }).gtag;
+  if (typeof gtag !== 'function') return;
+  gtag('event', 'calendly_popup_opened', {
+    event_category: 'engagement',
+    event_label: label || 'strategy_call',
+    method,
+  });
+};
+
+/**
+ * Opens the Calendly booking flow: our own iframe modal, or a new tab when asked.
+ * Design round A6-alt: Calendly's widget.js / widget.css are not loaded; the modal is the only in-page path.
+ */
 export const openCalendlyPopup = async (options?: {
   utmContent?: string;
   utmTerm?: string;
@@ -192,15 +69,15 @@ export const openCalendlyPopup = async (options?: {
    * Kept so callers that still pass a CMS link (hero, final CTA, lead magnet) compile unchanged.
    */
   customUrl?: string;
-  /** If true, open Calendly in a new browser tab/window instead of using the embedded popup widget. */
+  /** If true, open Calendly in a new browser tab/window instead of the embedded modal. */
   forceNewWindow?: boolean;
   /** Optional map of utm_* params to append to the Calendly URL */
   utmParams?: Record<string, string | undefined>;
-  /** Localized strings for the fallback iframe modal (ADR 0005); EN dictionary values when omitted. */
+  /** Localized strings for the booking modal (ADR 0005); EN dictionary values when omitted. */
   labels?: CalendlyLabels;
-  /** Booking-dialog answers, sent as URL params so the widget, the iframe fallback and a new window all receive them. */
+  /** Booking-dialog answers, sent as URL params so the modal and a new window both receive them. */
   prefill?: CalendlyPrefill;
-}) => {
+}): Promise<void> => {
   // Built outside the try so the error fallback below also keeps utm + answers.
   const targetUrl = new URL(calendlyConfig.url);
   try {
@@ -231,192 +108,144 @@ export const openCalendlyPopup = async (options?: {
     const useNewWindow = options?.forceNewWindow ?? calendlyConfig.preferNewWindow;
 
     if (useNewWindow) {
-      // If caller explicitly requests a new window, open it (legacy behavior).
       window.open(targetUrl.toString(), '_blank', 'noopener,noreferrer');
-      // Track event (if analytics available)
-      if (typeof window !== 'undefined' && (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag) {
-        const gtag = (window as unknown as { gtag: (...args: unknown[]) => void }).gtag;
-        gtag('event', 'calendly_popup_opened', {
-          event_category: 'engagement',
-          event_label: options?.utmContent || 'strategy_call',
-          method: 'new_tab'
-        });
-      }
+      sendOpenedEvent(options?.utmContent, 'new_tab');
       return;
     }
 
-    // Prefer an in-page embedded experience. First try the Calendly popup widget
-    // (the official script) for the consistent behavior. If that's not available
-    // fall back to rendering an iframe inside a custom modal overlay so we never
-    // open a blank browser tab.
-    await loadCalendlyScript();
-
-    if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
-      try {
-        window.Calendly.initPopupWidget({ url: targetUrl.toString() });
-        if (typeof window !== 'undefined' && (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag) {
-          const gtag = (window as unknown as { gtag: (...args: unknown[]) => void }).gtag;
-          gtag('event', 'calendly_popup_opened', {
-            event_category: 'engagement',
-            event_label: options?.utmContent || 'strategy_call',
-            method: 'popup_widget'
-          });
-        }
-        return;
-      } catch (err) {
-        // if the script failed to open its own popup, we'll fall through to iframe modal
-      }
+    if (openEmbeddedCalendlyModal(targetUrl.toString(), options?.utmContent, options?.labels)) {
+      sendOpenedEvent(options?.utmContent, 'embedded_modal');
     }
-
-    // Final fallback: create an in-page iframe modal so the user stays on the site
-    openEmbeddedCalendlyModal(targetUrl.toString(), options?.utmContent, options?.labels);
   } catch (error) {
     // Avoid noisy errors in console; log only in development
     if (process.env.NODE_ENV === 'development') {
       // eslint-disable-next-line no-console
       console.error('Error opening Calendly popup:', error);
     }
-    // Final fallback: prefer showing an in-page embedded modal so we don't
-    // navigate users away from the site. Only open a new tab/window when the
-    // caller explicitly requested `forceNewWindow: true`.
+    // Last resort: a new tab, so the visitor can still book.
     try {
-      openEmbeddedCalendlyModal(targetUrl.toString(), options?.utmContent, options?.labels);
-    } catch (e) {
-      // If creating the embedded modal somehow fails, as a last resort try
-      // opening a new tab (wrap in try/catch so errors don't bubble).
-      try {
-        window.open(targetUrl.toString(), '_blank', 'noopener,noreferrer');
-      } catch (ee) {
-        // swallow
-      }
+      window.open(targetUrl.toString(), '_blank', 'noopener,noreferrer');
+    } catch {
+      // swallow
     }
   }
 };
 
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/** The same ✕ as the booking dialog's `.ec-close` (EmailCollectorProvider). */
+const createCloseIcon = (): SVGSVGElement => {
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('class', 'calendly-modal__close-icon');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('width', '20');
+  svg.setAttribute('height', '20');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  const path = document.createElementNS(SVG_NS, 'path');
+  path.setAttribute('d', 'M5 5l14 14M19 5L5 19');
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', 'currentColor');
+  path.setAttribute('stroke-width', '2.5');
+  path.setAttribute('stroke-linecap', 'round');
+  svg.appendChild(path);
+  return svg;
+};
+
 /**
- * Create a simple in-page modal overlay that embeds Calendly via iframe.
- * This avoids opening a new browser tab and preserves user context on the site.
+ * In-page modal that embeds Calendly in an iframe. Styles: src/styles/components/calendly.scss.
+ * overlay (z-index 10000, above the 5f consent banner) → dialog container → toolbar with the close button → iframe.
+ * Closes on the ✕ and on Escape only: a backdrop tap does not close it (design round 1a, Mauricio 2026-11-11), because
+ * an accidental tap would lose progress in Calendly's multi-step flow.
+ * Returns true when it opened a new modal.
  */
-const openEmbeddedCalendlyModal = (url: string, label?: string, labels: CalendlyLabels = en.calendly) => {
+const openEmbeddedCalendlyModal = (url: string, label?: string, labels: CalendlyLabels = en.calendly): boolean => {
+  let unlockScroll: (() => void) | null = null;
   try {
     // Avoid creating multiple overlays
-    if (document.getElementById('calendly-embedded-overlay')) return;
+    if (document.getElementById('calendly-embedded-overlay')) return false;
 
     // D-10: named dialog, focus moved to its close button, then returned. No Tab trap: the iframe is cross-origin.
     const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
     const overlay = document.createElement('div');
     overlay.id = 'calendly-embedded-overlay';
-    overlay.setAttribute('role', 'dialog');
-    overlay.setAttribute('aria-modal', 'true');
-    overlay.setAttribute('aria-label', labels.frameTitle);
-    overlay.style.position = 'fixed';
-    overlay.style.inset = '0';
-    overlay.style.background = 'rgba(0,0,0,0.6)';
-    overlay.style.zIndex = '10000';
-    overlay.style.display = 'flex';
-    overlay.style.alignItems = 'center';
-    overlay.style.justifyContent = 'center';
+    overlay.className = 'calendly-modal';
 
-  const container = document.createElement('div');
-  container.id = 'calendly-embedded-container';
-  // Keep inline sizing in sync with our stylesheet so the CSS isn't overridden
-  // by the element's inline styles (which take precedence). Match the compact
-  // layout used in the SCSS: max-width 800px and height 640px for desktop.
-  container.style.width = '100%';
-  container.style.maxWidth = '1000px';
-  container.style.marginTop= '15px';
-  container.style.marginBottom = '15px';
-  container.style.marginLeft = '15px';
-  container.style.marginRight = '15px';
-  container.style.height = '100vh';
-  container.style.maxHeight = '640px';
-  container.style.background = '#fff';
-    container.style.borderRadius = '8px';
-    container.style.overflow = 'hidden';
-    container.style.position = 'relative';
+    const container = document.createElement('div');
+    container.id = 'calendly-embedded-container';
+    container.className = 'calendly-modal__dialog';
+    container.setAttribute('role', 'dialog');
+    container.setAttribute('aria-modal', 'true');
+    container.setAttribute('aria-label', labels.frameTitle);
+
+    const bar = document.createElement('div');
+    bar.className = 'calendly-modal__bar';
 
     const closeBtn = document.createElement('button');
     closeBtn.id = 'calendly-embedded-close';
+    closeBtn.className = 'calendly-modal__close';
     closeBtn.type = 'button';
     closeBtn.setAttribute('aria-label', labels.closeDialog);
-    closeBtn.innerText = '✕';
-    closeBtn.style.position = 'absolute';
-    closeBtn.style.top = '8px';
-    closeBtn.style.right = '8px';
-    closeBtn.style.zIndex = '10002';
-    closeBtn.style.background = 'transparent';
-    closeBtn.style.border = 'none';
-    closeBtn.style.fontSize = '20px';
-    closeBtn.style.cursor = 'pointer';
+    closeBtn.appendChild(createCloseIcon());
 
-    const iframe = document.createElement('iframe');
-
-    // If the target is a Calendly URL, prefer adding embed query params so the
-    // embedded view behaves like an inline/modal embed and uses the embed layout
-    // (this is a safe, non-destructive addition—only add params when host is calendly.com).
+    // embed_domain must stay: Calendly only posts its `calendly.*` message events to the page when it is set
+    // (design round A6 evidence 3). Only added for calendly.com URLs and when not already present.
     try {
       const parsed = new URL(url);
       if (parsed.hostname && parsed.hostname.includes('calendly.com')) {
-        // Only set embed params if they're not already present
         if (!parsed.searchParams.has('embed_domain')) {
           parsed.searchParams.set('embed_domain', window.location.hostname);
         }
         if (!parsed.searchParams.has('embed_type')) {
-          // Request an inline/embed type; Calendly will often render the event
-          // details in a more compact layout for embedded contexts.
           parsed.searchParams.set('embed_type', 'Inline');
         }
         url = parsed.toString();
       }
-    } catch (e) {
+    } catch {
       // ignore URL parsing errors and fall back to provided url
     }
 
+    const iframe = document.createElement('iframe');
+    iframe.className = 'calendly-modal__frame';
     iframe.src = url;
     // utmContent wins over the dictionary title, as before (Phase 4 spec I-7).
     iframe.title = label || labels.frameTitle;
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
-    iframe.style.border = '0';
-
-    // Close handler
-    const close = () => {
-      try {
-        if (window.Calendly && typeof window.Calendly.closePopupWidget === 'function') {
-          // Ensure Calendly widget is closed if it was used
-          window.Calendly.closePopupWidget();
-        }
-      } catch (e) {
-        // ignore
-      }
-      if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
-      document.removeEventListener('keydown', onKeyDown);
-      if (previouslyFocused && previouslyFocused.isConnected) previouslyFocused.focus();
-    };
 
     const onKeyDown = (ev: KeyboardEvent) => {
       if (ev.key === 'Escape') close();
     };
 
-    overlay.addEventListener('click', (ev) => {
-      if (ev.target === overlay) close();
-    });
+    const close = () => {
+      overlay.remove();
+      document.removeEventListener('keydown', onKeyDown);
+      // Unlock first: restoring the scroll position before focusing keeps the page from jumping to the trigger.
+      unlockScroll?.();
+      unlockScroll = null;
+      if (previouslyFocused && previouslyFocused.isConnected) previouslyFocused.focus();
+    };
 
     closeBtn.addEventListener('click', close);
     document.addEventListener('keydown', onKeyDown);
 
-    container.appendChild(closeBtn);
+    bar.appendChild(closeBtn);
+    container.appendChild(bar);
     container.appendChild(iframe);
     overlay.appendChild(container);
+    unlockScroll = lockPageScroll();
     document.body.appendChild(overlay);
     closeBtn.focus();
-  } catch (err) {
+    return true;
+  } catch {
+    unlockScroll?.();
+    document.getElementById('calendly-embedded-overlay')?.remove();
     // last-resort fallback: open in new tab
     try {
       window.open(url, '_blank', 'noopener,noreferrer');
-    } catch (e) {
+    } catch {
       // swallow
     }
+    return false;
   }
 };
 
