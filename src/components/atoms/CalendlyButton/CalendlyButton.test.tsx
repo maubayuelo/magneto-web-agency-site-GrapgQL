@@ -12,7 +12,6 @@ vi.mock('@/utils/calendly', async (importOriginal) => {
   return {
     ...actual,
     openCalendlyPopup: vi.fn(async () => undefined),
-    warmCalendlyResources: vi.fn(),
   };
 });
 
