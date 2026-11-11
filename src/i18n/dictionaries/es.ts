@@ -7,10 +7,10 @@ export const es: Dictionary = {
   common: {
     bookStrategyCall: 'Agendar una llamada de orientación gratuita',
     goHome: 'Volver al inicio',
-    checkIconAlt: 'Ícono de verificación',
     loading: 'Cargando...',
     close: 'Cerrar',
     privacyPolicy: 'Política de privacidad',
+    skipToContent: 'Saltar al contenido principal',
   },
   nav: {
     about: 'Sobre Magneto',
@@ -20,11 +20,12 @@ export const es: Dictionary = {
     contact: 'Contacto',
   },
   header: {
-    logoAlt: 'Logo',
+    logoAlt: 'Magneto',
     scheduleCall: 'Reservar consulta',
     menuOpen: 'Menú',
     menuClose: 'Cerrar',
     languageSwitcher: 'Idioma',
+    navLabel: 'Principal',
   },
   home: {
     recentProjects: 'Proyectos web destacados',
@@ -175,7 +176,6 @@ export const es: Dictionary = {
     },
     requestQuote: 'Solicitar una cotización gratuita',
     finalCta: {
-      bgAlt: 'Fondo',
       title: 'Empecemos con una conversación.',
       subtitle: 'Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas, optar por mantenimiento continuo o, por ahora, no realizar cambios importantes.',
     },

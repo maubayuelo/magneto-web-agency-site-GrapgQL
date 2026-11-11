@@ -151,7 +151,10 @@ describe('Calendly modal structure and a11y (5d-lite D-10, design round A6)', ()
 
     const bar = close.parentElement!;
     expect(bar.className).toBe('calendly-modal__bar');
-    expect([...dialog.children]).toEqual([bar, iframeEl()]);
+    const [guardStart, , , guardEnd] = [...dialog.children];
+    expect([...dialog.children]).toEqual([guardStart, bar, iframeEl(), guardEnd]);
+    expect(guardStart.hasAttribute('data-focus-guard')).toBe(true);
+    expect(guardEnd.hasAttribute('data-focus-guard')).toBe(true);
     expect(bar.compareDocumentPosition(iframeEl()!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(document.activeElement).toBe(close);
   });
@@ -195,6 +198,24 @@ describe('Calendly modal structure and a11y (5d-lite D-10, design round A6)', ()
     overlay.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     overlay.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }));
     expect(overlayEl()).toBe(overlay);
+    pressEscape();
+    expect(overlayEl()).toBeNull();
+  });
+
+  it('focus guards (design round 1b): Tab past the iframe and Shift+Tab before the ✕ both return focus to the ✕', async () => {
+    await openCalendlyPopup();
+    const guards = overlayEl()!.querySelectorAll<HTMLElement>('[data-focus-guard]');
+    expect(guards).toHaveLength(2);
+    guards.forEach((guard) => {
+      expect(guard.tabIndex).toBe(0);
+      expect(guard.textContent).toBe('');
+    });
+    // Tab out of the iframe lands on the end guard; Shift+Tab out of the iframe (or from the ✕) on the start guard.
+    for (const guard of [guards[1], guards[0]]) {
+      iframeEl()!.focus();
+      guard.focus();
+      expect(document.activeElement).toBe(closeEl());
+    }
     pressEscape();
     expect(overlayEl()).toBeNull();
   });

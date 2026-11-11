@@ -51,32 +51,23 @@ export function Hero({
     ? subtitle.split(/\r?\n[ \t]*\r?\n/).map((p) => p.trim()).filter(Boolean)
     : [];
   const heroClasses = `hero hero-${variant} ${className}`.trim();
+  const heroBgSrc: string | null = backgroundImageNode?.sourceUrl || backgroundImage || null;
 
   return (
     <div className="main pb-lg-responsive">
       <section className={heroClasses}>
-        {/* Render dynamic background images using WpResponsiveImage or next/image (fill) to
-            enable optimization and responsive sources. The SCSS contains a `.hero__bg`
-            wrapper so the image can be absolutely positioned underneath the content. */}
-        {backgroundImageNode && (
+        {/* Decorative background (design round A4): next/image `fill` so the optimizer serves a resized, cached copy
+            instead of the raw ~1.7 MB PNG. q90 because q75 shows visible banding in the gradient. */}
+        {heroBgSrc && (
           <div className="hero__bg">
-            <WpResponsiveImage image={backgroundImageNode as any} alt={backgroundImageNode?.altText || ''} className="hero__bg-image" fill omitSizeAttributes={false} priority />
-          </div>
-        )}
-
-        {/* Fallback: if there's a backgroundImage string (CMS remote URL or static path),
-            render a positioned next/image with fill so it benefits from optimization. */}
-        {!backgroundImageNode && backgroundImage && (
-          <div className="hero__bg">
-            {/* Prefer fill + objectFit for robust background behavior */}
-            <WpResponsiveImage
-              image={{ sourceUrl: backgroundImage }}
+            <Image
+              src={heroBgSrc}
               alt=""
               className="hero__bg-image"
               fill
-              omitSizeAttributes={false}
               priority
-              style={{ objectFit: 'cover', objectPosition: 'center' }}
+              sizes="(max-width: 1240px) 100vw, 1200px"
+              quality={90}
             />
           </div>
         )}

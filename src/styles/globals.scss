@@ -34,4 +34,39 @@ body {
     }
 }
 
+// Design round A1: skip link, visible only on keyboard focus, above the fixed header (z-index 10).
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    transition: none; // the global `a` colour transition would fade the pill in from black
+
+    &:focus-visible {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 1001;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: $white;
+        color: $primary-color-dark;
+        font-weight: 700;
+        text-decoration: none;
+        outline: 2px solid $primary-color-dark;
+        outline-offset: 2px;
+    }
+}
+
+// Focus target of the skip link (tabIndex -1): no ring on the whole page; clears the fixed header.
+#main-content {
+    outline: none;
+    scroll-margin-top: 64px;
+}
+
 

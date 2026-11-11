@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
   },
   /* config options here */
   images: {
+    // Design round A4: q90 is used only by the hero / final-CTA background; listing it keeps it valid on next@16.
+    qualities: [75, 90],
   domains: ['magneto-cms.local', 'magneto-cms-2.local', 'cms.magnetomarketing.co'],
     remotePatterns: [
       {

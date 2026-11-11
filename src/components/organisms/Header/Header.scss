@@ -41,6 +41,15 @@
         }
     }
 
+    // Desktop <nav> landmark around ul.nav (design round A7): shown only where ul.nav is, so a single "Main"
+    // landmark is displayed at a time. Not display: contents (older WebKit drops the landmark).
+    .nav-landmark {
+        display: none;
+        @media (min-width: $breakpoint-desktop) {
+            display: block;
+        }
+    }
+
     ul {
         &.nav {
             display: none; // Mobile-first: hide desktop nav by default

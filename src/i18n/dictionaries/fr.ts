@@ -7,10 +7,10 @@ export const fr: Dictionary = {
   common: {
     bookStrategyCall: 'Réserver un appel-conseil gratuit',
     goHome: "Retour à l'accueil",
-    checkIconAlt: 'Icône de crochet',
     loading: 'Chargement...',
     close: 'Fermer',
     privacyPolicy: 'Politique de confidentialité',
+    skipToContent: 'Passer au contenu principal',
   },
   nav: {
     about: 'À propos',
@@ -20,11 +20,12 @@ export const fr: Dictionary = {
     contact: 'Contact',
   },
   header: {
-    logoAlt: 'Logo',
+    logoAlt: 'Magneto',
     scheduleCall: 'Réserver un appel-conseil',
     menuOpen: 'Menu',
     menuClose: 'Fermer',
     languageSwitcher: 'Langue',
+    navLabel: 'Principal',
   },
   home: {
     recentProjects: 'Réalisations web',
@@ -175,7 +176,6 @@ export const fr: Dictionary = {
     },
     requestQuote: 'Demander une soumission gratuite',
     finalCta: {
-      bgAlt: 'Arrière-plan',
       title: 'Commençons par en parler.',
       subtitle: 'Expliquez ce qui fonctionne et ce qui ne fonctionne pas sur votre site web. Magneto vous aidera à déterminer si la prochaine étape la plus sensée est un nouveau site, une correction ciblée, un entretien continu — ou aucune intervention majeure pour le moment.',
     },

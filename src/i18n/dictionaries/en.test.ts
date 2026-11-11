@@ -15,20 +15,21 @@ import { flattenDictionary } from '../dictionary';
 const EN_FINGERPRINT: Record<string, string> = {
   "common.bookStrategyCall": "Book a Free Strategy Call", // Phase 5b, magneto-copy-en.md:27 (01ff73f)
   "common.goHome": "Go Home",
-  "common.checkIconAlt": "Check icon",
   "common.loading": "Loading...",
   "common.close": "Close",
   "common.privacyPolicy": "Privacy Policy", // Phase 5d-lite, magneto-copy-en.md:689 (637fba7)
+  "common.skipToContent": "Skip to main content", // design round A1 (D-A1a, Mauricio 2026-11-10)
   "nav.about": "About",
   "nav.services": "Services",
   "nav.packages": "Packages",
   "nav.projects": "Projects",
   "nav.contact": "Contact",
-  "header.logoAlt": "Logo",
+  "header.logoAlt": "Magneto", // design round A2 (F-1, Mauricio 2026-11-09)
   "header.scheduleCall": "Book a Strategy Call", // Phase 5b, magneto-copy-en.md:19 (01ff73f) (unchanged value)
   "header.menuOpen": "Menu",
   "header.menuClose": "Close",
   "header.languageSwitcher": "Language",
+  "header.navLabel": "Main", // design round A7 (D-A7, Mauricio 2026-11-10)
   "home.recentProjects": "Selected Web Projects", // Phase 5a, magneto-copy-en.md:66
   "home.projectsIntro": "Web experiences for wellness, professional services and digital commerce — built around the needs of each business.", // Phase 5a, magneto-copy-en.md:68
   "services.errorTitle": "Services",
@@ -124,7 +125,6 @@ const EN_FINGERPRINT: Record<string, string> = {
   "cmsFallback.leadMagnet.title": "Download our free guide:",
   "cmsFallback.leadMagnet.subtitle": "5 Mistakes That Kill Funnel Conversions",
   "cmsFallback.requestQuote": "Request Free Quote",
-  "cmsFallback.finalCta.bgAlt": "Background",
   "cmsFallback.finalCta.title": "Start with a conversation.", // Phase 5a, magneto-copy-en.md:122
   "cmsFallback.finalCta.subtitle": "Share what is and is not working with your website. Magneto will help determine whether the sensible next step is a new website, a focused fix, ongoing care — or no major intervention yet.", // Phase 5a, magneto-copy-en.md:124
   "cmsFallback.heroImageAlt": "Hero Image",

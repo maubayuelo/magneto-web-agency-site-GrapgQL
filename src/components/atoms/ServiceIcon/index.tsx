@@ -12,7 +12,7 @@ const ServiceIcon: React.FC<ServiceIconProps> = ({ type, size = 27 }) => {
     <div className={`service-icon service-icon--${type}`} data-size={size}>
       <Image
         src={type}
-        alt={`${type} icon`}
+        alt=""
         width={size}
         height={size}
         className="service-icon__image"

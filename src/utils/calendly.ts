@@ -165,7 +165,9 @@ const openEmbeddedCalendlyModal = (url: string, label?: string, labels: Calendly
     // Avoid creating multiple overlays
     if (document.getElementById('calendly-embedded-overlay')) return false;
 
-    // D-10: named dialog, focus moved to its close button, then returned. No Tab trap: the iframe is cross-origin.
+    // D-10: named dialog, focus moved to its close button, then returned. The iframe is cross-origin, so we can't see
+    // focus inside it; two empty focus guards around the dialog content catch Tab / Shift+Tab leaving the iframe (or the
+    // ✕) and send focus back to the ✕ (design round 1b, Mauricio 2026-11-11: WebKit otherwise went to <body>).
     const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
     const overlay = document.createElement('div');
@@ -226,11 +228,22 @@ const openEmbeddedCalendlyModal = (url: string, label?: string, labels: Calendly
     };
 
     closeBtn.addEventListener('click', close);
+
+    const createFocusGuard = (): HTMLDivElement => {
+      const guard = document.createElement('div');
+      guard.className = 'calendly-modal__focus-guard';
+      guard.tabIndex = 0;
+      guard.setAttribute('data-focus-guard', '');
+      guard.addEventListener('focus', () => closeBtn.focus());
+      return guard;
+    };
     document.addEventListener('keydown', onKeyDown);
 
     bar.appendChild(closeBtn);
+    container.appendChild(createFocusGuard());
     container.appendChild(bar);
     container.appendChild(iframe);
+    container.appendChild(createFocusGuard());
     overlay.appendChild(container);
     unlockScroll = lockPageScroll();
     document.body.appendChild(overlay);

@@ -19,12 +19,12 @@
     display: inline-flex;
     align-items: center;
     gap: $spacing-5;
-    color: $gray-80;
+    color: $gray-90; // design round A8: $gray-80 was 4.42:1 (AA needs 4.5)
     text-decoration: underline;
     text-underline-offset: 2px;
 
     &:hover {
-      color: $gray-90;
+      color: $black;
     }
   }
 
@@ -118,7 +118,7 @@
     li {
       position: relative;
       padding-left: $spacing-30;
-      color: $gray-80;
+      color: $gray-90; // design round A8: $gray-80 was 4.42:1 (AA needs 4.5)
 
       &:before {
         content: '•';

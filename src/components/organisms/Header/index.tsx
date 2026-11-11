@@ -116,6 +116,7 @@ export const Header = ({
                 );
               })()}
             </Link>
+            <nav className="nav-landmark" aria-label={t.header.navLabel}>
             <ul className="nav">
               <li><a href={localizePath('/about-magneto/', locale)} className="typo-sm-bold">{t.nav.about}</a></li>
               <li><a href={localizePath('/services/', locale)} className="typo-sm-bold">{t.nav.services}</a></li>
@@ -131,6 +132,7 @@ export const Header = ({
               </li>
               {switcher && <li className="nav__lang">{switcher}</li>}
             </ul>
+            </nav>
             <ul className="nav_mobile">
               <li>
                 <HeaderCTA
@@ -161,6 +163,8 @@ export const Header = ({
           </div>
         </header>
       </section>
+      {/* hidden while closed: one displayed "Main" landmark at a time (axe landmark-unique, design round A7). */}
+      <nav aria-label={t.header.navLabel} hidden={!menuOpen}>
       <ul className="nav_mobile__menu" style={{ display: menuOpen ? "flex" : "none" }}>
         <li><a href={localizePath('/about-magneto/', locale)} onClick={() => setMenuOpen(false)}>{t.nav.about}</a></li>
         <li><a href={localizePath('/services/', locale)} onClick={() => setMenuOpen(false)}>{t.nav.services}</a></li>
@@ -169,6 +173,7 @@ export const Header = ({
         <li><a href={localizePath('/contact/', locale)} onClick={() => setMenuOpen(false)}>{t.nav.contact}</a></li>
         {switcher && <li>{switcher}</li>}
       </ul>
+      </nav>
     </>
   );
 
