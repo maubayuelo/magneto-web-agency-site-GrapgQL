@@ -10,9 +10,10 @@
     // Mobile: single column
     grid-template-columns: minmax(0, 1fr);
 
-    // I-6 (5b): 2 tracks 601–1023; the lone third card stays in the first column (D-G6)
-    @include media-tablet-up {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    // B2 (design round): 1 centred track at 601–1023, ~66vw at 768, so card text stays ≤ ~75 characters per line
+    @media (min-width: $breakpoint-tablet) and (max-width: #{$breakpoint-desktop - 1px}) {
+      grid-template-columns: minmax(0, min(100%, clamp(30rem, 66vw, 33rem)));
+      justify-content: center;
       max-width: none;
     }
 

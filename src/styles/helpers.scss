@@ -171,18 +171,8 @@
 }
 
 // Responsive helpers
-.mt-sm-responsive {
-    margin-top: $spacing-5;
-    @include media-desktop-up {
-        margin-top: $spacing-15;
-    }
-}
-.mb-sm-responsive {
-    margin-bottom: $spacing-5;
-    @include media-desktop-up {
-        margin-bottom: $spacing-15;
-    }
-}
+// B4 (design round): .mt-sm-responsive / .mb-sm-responsive were defined twice (5/15 here, 10/15 below). The later
+// 10/15 pair won the cascade and matches the pt/pb-sm family, so it is the one kept: no rendered change.
 .mt-md-responsive {
     margin-top: $spacing-15;
 

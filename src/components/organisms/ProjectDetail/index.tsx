@@ -26,7 +26,7 @@ interface ProjectDetailProps {
 export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, locale }) => {
   const t = getDictionary(locale);
   return (
-    <div className="main project-detail pt-sm-responsive pb-lg-responsive">
+    <div className="main project-detail pt-lg-responsive pb-lg-responsive">
       <div className="project-detail__container">
 
         {/* Header */}
@@ -112,7 +112,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, locale })
 
         {/* Gallery - Full width images */}
         {project.gallery && project.gallery.length > 0 && (
-          <div className="project-detail__gallery typo-center pb-md">
+          <div className="project-detail__gallery typo-center pb-md-responsive">
             {project.gallery.map((img: ProjectGalleryItem, i: number) => {
               const isMobileScreenshot = img.isMobileScreenshot;
               return (
@@ -159,7 +159,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, locale })
         )}
 
         {/* Back Button */}
-        <nav className="project-detail__navigation mt-sm pb-md">
+        <nav className="project-detail__navigation mt-sm-responsive">
           
           <Link href={localizePath('/projects', locale)} className="btn btn-secondary">
             {t.projectDetail.backToProjects}

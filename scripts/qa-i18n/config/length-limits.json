@@ -1,17 +1,23 @@
 {
   "version": 1,
-  "status": "placeholder",
-  "statusNote": "Placeholder values. The Fri 11-13 design round sets them; then status becomes \"set\" with by/on.",
-  "set": { "by": null, "on": null },
-  "ratioWarnAbove": 1.3,
+  "status": "set",
+  "statusNote": "Set in the design round (docs/specs/design-round.md rev 4.1, B8), from B1-A (CTA text width 285 px at 375) and B5-c (the home hero grows with its title).",
+  "set": { "by": "Mauricio", "on": "2026-11-11" },
+  "ratioWarnAbove": 1.35,
   "types": {
-    "cta-label": { "maxChars": 32, "select": { "content-json": ["*.ctaText", "*.ctaTextHero", "*.prefooterCtaText", "*.secondaryCtaText", "*.linkText", "*.aboutCtaText"] } },
-    "hero-title": { "maxChars": 70, "select": { "content-json": ["heroContent.heroTitle"] } },
+    "cta-label": {
+      "maxChars": 38,
+      "select": {
+        "content-json": ["*.ctaText", "*.ctaTextHero", "*.prefooterCtaText", "*.secondaryCtaText", "*.linkText", "*.aboutCtaText"],
+        "dictionary": ["common.bookStrategyCall"]
+      }
+    },
+    "hero-title": { "maxChars": 100, "select": { "content-json": ["heroContent.heroTitle"] } },
     "button": {
-      "maxChars": 24,
+      "maxChars": 26,
       "select": {
         "dictionary": [
-          "common.bookStrategyCall", "header.scheduleCall", "common.goHome", "common.close", "contactForm.submit", "bookingModal.continue",
+          "header.scheduleCall", "common.goHome", "common.close", "contactForm.submit", "bookingModal.continue",
           "emailModal.download", "emailModal.continueDownload", "emailModal.submitting", "cmsFallback.requestQuote"
         ]
       }

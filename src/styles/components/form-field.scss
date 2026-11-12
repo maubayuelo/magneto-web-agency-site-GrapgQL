@@ -21,16 +21,15 @@
 
 .form-field__required {
   color: #b42318; // 5d-lite: was #e74c3c (3.8:1 on white); the visible required cue needs 4.5:1 → 6.6:1
-  font-weight: $font-weight-bold;
+  font-weight: map-get($font-weights, bold);
 }
 
 .form-field__control {
-  @include font-style(sm, regular, md);
-  // iOS Safari zooms the page when a focused control's text is under 16px (the sm scale is 12px here), which
-  // clipped the booking dialog sideways. Phones and tablets get 16px; desktop keeps the 14px design.
-  @media (max-width: $breakpoint-desktop) {
-    font-size: 16px;
-  }
+  // B3: 16px at every width (not the sm scale). iOS Safari zooms the page when a focused control's text is under
+  // 16px, and desktop controls no longer drop below their labels.
+  font-family: $font-family-base;
+  font-size: 16px;
+  @include responsive-line-height(md);
   //width: 100%;
   padding: 14px 16px;
   background: $white;
@@ -99,6 +98,7 @@ textarea.form-field__control {
 // 5d-lite §3: helper and error text, linked to the control with aria-describedby.
 .form-field__help {
   @include font-style(sm, regular, md);
+  @include form-note-phone-tablet;
   margin: 0;
   color: $gray-90; // #606060 on white: 6.3:1 (WCAG AA)
 }

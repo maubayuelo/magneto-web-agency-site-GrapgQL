@@ -1,105 +1,109 @@
-# Button & CTA Styles Documentation - MINIMAL VERSION
+# Button system
 
-## Overview
-This project includes a **minimal, clean button system** that contains only the button styles that are actually being used in the application. All unused styles have been removed for optimal performance.
+What the code actually does, checked against `src/` on 2026-11-11 (design round PR 2, B6). If you change a button
+class, update this file in the same PR.
 
-## File Structure
-- **Main File**: `/src/styles/components/button.scss` - Contains only used button styles (~75 lines)
-- **Variables**: Uses SCSS variables from `/src/styles/variables.scss`
-
-## Available Button Classes (Used Only)
-
-### Standard Buttons
-- `.btn` - Base button class
-- `.btn-primary` - Primary button with brand color ✅ **USED**
-- `.btn-small` - Small button size ✅ **USED**
-
-### Call-to-Action Buttons  
-- `.cta` - Enhanced primary CTA with box shadow ✅ **USED**
-- `.cta-mobile` - Responsive CTA that adapts across breakpoints ✅ **USED**
-
-## Current Usage in Components
-
-### Header Component (`/src/components/organisms/header.tsx`)
-```html
-<a href="#" className="btn btn-primary btn-small">Schedule Call</a>
+Checked with:
+```bash
+grep -rn "\.btn\b\|\.btn-\|\.btn:" src --include=*.scss
+grep -rn "btn-secondary\|btn-outline\|btn-medium\|btn-sm\b\|btn-small\|btn-large\|service-cta" src --include=*.tsx
 ```
 
-### Hero Component (`/src/components/organisms/Hero.tsx`)
-```html
-<a className="cta cta-mobile">Book a Free Strategy Call</a>
-```
+## 1. Files
+- `src/styles/components/button.scss`, imported once, globally, by `src/main.scss`.
+- The same file also styles **every `a`**: `$black`, hover `$primary-color`, no underline, `transition: color 0.2s`.
+- Context rules (section 6) live in the component or page stylesheet that owns the context.
 
-### Recent Projects Component (`/src/components/organisms/RecentProjects.tsx`)
-```html
-<button className="cta cta-mobile">Check All Projects</button>
-```
+## 2. Base `.btn`
+- Type: `font-style(sm, bold, sm)` from `typography.scss`. Weight 600; size / line height:
 
-## Responsive Behavior
+  | Band | Size / line height |
+  |---|---|
+  | phone ≤ 600 | 12 / 16 px |
+  | tablet 601–1024 | 13 / 20 px (B3 tablet `sm` token; was 12 / 18) |
+  | desktop ≥ 1025 | 14 / 20 px |
 
-### Standard Buttons (`.btn`)
-- Use responsive border radius mixin from variables
-- Consistent padding and typography
+- Layout: `display: inline-flex`, centred, `gap: 10px`, `padding: 15px 30px`, `border-radius: 10px`, `border: none`,
+  `overflow: hidden`, antialiased text.
+- `transition: all 0.2s ease`. This also animates **padding** and size, so a measurement taken right after a CSS
+  change or a resize catches the button mid-animation. Wait ≥ 600 ms before measuring.
+- `box-sizing` is the browser default: `content-box` on `<a>`, `border-box` on `<button>`. A 2 px border therefore
+  makes an `<a>` secondary button 4 px taller than a `<button>` secondary (50 vs 46 px at 375). Avoid `min-height`
+  on an `<a>` button: it adds to the padding (B6 removed a `min-height: 44px` that made `.service-cta` 78 px tall).
 
-### CTA Buttons (`.cta-mobile`)
-- **Mobile**: 15px 30px padding, 16px font size
-- **Tablet (601px+)**: 30px 60px padding, 18px font size  
-- **Desktop (1024px+)**: 30px 90px padding, 20px font size
+## 3. Variants
+| Class | Default | Hover / active |
+|---|---|---|
+| `.btn-primary` | `$primary-color` background, white text | `$black` background, white text |
+| `.btn-secondary` | white background, `$primary-color` text, 2 px `$primary-color` border | `$black` background and border, white text |
 
-## SCSS Variables Used
+## 4. Sizes
+| Class | Rule | Used |
+|---|---|---|
+| `.btn-small` | `padding: 6px 10px` (keeps the `.btn` type) | Header CTAs |
+| `.btn-large` | `font-style(md, bold, md)`, `padding: 15px 30px` | **0 uses** (debt) |
 
-The minimal button system uses these variables from `variables.scss`:
-- `$primary-color` - Main brand color (#705af8)
-- `$white`, `$black` - Base colors
-- `$font-family`, `$font-weight-*` - Typography system
-- `$spacing-*` - Consistent spacing values (10px, 15px, 30px, 60px, 90px)
-- `$breakpoint-tablet`, `$breakpoint-desktop` - Responsive breakpoints
-- Responsive border radius mixin
+There is no "medium" class: the base `.btn` is the default size.
 
-## What Was Removed
+## 5. CTA style = classes, not a CTA class
+The hero and final-CTA buttons are `btn btn-primary|btn-secondary typo-uppercase typo-extrabold` (900, uppercase).
+Their 5 px translucent white ring (`box-shadow: 0 0 0 5px rgba(white, 0.3)`) comes from the context, not a class:
+`.hero-cta-wrapper .btn` (`Hero.scss`) and `.final-cta-section .btn` (`FinalCTASection.scss`).
 
-### Unused Button Classes (Cleaned Up)
-The following classes were removed as they are not used anywhere in the application:
+**Phone padding (B1):** at ≤ 600 px those contexts (`.hero-cta-wrapper .btn`, `.hero-secondary .btn`,
+`.final-cta-section .btn`) use `padding-inline: 15px` and `text-wrap: balance`, and the final-CTA container uses
+`padding-inline: 15px`, so FR labels fit on one line and long labels wrap to balanced lines. Every other button
+keeps 30 px.
 
-- ~~`.btn-secondary`~~ - Secondary button variant
-- ~~`.btn-outline`~~ - Outline button variant  
-- ~~`.btn-ghost`~~ - Minimal styling button
-- ~~`.btn-success`~~ - Success actions
-- ~~`.btn-danger`~~ - Destructive actions
-- ~~`.btn-large`~~ - Large button size
-- ~~`.btn-extra-large`~~ - Extra large button size
-- ~~`.btn-full-width`~~ - Full width button
-- ~~`.btn-disabled`~~ - Disabled state
-- ~~`.btn-loading`~~ - Loading state with spinner
-- ~~`.btn-with-icon`~~ - Buttons with icons
-- ~~`.cta-secondary`~~ - Secondary CTA variant
-- ~~`.cta-outline`~~ - CTA for dark backgrounds
-- ~~Legacy `.button` styles~~ - Old compatibility layer
+## 6. Context rules
+| Selector | File | What it does |
+|---|---|---|
+| `.hero-cta-wrapper .btn` | `Hero.scss` | 5 px ring; B1 phone padding |
+| `.hero-secondary .btn:focus-visible` | `Hero.scss` | white 3 px outline on the dark hero (Contact "Prefer to talk?") |
+| `.final-cta-section .btn` | `FinalCTASection.scss` | `z-index: 2` above the background, 5 px ring; B1 phone padding |
+| `.package-card__cta` | `PackageCard.scss` | `align-self: stretch`; purple 3 px focus outline on the light card |
+| `.service-cta` | `services/Services.scss` | `align-self: flex-start`; purple focus outline. Same look and height as the About secondary button (50 / 52 / 54 px on master's tablet token) |
+| `.header … .btn` | `Header.scss` | `max-width: 100%`, `min-height: 44px` (mobile header) |
+| `.form-error__cta.btn` | `contact-form.scss` | inline link-button inside the send-failure sentence (inline, 1 px border, wraps with the text) |
+| `.contact-form-submit` | `contact-form.scss` | full width on phone, centred with `min-width: 200px` from tablet; spinner when `[disabled]`; focus outline |
+| `.lead-magnet-section .btn` | `LeadMagnetSection.scss` | empty rule (ring commented out) |
 
-### Removed Files
-- ~~`/src/styles/components/buttons.scss`~~ - Duplicate file
-- ~~`/src/components/examples/ButtonExamples.tsx`~~ - Demo component
+## 7. Classes used in markup with no CSS (no effect; debt, not removed)
+| Class | Where |
+|---|---|
+| `.btn-medium` | `PackageCard/index.tsx` (6×) |
+| `.btn-sm` | `Header/index.tsx` (with `.btn-small`) |
+| `.btn-outline` | `EmailCollectorProvider/index.tsx` (close button of the download step) |
+| `.btn-disabled` | `CalendlyButton/index.tsx`; styled only in `CalendlyButton.scss`, which is never imported |
 
-## Benefits of Minimal Approach
+`CalendlyButton` also builds `btn-${variant}` / `btn-${size}` (`btn-outline`, `btn-link`, `btn-sm`, `btn-lg`); only
+`btn-primary` / `btn-secondary` have CSS.
 
-1. **Performance** - Smaller CSS bundle, faster loading
-2. **Maintainability** - Only maintain styles that are actually used
-3. **Clarity** - Clear purpose for every CSS class
-4. **No dead code** - Every line serves a purpose
-5. **Focused system** - Simple, easy to understand
+## 8. Removed / never existed
+- `.cta`, `.cta-mobile`: listed by the previous version of this file; not in the code.
+- `.btn-secondary` **exists** (the previous version said it was removed).
+- `.btn-ghost`, `.btn-success`, `.btn-danger`, `.btn-extra-large`, `.btn-full-width`, `.btn-loading`,
+  `.btn-with-icon`, `.cta-secondary`, `.cta-outline`, the legacy `.button`: not in the code.
 
-## Adding New Button Styles
+## 9. Usage
+| Component / page | Classes |
+|---|---|
+| `Hero/HeroCTA.tsx` | `btn btn-primary typo-uppercase typo-extrabold` (hero CTA); `btn btn-secondary typo-extrabold` (download variant) |
+| `FinalCTASection/index.tsx` | primary `btn btn-primary typo-uppercase typo-extrabold`; secondary `btn btn-secondary typo-uppercase typo-extrabold` |
+| `about-magneto/page.tsx` | `btn btn-secondary` ("Tell me about your project") |
+| `services/ServicesList.tsx` | `btn btn-secondary service-cta` |
+| `PackageCard/index.tsx` | `btn btn-primary btn-medium` (+ `package-card__cta`); `btn btn-secondary btn-medium` |
+| `ProjectDetail/index.tsx` | `btn btn-secondary` (back to projects) |
+| `NotFound/index.tsx` | `btn btn-primary`, `btn btn-secondary` |
+| `ContactForm.tsx` | `btn btn-primary contact-form-submit`; `form-error__cta btn …` in the failure message |
+| `Header/index.tsx` | `btn btn-primary btn-sm btn-small`; `btn-small btn-secondary`; `btn-small` |
+| `EmailCollectorProvider/index.tsx` | `btn btn-primary`; `btn btn-outline` |
+| `LeadMagnetSection/index.tsx` | `btn btn-secondary typo-extrabold` |
+| `CalendlyButton/index.tsx` | `btn btn-${variant} [btn-${size}] [btn-disabled]` |
 
-If you need additional button styles in the future:
-
-1. **First check** if existing classes can be combined
-2. **Add to button.scss** following the same pattern
-3. **Update this documentation** to reflect the changes
-4. **Keep it minimal** - only add what you actually need
-
-## Performance Notes
-
-- All hover effects use `transform: translateY()` for GPU acceleration
-- CSS transitions are optimized for performance
-- Responsive design uses mobile-first approach
-- Minimal CSS footprint: ~75 lines vs. 320+ lines previously
+## 10. Adding new button styles
+1. **Check first** whether existing classes can be combined (variant + context rule).
+2. Add the rule to `button.scss` (global) or to the owning context's stylesheet (context rule), following the
+   patterns above.
+3. **Update this file in the same PR.**
+4. Keep it minimal: no class without a use, no use without a class.

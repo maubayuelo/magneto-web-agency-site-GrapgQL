@@ -40,7 +40,7 @@
     h3 {
       margin: $spacing-15 0 $spacing-10;
       font-size: 1.125em;
-      font-weight: 800;
+      font-weight: 900; // B3: DM Sans loads 400 / 600 / 900 only (was 800)
       line-height: 1.3;
     }
 

@@ -1,3 +1,21 @@
 // Home page styles
 
 @import "../variables"; // Adjust path if needed
+@import "../mixins";
+
+// B4 (design round): vertical rhythm 30 / 30 / 60 between sections.
+// About → featured services: the services section's pt-lg-responsive is the gap; the body's last paragraph margin
+// (20 / 24 / 30) added to it.
+.about-section .about-content__body > :last-child {
+    margin-bottom: 0;
+}
+
+// Projects grid → next block (home testimonials, /projects final CTA): the items' mb-sm-responsive (10 / 15) under
+// the last row added to the section's pb-lg-responsive. Cancelled at the grid's edge; the gap between rows is kept.
+.projects-grid__grid {
+    margin-bottom: -$spacing-10;
+
+    @include media-desktop-up {
+        margin-bottom: -$spacing-15;
+    }
+}

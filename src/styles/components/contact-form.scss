@@ -217,12 +217,14 @@
 // 5d-lite §3 / §4: required legend, privacy line, success block, honeypot, send-failure control.
 .contact-form__required-note {
   @include font-style(sm, regular, md);
+  @include form-note-phone-tablet;
   margin: 0;
   color: $gray-90;
 }
 
 .contact-form__privacy {
   @include font-style(sm, regular, md);
+  @include form-note-phone-tablet;
   margin: 0;
   color: $gray-90;
 
@@ -284,7 +286,7 @@
   border-width: 1px;
   border-radius: 4px;
   font: inherit;
-  font-weight: $font-weight-bold;
+  font-weight: map-get($font-weights, bold);
   color: $primary-color-dark; // 11:1 on the light alert background
   border-color: $primary-color-dark;
   text-align: left;

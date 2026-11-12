@@ -52,26 +52,97 @@
         pointer-events: none;
     }
 
+    // B5 (design round): the home hero fills the first viewport, capped at 820 px, and content still wins: no
+    // max-height, so a long title or a short screen makes the hero taller instead of overlapping the illustration.
+    // svh (small viewport unit): the viewport with mobile toolbars shown, stable while scrolling. The fold offset is
+    // the measured header height + the bottom gap per band (58+15 / 46+15 / 51+30); a header change must update it.
     &.hero-home {
-        height: calc(100vh); // Mobile-first: start with mobile height
-        max-height: 450px;
+        --hero-fold-offset: #{58px + 15px};
+        box-sizing: border-box;
+        height: auto;
+        min-height: min(calc(100svh - var(--hero-fold-offset)), 820px);
 
         @media (min-width: $breakpoint-phone) {
             padding: 45px 30px 0 30px;
-            max-height: 480px;
+        }
+
+        // 46: the tablet header grew 45 → 46 px with the B3 tablet `sm` token (its .btn-small text is 13/20).
+        @media (min-width: $breakpoint-tablet) {
+            --hero-fold-offset: #{46px + 15px};
         }
 
         @media (min-width: $breakpoint-desktop) {
+            --hero-fold-offset: #{51px + 30px};
             padding: 60px 30px 0 30px;
-            max-height: 510px;
         }
 
+        // The content box grows to fill the hero, so the illustration stays anchored at the hero's bottom.
+        .hero-content {
+            flex: 1 0 auto;
+            height: auto;
+            padding-bottom: 0;
+        }
+
+        // ≤ 600: the illustration is in flow under the CTA; the free space goes between them.
+        .hero-cta-wrapper {
+            margin-bottom: auto;
+        }
+
+        // ≤ 600: in flow. The negative top margin tucks only the art's transparent/glow top under the CTA ring
+        // (CTA z-index 2 over image 1); the bottom one crops it like the desktop look (0.128 × 260).
+        .hero-image {
+            position: static;
+            transform: none;
+            max-width: 260px;
+            max-height: 260px;
+            margin: -24px auto -33px;
+        }
+
+        // Above 600 the illustration is absolute at the bottom of .hero-content, and padding-bottom R reserves its
+        // visible part: R = ceil(0.845 × S − B + 17) (0.845 = the art's transparent top; 17 = CTA ring + 12 px gap).
+        @media (min-width: $breakpoint-tablet) {
+            .hero-content {
+                padding-bottom: 261px;
+            }
+
+            .hero-cta-wrapper {
+                margin-bottom: 0;
+            }
+
+            .hero-image {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                margin: 0;
+                bottom: -44px;
+                max-width: 340px;
+                max-height: 340px;
+            }
+        }
+
+        @media (min-width: $breakpoint-desktop) {
+            .hero-content {
+                padding-bottom: 318px;
+            }
+
+            .hero-image {
+                bottom: -54px;
+                max-width: 420px;
+                max-height: 420px;
+            }
+        }
+
+        // ≥ 1400: Mauricio's reference (illustration 500 px, bottom −64 px). One band: no 1600 step for home.
         @media (min-width: $breakpoint-desktop-lg) {
-            max-height: 540px;
-        }
+            .hero-content {
+                padding-bottom: 376px;
+            }
 
-        @media (min-width: $breakpoint-desktop-xl) {
-           max-height: 590px;
+            .hero-image {
+                bottom: -64px;
+                max-width: 500px;
+                max-height: 500px;
+            }
         }
     }
 
@@ -126,11 +197,6 @@
         color: $white;
         word-break: break-word;
         z-index: 2;
-        line-height: 30px;
-
-        @media (min-width: $breakpoint-phone) {
-            line-height: inherit;
-        }
     }
 
     .hero-subtitle {
@@ -139,11 +205,6 @@
         color: $white;
         word-break: break-word;
         z-index: 2;
-        line-height: 30px;
-
-        @media (min-width: $breakpoint-phone) {
-            line-height: inherit;
-        }
     }
 
     // 5d-lite §4: Contact "Prefer to talk?" + booking button (HeroLoader children).
@@ -179,6 +240,16 @@
             //font-weight: 900;
             // External border using box-shadow
             box-shadow: 0 0 0 5px rgba($white, 0.3); // Creates a 5px white external border
+        }
+    }
+
+    // B1 (design round): on phones, 15 px inline padding so FR labels fit on one line; long ES labels wrap to
+    // balanced lines. Context-scoped: button.scss keeps 30 px everywhere else.
+    @media (max-width: $breakpoint-phone) {
+        .hero-cta-wrapper .btn,
+        .hero-secondary .btn {
+            padding-inline: $spacing-15;
+            text-wrap: balance;
         }
     }
 }

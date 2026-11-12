@@ -26,13 +26,13 @@ $font-sizes-desktop: (
     "2xl": 24px,
     "3xl": 30px,
     "4xl": 36px,
-    "5xl": 48px,
+    "5xl": 42px, // B3 (design round): home H1 42 px on desktop; the only consumer is .typo-5xl-*
 );
 
 $font-sizes-tablet: (
     xs: 10px,
-    sm: 12px,
-    md: 14px,
+    sm: 13px,
+    md: 15px,
     lg: 16px,
     xl: 18px,
     "2xl": 20px,
@@ -48,8 +48,8 @@ $font-sizes-phone: (
     lg: 16px,
     xl: 18px,
     "2xl": 20px,
-    "3xl": 22px,
-    "4xl": 27px,
+    "3xl": 24px,
+    "4xl": 28px,
     "5xl": 30px,
 );
 
@@ -62,13 +62,13 @@ $line-heights-desktop: (
     "2xl": 34px,
     "3xl": 40px,
     "4xl": 46px,
-    "5xl": 56px,
+    "5xl": 50px,
 );
 
 $line-heights-tablet: (
     xs: 16px,
-    sm: 18px,
-    md: 20px,
+    sm: 20px,
+    md: 22px,
     lg: 24px,
     xl: 27px,
     "2xl": 30px,
@@ -81,12 +81,12 @@ $line-heights-phone: (
     xs: 14px,
     sm: 16px,
     md: 18px,
-    lg: 20px,
-    xl: 22px,
-    "2xl": 26px,
-    "3xl": 28px,
-    "4xl": 30px,
-    "5xl": 33px,
+    lg: 24px,
+    xl: 26px,
+    "2xl": 28px,
+    "3xl": 30px,
+    "4xl": 34px,
+    "5xl": 36px,
 );
 
 // Responsive line-height mixin
@@ -305,6 +305,42 @@ $line-heights-phone: (
 }
 .typo-extrabold{
     font-weight: map-get($font-weights, extrabold);
+}
+
+// B3 (design round): form help, privacy and required-note text are 13/20 on phone and tablet (desktop keeps the
+// sm/md 14/24 it gets from font-style).
+@mixin form-note-phone-tablet {
+    @media (max-width: $breakpoint-desktop) {
+        font-size: 13px;
+        line-height: 20px;
+    }
+}
+
+// B3 (design round): eyebrow = the short lead-in line above a title (not .badge). Unused until 5e
+// (LeadMagnetSection over-title). Plain @media rules: some component files import this file without mixins.
+@mixin eyebrow {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: map-get($font-weights, bold);
+    letter-spacing: 0.01em;
+    color: $primary-color-dark;
+    margin: 0 0 8px;
+
+    @media (min-width: $breakpoint-tablet) {
+        font-size: 15px;
+        line-height: 22px;
+    }
+    @media (min-width: $breakpoint-desktop) {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 12px;
+    }
+}
+.typo-eyebrow {
+    @include eyebrow;
+}
+.typo-eyebrow--on-dark {
+    color: $white;
 }
 
 @mixin cta-text {

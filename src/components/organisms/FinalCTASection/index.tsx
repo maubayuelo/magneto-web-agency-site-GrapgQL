@@ -2,12 +2,25 @@
 
 import React from 'react';
 import { localizePath } from '@/i18n/paths';
-import type { FinalCTASectionProps } from './types';
-import WpResponsiveImage from '@/components/atoms/WpResponsiveImage';
+import Image from 'next/image';
+import type { FinalCTASectionProps, ImageNode } from './types';
 import { useEmailModal } from '@/components/organisms/EmailCollectorProvider';
 import { gtagEvent } from '@/utils/analytics';
 import { useI18n } from '@/i18n/I18nProvider';
 import './FinalCTASection.scss';
+
+/**
+ * Background source (design round B10): the original file, as the hero background, so both resolve to the same
+ * optimizer URL. Fallback: the widest generated size. Null → no background.
+ */
+function bgSource(bg: ImageNode | null | undefined): string | null {
+  const node = bg?.node;
+  if (node?.sourceUrl) return node.sourceUrl;
+  const sizes = (node?.mediaDetails?.sizes ?? []).filter((s) => !!s?.sourceUrl);
+  if (!sizes.length) return null;
+  const widest = sizes.reduce((a, b) => ((b?.width ?? 0) > (a?.width ?? 0) ? b : a));
+  return widest?.sourceUrl ?? null;
+}
 
 /** Internal path stored in ACF (`/contact`, `/packages#build`); anything else (external, `//host`) is ignored. */
 export function internalPath(path: string | null | undefined): string | null {
@@ -45,7 +58,7 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   if (!show) return null;
 
   const data = debugData;
-  const hasBg = !!(data?.bgimage?.node?.mediaDetails?.sizes?.length || data?.bgimage?.node?.sourceUrl);
+  const bgSrc = bgSource(data?.bgimage);
   const primaryText = data?.ctaText?.trim() || t.common.bookStrategyCall;
   const primaryPath = internalPath(data?.ctaPath);
   const secondaryText = data?.secondaryCtaText?.trim() || '';
@@ -56,16 +69,17 @@ export const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   return (
     <section className={`final-cta-section main mb-md-responsive typo-center ${className}`.trim()}>
       <div className="final-cta-section__container">
-        {hasBg && (
+        {bgSrc && (
           <div className="final-cta-section__bg">
-            <WpResponsiveImage
-              image={data?.bgimage?.node as any}
+            {/* Design round B10: next/image `fill` with the hero background's exact `sizes`, so on hero routes the
+                browser reuses the hero's file (one download). Below the fold → lazy, no priority. q90: q75 bands
+                the gradient (A4). */}
+            <Image
+              src={bgSrc}
               alt=""
               className="final-cta-section__bg-image"
-              omitSizeAttributes={false}
-              priority
               fill
-              // Design round A4: q75 bands the gradient; q90 only for this background (and the hero's).
+              sizes="(max-width: 1240px) 100vw, 1200px"
               quality={90}
             />
             <div className="final-cta-section__overlay" />

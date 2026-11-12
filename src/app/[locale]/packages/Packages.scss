@@ -5,6 +5,12 @@
 .packages-intro {
   flex-direction: column;
   align-items: center;
+  // B4 (design round): with the grid's own pt-md-responsive (15 / 30), intro → cards is 30 / 30 / 60.
+  padding-bottom: $spacing-15;
+
+  @include media-desktop-up {
+    padding-bottom: $spacing-30;
+  }
 
   &__body {
     max-width: 70ch;
