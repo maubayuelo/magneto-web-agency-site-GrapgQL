@@ -104,6 +104,15 @@
   flex-direction: column;
   gap: $spacing-15;
 
+  // B4 (design round): intro → list on the 30 / 30 / 60 rhythm (the markup's pb-md-responsive gives 15 / 30).
+  &.main {
+    padding-bottom: $spacing-30;
+
+    @include media-desktop-up {
+      padding-bottom: $spacing-60;
+    }
+  }
+
   &__title { white-space: pre-line; }
   .service-rich-body { max-width: 70ch; margin-inline: auto; }
 }
@@ -120,7 +129,9 @@
 
 .service-item[id] { scroll-margin-top: 90px; }
 .service-content { min-width: 0; }
-.service-cta { align-self: flex-start; min-height: 44px; }
+// B6 (design round): no min-height. On an <a> (content-box) 44 px + padding + border made it 78 px; the .btn
+// padding and line height give 50 / 52 / 54 px, like the other secondary buttons, and stay ≥ 44 px.
+.service-cta { align-self: flex-start; }
 .service-cta:focus-visible { outline: 3px solid $primary-color; outline-offset: 4px; }
 .service-rich-body {
   overflow-wrap: anywhere;

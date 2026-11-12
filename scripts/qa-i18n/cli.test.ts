@@ -51,16 +51,22 @@ describe('deterministic run on the current repo files (AC-4)', () => {
     expect(placeholder('en')).toEqual(findTodoKeys(en));
     expect(report.findings.filter((f) => f.check === 'placeholder' && !f.unitId.startsWith('dict:'))).toEqual([]);
   });
-  it('AC-4b: placeholder length limits → every length finding is info and marked in report.md; selectors listed', async () => {
+  // Design round B8 (2026-11-11): length-limits.json is "set", so FR/ES over-limit units are warnings (EN stays info)
+  // with no placeholder marker. Placeholder mode itself stays covered by checks.test.ts.
+  it('AC-4b: set length limits → FR/ES length findings are warnings, unmarked; ES bookStrategyCall warns; selectors listed', async () => {
     const out = tmpOut();
-    await main(['--out', out], harness().deps);
+    expect(await main(['--out', out], harness().deps)).toBe(0);
     const report = readReport(out);
     const length = report.findings.filter((f) => f.check === 'length');
-    expect(length.every((f) => f.severity === 'info' && f.evidence.reason.endsWith('(placeholder limit)'))).toBe(true);
-    expect(report.lengthSelectors?.used.length).toBeGreaterThan(0);
+    expect(length.length).toBeGreaterThan(0);
+    expect(length.every((f) => !f.evidence.reason.includes('placeholder'))).toBe(true);
+    expect(length.every((f) => f.severity === (f.lang === 'en' ? 'info' : 'warning'))).toBe(true);
+    const cta = length.find((f) => f.lang === 'es' && f.unitId === 'dict:common.bookStrategyCall');
+    expect(cta?.evidence.reason).toContain('cta-label max 38');
+    expect(report.lengthSelectors?.used).toContain('dictionary:common.bookStrategyCall');
     const md = readFileSync(path.join(out, 'report.md'), 'utf8');
     expect(md).toMatch(/Length selectors used: .* · unused: /);
-    expect(md.split('\n').filter((l) => l.includes('[det] length')).every((l) => l.includes('[det] length (placeholder limit)'))).toBe(true);
+    expect(md).not.toContain('(placeholder limit)');
   });
 });
 

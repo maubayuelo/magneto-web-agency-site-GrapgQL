@@ -9,6 +9,10 @@
         overflow: hidden;
         border-radius: $border-radius-mobile;
         padding: $spacing-30;
+        // B1 (design round): 15 px inline padding on phones so CTA labels have room (see .btn below).
+        @media (max-width: $breakpoint-phone) {
+            padding-inline: $spacing-15;
+        }
         @include media-tablet-up {
             border-radius: $border-radius-tablet;
             padding: $spacing-60;
@@ -38,10 +42,10 @@
             pointer-events: none;
         }
 
-        // Ensure aspect ratio is preserved if CSS modifies one dimension
+        // B10 (design round): next/image `fill` covers the container, like the hero background.
         &__bg-image {
-            width: auto;
-            height: auto;
+            object-fit: cover;
+            object-position: center;
         }
 
         // ensure content sits above the background
@@ -53,6 +57,12 @@
             //font-weight: 900;
             // External border using box-shadow
             box-shadow: 0 0 0 5px rgba($white, 0.3); // Creates a 5px white external border
+
+            // B1 (design round): see the container rule above.
+            @media (max-width: $breakpoint-phone) {
+                padding-inline: $spacing-15;
+                text-wrap: balance;
+            }
         }
 }
 
