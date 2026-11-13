@@ -182,7 +182,8 @@ describe('ContactForm submit states (AC-6)', () => {
     fireEvent.click(screen.getByRole('button', { name: t.submit }));
     const status = await screen.findByRole('status');
     expect(status).toHaveTextContent(`${t.successTitle}${t.successBody}`);
-    expect(document.activeElement).toBe(status);
+    // ContactForm focuses the status in a useEffect, after the node is in the DOM.
+    await waitFor(() => expect(document.activeElement).toBe(status));
     expect(screen.queryByRole('textbox')).toBeNull();
     expect(screen.queryByRole('alert')).toBeNull();
   });

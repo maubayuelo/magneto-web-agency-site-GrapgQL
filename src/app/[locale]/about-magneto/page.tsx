@@ -53,11 +53,11 @@ export default async function AboutPage({ params }: AboutPageProps) {
                 </h2>
                 {aboutData.founder?.kind === 'html' ? (
                   <div
-                    className="typo-3xl-medium hero-title m-0 about-founder-text"
+                    className="typo-xl-medium hero-title m-0 about-founder-text"
                     dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(aboutData.founder.html) }}
                   />
                 ) : (
-                  <p className="typo-3xl-medium hero-title m-0">
+                  <p className="typo-xl-medium hero-title m-0">
                     {aboutData.founder?.kind === 'text' ? aboutData.founder.text : null}
                   </p>
                 )}

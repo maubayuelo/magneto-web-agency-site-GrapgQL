@@ -45,6 +45,21 @@
 .about-section {
     @include flex-column;
     gap: $spacing-10;
+
+    // A10 (design round PR 3): an H3 sits closer to its own text than to the previous block (30 / 10; 60 / 10 at
+    // ≥ 1025). Flex gap 10 + padding-top 20 / 50 = 30 / 60; the first child keeps 0. Padding, not margin: the H3s
+    // carry `m-0` (margin: 0 !important).
+    h3 {
+        padding-top: $spacing-20;
+
+        @media (min-width: 1025px) {
+            padding-top: 50px;
+        }
+
+        &:first-child {
+            padding-top: 0;
+        }
+    }
 }
 
 .about-linkedin-link {

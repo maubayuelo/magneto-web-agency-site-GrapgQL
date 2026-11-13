@@ -2,64 +2,31 @@
 
 @import "../../../styles/variables";
 
-.about-section {
+// M2 (design round PR 3): the H2 sits on top at full width at every width, and the body (typo-xl-medium) is a
+// smaller, 70ch, left-aligned paragraph under it. `.main.about-section`: `.main` is a flex row (globals.scss).
+.main.about-section {
     align-self: stretch;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: $spacing-5; // Smaller gap on mobile
+    gap: $spacing-15;
     display: flex;
-    flex-direction: column; // Stack vertically on mobile
-
-    // Tablet and up
-    @media (min-width: $breakpoint-phone) {
-        gap: $spacing-15;
-        flex-direction: row; // Side by side on larger screens
-    }
-
-    // Desktop and up
-    @media (min-width: $breakpoint-desktop) {
-        gap: $spacing-30;
-    }
+    flex-direction: column;
 
     .about-title {
         text-align: left;
         width: 100%;
-
-        // Tablet and up
-        @media (min-width: $breakpoint-phone) {
-            width: 120px;
-            flex-shrink: 0;
-        }
-
-        // Desktop and up
-        @media (min-width: $breakpoint-desktop) {
-            width: 250px;
-            text-align: left;
-        }
     }
 
     .about-content {
-        flex: 1;
+        display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: center;
-        display: flex;
+        align-items: flex-start;
         width: 100%;
-
-        // Tablet and up
-        @media (min-width: $breakpoint-phone) {
-            width: auto;
-        }
     }
-}
 
-@media (min-width: $breakpoint-phone) and (max-width: ($breakpoint-desktop - 1px)) {
-    .main.about-section {
-        flex-direction: column;
-
-        .about-title,
-        .about-content {
-            width: 100%;
-        }
+    .about-content__body {
+        max-width: 70ch;
+        text-align: left;
     }
 }

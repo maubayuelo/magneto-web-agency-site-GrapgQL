@@ -60,3 +60,21 @@
     }
   }
 }
+
+// M5 (design round PR 3): exactly two sections → two columns at ≥ 1024, each box at its own height
+// (align-items: start). One or three+ sections stay stacked.
+@include media-desktop-up {
+  .packages-sections:has(> .packages-sections__item:nth-child(2):last-child) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $spacing-30;
+    align-items: start;
+
+    // Side by side, the boxes are outlined instead of filled: the card border ($gray-50, as `card-base`) and no
+    // grey fill. (Mauricio, 2026-11-12, after the spec.)
+    > .packages-sections__item {
+      background-color: transparent;
+      border: 1px solid $gray-50;
+    }
+  }
+}

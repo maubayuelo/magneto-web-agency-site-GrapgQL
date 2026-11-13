@@ -59,6 +59,14 @@
     max-width: 760px;
 }
 
+// A9 (design round PR 3): reserve two title lines in the 2/3-column grid, so descriptions start on one line
+// when a title wraps.
+.projects-grid__item-title {
+    @include media-tablet-up {
+        min-height: 2lh;
+    }
+}
+
 .projects-grid__item-link {
     gap: $spacing-10;
     color: inherit;
