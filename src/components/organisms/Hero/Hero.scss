@@ -55,15 +55,17 @@
     // Home hero (design round B5, amended by PR 3 M1). Art geometry, as fractions of its side S (1000 × 1000 asset):
     // 0.155·S transparent top, 0.128·S cropped at the bottom by overflow: hidden, so 0.717·S is visible.
     //
-    // ≥ 601: the hero fills the first viewport, capped at 820 px (B5), and content still wins (no max-height). The art
-    // is absolute at the bottom and grows with the hero height (S ≤ 640). `.hero-content` reserves 0.717·S + the
+    // 601–1023: the hero fills the first viewport, capped at 820 px (B5), and content still wins (no max-height). The
+    // art is absolute at the bottom and grows with the hero height (S ≤ 640). `.hero-content` reserves 0.717·S + the
     // reserve, so longer text makes the hero taller and the CTA → art gap never drops below the reserve.
     // svh (small viewport unit): the viewport with mobile toolbars shown, stable while scrolling. The fold offset is
-    // the measured header height + the bottom gap per band (58+15 at ≤ 1023 after A8 / 51+30 at ≥ 1024); a header
-    // change must update it.
+    // the measured header height + the bottom gap (58+15 after A8); a header change must update it.
     //
-    // ≤ 600 (PR 3 M1): no fold min-height. The art is in flow under the CTA at the content width and the hero ends
-    // where the art ends. Vertical % margins resolve against the containing block's width, which is S here.
+    // ≥ 1024 (hero-resize): fixed art S = 640 (the portrait-tablet size) and the hero height is the content (the art
+    // reserve); no viewport unit, no 820 cap, no fold rule. B5 applies at 601–1023 only.
+    //
+    // ≤ 600 (PR 3 M1, hero-resize): no fold min-height. The art is in flow under the CTA at 1.15 × the content width,
+    // capped at 510 (today's art at 600, so 600 → 601 stays continuous), and the hero ends where the art ends.
     &.hero-home {
         --hero-fold-offset: #{58px + 15px};
         box-sizing: border-box;
@@ -84,14 +86,24 @@
             margin-bottom: 0;
         }
 
-        // −15.5 % cancels the transparent top; the gap from the CTA ring is 9 (content gap) + 28 − 5 (ring) = 32.
         .hero-image {
             position: static;
             transform: none;
-            width: 100%;
-            max-width: 100%;
             max-height: none;
-            margin: calc(28px - 15.5%) auto -12.8%;
+        }
+
+        // Scoped to ≤ 600 so the width does not leak into 601–1023 (the tablet block resets only max-width).
+        // --hero-phone-art is used in width AND margins: both resolve % against the content width W, so
+        // S = min(1.15·W, 510px). Top 28 − 0.155·S cancels the transparent top (gap from the CTA ring = 9 content gap
+        // + 28 − 5 ring = 32); sides (W − S)/2 centre the wider art; bottom −0.128·S crops the bottom margin.
+        @media (max-width: $breakpoint-phone) {
+            .hero-image {
+                --hero-phone-art: min(115%, 510px);
+                width: var(--hero-phone-art);
+                max-width: none;
+                margin: calc(28px - 0.155 * var(--hero-phone-art)) calc((100% - var(--hero-phone-art)) / 2)
+                    calc(-0.128 * var(--hero-phone-art));
+            }
         }
 
         // 349 = padding-top 45 + text block 275 (H1 → CTA) + reserve 29 (spec value; the gap here measures 33–68,
@@ -116,18 +128,12 @@
             }
         }
 
-        // 349 = padding-top 60 + text block 251 (H1 → CTA, 1032–1440) + 9 (.hero-content flex gap after the CTA)
-        // + reserve 29; gap ≈ reserve + 4. Floor 400 (not 420) so 1280 × 720 keeps the fold (art ≈ 404; Mauricio,
-        // 2026-11-12, PR 3).
+        // ≥ 1024: the art is the portrait-tablet size; the hero height is the content: padding-top 60 + text block
+        // + 0.717·640 + 29 ≈ 808 (EN). min-height: 0 drops the 601–1023 viewport rule (D-2 A, D-3 A).
         @media (min-width: $breakpoint-desktop) {
-            --hero-fold-offset: #{51px + 30px};
-            --hero-art: clamp(400px, calc((var(--hero-h) - 349px) / 0.717), 640px);
+            --hero-art: 640px;
+            min-height: 0;
             padding: 60px 30px 0 30px;
-        }
-
-        // 1024–1031 (iPad landscape): the text block is 20 px shorter (231), so 329 keeps the gap ≈ 32.
-        @media (min-width: $breakpoint-desktop) and (max-width: 1031px) {
-            --hero-art: clamp(400px, calc((var(--hero-h) - 329px) / 0.717), 640px);
         }
     }
 
