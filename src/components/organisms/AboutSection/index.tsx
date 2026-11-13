@@ -17,7 +17,7 @@ export default async function AboutSection({ locale }: { locale: Locale }) {
       {bodyHtml && (
         <div className="about-content">
           <div
-            className="typo-3xl-medium about-content__body"
+            className="typo-xl-medium about-content__body"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(bodyHtml) }}
           />
         </div>

@@ -40,9 +40,9 @@ export default async function ContactPage({ params }: ContactPageProps) {
           {/* Supporting copy from the dictionary (D-2 = C2). contactContactTexts is no longer rendered
               (ADR 0006 Amendment 2). */}
           <div className="contact-form-header">
-            <p className="typo-lg-medium">{t.contactPage.supporting.reply}</p>
-            <p className="typo-lg-medium">{t.contactPage.supporting.languages}</p>
-            <p className="typo-lg-medium">{t.contactPage.supporting.notAQuote}</p>
+            <p className="typo-lg-bold">{t.contactPage.supporting.reply}</p>
+            <p className="typo-lg-bold">{t.contactPage.supporting.languages}</p>
+            <p className="typo-lg-bold">{t.contactPage.supporting.notAQuote}</p>
           </div>
           <ContactForm />
         </div>

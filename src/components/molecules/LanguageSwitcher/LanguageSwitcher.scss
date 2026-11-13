@@ -3,7 +3,14 @@
   align-items: center;
   gap: 10px;
 
+  // A8 (design round PR 3): 44 px tall tap target. The desktop header cancels the extra height with negative
+  // margins (Header.scss) so the header, and the hero fold offset, keep their height.
   &__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+
     &[aria-current='true'] {
       text-decoration: underline;
       text-underline-offset: 4px;

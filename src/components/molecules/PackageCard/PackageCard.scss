@@ -27,12 +27,15 @@
     }
   }
 
+  // A3 (design round PR 3): a long title no longer runs into the icon.
   &__title-row {
     @include flex-between;
     align-items: center;
+    gap: 12px;
   }
 
   &__icon {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -131,8 +134,15 @@
       }
     }
 
+    // A2 (design round PR 3): the bottom zone fills its row and its white panel grows with it, so a short card
+    // has no grey void under the panel and the panels of a row end on one line.
     &--bottom {
+      flex: 1;
       border-radius: 0 0 $border-radius-desktop $border-radius-desktop;
+
+      > .package-card__details {
+        flex: 1;
+      }
     }
   }
 

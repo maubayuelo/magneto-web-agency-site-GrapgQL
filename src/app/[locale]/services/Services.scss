@@ -32,6 +32,8 @@
 }
 
 .service-image {
+  // PR 3 (M4 / A4): block, so no inline descender gap (5 px) under the image adds to the measured spacing.
+  display: block;
   width: 100%;
   height: auto;
   @include responsive-border-radius;
@@ -123,8 +125,45 @@
 .services-group {
   width: 100%;
 
-  &__heading { margin: 0 0 $spacing-30; }
+  // M3 (design round PR 3): both group headings centered and uppercase (CSS only; the DOM text is unchanged).
+  &__heading { margin: 0 0 $spacing-30; text-align: center; text-transform: uppercase; }
   &__intro { max-width: 70ch; margin: 0 0 $spacing-30; }
+
+  // A4 (design round PR 3): the last core row's pb-md-responsive (15 / 30) + this = the 30 / 30 / 60 rhythm.
+  &--supporting {
+    margin-top: $spacing-15;
+
+    @include media-desktop-up {
+      margin-top: $spacing-30;
+    }
+  }
+}
+
+// M4 (design round PR 3): stacked core rows (≤ 1023) group by proximity: 15 px from a service's image to its own
+// text, 45 / 60 px to the next service. The last row keeps pb-md-responsive (its join is A4's).
+@media (max-width: 1023px) {
+  .services-group--core .service-item {
+    gap: $spacing-15;
+
+    &:not(:last-child) {
+      padding-bottom: $spacing-45;
+
+      @include media-tablet-up {
+        padding-bottom: $spacing-60;
+      }
+    }
+  }
+}
+
+// A6 (design round PR 3): at tablet the stacked text runs full width (80–104 characters per line); cap the measure
+// at ≤ 75 characters. In DM Sans 1ch ≈ 1.45 average characters, so 46ch (70ch would be 862 px, wider than the
+// column; Mauricio, 2026-11-12).
+@media (min-width: $breakpoint-tablet) and (max-width: 1023px) {
+  .service-content > p,
+  .service-content > .service-rich-body,
+  .services-group__intro {
+    max-width: 46ch;
+  }
 }
 
 .service-item[id] { scroll-margin-top: 90px; }

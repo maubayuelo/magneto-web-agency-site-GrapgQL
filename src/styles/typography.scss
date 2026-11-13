@@ -376,6 +376,19 @@ h6 {
     text-rendering: optimizeLegibility;
 }
 
+// A5 (design round PR 3): no one-word last lines on headings; a better rag on paragraphs. Progressive: browsers
+// without support keep the normal wrap.
+h1,
+h2,
+h3,
+h4 {
+    text-wrap: balance;
+}
+
+p {
+    text-wrap: pretty;
+}
+
 
 .badge {
     padding: 3px 6px;

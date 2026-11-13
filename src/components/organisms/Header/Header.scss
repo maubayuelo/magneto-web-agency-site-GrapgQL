@@ -64,6 +64,12 @@
             li {
                 margin-bottom: 0;
             }
+
+            // A8: the language links are 44 px tall (LanguageSwitcher.scss); −4 px keeps their margin box at 36 px,
+            // under the logo's height, so the desktop header stays 51 px.
+            .language-switcher__link {
+                margin-block: -4px;
+            }
         }
 
         &.nav_mobile {
@@ -110,6 +116,12 @@
 
     li {
         a {
+            // A8 (design round PR 3): 44 px tap targets for the menu and language links.
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            min-width: 44px;
             color: white;
             text-decoration: none;
             text-transform: uppercase;
@@ -123,6 +135,32 @@
                 color: #d1c4e9;
             }
         }
+    }
+}
+
+// A8 (design round PR 3): 44 px header CTA and menu toggle through the whole mobile-nav range (≤ 1023), as on
+// phone. The header becomes 44 + 2 × 7 = 58 px at 601–1023 too, so the menu starts at 58 px and the hero fold
+// offset follows (Hero.scss).
+@media (max-width: #{$breakpoint-desktop - 1px}) {
+    .header ul.nav_mobile {
+        .btn,
+        .btn-small {
+            min-height: 44px;
+        }
+
+        li:last-child a {
+            width: 44px;
+            height: 44px;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .nav_mobile__menu {
+        top: 58px;
+        bottom: 0;
+        height: auto;
+        overflow-y: auto;
     }
 }
 

@@ -53,6 +53,14 @@
             position: relative;
             z-index: 2;
         }
+
+        // A7 (design round PR 3): the subtitle reads as body text: weight 400 and ≤ 70 characters per line. In DM Sans
+        // 1ch ≈ 1.45 average characters, so 46ch (60ch gave ≈ 87; Mauricio, 2026-11-12). The p has `m-0`
+        // (margin: 0 !important), so the measure is centered with inline padding instead of auto margins.
+        p {
+            font-weight: 400;
+            padding-inline: max(0px, calc((100% - 46ch) / 2));
+        }
     .btn {
             //font-weight: 900;
             // External border using box-shadow
