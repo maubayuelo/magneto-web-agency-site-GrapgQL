@@ -1,6 +1,6 @@
 # Phase 5c-rest — Trépied, Home body, EN final CTAs, post titles, ES CTA label, re-export and re-pin
 
-- **Status: Draft (rev 0.2)**
+- **Status: Approved (Mauricio + Senior Architect, 2026-11-13) — rev 0.3**
 - Author: Architect · Reviewed by: Mauricio (+ Senior Architect) · **WordPress writes: Mauricio only** (agents never write
   to WordPress)
 - Date: 2026-11-13 · Branch: `spec/phase-5c-rest` (from `master` @ `281f6f0`). The Dev creates its own implementation
@@ -20,6 +20,13 @@
     load.
 
 ## Revision
+**rev 0.3 (2026-11-13), approved by Mauricio + Senior Architect:**
+- Appendix A items 6 and 8 are applied in Notion. All 8 items are in Notion, so the export may happen before the
+  Mon 11-16 12:00 cut-off.
+- Item 8 is final: the visible-heading line is the short title, the former heading is a plain first paragraph, and the
+  three paragraphs are unchanged. §4, AC-2, AC-8, AC-9, D-12 and R-2 now assume it ships.
+- §0 records two facts: the local EN home About title save (A8), and the PR #41 Vercel preview check.
+
 **rev 0.2 (2026-11-13), Mauricio's decisions of 2026-11-13 (second set):**
 - D-14 → **A**. Appendix A item 1 now always includes ES 755 / 864 / 909.
 - T4 dropped. The About post keeps "About Magneto". §8 has T1-T3, T5 and T6.
@@ -229,6 +236,11 @@ comes from the dated evidence cited next to it. **AC-0** measures it again befor
   grep confirm it.
 - **A7.** The plugin updates of §0 do not rename or remove any GraphQL field this site reads. Not verified (R0). The
   §0 gate re-run checks it.
+- **A8. Local EN home save after the FR/ES loads (fact, Mauricio, 2026-11-13).** Mauricio edited the Home About
+  title on the **EN home** in the **local** admin. This is an EN admin save made after the 5c FR/ES loads, so the WPML
+  Copy sync (E13) ran on FR 535 / ES 536. AC-P2 covers it: `check-translations.php` 13/13 and the three 0-change
+  dry-runs with the current content files. AC-0 records the current EN `aboutSectionTitle`, and the expected EN totals
+  take it into account. **No further local admin edits until the loads**, except the planned §7 and §8 steps.
 - **O-2.** The Trépied pre-promotion gate (EN 1201-1214) does not block publication. Claims stay as approved.
 
 ## Design
@@ -256,6 +268,12 @@ The production WPML site key is now a production key (no "Development Site" badg
 3. **Local keeps its own WPML key / development registration.** Never put the production site key on the local site.
 4. `wp cache flush`.
 
+**Facts recorded on 2026-11-13 (Mauricio):**
+- **Production smoke check:** Mauricio checked the Vercel preview of PR #41 (`master` code against the **production**
+  CMS with the updated plugins). The EN pages load with no issues. This covers EN only. FR/ES rendering and the
+  WPML / ACF behaviour of the loader are still checked locally by the gate re-run below.
+- **Local EN admin save:** see A8. The gate re-run below covers it.
+
 **Gate re-run (before AC-0; any failure → stop, no load):**
 - **Dev:** the completion gate `npm run lint && npm run typecheck && npm test -- --run && npm run build` at `master`,
   with the results compared with the last green run (lint ≤ baseline).
@@ -268,8 +286,9 @@ The production WPML site key is now a production key (no "Development Site" badg
   no new console errors.
 
 ### 1. Notion edits by Mauricio **before** the export (cut-off Mon 11-16, 12:00)
-The 8 items, with their current text, target text and **status**, are in **Appendix A**. At the cut-off, item 6 must
-be done. Item 8 must be done in all three languages, or it is left out (D-12).
+The 8 items, with their current text, target text and **status**, are in **Appendix A**. All 8 are applied in Notion
+(2026-11-13), so the export may happen before the cut-off. Any later Notion change must be listed for the
+Architect (last line of Appendix A).
 
 Export procedure: the same as for `637fba7`. The three files in `docs/content/` are replaced by the export, with no
 hand edits.
@@ -322,16 +341,14 @@ hand edits.
 - New post `trepied-trepied-ca`, with the same shape as EN.
 - The ES CTA values take the new label.
 
-**Home About (Appendix A item 8; no `src` change, no new ACF field).** This applies if item 8 is in the export.
-Otherwise the current heading and paragraphs are loaded as they are.
+**Home About (Appendix A item 8, applied 2026-11-13; no `src` change, no new ACF field).**
 - `homeAboutSection.aboutSectionTitle` (`field_689a5bb77c99c`) = the **visible-heading line** of the new export
   (EN `####`, FR/ES `###`), which Mauricio sets to "Meet Magneto" / "Découvrir Magneto" / "Conoce Magneto". `src`
   points at that line, **not** at the numbered section-label line (R14).
-- `homeAboutSection.description_html` = `<p>`lead sentence`</p>` followed by one `<p>` per shortened paragraph, in
-  export order. The lead sentence is the former heading ("Work directly with the person who plans, designs and builds
+- `homeAboutSection.description_html` = `<p>`lead sentence`</p>` followed by the three unchanged paragraphs, one
+  `<p>` each, in export order (4 `<p>` pieces). The lead sentence is the former heading ("Work directly with the person who plans, designs and builds
   your website." and its FR/ES equivalents, as written in Notion).
-- If the lead is bold in Notion (`**…**`), the value is `<p><strong>…</strong></p>`. The verbatim check strips `**`
-  and reads `textContent`, so it passes either way. Without bold, the lead renders in the same style as the
+- The lead is plain (not bold) in Notion, so there is no `<strong>`. It renders in the same style as the
   paragraphs. A distinct lead style would need a `src` change (out of scope).
 - Structure equality EN = FR = ES applies: the same number of `<p>` pieces in all three languages.
 
@@ -500,7 +517,8 @@ Anything else is out of scope, including `AboutSection/*`, `local-fixtures.php`,
   - `MAIN_CTA.es` = "Reservar consulta gratis";
   - no forbidden keys.
 - [ ] **AC-2 Export diff table** in the report: every hunk is mapped to an Appendix A item, and no hunk in approved copy
-  is unmapped. It also states whether item 8 is in the export.
+  is unmapped. The item 8 hunks are limited to the visible-heading line and the new first paragraph in each language;
+  the three paragraphs are byte-identical to `637fba7`.
 - [ ] **AC-3 Greps:**
   - `grep -rn "637fba7\|d3516151\|f52cf70e\|83332a1b" src scripts` → 0 matches;
   - `grep -rn "llamada de orientación" src scripts/phase-5c` → 0 matches;
@@ -545,13 +563,12 @@ Anything else is out of scope, including `AboutSection/*`, `local-fixtures.php`,
   - The footer line is localized.
   - The ES Contact hero and the booking-modal title show "Reservar consulta gratis".
   - **Home About:**
-    - if item 8 is in the export: the section `h2` is "Meet Magneto" (`/`), "Découvrir Magneto" (`/fr`) or "Conoce
-      Magneto" (`/es`); the first body paragraph is the lead sentence; the page still has exactly one `h1`, and the
-      About section has one `h2`;
-    - otherwise: the `h2` is the current visible heading in each language;
-    - in both cases, the M2 layout (h2 full width on top, body ≤ 70ch, left-aligned) is re-checked at the three widths.
-- [ ] **AC-9 EN unchanged except the planned values:** final-CTA labels, the home body (including Home About if item 8
-  ships), Trépied, the footer line and titles T1-T3.
+    - the section `h2` is "Meet Magneto" (`/`), "Découvrir Magneto" (`/fr`) or "Conoce Magneto" (`/es`);
+    - the first body paragraph is the former heading sentence, followed by the three paragraphs (4 paragraphs);
+    - the page still has exactly one `h1`, and the About section has one `h2`;
+    - the M2 layout (h2 full width on top, body ≤ 70ch, left-aligned) is re-checked at the three widths.
+- [ ] **AC-9 EN unchanged except the planned values:** final-CTA labels, the home body (including the Home About
+  restructure), Trépied, the footer line and titles T1-T3.
 - [ ] **AC-10 Approval and report:** Mauricio approves FR (FR-CA reader) and ES. Report: `docs/reports/phase-5c-rest.md`.
 
 ## Mid-phase checkpoint — Wed 11-18, end of day (Mauricio + Senior Architect, ≈ 20 min)
@@ -581,9 +598,8 @@ the 12-10 fallback release is checked again.
   - C: re-creating the FR/ES home translations.
 - **D-11 → confirmed.** The ES modal privacy sentence ends "Reservar una consulta no te suscribe a correos
   promocionales." It goes into Notion (Appendix A item 3), then into `es.ts:158` through the export.
-- **D-12 → as recommended, now specified.** The Home About restructure (item 8) ships only if all three languages
-  are in Notion at the export cut-off. Otherwise it is post-launch. It needs no `src` change and no new ACF field
-  (§4 "Home About", R14).
+- **D-12 → ships.** The Home About restructure (item 8) is in Notion in all three languages (2026-11-13), so it
+  ships in this phase. It needs no `src` change and no new ACF field (§4 "Home About", R14).
 - **D-13 → dropped.** The current hero illustration file is acceptable. It is out of this phase.
 - **D-14 → A (match).** ES 755 (the label after "¿Prefieres conversar?") and the modal headings ES 864 / 909 read
   "Reservar consulta gratis" in Notion (Appendix A item 1). No code change: both surfaces already render
@@ -599,7 +615,7 @@ production by Mauricio. This spec only requires local parity.
 | # | Risk | Mitigation |
 |---|---|---|
 | R-1 | The export brings copy changes nobody planned | AC-2 hunk mapping; stop on any unmapped change to approved copy |
-| R-2 | The Notion edits are late (item 6 pending; item 8 optional), so the export is late | Cut-off Mon 12:00; item 8 drops to post-launch rather than delaying; Wed checkpoint; 12-10 fallback |
+| R-2 | The export is late, or Notion changes after the item edits (all 8 items applied 2026-11-13) | The export may happen before the Mon 12:00 cut-off; AC-2 maps every hunk; Wed checkpoint; 12-10 fallback |
 | R-3 | AC-12 / A5 fails, so D-9 B is invalid | It is a precondition; the spec goes back to review |
 | R-4 | FR/ES home rows ≠ EN (A1 wrong) | AC-0; the §7 EN save re-syncs; the loader aborts on a mismatch |
 | R-5 | The ES label changes in only one of dictionary / CMS | Same PR; `main-cta` QA check; AC-3 grep |
@@ -618,7 +634,7 @@ production by Mauricio. This spec only requires local parity.
 |---|---:|---:|
 | Spec review | — | 15–30 min |
 | §0 local plugin parity (backup, update, `wp plugin list`, checks) | 1 h (gate re-run, introspection, render) | 30–45 min |
-| Notion edits (Appendix A: item 6, optional item 8) + export | — | 0.5–1.5 h |
+| Export (Notion edits done 2026-11-13) | — | 15–30 min |
 | Export diff table + re-pin (tests, JSON `src`, QA config) | 2–3 h | — |
 | Dictionary: ES label set, K1-K3, "directe" | 1 h | — |
 | Content: EN home / final CTAs / deferred fields; FR/ES home; Trépied ×3 | 4–5 h | — |
@@ -632,7 +648,7 @@ production by Mauricio. This spec only requires local parity.
 
 Calendar (estimates):
 - **Sat 11-14:** 5c AC-12; §0 local plugin parity (after AC-12, so that AC-12 runs on the same versions as 5c).
-- **Mon 11-16:** review, the last Notion edits, export.
+- **By Mon 11-16, 12:00:** export (it may happen earlier).
 - **Tue 11-17 – Wed 11-18:** gate re-run (AC-P2), then Dev implementation; checkpoint Wed end of day.
 - **Thu 11-19:** loads.
 - **Fri 11-20:** report and approval.
@@ -652,9 +668,9 @@ writes", the wording comes from Notion.
 | 3 | ES booking-modal privacy sentence | Applied |
 | 4 | FR home meta description ("directe") | Already in Notion |
 | 5 | K1-K3 meta descriptions | Already in Notion |
-| 6 | Public testimonial `note` per language | **Pending** |
+| 6 | Public testimonial `note` per language | Applied (2026-11-13) |
 | 7 | FR/ES lead-magnet block | Already in Notion |
-| 8 | Home About restructure (D-12) | **Pending** (optional; all three languages or none) |
+| 8 | Home About restructure (D-12) | Applied (2026-11-13), EN/FR/ES |
 
 1. **ES main CTA label**
    - **Where:** `magneto-copy-es.md`:
@@ -693,7 +709,7 @@ writes", the wording comes from Notion.
        Atención en español, francés e inglés."
      - Target: "Contacta a Magneto Web Consulting en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu
        sitio web. Atención en español, francés e inglés."
-6. **Public testimonial `note` per language** (the field is rendered; Dangel row only) — **pending**
+6. **Public testimonial `note` per language** (the field is rendered; Dangel row only) — applied
    - **EN 96:** "*Translated from Spanish.*", no change.
    - **FR 91:**
      - Current: "*Traduit de l'espagnol (original : courriel du 2026-08-20, vérifié). Traduction validée par Mauricio
@@ -710,19 +726,17 @@ writes", the wording comes from Notion.
    - **Target:** FR and ES equivalents of EN 109-115 (eyebrow "Free website checkup", heading "Fix, rebuild or
      maintain? Find out what your website really needs.", title "Fix, Rebuild or Maintain? The 10-Minute Website
      Checkup"). It is not rendered in this phase (5e).
-8. **Home About restructure (optional, D-12)** — pending; all three languages or none
+8. **Home About restructure (D-12)** — applied 2026-11-13, EN/FR/ES
    - **Where:** EN 29-37, FR 29-37, ES 31-39.
    - **Current:** a section label (not displayed), then a visible heading "Work directly with the person who plans,
      designs and builds your website." (and its FR/ES equivalents), then three paragraphs.
-   - **Target shape** (Mauricio writes the wording):
+   - **Applied shape:**
      - keep the section-label line as it is (`### 2. Meet Magneto` / `## 2. Découvrir Magneto` / `## 2. Conoce
        Magneto`);
      - the **visible-heading line** (EN `####`, FR/ES `###`) becomes the short title, without a number: "Meet
        Magneto" / "Découvrir Magneto" / "Conoce Magneto";
-     - the first paragraph under it is the former heading sentence (the lead), as a plain paragraph (optionally in
-       bold);
-     - then the paragraphs, slightly shorter, with the same number of paragraphs in all three languages.
-   - Mapping and rendering: §4 "Home About", AC-8. If it is not in all three languages at the cut-off, nothing
-     changes and it moves to post-launch.
+     - the first paragraph under it is the former heading sentence (the lead), as a plain paragraph (not bold);
+     - then the three paragraphs, unchanged, with the same count in EN/FR/ES.
+   - Mapping and rendering: §4 "Home About", AC-8.
 
 Any other Notion change made before the export must be listed for the Architect, so that AC-2 can map it.
