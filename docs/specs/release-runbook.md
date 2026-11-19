@@ -1,7 +1,8 @@
 # Release runbook — production FR/ES posts (Part A), media and rehearsal (Part B), release day (Part C)
 
-- **Status: Draft (rev 0.2.1).** Decisions D-R2, D-R2a, D-R3…D-R5 and D-R7…D-R9 are recorded. D-R6 (rollback table) is open until
-  Mauricio reviews it. The production IDs are filled after A0 (rev 0.3).
+- **Status: Approved for the current scope (rev 0.2.2, Mauricio, 2026-11-19).** Every decision D-R2 … D-R9 is
+  recorded (D-R1 moot). **Remaining fill-in: rev 0.3**, the production IDs, titles and EN row counts from A0. It
+  changes values, not the design.
 - Author: Architect · Reviewed by: Mauricio + Senior Architect · **Run by: Mauricio.** Every production action (SSH,
   WP admin, Vercel, GA) is his. Agents never write to production. The Dev has read-only production GraphQL on release
   day only (D-R5).
@@ -72,6 +73,21 @@
   uploaded, never before. The new "Order of operations" section states it, and RH-1 verifies it before dumping.
 - **A0.2f fallback:** if the `where: { language }` argument errors, an unfiltered query still returns data (EN nodes
   with their FR/ES `translations`), and a core-fields-only query covers the case where the WPML fields fail too.
+
+**rev 0.2.2 (2026-11-19), D-R6 approved with three additions; Status → Approved for the current scope:**
+- **C-3a (new):** a live look on the canonical `SITE` right after C-3 (home, one case, Services), recorded. Also:
+  - a window rule: C-3 → C-13 as short as possible, with a time limit;
+  - "the live site looks broken" is a stop condition (→ abort path).
+- **§C-R0 abort path (new):** separate from the per-step rollbacks. It sets out:
+  - restore B0;
+  - revert the Vercel env;
+  - keep the old frontend promoted;
+  - reschedule to 12-10.
+
+  Mauricio decides. A table shows at which gates it is still cheap.
+- **GA row:** collected hits can be deleted through a GA data-deletion request; it is slow; Law 25 note.
+- Consistency fix in §C-R row "C-10 … C-12": "acceptable ≤ 1 day" is replaced by the window limit, so the row agrees
+  with the new window rule.
 
 rev 0.1 (2026-11-19): first draft.
 
@@ -838,6 +854,55 @@ Pages → English → **Home** → Edit:
 | Stop if | an error, or a reorder. |
 | Rollback | Restore B0. |
 
+**C-3a Live look on the old frontend (≈ 10 min). Recorded.**
+Why this step exists:
+- From C-3 on, production EN content is the new one, but the live frontend is still the old build until C-13.
+- So the live site renders new content in the old layout.
+
+What to do:
+1. Flush both caches (`sg "wp cache flush"` + Dynamic Cache).
+2. Wait ≥ 60 s (ISR, F-15).
+3. On the **canonical `SITE`** (`canonical-site.txt`), open these pages at 1440 and 375 px:
+   - `/`;
+   - `/services`;
+   - `/projects/fashion-company-ecommerce`.
+4. Take a full-page screenshot of each and save it as `$RB/C3a-<page>-<width>.png`.
+5. Note in `notes.md` what you see.
+
+**Expected (assumption, not yet observed; the rehearsal has no frontend):**
+- **Home:**
+  - the new hero image;
+  - **three** featured cards where there were two. The third card has an icon but **no text until C-6** (the EN
+    load fills it);
+  - **two** testimonials where there were four, without photos;
+  - the rest of the page is unchanged.
+- **Services and the case page:** unchanged at this point.
+  - The case titles change at C-5.
+  - The body copy changes at C-6.
+  - The Services media changes at C-7.
+
+**Stop if the live site looks broken.** That is a stop condition in its own right. "Broken" means any of:
+- a non-200 status;
+- an error page;
+- overlapping or clipped sections;
+- horizontal scroll at 375;
+- a missing section;
+- a card or testimonial layout that collapses.
+
+Expected-but-odd states, like the empty third card until C-6, are not "broken". Record them.
+
+**On stop: the abort path (§C-R0)**, i.e. restore B0. Don't try to fix the layout on release day.
+
+**Window rule (C-3 → C-13).** Keep the C-3 to C-13 window as short as possible.
+- Start C-3 only when all of these hold:
+  - C-0 … C-2 are done;
+  - P-3 (privacy texts) and P-5 (release deployment) are ready;
+  - the Vercel env values for C-11 are written down.
+- No breaks and no other work during the window.
+- **Expected ≈ 3.5 h. Limit: 5 h from the C-3 Update** (adjustable at GNG-0). If C-13 can't be done within the
+  limit, take the abort path.
+- Repeat the C-3a look at G-2 (after the EN load and the Services media), and record it as `C3a-G2-…`.
+
 **C-4 §7 follow-up (≈ 10 min).**
 1. `sg "wp cache flush"` + Dynamic Cache flush.
 2. check-translations fr / es: rows 16 / 17 show `service 3/3 · testimonials 2/2` and
@@ -923,8 +988,13 @@ Pages → English → **Home** → Edit:
 | Stop if | a `media WARN`, or any change ≠ Expected. |
 | Rollback | Restore `prod-release-svcmedia-…`. |
 
-**G-2 (EN complete).** The Dev's read-only GraphQL read-back (D-R5) of EN against the content files, and the live EN
-routes 200. **Go** → FR. **No-go** → restore B0, end the day (12-10 fallback).
+**G-2 (EN complete).** All of these must hold:
+- the Dev's read-only GraphQL read-back (D-R5) of EN matches the content files;
+- the live EN routes return 200;
+- the repeated C-3a look is not broken;
+- the window is within its limit.
+
+**Go** → FR. **No-go** → the abort path (§C-R0).
 
 **C-8 FR load (≈ 20 min; invisible).** The C-6 sequence with `lang=fr`:
 1. dump `prod-release-fr-…`;
@@ -1006,16 +1076,60 @@ Rollback: restore the previous values (nothing is built yet).
 
 **G-4:** every box ticked → done.
 
-#### C-R. Rollback matrix (D-R6: open, pending Mauricio's review)
+#### C-R0. Abort path: cancel the release (D-R6)
+This is separate from the per-step rollbacks in §C-R. A per-step rollback undoes one step and continues. **The abort
+cancels the release**, and can be chosen at any gate or stop.
+
+**Who decides:**
+- **Mauricio, alone.** The Dev or Architect may recommend no-go (G-2, G-3, G-4 evidence) but never decides.
+- When in doubt inside the window, abort: 12-10 is the planned fallback, not a failure.
+
+**The abort, in order** (skip what hasn't happened yet):
+1. **Frontend:**
+   - before C-13: do nothing; the old frontend stays promoted;
+   - after C-13: Vercel → **Instant Rollback** to the C-0 deployment ID (no rebuild).
+2. **Vercel env:** if C-11 ran, set Production (and Preview) `ENABLED_LOCALES` back to `en` and **unset** Production
+   `NEXT_PUBLIC_GA_ID`, using the values in `notes.md`.
+   - Instant Rollback doesn't read the env, so this is for the next build.
+3. **CMS:** if any write ran (from C-3), **restore B0** (Restore, §C), then flush both caches. This reverts:
+   - the home, titles and `display_order`;
+   - every load;
+   - the Services media;
+   - the privacy §5 edits.
+
+   The Part A posts and the §B1 media are in B0, so they stay (invisible).
+4. **Verify:**
+   - the live A0.2h routes and the A0.2i sitemap on `SITE` equal the C-1.5 baseline;
+   - check-translations fr / es equal C-1.3.
+5. **Record and reschedule:**
+   - the reason and the times go in `notes.md`;
+   - the release moves to **Thu 12-10**;
+   - **the content freeze continues.** B0 is the RH-1 state if the freeze held (C-1.3), so the rehearsal stays valid
+     for 12-10. Re-run RH only if the cause needs a code or bundle change, or the freeze was broken.
+
+**What an abort costs, by gate:**
+
+| Gate / point | What has happened | Abort steps | Cost |
+|---|---|---|---|
+| GNG-0 (12-01) | nothing in production | 5 | **free** |
+| G-1 (C-1) | nothing written | 5 | **free** |
+| C-3a / any stop C-3 … C-9 / G-2 | EN CMS writes; the old frontend shows them | 3, 4, 5 | **cheap**: ≈ 20 min. ⚠ visitors saw the interim EN |
+| G-3 (C-12) | + privacy edit, env changed, preview built; nothing new public | 2, 3, 4, 5 | **cheap**: ≈ 30 min |
+| G-4 (C-14) | + public FR/ES and new EN; GA collecting | 1, 2, 3, 4, 5 | **expensive**: ≈ 45 min. ⚠ crawled FR/ES URLs return 404; GA hits stay (see the GA row) |
+
+**After C-13, prefer a targeted rollback** (Plan B locale, GA reverse order) if only one part is wrong. Abort fully if
+the EN experience is broken.
+
+#### C-R. Rollback matrix (D-R6: approved 2026-11-19, with C-3a, §C-R0 and the GA deletion note)
 
 | When | Symptom | Action | Effect |
 |---|---|---|---|
 | Before C-3 | anything | stop | nothing changed |
 | C-3 … C-9 | a stop condition | restore that step's dump, or B0 | live EN back to the dump's state. ⚠ visitors already saw the intermediate EN |
-| C-10 … C-12 | privacy, env or preview fails | fix, or restore env values; no promote | the live old frontend shows the new EN CMS values. Acceptable ≤ 1 day; otherwise restore B0 |
+| C-10 … C-12 | privacy, env or preview fails | fix within the window limit (C-3a), or restore env values; no promote | the live old frontend shows the new EN CMS values. Beyond the limit → abort path (§C-R0) |
 | After C-13 | FR or ES only broken | Plan B: `ENABLED_LOCALES` without that locale → redeploy → promote (minutes) | ⚠ already-crawled FR/ES URLs return 404 |
 | After C-13 | frontend broken | **Instant Rollback** to the C-0 deployment (no rebuild) | old frontend + new EN CMS values |
-| After C-13 | GA wrong | 5f §9 reverse order: unset the ID → redeploy → verify → §5 to Version B | ⚠ hits already collected stay in GA |
+| After C-13 | GA wrong | 5f §9 reverse order: unset the ID → redeploy → verify → §5 to Version B. Then, if hits must go: GA **Admin → Data collection and modification → Data deletion requests** (Editor role; by date range) | ⚠ collected hits stay in GA until deleted. **A deletion request is slow:** Google states a grace period before it starts and a completion time measured in weeks, so check Google's current documentation when you file it. **Law 25:** hits collected without valid consent are a collection the policy didn't announce. Record the facts (dates, scope, request ID) and decide on deletion and any incident-register entry with that in mind; that decision is not the Architect's |
 | After C-13 | content broken in EN | Instant Rollback **and** restore B0 | the full pre-release state; every release-day CMS change is lost |
 
 #### C-S. Irreversible effects and gates
@@ -1032,6 +1146,7 @@ Rollback: restore the previous values (nothing is built yet).
 |---|---|---|
 | GNG-0 | Tue 12-01 | inputs listed under §B4 |
 | G-1 | C-1 | read-only preflight |
+| C-3a | after C-3 | the live old frontend is not broken; repeated at G-2; window limit 5 h |
 | G-2 | after C-7 | EN complete |
 | G-3 | C-12 | preview check |
 | G-4 | C-14 | post-promote verification |
@@ -1087,6 +1202,8 @@ Anything else is out of scope:
 
 **Part C:**
 - [ ] AC-C1: G-1 … G-4 recorded with times.
+- [ ] AC-C1a: C-3a screenshots (3 pages × 1440 / 375) and notes in `$RB`; repeated at G-2; the C-3 → C-13 duration
+  recorded and within the limit, or the abort recorded per §C-R0.
 - [ ] AC-C2: every loader step = Expected; `all read back ok`; probe unchanged; second dry-run 0 / 0.
 - [ ] AC-C3: C-4 home `3/3 · 2/2`; C-5 `display_order` 10 / 20 / 40 in EN, FR and ES with slugs unchanged; C-7
   `media ok` rows 1 and 5.
@@ -1121,8 +1238,12 @@ Anything else is out of scope:
   verified at 0 remaining (RH-2 step 3). Keeping the production URL in the copy was rejected: its admin links and
   redirects would open the real production admin.
 
-**Open:**
-- **D-R6.** Rollback matrix (§C-R): open until Mauricio reviews it from GitHub.
+- **D-R6: approved (Mauricio, 2026-11-19) with three additions:**
+  - C-3a (live look, window rule, "broken" as a stop);
+  - §C-R0 (abort path, who decides, cost by gate);
+  - the GA deletion and Law 25 note.
+
+**Open:** none. rev 0.3 is a fill-in (A0 values), not a decision.
 
 No ADR is needed:
 - no new dependency, routing or data-model change;
@@ -1136,7 +1257,7 @@ No ADR is needed:
 | R-2 | A post is left un-detached (path P), or path J leaves the rows empty | `dup_of` and `rows (target/EN)` in every check; the loader refuses a duplicate (`:201-202`); the path-J fallback to P |
 | R-3 | Production content changes after the rehearsal dump, or the dump is taken before Part A / §B1 | Order of operations; RH-1 pre-dump check (18 posts + media); freeze RH-1 → C-14; the C-1.3 `modified` ≤ dump-time check; re-run RH on any change |
 | R-4 | Production EN counts differ from A-3 | A0 now; rev 0.3; the rehearsal shows it anyway |
-| R-5 | Visible mixed EN state on the old frontend during C-3 … C-13 (≈ 3 h) | Low-traffic hour; §B1 and P-3 done before; the G-2 restore option |
+| R-5 | Visible mixed EN state on the old frontend during C-3 … C-13 (≈ 3.5 h): new content in the old layout | Low-traffic hour; preconditions before C-3; C-3a look + 5 h limit; "broken" = stop → §C-R0 |
 | R-6 | Stale first requests after a build | Second pass ≥ 60 s (F-15) |
 | R-7 | Server disk quota for the dumps | A few MB each (5a: 3.5 MB); V-11 cleanup |
 | R-8 | An admin save changes a slug (F-10) | Slug check after every C-5 save; stop condition |
@@ -1157,7 +1278,7 @@ No ADR is needed:
 | §B2 guard + tests + proofs + gate | 2-3 h | 10 min (3 local dry-runs) |
 | §B3 rehearsal | 2-3 h (Expected table, equality read-back, report) | 2-3 h |
 | §B4 P-2 … P-6 | — | 1.5-2.5 h |
-| Release day C-0 … C-14 | 1.5-2.5 h (G-2 read-back, V-checks) | 4-5 h window |
+| Release day C-0 … C-14 | 1.5-2.5 h (G-2 read-back, V-checks) | 4.5-5.5 h (C-3 → C-13 ≈ 3.5 h, limit 5 h) |
 | Report | 1 h | 15 min |
 | **Total** | **≈ 12.5-17 h** | **≈ 12.5-17 h** |
 
