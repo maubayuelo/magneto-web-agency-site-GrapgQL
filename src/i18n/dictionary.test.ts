@@ -62,10 +62,10 @@ describe('getDictionary', () => {
     expect(getDictionary('es').header.scheduleCall).toBe('Reservar consulta');
     expect(getDictionary('en').header.scheduleCall).toBe('Book a Strategy Call');
     expect(getDictionary('fr').header.scheduleCall).toBe('Réserver un appel-conseil');
-    // magneto-copy-en.md:27, magneto-copy-fr-CA.md:27, magneto-copy-es.md:29 (01ff73f)
+    // magneto-copy-en.md:19, magneto-copy-fr-CA.md:20, magneto-copy-es.md:22 (export 2026-11-17)
     expect(getDictionary('en').common.bookStrategyCall).toBe('Book a Free Strategy Call');
     expect(getDictionary('fr').common.bookStrategyCall).toBe('Réserver un appel-conseil gratuit');
-    expect(getDictionary('es').common.bookStrategyCall).toBe('Agendar una llamada de orientación gratuita');
+    expect(getDictionary('es').common.bookStrategyCall).toBe('Reservar consulta gratis');
     for (const locale of LOCALES) {
       expect(getDictionary(locale).common.bookStrategyCall, locale).not.toBe(getDictionary(locale).header.scheduleCall);
     }
@@ -160,20 +160,21 @@ describe('readiness guard', () => {
   });
 });
 
-// 5d-lite §8 / AC-17: every Contact value equals its line of the committed export (637fba7). The export governs.
+// 5d-lite §8 / AC-17: every Contact value equals its line of the committed export (export 2026-11-17). The export governs.
 const EXPORTS = { en: 'magneto-copy-en.md', fr: 'magneto-copy-fr-CA.md', es: 'magneto-copy-es.md' } as const;
 const exportLines = Object.fromEntries(
   Object.entries(EXPORTS).map(([locale, file]) => [locale, readFileSync(path.resolve(__dirname, '../../docs/content', file), 'utf8').split('\n')]),
 ) as Record<keyof typeof EXPORTS, string[]>;
 
 type Pick = { before?: string; after?: string; lastBold?: boolean };
-/** Strips Markdown (heading/list markers, a leading **Label:** , **, \$ escapes, an enclosing *…*), as the spec §8.1 rules say. */
+/** Strips Markdown (heading/list markers, a leading **Label:** , **, an enclosing *…*), as the spec §8.1 rules say. The
+ *  Notion export escapes nothing (5c-rest D-15), so there is no unescape step. */
 function fromExport(locale: keyof typeof EXPORTS, line: number, pick: Pick = {}): string {
   let s = exportLines[locale][line - 1].trim();
   if (pick.lastBold) return /\*\*([^*]+)\*\*\s*$/.exec(s)![1].trim();
   s = s.replace(/^#+\s+/, '').replace(/^-\s+/, '').replace(/^\*\*[^*]*:\*\*\s*/, '');
   if (pick.before) s = s.slice(0, s.lastIndexOf(pick.before));
-  s = s.replace(/\*\*/g, '').replace(/\\\$/g, '$');
+  s = s.replace(/\*\*/g, '');
   if (s.length > 1 && s.startsWith('*') && s.endsWith('*')) s = s.slice(1, -1);
   if (pick.after) s = s.slice(s.indexOf(pick.after) + pick.after.length);
   return s.trim();
@@ -181,49 +182,49 @@ function fromExport(locale: keyof typeof EXPORTS, line: number, pick: Pick = {})
 
 // key → [EN line, FR line, ES line, options]
 const CONTACT_COPY: [string, number, number, number, Pick?][] = [
-  ['common.privacyPolicy', 689, 804, 814, { lastBold: true }],
-  ['contactPage.preferToTalk', 630, 745, 755, { before: ' **' }],
-  ['contactPage.supporting.reply', 683, 798, 808],
-  ['contactPage.supporting.languages', 685, 800, 810],
-  ['contactPage.supporting.notAQuote', 687, 802, 812],
-  ['contactForm.requiredNote', 701, 816, 826],
-  ['contactForm.nameLabel', 634, 749, 759],
-  ['contactForm.emailLabel', 638, 753, 763],
-  ['contactForm.websiteLabel', 642, 757, 767],
-  ['contactForm.websiteHelp', 646, 761, 771],
-  ['contactForm.needLabel', 648, 763, 773],
-  ['contactForm.needOptions.newSite', 654, 769, 779],
-  ['contactForm.needOptions.fixImprove', 655, 770, 780],
-  ['contactForm.needOptions.care', 656, 771, 781],
-  ['contactForm.needOptions.notSure', 657, 772, 782],
-  ['contactForm.messageLabel', 659, 774, 784],
-  ['contactForm.messageHelp', 663, 778, 788],
-  ['contactForm.budgetLabel', 665, 780, 790],
-  ['contactForm.budgetOptions.under1000', 671, 786, 796],
-  ['contactForm.budgetOptions.from1000to3500', 672, 787, 797],
-  ['contactForm.budgetOptions.from3500to8000', 673, 788, 798],
-  ['contactForm.budgetOptions.over8000', 674, 789, 799],
-  ['contactForm.budgetOptions.notSure', 675, 790, 800],
-  ['contactForm.budgetHelp', 677, 792, 802],
-  ['contactForm.selectPlaceholder', 699, 814, 824],
-  ['contactForm.submit', 679, 794, 804],
-  ['contactForm.privacyText', 689, 804, 814, { before: ' **' }],
-  ['contactForm.successTitle', 693, 808, 818],
-  ['contactForm.successBody', 695, 810, 820],
-  ['contactForm.errors.nameRequired', 703, 818, 828],
-  ['contactForm.errors.emailInvalid', 705, 820, 830],
-  ['contactForm.errors.needRequired', 707, 822, 832],
-  ['contactForm.errors.messageRequired', 709, 824, 834],
-  ['contactForm.errors.budgetRequired', 711, 826, 836],
-  ['contactForm.errors.sendFailed', 713, 828, 838],
-  // Part 2: booking dialog (variant B). Heading = common.bookStrategyCall (EN 749 / FR 899 / ES 909, pinned below).
-  ['bookingModal.body', 751, 901, 911],
-  ['bookingModal.websiteHelp', 756, 907, 917], // EN: the part after "Website URL, " (spec A3)
-  ['bookingModal.problemLabel', 762, 918, 928],
-  ['bookingModal.problemHelp', 763, 922, 932],
-  ['bookingModal.continue', 765, 924, 934],
-  ['bookingModal.privacyText', 958, 934, 944, { before: ' **' }],
-  ['common.bookStrategyCall', 749, 899, 909],
+  ['common.privacyPolicy', 681, 837, 839, { lastBold: true }],
+  ['contactPage.preferToTalk', 622, 778, 780, { before: ' **' }],
+  ['contactPage.supporting.reply', 675, 831, 833],
+  ['contactPage.supporting.languages', 677, 833, 835],
+  ['contactPage.supporting.notAQuote', 679, 835, 837],
+  ['contactForm.requiredNote', 693, 849, 851],
+  ['contactForm.nameLabel', 626, 782, 784],
+  ['contactForm.emailLabel', 630, 786, 788],
+  ['contactForm.websiteLabel', 634, 790, 792],
+  ['contactForm.websiteHelp', 638, 794, 796],
+  ['contactForm.needLabel', 640, 796, 798],
+  ['contactForm.needOptions.newSite', 646, 802, 804],
+  ['contactForm.needOptions.fixImprove', 647, 803, 805],
+  ['contactForm.needOptions.care', 648, 804, 806],
+  ['contactForm.needOptions.notSure', 649, 805, 807],
+  ['contactForm.messageLabel', 651, 807, 809],
+  ['contactForm.messageHelp', 655, 811, 813],
+  ['contactForm.budgetLabel', 657, 813, 815],
+  ['contactForm.budgetOptions.under1000', 663, 819, 821],
+  ['contactForm.budgetOptions.from1000to3500', 664, 820, 822],
+  ['contactForm.budgetOptions.from3500to8000', 665, 821, 823],
+  ['contactForm.budgetOptions.over8000', 666, 822, 824],
+  ['contactForm.budgetOptions.notSure', 667, 823, 825],
+  ['contactForm.budgetHelp', 669, 825, 827],
+  ['contactForm.selectPlaceholder', 691, 847, 849],
+  ['contactForm.submit', 671, 827, 829],
+  ['contactForm.privacyText', 681, 837, 839, { before: ' **' }],
+  ['contactForm.successTitle', 685, 841, 843],
+  ['contactForm.successBody', 687, 843, 845],
+  ['contactForm.errors.nameRequired', 695, 851, 853],
+  ['contactForm.errors.emailInvalid', 697, 853, 855],
+  ['contactForm.errors.needRequired', 699, 855, 857],
+  ['contactForm.errors.messageRequired', 701, 857, 859],
+  ['contactForm.errors.budgetRequired', 703, 859, 861],
+  ['contactForm.errors.sendFailed', 705, 861, 863],
+  // Part 2: booking dialog (variant B). Heading = common.bookStrategyCall (EN 741 / FR 932 / ES 934, pinned below).
+  ['bookingModal.body', 743, 934, 936],
+  ['bookingModal.websiteHelp', 748, 940, 942], // EN: the part after "Website URL, " (spec A3)
+  ['bookingModal.problemLabel', 754, 951, 953],
+  ['bookingModal.problemHelp', 755, 955, 957],
+  ['bookingModal.continue', 757, 957, 959],
+  ['bookingModal.privacyText', 946, 967, 969, { before: ' **' }],
+  ['common.bookStrategyCall', 741, 932, 934],
 ];
 // Line labels that are not bold-with-colon: EN "Helper text: …", FR/ES submit label inside the bold.
 const LABEL_AFTER: Record<string, string> = {
@@ -237,7 +238,7 @@ const LABEL_AFTER: Record<string, string> = {
   'es:bookingModal.continue': 'CTA: ',
 };
 
-describe('5d-lite Contact copy = export 637fba7 (AC-4, AC-17)', () => {
+describe('5d-lite Contact copy = export 2026-11-17 (AC-4, AC-17)', () => {
   const dicts = { en, fr, es } as const;
   it.each(['en', 'fr', 'es'] as const)('%s: every Contact key equals its export line', (locale) => {
     const values = flat(dicts[locale]);
@@ -267,15 +268,15 @@ describe('5d-lite Contact copy = export 637fba7 (AC-4, AC-17)', () => {
   });
 });
 
-// Privacy route spec §4 / AC-3: meta.privacy = the SEO lines of the committed export (637fba7), verbatim.
+// Privacy route spec §4 / AC-3: meta.privacy = the SEO lines of the committed export (export 2026-11-17), verbatim.
 // A later authorized re-export must re-pin these lines in the same PR.
 const PRIVACY_META: Record<keyof typeof EXPORTS, { title: number; description: number }> = {
-  en: { title: 909, description: 911 },
-  fr: { title: 1061, description: 1063 },
-  es: { title: 1065, description: 1067 },
+  en: { title: 897, description: 899 },
+  fr: { title: 1094, description: 1096 },
+  es: { title: 1091, description: 1093 },
 };
 
-describe('Privacy route meta.privacy = export 637fba7 (spec §4, AC-3)', () => {
+describe('Privacy route meta.privacy = export 2026-11-17 (spec §4, AC-3)', () => {
   const dicts = { en, fr, es } as const;
   it.each(['en', 'fr', 'es'] as const)('%s: title and description equal their export lines', (locale) => {
     const lines = PRIVACY_META[locale];

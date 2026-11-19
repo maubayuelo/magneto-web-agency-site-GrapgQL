@@ -14,24 +14,28 @@ interface Content { source: { file: string; commit: string; sha256: string }; po
 type Lang = 'en' | 'fr' | 'es';
 
 const CONTENT: Record<Lang, Content> = { en: EN as Content, fr: FR as Content, es: ES as Content };
+// Notion "Export → Markdown & CSV" of 2026-11-17 (5c-rest D-15). The export and this re-pin land in one commit, so the
+// label names the export, not a commit hash; the sha256 is the pin.
+const EXPORT_LABEL = 'export 2026-11-17';
 const PINS: Record<Lang, { file: string; sha256: string }> = {
-  en: { file: 'docs/content/magneto-copy-en.md', sha256: 'd3516151842b7c099831ec6e99218c973120617eb3809996d532de251145ecd0' },
-  fr: { file: 'docs/content/magneto-copy-fr-CA.md', sha256: 'f52cf70e30f43c857a01cb582fee8df7812c396c84183c3d6ea7d7c84bf435af' },
-  es: { file: 'docs/content/magneto-copy-es.md', sha256: '83332a1b84daecfdd041127cd5d8d752ddd5b9c5e671958690860a2f18c7e857' },
+  en: { file: 'docs/content/magneto-copy-en.md', sha256: '364f661f14a1913d6f653467d0d0843d98e15ad04d954d818ff67aa0377606f5' },
+  fr: { file: 'docs/content/magneto-copy-fr-CA.md', sha256: 'b79f5ff7268d0c7d69ff4c15de35dc51d4b5f1c92e22a6a74d2b490c2d5a516b' },
+  es: { file: 'docs/content/magneto-copy-es.md', sha256: '737b0084acce6ad603a2f3108944022485cb5670f22597ed08a45484ba24bdb6' },
 };
 const MAIN_CTA: Record<Lang, string> = {
   en: 'Book a Free Strategy Call',
   fr: 'Réserver un appel-conseil gratuit',
-  es: 'Agendar una llamada de orientación gratuita',
+  es: 'Reservar consulta gratis',
 };
 const PACKAGES_CTA: Record<Lang, string> = { en: 'Tell me about your project', fr: 'Parlez-moi de votre projet', es: 'Cuéntame sobre tu proyecto' };
 const LANGS: Lang[] = ['en', 'fr', 'es'];
 
 const sources = Object.fromEntries(LANGS.map((l) => [l, readFileSync(CONTENT[l].source.file)])) as Record<Lang, Buffer>;
 const sourceLines = Object.fromEntries(LANGS.map((l) => [l, sources[l].toString('utf8').split('\n')])) as Record<Lang, string[]>;
-// Markdown markers the transcription removes or converts: bold, escaped dollar, list bullets, heading markers, links.
+// Markdown markers the transcription removes: bold, list bullets, heading markers, links. The Notion export escapes
+// nothing (D-15: "C$3,500", "[email]"), so the source text matches the CMS values without an unescape step.
 const normalize = (line: string) =>
-  line.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/\\\$/g, '$').replace(/\*\*/g, '').replace(/^- /, '').replace(/^#{1,4} /, '');
+  line.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/\*\*/g, '').replace(/^- /, '').replace(/^#{1,4} /, '');
 
 /** "FR 290-312, 313-340" | "EN 450 + 452" | "ES 27 (note)" → normalized text of those 1-based lines. */
 function sourceText(lang: Lang, src: string): string {
@@ -52,15 +56,18 @@ function pieces(value: string): string[] {
   return [...doc.body.querySelectorAll('p, li, h3')].map((el) => el.textContent ?? '');
 }
 
-// Structural values (not copy): checked by the allowlists below instead of verbatim.
+// Structural values (not copy): checked by the allowlists below instead of verbatim. Home service anchor_link has a
+// hashed key (field_689a5402d1bcd), so it is listed by key.
 const STRUCTURAL = /_(cta_path|anchor_id|service_group)$/;
+const STRUCTURAL_KEYS = new Set(['field_p5_herocontent_hero_cta_path', 'field_689a5402d1bcd']);
+const isStructural = (key: string) => STRUCTURAL.test(key) || STRUCTURAL_KEYS.has(key);
 const SERVICE_PATHS = ['/packages#build', '/packages#fix', '/packages#care'];
 
 /** Every copy value of a post list as { text, src, what } (repeater rows and group sub-fields included). */
 function copyValues(posts: Post[]) {
   const out: { text: string; src: string; what: string }[] = [];
   const add = (key: string, v: string, src: string, what: string) => {
-    if (!STRUCTURAL.test(key) && key !== 'field_p5_herocontent_hero_cta_path' && v !== '') out.push({ text: v, src, what });
+    if (!isStructural(key) && v !== '') out.push({ text: v, src, what });
   };
   const rows = (f: Field, list: Row[], what: string) =>
     list.forEach((row, i) => Object.entries(row).forEach(([k, v]) => add(k, v, f.src, `${what}[${i}].${f.subfields?.[k] ?? k}`)));
@@ -101,28 +108,20 @@ const field = (lang: Lang, slug: string, label: string) => {
 
 /** Structural fingerprint of a field: row counts, row sub-key sets and structural values (anchors, paths). */
 function shape(f: Field): unknown {
-  const rows = (list: Row[]) => list.map((r) => Object.keys(r).sort().map((k) => (STRUCTURAL.test(k) ? `${k}=${r[k]}` : k)));
+  const rows = (list: Row[]) => list.map((r) => Object.keys(r).sort().map((k) => (isStructural(k) ? `${k}=${r[k]}` : k)));
   if (Array.isArray(f.value)) return rows(f.value);
   if (typeof f.value === 'object') {
     return Object.fromEntries(Object.entries(f.value).sort().map(([k, v]) => [k, Array.isArray(v) ? rows(v) : 'scalar']));
   }
-  return STRUCTURAL.test(f.key) || f.key === 'field_p5_herocontent_hero_cta_path' ? `${f.key}=${f.value}` : f.key;
+  return isStructural(f.key) ? `${f.key}=${f.value}` : f.key;
 }
-
-// EN fields that 5c-rest item 3 defers (fixture-only in EN today); FR/ES load them now (D-3, rev 3.1 §2).
-const EN_DEFERRED = new Set([
-  'field_p5_aboutdata_description_html', 'field_p5_aboutdata_cta_text', 'field_p5_aboutdata_cta_path',
-  'field_p5_projectsprojectdata_card_description',
-  'field_689a58f65e417', 'field_689a592f5e419', 'field_689a59405e41a',
-  'field_p5_finalctasection_cta_path', 'field_p5_finalctasection_secondary_cta_text', 'field_p5_finalctasection_secondary_cta_path',
-]);
 
 describe.each(LANGS)('scripts/phase-5c/content/%s.json', (lang) => {
   const content = CONTENT[lang];
 
-  it('is pinned to its own export (docs/content @ 637fba7) and every post has that language', () => {
+  it(`is pinned to its own export (docs/content, ${EXPORT_LABEL}) and every post has that language`, () => {
     expect(content.source.file).toBe(PINS[lang].file);
-    expect(content.source.commit).toBe('637fba7');
+    expect(content.source.commit).toBe(EXPORT_LABEL);
     expect(createHash('sha256').update(sources[lang]).digest('hex')).toBe(content.source.sha256);
     expect(content.source.sha256).toBe(PINS[lang].sha256);
     expect(new Set(content.posts.map((p) => p.lang))).toEqual(new Set([lang]));
@@ -130,7 +129,8 @@ describe.each(LANGS)('scripts/phase-5c/content/%s.json', (lang) => {
 
   it('every copy value appears verbatim (tags stripped, entities decoded) in the source lines named by src', () => {
     expect(missingPieces(lang, content.posts)).toEqual([]);
-    expect(copyValues(content.posts).length).toBeGreaterThan(lang === 'en' ? 95 : 100);
+    // 5c-rest: EN 160 / FR 160 / ES 159 (ES Dangel testimonial has no public note; the original is Spanish).
+    expect(copyValues(content.posts).length).toBeGreaterThan(155);
   });
 
   it('a one-word mutation of a copy value fails the verbatim check', () => {
@@ -196,25 +196,29 @@ describe.each(LANGS)('scripts/phase-5c/content/%s.json', (lang) => {
   });
 });
 
-describe('content files across languages (rev 3.1 AC-1)', () => {
+describe('content files across languages (rev 3.1 AC-1, 5c-rest §4)', () => {
   const list = (lang: Lang) => CONTENT[lang].posts.map((p) => `${p.type}/${p.slug}/${p.lang}`);
-  const posts8 = (lang: Lang) => ['page/services', 'page/packages', 'page/home', 'page/about-magneto', 'page/projects', 'page/contact',
-    'project/fashion-company-ecommerce', 'project/shamaniccas-ecommerce'].map((p) => `${p}/${lang}`);
+  const posts9 = (lang: Lang) => ['page/services', 'page/packages', 'page/home', 'page/about-magneto', 'page/projects', 'page/contact',
+    'project/fashion-company-ecommerce', 'project/shamaniccas-ecommerce', 'project/trepied-trepied-ca'].map((p) => `${p}/${lang}`);
 
-  it('post lists: EN = rev 2’s 6 + the D-2 entries in order; FR and ES = 8 posts each', () => {
+  it('post lists: EN = rev 2’s 6 + the 5c D-2 entries + the 5c-rest same-slug entries in order; FR and ES = 9 posts each', () => {
     expect(list('en')).toEqual(['page/services/en', 'page/packages/en', 'page/home/en', 'page/about-magneto/en', 'page/projects/en', 'page/contact/en',
-      'page/about-magneto/en', 'project/fashion-company-ecommerce/en', 'project/shamaniccas-ecommerce/en']);
-    expect(list('fr')).toEqual(posts8('fr'));
-    expect(list('es')).toEqual(posts8('es'));
+      'page/about-magneto/en', 'project/fashion-company-ecommerce/en', 'project/shamaniccas-ecommerce/en',
+      'page/home/en', 'page/services/en', 'page/packages/en', 'page/about-magneto/en',
+      'project/fashion-company-ecommerce/en', 'project/shamaniccas-ecommerce/en', 'project/trepied-trepied-ca/en']);
+    expect(list('fr')).toEqual(posts9('fr'));
+    expect(list('es')).toEqual(posts9('es'));
   });
 
-  it('EN D-2 entries set no key twice and omit only the 5c-rest item 3 fields', () => {
-    for (const [type, slug] of [['page', 'about-magneto'], ['project', 'fashion-company-ecommerce'], ['project', 'shamaniccas-ecommerce']]) {
-      const en = fieldsOf('en', type, slug).map((f) => f.key);
-      expect(new Set(en).size, `${slug}: duplicate key across EN entries`).toBe(en.length);
-      const fr = fieldsOf('fr', type, slug).map((f) => f.key);
-      expect(fr.filter((k) => !en.includes(k)).every((k) => EN_DEFERRED.has(k)), `${slug}: FR-only keys are deferred EN fields`).toBe(true);
-      expect(en.every((k) => fr.includes(k)), `${slug}: every EN key is loaded in FR`).toBe(true);
+  it('EN same-slug entries set no key twice, and every post has the same key set in EN, FR and ES (D-2)', () => {
+    for (const p of CONTENT.fr.posts) {
+      const en = fieldsOf('en', p.type, p.slug).map((f) => f.key);
+      expect(new Set(en).size, `${p.slug}: duplicate key across EN entries`).toBe(en.length);
+      for (const lang of ['fr', 'es'] as const) {
+        const other = fieldsOf(lang, p.type, p.slug).map((f) => f.key);
+        expect(new Set(other).size, `${lang} ${p.slug}: duplicate key`).toBe(other.length);
+        expect([...other].sort(), `${lang} ${p.slug}: key set = EN`).toEqual([...en].sort());
+      }
     }
   });
 
@@ -227,7 +231,7 @@ describe('content files across languages (rev 3.1 AC-1)', () => {
     }
   });
 
-  it('every EN field has the same shape in FR/ES (rows, sub-keys, anchors, paths); deferred EN fields are not compared', () => {
+  it('every EN field has the same shape in FR/ES (rows, sub-keys, anchors, paths)', () => {
     for (const p of CONTENT.fr.posts) {
       for (const f of fieldsOf('en', p.type, p.slug)) {
         for (const lang of ['fr', 'es'] as const) {

@@ -76,7 +76,7 @@ export const en = {
     emailPlaceholder: 'you@company.com',
   },
   contactForm: {
-    // 5d-lite §8 (spec docs/specs/phase-5d-lite-contact-modal.md): verbatim from docs/content/magneto-copy-en.md (637fba7).
+    // 5d-lite §8 (spec docs/specs/phase-5d-lite-contact-modal.md): verbatim from docs/content/magneto-copy-en.md (export 2026-11-17).
     // Option labels for the stable codes in src/utils/inquiry.ts.
     requiredNote: 'Fields marked * are required.',
     nameLabel: 'Name',
@@ -148,7 +148,7 @@ export const en = {
     submitting: 'Submitting...',
     continueDownload: 'Continue to Download the Guide',
   },
-  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 637fba7 (EN 751/756/762/763/765/958).
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 2026-11-17 (EN 743/748/754/755/757/946).
   // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
   bookingModal: {
     body: 'Answer three short questions so we can focus the conversation on your website. Then choose a time for a free 30-minute call.',
@@ -216,7 +216,7 @@ export const en = {
       title: 'Contact Magneto | Website Projects in Montreal',
       description: 'Contact Magneto Web Consulting in Montreal. Tell me what you need built, fixed or maintained and get a clear next step, in English, French or Spanish.',
     },
-    // Privacy route (spec §4): magneto-copy-en.md:909 / :911 (637fba7).
+    // Privacy route (spec §4): magneto-copy-en.md:897 / :899 (export 2026-11-17).
     privacy: {
       title: 'Privacy Policy | Magneto Web Consulting',
       description: 'How Magneto Web Consulting collects, uses and protects personal information submitted through this website, and how to contact the Privacy Officer.',

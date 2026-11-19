@@ -10,9 +10,10 @@ import { es } from '../../src/i18n/dictionaries/es';
 import { fr } from '../../src/i18n/dictionaries/fr';
 import { REPO_INPUTS, REPO_ROOT } from './inputs.ts';
 import type { LlmClient, LlmRequest } from './llm.ts';
-import { KEY_VAR, MISSING_KEY_MESSAGE, main, type Deps } from './qa-i18n.ts';
+import { checkLength } from './checks.ts';
+import { KEY_VAR, MISSING_KEY_MESSAGE, main, readLengthLimits, type Deps } from './qa-i18n.ts';
 import { FLAGS_ONLY } from './report.ts';
-import { ReportSchema, type Report } from './schema.ts';
+import { ReportSchema, type Report, type Unit } from './schema.ts';
 
 beforeEach(() => {
   delete process.env.MAGNETO_QA_ANTHROPIC_API_KEY;
@@ -53,7 +54,9 @@ describe('deterministic run on the current repo files (AC-4)', () => {
   });
   // Design round B8 (2026-11-11): length-limits.json is "set", so FR/ES over-limit units are warnings (EN stays info)
   // with no placeholder marker. Placeholder mode itself stays covered by checks.test.ts.
-  it('AC-4b: set length limits → FR/ES length findings are warnings, unmarked; ES bookStrategyCall warns; selectors listed', async () => {
+  // 5c-rest (2026-11-17): the ES main CTA is now "Reservar consulta gratis" (24 chars), so the real run no longer has a
+  // cta-label finding for it; the rule itself is proven on the real config by the fixture case below.
+  it('AC-4b: set length limits → FR/ES length findings are warnings, unmarked; ES bookStrategyCall within limit; selectors listed', async () => {
     const out = tmpOut();
     expect(await main(['--out', out], harness().deps)).toBe(0);
     const report = readReport(out);
@@ -61,12 +64,26 @@ describe('deterministic run on the current repo files (AC-4)', () => {
     expect(length.length).toBeGreaterThan(0);
     expect(length.every((f) => !f.evidence.reason.includes('placeholder'))).toBe(true);
     expect(length.every((f) => f.severity === (f.lang === 'en' ? 'info' : 'warning'))).toBe(true);
-    const cta = length.find((f) => f.lang === 'es' && f.unitId === 'dict:common.bookStrategyCall');
-    expect(cta?.evidence.reason).toContain('cta-label max 38');
+    expect(length.find((f) => f.lang === 'es' && f.unitId === 'dict:common.bookStrategyCall')).toBeUndefined();
     expect(report.lengthSelectors?.used).toContain('dictionary:common.bookStrategyCall');
     const md = readFileSync(path.join(out, 'report.md'), 'utf8');
     expect(md).toMatch(/Length selectors used: .* · unused: /);
     expect(md).not.toContain('(placeholder limit)');
+  });
+
+  // Fixture case (5c-rest): the real length-limits.json still fires the cta-label rule on common.bookStrategyCall above
+  // 38 chars, and not at 38. EN is 30 chars so the 1.35 ratio rule cannot fire on its own (39 / 30 = 1.3).
+  it('AC-4c: the real cta-label limit (38, set) warns on a 39-char ES main CTA and not on 38', () => {
+    const limits = readLengthLimits();
+    const mainCta = (esValue: string): Unit => ({
+      id: 'dict:common.bookStrategyCall', source: 'dictionary', kind: 'label', llm: true,
+      location: { file: {}, dictKey: 'common.bookStrategyCall' },
+      values: { en: 'e'.repeat(30), fr: 'f'.repeat(30), es: esValue },
+    });
+    const over = checkLength([mainCta('s'.repeat(39))], limits, ['fr', 'es']).findings;
+    expect(over.map((f) => `${f.lang}:${f.severity}`)).toEqual(['es:warning']);
+    expect(over[0].evidence.reason).toContain('cta-label max 38');
+    expect(checkLength([mainCta('s'.repeat(38))], limits, ['fr', 'es']).findings).toEqual([]);
   });
 });
 
