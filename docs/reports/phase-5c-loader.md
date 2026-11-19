@@ -790,3 +790,38 @@ Mauricio's checklist (2026-11-05/06) is not counted here. Mauricio's runs on 202
 - ES: 21:21–21:24.
 
 The FR and ES windows run together, so the total is about 35–40 min of active time (estimated).
+
+## Addendum — AC-12 "Sat 11-14 EN media save" (run 2026-11-17, Dev read-back 2026-11-17 and 2026-11-18)
+Spec §8 follow-up, steps 1-6. It ran on Tue 11-17, not Sat 11-14, and **after** the local plugin update of 2026-11-17
+(WPML 5.4.0; see the 5c-rest report, R-12). Raw output (Mauricio, Local site shell, unedited):
+`~/Documents/projects/magneto/backups/phase-5c-rest/ac12-acp2-evidence-20261117.txt` (outside the repo).
+
+**Result: PASS. A5 / E13 is confirmed on WPML 5.4.0. D-9 B (5c-rest) and D-7 B stand.** Release day runs WPML 4.7.6, so
+the production canary or parity decision in 5c-rest §10 still applies.
+
+| Step | Result |
+|---|---|
+| Backup (rule 2) | `magneto-cms-2_en-media-before_20261117-1740.sql` (5 413 974 bytes) |
+| Admin save | EN Services (34): row images and icons set, one Update. The FR/ES posts were not opened. |
+| 1. `wp cache flush` | done |
+| 2. `check-translations` | fr 6/6 PASS, es 7/7 PASS, `media WARN rows: 0`; rows 1 and 5: `media ok services.Image (7 rows)`, `media ok services.icon (7 rows)`, `services 7/7`. Run A (before the save) was identical. |
+| 3. EN dry-run | `8 changes (0 appended rows), 132 unchanged`. All 8 are the expected re-format on `services`: `intro_body_html` and the 7 `description_html` values lost their `<p>` wrappers in the admin save (stored as plain text with line breaks); the content file restores `<p>`. Reviewed, then the real run (backup above): `2 field(s) written (8 changes, 0 appended rows), all read back ok`; the cross-language probe was byte-identical before and after; flush; dry-run `0 changes (0 appended rows), 140 unchanged`. |
+| 4. FR / ES dry-runs | `0 changes (0 appended rows), 177 unchanged` each. Every FR/ES Services image and icon prints `media ok … → EN original`. **No FR/ES drift.** |
+| 5. Dev GraphQL, read-only | See below. |
+
+**Step 5 (Dev, read-only GraphQL; re-run 2026-11-18 on the state after the 5c-rest loads):**
+- FR 637 and ES 646 Services have 7 rows each (EN 34: 7). 14 of 14 rows are equal to EN in `image` / `icon` (EN original,
+  resolved through `translations` as in `resolveOriginalMedia`), `anchorId` and `serviceGroup`. Each FR/ES row resolves
+  to its own language's attachment, whose EN original is the EN row's file: BUILD `magneto-build-1.jpg` /
+  `ico-layout-template.svg`, FIX `magneto-fix.jpg` / `ico-wrench.svg`, CARE `magneto-care-1.jpg` / `ico-shield-check.svg`;
+  supporting rows 3-6 have no image and the icons `icon-target.svg`, `ico-languages.svg`, `ico-calendar-check.svg`,
+  `ico-chart-no-axes-column.svg`.
+- Translate values: the full content-file read-back for 5c-rest (AC-7) covers `services` FR and ES: 63 values each, 0
+  mismatches after WPGraphQL render-filter normalization (curly-quote entities, `wpautop` newlines, select fields
+  returned as lists).
+
+**Finding for the runbook:** an EN admin save of a page with `wysiwyg` fields rewrites the loaded `<p>…</p>` HTML as
+plain text with line breaks (seen here on Services and again on 5c-rest's Dangel post 270). `wpautop` should render it the same
+(not verified separately), but the next EN dry-run counts every such field as a change. After any EN admin save, expect these
+re-format changes in the EN dry-run, review them and re-run the EN load. FR/ES `wysiwyg` fields are Translate fields and
+are not touched.
