@@ -38,6 +38,10 @@ const EN_FINGERPRINT: Record<string, string> = {
   "about.linkedinIconAlt": "LinkedIn Icon",
   "footer.copyright": "Magneto Web Consulting © {year}", // Phase 5a, magneto-copy-en.md:172
   "footer.linkedin": "Mauricio Bayuelo on LinkedIn", // Phase 5a, magneto-copy-en.md:286
+  "consent.privacyChoices": "Privacy choices", // Phase 5f, magneto-copy-en.md:930 (= :170 item 2), export 2026-11-17
+  "consent.body": "Necessary technologies help this website function. With your permission, Magneto may also use analytics to understand how the site is used and improve the experience. You can accept or reject non-essential analytics.", // Phase 5f, magneto-copy-en.md:932
+  "consent.accept": "Accept analytics", // Phase 5f, magneto-copy-en.md:934 item 1
+  "consent.reject": "Reject non-essential", // Phase 5f, magneto-copy-en.md:934 item 2
   "testimonials.title": "Client feedback", // Phase 5a, magneto-copy-en.md:83
   "featuredServices.explore": "Explore {name}", // Phase 5a, magneto-copy-en.md:41/49/57 (name as a placeholder)
   "projects.emptyTitle": "Everything unfolds in its sacred time.",

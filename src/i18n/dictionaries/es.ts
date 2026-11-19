@@ -43,6 +43,15 @@ export const es: Dictionary = {
     copyright: 'Magneto Web Consulting © {year}',
     linkedin: 'Mauricio Bayuelo en LinkedIn',
   },
+  // Phase 5f §7: verbatim from magneto-copy-es.md (export 2026-11-17), section "Textos de interfaz — privacidad
+  // (BORRADOR)": privacyChoices :1124 (= :1130), body :1126, accept / reject :1128 items 1-2 (item 3 =
+  // common.privacyPolicy). Provisional until G-8 closes (spec O-2, AC-L7).
+  consent: {
+    privacyChoices: 'Opciones de privacidad',
+    body: 'Las tecnologías necesarias ayudan a que este sitio funcione. Con tu permiso, Magneto también puede utilizar herramientas de analítica para comprender cómo se usa el sitio y mejorar la experiencia. Puedes aceptar o rechazar la analítica no esencial.',
+    accept: 'Aceptar la analítica',
+    reject: 'Rechazar lo no esencial',
+  },
   testimonials: {
     title: 'Opinión de clientes',
   },

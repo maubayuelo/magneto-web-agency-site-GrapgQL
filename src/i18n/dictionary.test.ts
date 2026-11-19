@@ -268,6 +268,54 @@ describe('5d-lite Contact copy = export 2026-11-17 (AC-4, AC-17)', () => {
   });
 });
 
+// Phase 5f §7 / AC-5: consent banner + footer control = the committed export (2026-11-17, D-15; the spec's 637fba7 lines
+// are superseded). ES lines sit under "Textos de interfaz — privacidad (BORRADOR)": guard-safe, not launch-approved (G-8).
+// A later authorized re-export must re-pin these lines in the same PR.
+const CONSENT_COPY: Record<
+  keyof typeof EXPORTS,
+  { heading: number; body: number; buttons: number; footer: number; footerItem: number; label?: string }
+> = {
+  // EN has no separate "permanent footer link" line: the footer copy line is "Privacy Policy · Privacy choices".
+  en: { heading: 930, body: 932, buttons: 934, footer: 170, footerItem: 1 },
+  // FR lines are fully bold (**Titre : …**), so the label isn't stripped by fromExport: take the part after " : ".
+  fr: { heading: 1127, body: 1129, buttons: 1131, footer: 1133, footerItem: 0, label: ' : ' },
+  es: { heading: 1124, body: 1126, buttons: 1128, footer: 1130, footerItem: 0 },
+};
+
+describe('Phase 5f consent copy = export 2026-11-17 (AC-5)', () => {
+  const dicts = { en, fr, es } as const;
+  const line = (locale: keyof typeof EXPORTS, n: number, label?: string) =>
+    fromExport(locale, n, label ? { after: label } : {});
+
+  it.each(['en', 'fr', 'es'] as const)('%s: heading, body, Accept and Reject equal their export lines', (locale) => {
+    const l = CONSENT_COPY[locale];
+    const c = dicts[locale].consent;
+    expect(c.privacyChoices, `${EXPORTS[locale]}:${l.heading}`).toBe(line(locale, l.heading, l.label));
+    expect(c.body, `${EXPORTS[locale]}:${l.body}`).toBe(line(locale, l.body));
+    const buttons = line(locale, l.buttons, l.label).split(' · ');
+    expect(buttons, `${EXPORTS[locale]}:${l.buttons}`).toHaveLength(3);
+    expect(c.accept).toBe(buttons[0]);
+    expect(c.reject).toBe(buttons[1]);
+    // The third "button" is the Privacy Policy link: the existing common.privacyPolicy value.
+    expect(dicts[locale].common.privacyPolicy).toBe(buttons[2]);
+  });
+
+  it.each(['en', 'fr', 'es'] as const)('%s: banner heading = footer "Privacy choices" label', (locale) => {
+    const l = CONSENT_COPY[locale];
+    const footerLabel = line(locale, l.footer, l.label).split(' · ')[l.footerItem];
+    expect(dicts[locale].consent.privacyChoices, `${EXPORTS[locale]}:${l.footer}`).toBe(footerLabel);
+  });
+
+  it.each([
+    ['en', 170],
+    ['fr', 172],
+    ['es', 170],
+  ] as const)('%s: the page footer line (:%i) ends with the same label', (locale, n) => {
+    const items = line(locale, n).split(' · ');
+    expect(items[items.length - 1]).toBe(dicts[locale].consent.privacyChoices);
+  });
+});
+
 // Privacy route spec §4 / AC-3: meta.privacy = the SEO lines of the committed export (export 2026-11-17), verbatim.
 // A later authorized re-export must re-pin these lines in the same PR.
 const PRIVACY_META: Record<keyof typeof EXPORTS, { title: number; description: number }> = {

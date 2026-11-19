@@ -92,4 +92,15 @@
         outline-offset: 3px;
         border-radius: 2px;
     }
+
+    // Phase 5f: the "Privacy choices" <button> looks like the footer links next to it.
+    &--button {
+        appearance: none;
+        background: none;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        font: inherit;
+        cursor: pointer;
+    }
 }

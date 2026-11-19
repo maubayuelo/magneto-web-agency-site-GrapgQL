@@ -1,0 +1,145 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+// Phase 5f §5: fixed, non-modal, centered card. Fixed → it moves no content (no CLS). z-index 1000: above the header
+// (10), below the Calendly overlay (10000); the booking <dialog> is in the top layer anyway.
+// Phones: compact (side-by-side equal buttons, tight padding) so the banner stays below the home hero CTA at 375×812
+// in the longest locale (checkpoint rule).
+.consent-banner {
+    position: fixed;
+    inset-inline: $spacing-10;
+    bottom: calc(#{$spacing-10} + env(safe-area-inset-bottom, 0px));
+    z-index: 1000;
+    box-sizing: border-box;
+    max-width: 1200px;
+    max-height: 50vh;
+    margin-inline: auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-10;
+    padding: $spacing-15;
+    background-color: $white;
+    color: $black;
+    border: 1px solid $gray-40;
+    @include responsive-border-radius;
+    box-shadow: 0 -4px 24px rgba($black, 0.12);
+
+    @include media-tablet-up {
+        gap: $spacing-15;
+        padding: $spacing-20;
+    }
+
+    @include media-desktop-up {
+        flex-direction: row;
+        align-items: center;
+        gap: $spacing-30;
+        padding: $spacing-20 $spacing-30;
+    }
+
+    // Short phones (e.g. 375×667): tighter inset, padding and spacing only. Type size stays at the btn-large /
+    // typo tokens (≥ 14 px, checkpoint Q4); see the 5f report for the overlap that remains.
+    @media (max-width: $breakpoint-phone) and (max-height: 700px) {
+        inset-inline: $spacing-5;
+        bottom: calc(#{$spacing-5} + env(safe-area-inset-bottom, 0px));
+        gap: $spacing-5;
+        padding: $spacing-10;
+    }
+
+    &__text {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    &__title {
+        margin: 0 0 $spacing-5;
+        color: $black;
+
+        @media (max-width: $breakpoint-phone) and (max-height: 700px) {
+            margin-bottom: 0;
+        }
+    }
+
+    &__body {
+        margin: 0;
+        color: $black;
+        overflow-wrap: break-word;
+    }
+
+    // Phones: two equal columns (Accept | Reject), the policy link on its own row.
+    &__actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+        gap: $spacing-10;
+
+        @include media-tablet-up {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        // Desktop: Accept | Reject as two equal columns (D-F5) capped at half the banner, so long labels (FR) wrap
+        // instead of squeezing the text column; the policy link takes its own auto column.
+        @include media-desktop-up {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+            align-items: stretch;
+            flex: 0 0 auto; // own max-content width, capped below; the text column takes the rest
+            max-width: 50%;
+        }
+    }
+
+    // D-F5 A: both buttons share every property; only the label differs. Type = existing btn-large (md) token.
+    &__button {
+        min-height: 44px;
+        min-width: 0;
+        padding: $spacing-10;
+        white-space: normal;
+
+        @include media-tablet-up {
+            padding: $spacing-15 $spacing-30;
+        }
+
+        @media (max-width: $breakpoint-phone) and (max-height: 700px) {
+            padding: $spacing-5 $spacing-10;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $primary-color-dark;
+            outline-offset: 3px;
+        }
+    }
+
+    &__link {
+        grid-column: 1 / -1;
+        justify-self: center;
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px; // WCAG 2.2 2.5.8 (AA) target size on phones
+        color: $primary-color-dark;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+
+        @include media-tablet-up {
+            min-height: 44px;
+        }
+
+        @include media-desktop-up {
+            grid-column: auto;
+            align-self: center;
+        }
+
+        &:hover {
+            color: $black;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $primary-color;
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+    }
+}
