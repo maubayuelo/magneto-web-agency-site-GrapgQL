@@ -1,8 +1,9 @@
 # Release runbook — production FR/ES posts (Part A), media and rehearsal (Part B), release day (Part C)
 
-- **Status: Approved for the current scope (rev 0.2.2, Mauricio, 2026-11-19).** Every decision D-R2 … D-R9 is
-  recorded (D-R1 moot). **Remaining fill-in: rev 0.3**, the production IDs, titles and EN row counts from A0. It
-  changes values, not the design.
+- **Status: Approved (rev 0.3, Mauricio + Senior Architect, 2026-11-19).** Every decision D-R2 … D-R10 is recorded
+  (D-R1 moot). rev 0.3 records the A0 values and classifies four deviations from A0.3 (D1-D4). It changes no batch,
+  gate or order; its one new decision is D-R10 (C-1.1 version levels). **Part A may start:** the first action is §A1
+  step 1.
 - Author: Architect · Reviewed by: Mauricio + Senior Architect · **Run by: Mauricio.** Every production action (SSH,
   WP admin, Vercel, GA) is his. Agents never write to production. The Dev has read-only production GraphQL on release
   day only (D-R5).
@@ -17,6 +18,7 @@
   - `docs/ai/WORKFLOW.md` "Release process"; the [5a production runbook](phase-5a-production-acf-runbook.md) for the
     SSH pattern.
 - Dates (estimates):
+  - rev 0.3 Approved Thu 11-19 or Fri 11-20 (P-1);
   - **Part A by Sun 11-22** (the slip trigger);
   - media Mon 11-23;
   - B0 Mon 11-23 – Tue 11-24;
@@ -89,6 +91,43 @@
 - Consistency fix in §C-R row "C-10 … C-12": "acceptable ≤ 1 day" is replaced by the window limit, so the row agrees
   with the new window rule.
 
+**rev 0.3 (2026-11-19), A0 values (read-only, production, 16:50 UTC) and four deviations; Status → Draft for
+review:**
+- **Source.** Mauricio's A0 files in `$RB`: `A0-domain-20261119-1150.txt`, `A0-production-inventory-20261119-1150.txt`,
+  `A0-privacy-20261119-1150.json`. The Architect has no read access to `$RB`; every A0 value here is as Mauricio
+  transcribed it. Values not transcribed are marked unmeasured (A0.3 "Not transcribed").
+- **Confirmed as expected (fact):** the A0.3 rows `home` / `siteurl`, sync option, FR/ES posts, dup meta, EN repeater
+  rows, `display_order`, media, check-translations, generalSettings. A-1 and A-3 are closed; O-1 is closed
+  (`SITE` = `https://www.magnetomarketing.co`). The A0.2f language filter works on production; no fallback was needed.
+- **D1 PHP:** production 8.2.36, local 8.2.35. Classified as environment drift, accepted, not material (F-6). A0.3 and
+  C-1.1 expect 8.2.36; RH-2 step 1 no longer names a version.
+- **D2 live baseline:** `/privacy-policy` 404 and 8 sitemap `<loc>`. Classified as an expectation error in rev 0.2.2,
+  not a production problem (A0.3 "A0 result"). A0.3, A4, C-1.5 and C-R0 step 4 now compare against the measured
+  numbers.
+- **D3 apex 307:** recorded, not fixed here; it belongs with the Phase 7 items.
+- **D4 plugins:** 20 production / 19 local; the one difference is `sg-ai-studio` 1.3.3 (SiteGround-only). Accepted gap;
+  Mauricio's decision: it stays active. F-6, RH-2 step 2 and the §B3 intro are amended.
+- The rev 0.2 sentence "Local and production are now the same environment" is superseded by D1 and D4 (kept as
+  history).
+- Unchanged: §A3, the batch order, the gates, D-R2 … D-R9 and D-R2a.
+- **Same day, after Mauricio's answers (measured unless marked):**
+  - **F-6:** the full plugin lists (20 / 19), `svg-support` 2.6.4 on both sides, and web PHP 8.2.36 (Site Tools)
+    next to the CLI.
+  - **D-R10 (new, decided by Mauricio):** two levels for version changes at C-1.1, stop vs record. C-1.1 is amended.
+  - **F-14 / O-2:** A0.4 shows that all three production privacy pages already hold the Version A (GA) §5, dated
+    3 December 2026. The "no-analytics text" assumption was false and is removed; O-2 is closed.
+  - **C-10 is inverted:** with GA on it only verifies. An edit is needed only for GA-off (§5 → Version B) or a 12-10
+    release (dates). P-3, GNG-0, §C-R0 steps 3 and 5 and R-14 (new) follow from this.
+  - **D2 proven:** the live Production deployment is commit `55d4350` (PR #14, Phase 4), and its build manifest has
+    no `privacy-policy` route.
+  - **F-13:** the env values are marked as reported, not measured.
+  - **P-1** moves to Thu 11-19 / Fri 11-20.
+  - **`/packages` sitemap entry:** a separate small PR before P-5, otherwise Phase 7 (§B4 note). V-8's expected
+    count is 9 without that PR and 10 with it.
+- **Approved (Mauricio + Senior Architect, 2026-11-19)** with one amendment: `classic-editor` inactive or missing is a
+  D-R10 stop. Its version changes stay at "record, don't stop". Every admin click path (Part A paths P / J; C-3, C-5,
+  C-7) assumes the classic editor (`WP-SETUP.md:72`).
+
 rev 0.1 (2026-11-19): first draft.
 
 ## Goal
@@ -121,7 +160,12 @@ the Vercel env and promotes, following one ordered list. Every step has:
   - projects 270 / 224 / 498;
   - media IDs 50–528.
 - 5a production report `:118` (2026-10-29): no FR/ES posts in production.
-- A0 re-measures all of this.
+- **A0 (fact, 2026-11-19, rev 0.3): confirmed.**
+  - EN pages 2 `home`, 32 `about-magneto`, 34 `services`, 36 `packages`, 38 `projects`, 41 `contact`, 533 `carte`,
+    573 `privacy-policy`;
+  - EN projects 224 `shamaniccas-ecommerce`, 270 `fashion-company-ecommerce`, 498 `trepied-trepied-ca`;
+  - FR/ES: only `privacy-policy` 575 (fr) / 578 (es), trid 933, source `en`, `dup_of` none;
+  - attachments 186, max ID 528.
 
 **F-2. 18 posts are needed, not 13.**
 - The 13-row checklist (5c `:435-451`) assumed that FR/ES `home`, FR `projects` and FR/ES Trépied existed. They exist
@@ -159,27 +203,62 @@ the Vercel env and promotes, following one ordered list. Every step has:
 - **Production `home`** = `http://cms.magnetomarketing.co` (GraphQL `generalSettings.url`, Mauricio, 2026-11-18).
   The http `siteurl` is pre-existing, deferred to Phase 7.
 
-**F-6. Environment parity (fact, Mauricio, 2026-11-18 / 2026-11-19).** Production and local both run:
+**F-6. Environment (fact; Mauricio 2026-11-18 / 2026-11-19; both sides re-measured at A0, 2026-11-19, rev 0.3).**
+Production has **20** plugins, local **19**, all active. Set and versions are identical except `sg-ai-studio`. PHP
+differs at patch level. **This is close, not parity** (D1, D4).
 
-| Component | Version |
-|---|---|
-| WPML (`sitepress-multilingual-cms`) | 5.4.0 |
-| ACFML | 5.4.0 |
-| WPML GraphQL | 5.4.0 |
-| WPML SEO (`wp-seo-multilingual`) | 5.4.0 |
-| WPML String Translation | 5.4.0 |
-| WPGraphQL | 2.28.0 |
-| WPGraphQL for ACF | 3.2.1 |
-| ACF PRO | 6.8.11 |
-| Yoast (`wordpress-seo`) | 28.9 |
-| enable-cors | 3.0.0 |
-| PHP | 8.2.35 |
+| Component | Production | Local |
+|---|---|---|
+| WPML (`sitepress-multilingual-cms`) | 5.4.0 | 5.4.0 |
+| ACFML | 5.4.0 | 5.4.0 |
+| WPML GraphQL | 5.4.0 | 5.4.0 |
+| WPML SEO (`wp-seo-multilingual`) | 5.4.0 | 5.4.0 |
+| WPML String Translation | 5.4.0 | 5.4.0 |
+| WPGraphQL | 2.28.0 | 2.28.0 |
+| WPGraphQL for ACF | 3.2.1 | 3.2.1 |
+| ACF PRO | 6.8.11 | 6.8.11 |
+| Yoast (`wordpress-seo`) | 28.9 | 28.9 |
+| enable-cors | 3.0.0 | 3.0.0 |
+| `svg-support` | 2.6.4 | 2.6.4 |
+| `post-types-order` | 2.5.9 | 2.5.9 |
+| `wpgraphql-ide` | 5.9.0 | 5.9.0 |
+| `add-wpgraphql-seo` | 6.0.0 | 6.0.0 |
+| `all-in-one-wp-migration` | 7.113 | 7.113 |
+| `classic-editor` | 1.7.0 | 1.7.0 |
+| `disable-media-sizes` | 2.7 | 2.7 |
+| `post-type-switcher` | 4.1.1 | 4.1.1 |
+| `simple-image-sizes` | 3.2.6 | 3.2.6 |
+| `sg-ai-studio` | **1.3.3** | **absent** (SiteGround-only; cannot be installed locally) |
+| **Plugins, total (all active)** | **20** | **19** |
+| WP core | 7.1.5 | not transcribed |
+| PHP, CLI (`php -v`; runs `wp eval-file`) | **8.2.36** (ZTS, built Nov 19 2026) | **8.2.35** (NTS, built Oct 22 2026) |
+| PHP, web (Site Tools; runs the admin saves) | **8.2.36** | not measured separately (Local sets one PHP per site) |
 
+- This table is the reported-version list that C-1.1 compares against (D-R10).
+- **`svg-support` 2.6.4 is active on both sides (fact).** §B1 is covered.
+- **D1: is the PHP patch difference material? The Architect's judgment: no, not for this runbook. But it is not
+  parity.**
+  - Fact: SiteGround raised the production patch version itself (binary built Nov 19 2026). Local's 8.2.35 is the
+    version it had when "same PHP" was recorded on 2026-11-19.
+  - Fact: A0.2d (`inventory.php`) and A0.2e (`check-translations.php`) ran on production under 8.2.36.
+  - Assumption (8.2.36 changelog not read): a patch release in the 8.2 branch carries bug and security fixes, and no
+    language or extension-API change. The loader uses core PHP and WordPress functions only.
+  - Assumption: ZTS vs NTS is a build option of the CLI binary and does not change script semantics.
+  - Fact: production web PHP is also 8.2.36 (Site Tools). This matters because the C-3 / C-5 / C-7 admin saves run
+    under the web PHP, and the loader runs under the CLI. Both are 8.2.36.
+  - What still guards it: the loader runs on 8.2.36 for the first time at the C-4 / C-6 dry-runs, and every real
+    run sits between two dry-runs. The rehearsal runs on Local's PHP (RH-2 step 1), not on 8.2.36.
+- **D4: `sg-ai-studio` is an accepted gap.** Mauricio's decision: it stays active in production, because changing a
+  plugin's state before launch is not worth the risk. The rehearsal runs without it (RH-2 step 2).
+- **`post-types-order` 2.5.9 is active on both sides.** It orders by `menu_order`. The projects grid sorts by
+  `display_order` with GraphQL order as the tie-breaker (`projects/api.ts:64-77`), so the plugin can affect the
+  fallback order. The rehearsal runs the same plugin and version, so its effect is exercised (assumption: its
+  settings travel in the dump's options).
 - The local re-verification under PHP 8.2.35: check-translations 6/6 PASS, EN dry-run 0 changes.
 - The Copy-sync proof (5c AC-12) ran on WPML 5.4.0 (5c report `:795-800`).
 - **Not yet proven on 5.4.0:** the two post-creation paths (Duplicate, "+"). The local posts were created on
   2026-11-05 under 4.7.6. The Part A pilots prove them.
-- A0 records the full plugin list (also svg-support, which the SVG uploads need).
+- A0 recorded the full plugin list on both sides (A0.2b; table above).
 
 **F-7. Release-day media that production can't have yet** (local GraphQL today; production's last media ID is 528,
 F-1).
@@ -244,17 +323,48 @@ F-1).
 - Promoting a preview deployment rebuilds it with Production env; Instant Rollback does not rebuild (5f spec
   `:347-349`).
 - Env changes need a new build (5f report `:231-240`).
-- Today (Mauricio, 2026-11-19): `ENABLED_LOCALES` = `en`. `NEXT_PUBLIC_GA_ID` = `G-N2YZ6SG2WM` for **Preview**;
-  Production stays unset until the 12-01 go/no-go.
+- **Reported, not measured** (Mauricio, 2026-11-19): `ENABLED_LOCALES` = `en`. `NEXT_PUBLIC_GA_ID` =
+  `G-N2YZ6SG2WM` for **Preview**; Production stays unset until the 12-01 go/no-go. Mauricio will read the Preview
+  `ENABLED_LOCALES` and the Production and Preview `NEXT_PUBLIC_GA_ID` and record them in `notes.md`. These values
+  stand until then.
+- **The live Production deployment (A0.5, fact, 2026-11-19):**
+  - project `magneto-web-agency-site`; `www.magnetomarketing.co` is assigned to it;
+  - branch `master`, commit `55d43506ed81a34c968364422929771ab11c69bc` ("Merge pull request #14 from
+    maubayuelo/feat/phase-4-ui-microcopy"); Ready, 1 m 7 s;
+  - its build manifest compiles `/[locale]`, `about-magneto`, `contact`, `packages`, `projects`, `projects/[slug]`,
+    `services` and `[...rest]`. There is **no `privacy-policy` route.** The prerendered paths are `/en` only, so
+    `ENABLED_LOCALES` = `en` at build time (measured for that build);
+  - the live home has 0 matches for `privacy choices|consent|gtag|googletagmanager`. 5f is not live, and GA does not
+    load in production today;
+  - its "created" time is today, ≈ 4 h before 12:54: a Redeploy of the old commit, not a new commit. Mauricio is
+    confirming why it ran (open; it doesn't block rev 0.3).
+  - It is the live build and the C-0 Instant Rollback target unless another promotion happens first.
 - Release process: `WORKFLOW.md:53-73`.
 
 **F-14. Privacy.**
 - GA §5 at EN `:841` / FR `:1032` / ES `:1035`; Version B at EN `:905` / FR `:1102` / ES `:1099` (export 2026-11-17).
-- The ES policy is still BORRADOR (`magneto-copy-es.md:973`; G-8).
+- The ES **canonical copy** is still BORRADOR (`magneto-copy-es.md:973`; G-8). The **production page** is not (below).
+  G-8 remains Mauricio's decision.
 - Footer labels: "Privacy choices" / "Choix de confidentialité" / "Opciones de privacidad" (`en.ts:49`, `fr.ts:49`,
   `es.ts:50`).
-- The production pages were published on 2026-11-10, before 5f, so they most likely hold the no-analytics text
-  (Mauricio). A0.4 checks it.
+- **Production pages (fact, A0.4 `A0-privacy-20261119-1150.json`, 2026-11-19).** rev 0.2.2's assumption that they
+  "most likely hold the no-analytics text" was **false**.
+
+  | Locale | ID | Status | Modified | Chars | GA §5 (Version A) |
+  |---|---:|---|---|---:|---|
+  | en | 573 | publish | 2026-11-10T19:15:54 | 8323 | yes |
+  | fr | 575 | publish | 2026-11-10T19:20:16 | 10700 | yes |
+  | es | 578 | publish | 2026-11-10T19:24:19 | 9670 | yes |
+
+  - All three §5 texts name Google Analytics and say it is off by default and loads only on "Accept analytics" in the
+    privacy banner. They state 14-month retention and that Google Signals is not enabled, and they point to the
+    "Privacy choices" / "Choix de confidentialité" / "Opciones de privacidad" footer link.
+  - Effective date and last-updated date in all three: **3 December 2026**.
+  - Neither "BORRADOR" nor "DRAFT" appears in any of them.
+  - The live frontend doesn't serve them today (`/privacy-policy` 404, F-13), so the GA text describes the release
+    build, not the live one.
+  - **Consequences:** C-10 is a verification when GA is on; an edit is needed only for GA-off or a 12-10 release.
+    The published date ties the pages to 12-03 (R-14).
 - D-L checklist: `privacy-route.md:361-395`.
 
 **F-15. Stale first render.** After a build, the first one or two requests served pre-load data on 14 of 27 routes
@@ -266,28 +376,30 @@ F-1).
 - The Dev sends no cookie, no `Authorization` header and no application password, so its requests are of that kind.
 
 ## Assumptions and open questions
-- **A-1.** The production EN IDs are still those of F-1. A0 confirms them; commands resolve by slug or use A0's IDs.
+- **A-1. Closed (fact, A0 2026-11-19).** The production EN IDs are those of F-1: pages 2, 32, 34, 36, 38, 41, 533,
+  573; projects 270, 224, 498. In C-5, `<EN270>`, `<EN224>`, `<EN498>` are 270, 224 and 498.
 - **A-2.** The two creation paths behave on WPML 5.4.0 as they did on 4.7.6 locally:
   - **Duplicate:** creates the copy with `_icl_lang_duplicate_of`, which *Translate independently* removes.
   - **"+":** creates a linked post with no duplicate flag. On the first save, ACFML copies the Copy fields, including
     the repeater rows.
 
   Pilots 1 and 2 prove each path on one post before the others.
-- **A-3.** Production EN still has the legacy row counts:
+- **A-3. Closed (fact, A0 2026-11-19).** Production EN has exactly the legacy row counts:
   - Services 7, Packages 3, `sections` 0;
   - home: featured 2, testimonials 4;
   - Dangel 3/4/3 with 5 images;
   - Shamanicca 3/3/3 with 7 images;
   - Trépied 3/4/4 with 7 images.
 
-  These come from 5c E5 / E14, not measured. A0 measures them; a different count on a repeater the EN load treats as
-  exact is a stop for rev 0.3.
+  These came from 5c E5 / E14. A0.2d measured them in production: equal on every repeater; `sections` has no meta
+  row (0 rows). Dangel = 270, Shamanicca = 224, Trépied = 498.
 - **A-4.** Uploading the 10 attachments (§B1) has no visible effect until a release-day save references them.
 - **A-5.** No content edit happens in production from the rehearsal dump (§B3 RH-1) until C-14 (the content freeze).
   RH-1 is taken only after Part A and §B1 (see "Order of operations"). C-1.3 checks it.
-- **O-1.** Frontend domain: `www.magnetomarketing.co` or the apex? A0.2g, which runs first, decides it and sets
-  `SITE`.
-- **O-2.** The privacy pages' §5 and dates: A0.4.
+- **O-1. Closed (fact, A0.2g 2026-11-19).** Canonical `SITE` = `https://www.magnetomarketing.co`, saved in
+  `$RB/canonical-site.txt`. The apex redirects to it with a 307 (D3, A0.3).
+- **O-2. Closed (fact, A0.4).** All three production privacy pages hold the Version A (GA) §5, dated 3 December 2026
+  (F-14).
 
 ## Design
 
@@ -344,6 +456,9 @@ if [ -n "$APEX" ] && [ "$APEX" = "$WWW" ]; then SITE="${APEX%/}"; export SITE; e
 - **Expected:** one host returns 200, the other a 301/308 to it, both end at the same URL, and the last line is
   `canonical SITE=https://…`.
 - **On STOP:** run A0.2 anyway. Its route and sitemap checks are skipped.
+- **A0 result (fact, 2026-11-19):** `307 https://magnetomarketing.co -> https://www.magnetomarketing.co/`,
+  `200 https://www.magnetomarketing.co`; `canonical SITE=https://www.magnetomarketing.co`. The 307 instead of a
+  301/308 is D3 (A0.3). Both hosts end at the same URL, so `SITE` is valid.
 
 **A0.2 Run discovery, all into one file** (after A0.2g, in the same terminal).
 ```bash
@@ -382,6 +497,8 @@ About A0.2f:
   - fallback 1 returns 8 EN pages and 3 EN projects, each with its `translations`;
   - fallback 2 returns 11 nodes;
   - an invalid argument produces an `errors` key, which the `case` test detects.
+- **Fact (production, A0 2026-11-19, WPML GraphQL 5.4.0):** the language filter works. `fr` and `es` each return
+  only `privacy-policy`, with no `errors` key. The fallbacks were not needed.
 - The SQL inventory (A0.2d) remains the authoritative source; GraphQL is the public cross-check.
 
 **A0.3 Expected (anything else → note it; the Architect classifies it in rev 0.3).**
@@ -389,20 +506,55 @@ About A0.2f:
 | Item | Expected |
 |---|---|
 | `home` / `siteurl` | `http://cms.magnetomarketing.co` (F-5) |
-| core / PHP | PHP 8.2.35 |
-| plugins | F-6 versions, all active; `svg-support` active |
+| core / PHP | core 7.1.5; PHP **8.2.36** (CLI; rev 0.3, D1) |
+| plugins | F-6: production 20, all active, including `sg-ai-studio` 1.3.3 (D4); `svg-support` active |
 | sync option | `"page":"1"`, `"project":"1"` |
 | posts, EN | pages home, about-magneto, services, packages, projects, contact, carte, privacy-policy; 3 projects; IDs per F-1 |
 | posts, FR/ES | **only** privacy-policy 575 (fr) / 578 (es), with the trid of 573 |
 | `_icl_lang_duplicate_of meta rows` | `0` |
-| EN repeater rows | A-3 |
+| EN repeater rows | A-3 (confirmed) |
 | `display_order` on EN projects | `(empty)` (F-8) |
-| `media <10 files>` | `MISSING` (F-7) |
-| check-translations | 13 rows `FAIL … no fr|es translation`, `0/13 PASS` |
-| domain (A0.2g, run first) | one returns 200, the other redirects to it; both end at the same URL; `canonical-site.txt` written |
-| live routes (on the canonical `SITE`) | EN 200; `/fr`, `/es/services`, `/esto-no-existe` 404 (record as the baseline) |
-| sitemap | 3 EN project URLs (record as the baseline) |
+| `media <10 files>` | `MISSING` (F-7); attachments 186, max ID 528 |
+| check-translations | 13 rows `FAIL … no fr|es translation`, `0/13 PASS`; info rows 14-17 FAIL; `media WARN rows: 0` |
+| domain (A0.2g, run first) | apex **307** → `https://www.magnetomarketing.co/`, www 200 (D3); `canonical-site.txt` = `https://www.magnetomarketing.co` |
+| live routes (on the canonical `SITE`) | **200 (9):** `/`, `/services`, `/packages`, `/projects`, `/about-magneto`, `/contact` and the 3 cases. **404 (4):** `/privacy-policy`, `/fr`, `/es/services`, `/esto-no-existe` (D2; the baseline) |
+| sitemap | **8** `<loc>`: `/`, `/about-magneto`, `/services`, `/projects`, `/contact` + the 3 project URLs. `/packages`, `/carte`, `/privacy-policy` absent (D2; the baseline) |
 | generalSettings | `"url":"http://cms.magnetomarketing.co"` |
+
+**A0 result (production, read-only, 2026-11-19 16:50 UTC; rev 0.3).** Every row above now matches A0. Four rows were
+amended from rev 0.2.2:
+- **D1 PHP: environment drift, accepted, not material** (judgment and evidence at F-6). Production 8.2.36; rev 0.2.2
+  expected 8.2.35; local stays 8.2.35.
+- **D2 live baseline: an expectation error in rev 0.2.2, not a production problem.** The Architect confirms
+  Mauricio's reading:
+  - Fact: the CMS has `privacy-policy` 573 published (A0.2d), yet the live route returns 404.
+  - Fact: the live Production deployment is commit `55d4350` (PR #14, Phase 4), and its build manifest has no
+    `privacy-policy` route (F-13). Every later merge (5c, 5f, the privacy route, the consent banner) was never
+    promoted. `master` `src/app/sitemap.xml/route.ts:12` lists `/privacy-policy`; the live sitemap is the older
+    code.
+  - Fact: the live build was built with `ENABLED_LOCALES` = `en` (prerendered paths `/en` only, F-13), so `/fr` and
+    `/es/services` return 404.
+  - Consistent with V-8, which expects `/privacy-policy` in the sitemap only after the release.
+  - Fact (code): `/packages` is not in the static paths on `master` either (`route.ts:12`), so it stays absent after
+    the release unless the separate `/packages` PR merges (§B4 note). V-8 doesn't require it. `/carte` has no route
+    (Known debt). Estimate from the code: 9 `<loc>` after the release (6 static + 3 projects), 10 with that PR.
+  - Assumption: the baseline holds only while the Production deployment is the one recorded at A0.5. Any promotion
+    before C-13 changes it, and C-1.5 then stops.
+- **D3 apex 307: recorded, not fixed here.** It doesn't affect this runbook: A0.2g's criterion (both hosts end at the
+  same URL) holds, and every check uses `SITE`. It belongs with the Phase 7 items (hreflang, per-locale sitemap, the
+  http `siteurl`), as a canonical-host / SEO setting. Assumption: it is a Vercel Domains redirect setting, not code.
+- **D4 plugins: an accepted gap.** `sg-ai-studio` 1.3.3 exists in production only (F-6; RH-2 step 2).
+
+EN media today (fact, A0.2d). C-3 and C-7 replace these, and restoring B0 brings them back:
+- home: `image`=463; `service_0_service_icon`=74, `service_1_service_icon`=69; `testimonials_0..3_thumb` =
+  105 / 528 / 105 / 105;
+- services: `Image` 134 / 138 / 142 / 145 / 148 / 151 / 473; `icon` 74 / 69 / 97 / 101 / 82 / 154 / 476 (rows 1-7).
+
+**Not transcribed into rev 0.3 (unmeasured in this spec; the A0 files hold them):**
+- the `wp cli` version, local WP core;
+- the EN `modified` times (A4 and C-1.3 compare against the A0 file itself);
+- A0.5: the Production deployment ID (the commit is recorded in F-13); the Vercel env values (F-13: reported, not
+  measured).
 
 **A0.4 Privacy pages (save; the Architect reads it).**
 ```bash
@@ -415,7 +567,9 @@ and whether they are set; GA ID only).
 
 **A0.6** Tell the Architect the file names. rev 0.3 fills in IDs, titles and counts the same day.
 
-**Batch 1 may start before rev 0.3 only if A0 matches A0.3 exactly.**
+**Batch 1 may start before rev 0.3 only if A0 matches A0.3 exactly.** rev 0.3: A0 did not match exactly (D1-D4),
+so **this no longer applies. Batch 1 waits until rev 0.3 is Approved.** The first Part A action after that is §A1
+step 1, the backup before pilot 1.
 
 #### A1. Backups (Part A)
 1. Before pilot 1: Site Tools → Security → Backups → **Create Backup** `release-A-before-<yyyymmdd-hhmm>`, then:
@@ -531,6 +685,8 @@ N=1; L=fr   # per batch: N=1..6; L=fr for batches 1-4, es for 5-6
   curl -s "$SITE/sitemap.xml" | grep -c '<loc>'
 } 2>&1 | tee "$RB/A-batch$N-$L-$(date +%Y%m%d-%H%M).txt"
 ```
+**Live "= A0"** (rev 0.3, A0.3): `200` for `/`, `/services`, `/projects`, `/projects/trepied-trepied-ca`; `404` for
+`/fr`, `/es/services`, `/esto-no-existe`; sitemap count `8`.
 
 | After | check-translations | inventory | Live |
 |---|---|---|---|
@@ -551,7 +707,7 @@ Also required on every row:
 - a title or slug difference;
 - rows ≠ EN;
 - an EN `modified` change;
-- a live status or sitemap count ≠ A0.
+- a live status or sitemap count ≠ A0 (the line above; the sitemap count is `8`).
 
 **Part A done** = batch 6 matches. The Architect records "Part A PASS" in rev 0.3.
 
@@ -654,8 +810,8 @@ for f in docs/content/magneto-copy-en.md docs/content/magneto-copy-fr-CA.md docs
 
 #### B3. Rehearsal on a copy of production (D-R3; Wed 11-25 – Fri 11-27)
 This rehearsal replaces every expectation drawn from local numbers. It runs the whole of Part C (C-1 … C-9) on a
-restored production dump, with the same plugins and the same PHP (F-6). It also proves B2 before B2 ever targets
-production.
+restored production dump, with the F-6 plugins except `sg-ai-studio`, on PHP 8.2.x. That is not identical to
+production (D1, D4; RH-2 steps 1-2). It also proves B2 before B2 ever targets production.
 
 **RH-0 Preconditions (sequencing, see "Order of operations"):**
 - **Part A PASS: all 18 FR/ES posts exist in production.**
@@ -683,9 +839,14 @@ RHC="$RB/RH1-predump-check-$(date +%Y%m%d-%H%M).txt"
 
 **RH-2 The rehearsal site (Local; it never touches production):**
 1. Local → **+** → create a site named **"Magneto Prod Rehearsal"**, domain **`magneto-prod-rehearsal.local`**,
-   PHP **8.2.35**, with the same web server and MySQL as "Magneto CMS 2".
+   PHP **the highest 8.2.x that Local offers**, recorded in `notes.md`; production is 8.2.36 (D1). Use the same web
+   server and MySQL as "Magneto CMS 2".
 2. Plugins = the F-6 set. Copy `wp-content/plugins/` from "Magneto CMS 2" (same versions since 2026-11-19), then
-   `wp plugin list` in the new site's shell = A0.2b.
+   check that `wp plugin list` in the new site's shell = A0.2b **minus `sg-ai-studio`** (19 plugins).
+   - **Documented, accepted gap (D4):** production runs `sg-ai-studio` 1.3.3, a SiteGround-only plugin that Local
+     cannot run. Mauricio's decision: it stays active in production, and the rehearsal runs without it.
+   - After the import (step 3), the dump's `active_plugins` still names it. Expected: WordPress deactivates the
+     missing plugin on this copy only, with a notice. Production is untouched.
 3. In the new site's **Open site shell**: import, then **replace every production CMS URL with the rehearsal URL
    (D-R2a)**.
    - The rehearsal site must never hold a link, redirect or `home` / `siteurl` that points at
@@ -756,12 +917,20 @@ In the rehearsal shell, the loader is `wp eval-file "$RB/rehearsal/$SHA/scripts/
 
 | # | Item | Who | By | Done when |
 |---|---|---|---|---|
-| P-1 | rev 0.3 Approved (D-R6 reviewed, IDs filled) | Mauricio + Senior Architect | Mon 11-23 | Status Approved |
+| P-1 | rev 0.3 Approved (D-R6 reviewed, IDs filled) | Mauricio + Senior Architect | Thu 11-19 or Fri 11-20 (before Part A) | Status Approved |
 | P-2 | 5f launch ACs on the Preview with `G-N2YZ6SG2WM`; GA Developer-traffic filter **Active** ≥ 36 h before (5f D-F4) | Mauricio | Sun 11-29 | 5f AC-L1/L2/L3 Preview recorded |
-| P-3 | Privacy: final Notion text ready for every locale to enable (G-1…G-7; G-8 for ES), GA §5 included (published at C-10) | Mauricio | Mon 11-30 | texts ready |
+| P-3 | Privacy (G-1…G-7; G-8 for ES), for every locale to enable: the production Version A text (F-14) confirmed as the final Notion text; the **Version B §5** ready (needed only for GA-off, C-10); for a 12-10 release, the corrected effective and last-updated dates ready (R-14) | Mauricio | Mon 11-30 | texts ready |
 | P-4 | 5c-rest AC-10 (FR-CA / ES approval) closed | Mauricio | Mon 11-30 | recorded in the 5c-rest report |
 | P-5 | Release deployment: every launch PR merged with its preview checked (WORKFLOW); the `master` deployment ID noted | Mauricio | Mon 11-30 | ID in `notes.md` |
 | P-6 | Dev access for release day (D-R5): a Claude Code allow rule limited to `curl` **POST/GET to `https://cms.magnetomarketing.co/graphql`**, with no cookie, no `Authorization` header and no other production URL. It is added on release day and removed after C-14 | Mauricio | Wed 12-02 | rule text in `notes.md` |
+
+**Separate PR, not part of this runbook (Mauricio, 2026-11-19):** add `/packages` to the sitemap route's static
+paths.
+- The Dev does it as its own small PR (one entry in `src/app/sitemap.xml/route.ts`, its own spec or brief), with its
+  preview checked, merged before P-5 (Mon 11-30).
+- Not merged by P-5 → it moves to Phase 7 and doesn't hold the release.
+- `/carte` stays out until its route exists (post-launch).
+- Reason: crawlers read the sitemap on day one, and adding the entry later costs a re-crawl delay.
 
 **GNG-0, Tue 12-01:**
 - Part A PASS, §B1 done, B2 merged;
@@ -769,7 +938,8 @@ In the rehearsal shell, the loader is `wp eval-file "$RB/rehearsal/$SHA/scripts/
 - P-1 … P-5 done;
 - G-8 decided (`ENABLED_LOCALES` = `en,fr,es` or `en,fr`);
 - 5e in or out (G-4b if in);
-- the effective date holds.
+- the effective date holds. The production privacy pages already say **3 December 2026** (F-14). On a 12-10 release,
+  C-10 must correct the dates in all three pages before C-13 (R-14).
 
 Any "no": release moves to Thu 12-10. **No Part C write happens before GNG-0.**
 
@@ -807,7 +977,17 @@ Then Site Tools → Dynamic Cache → **Flush**. Fallback: `sg "wp db import -" 
 
 **C-1 Preflight (read-only, ≈ 20 min). Gate G-1.**
 1. `sg "wp option get home; wp plugin list --fields=name,status,version --format=csv; php -v | head -1"`.
-   Expected: `http://cms.magnetomarketing.co`, the F-6 versions, PHP 8.2.35.
+   Expected: `http://cms.magnetomarketing.co`, the F-6 production list (20, including `sg-ai-studio` 1.3.3),
+   PHP 8.2.36 (D1). A version difference is handled at two levels (D-R10):
+   - **STOP the release** if the version changes on any of `sitepress-multilingual-cms`, `acfml`, `wpml-graphql`,
+     `wp-seo-multilingual`, `wpml-string-translation`, `advanced-custom-fields-pro`, `wp-graphql`, `wpgraphql-acf`
+     or `svg-support`; if any of these is inactive or missing; if `classic-editor` is inactive or missing (its
+     version changes are in the next level); or if PHP leaves the 8.2 branch (8.3, 8.4).
+   - **Don't stop; record it in `notes.md` and tell the Architect** for a PHP patch inside 8.2.x, or a version change
+     in any other plugin (`wordpress-seo`, `enable-cors`, `sg-ai-studio`, `disable-media-sizes`,
+     `simple-image-sizes`, `wpgraphql-ide`, `post-type-switcher`, `post-types-order`, `classic-editor`,
+     `all-in-one-wp-migration`, `add-wpgraphql-seo`).
+   - Any other difference in step 1 (the `home` value, a plugin added) follows the table's "Stop if".
 2. Schema: run the query below. Expected: no `errors`; `a` has `service`, `b` has `testimonials`, `c` has
    `displayOrder` and `images`.
    ```bash
@@ -819,7 +999,8 @@ Then Site Tools → Dynamic Cache → **Flush**. Fallback: `sg "wp db import -" 
    - the media lines = `notes.md`;
    - **every `modified` time ≤ the RH-1 dump time (content freeze, A-5).**
 4. `load lang=en dry-run` → the same abort as RH-4: `home/en … service`, content 3 vs EN 2.
-5. Live baseline: the A0.2h + A0.2i lines.
+5. Live baseline: the A0.2h + A0.2i lines. Expected = A0.3 (rev 0.3): 9 × `200`; 4 × `404`, including
+   `/privacy-policy`; sitemap 8 `<loc>` without `/privacy-policy`.
 
 | | |
 |---|---|
@@ -1008,16 +1189,26 @@ Rollback: restore `prod-release-fr-…`. EN is unaffected (the probe shows it).
 **C-9 ES load (≈ 20 min; invisible; D-R8: also run if ES isn't enabled).** The same with `lang=es`. Rollback:
 restore `prod-release-es-…`.
 
-**C-10 Privacy §5 (≈ 15 min).**
-1. Re-run A0.4. Expected for each locale to enable: `publish`; the GA §5, i.e. the content contains "Privacy choices"
-   / "Choix de confidentialité" / "Opciones de privacidad"; no Version B text; dates = G-3.
-2. Where it is not the GA §5 (likely, F-14): in admin, open that locale's privacy page, replace §5 with the **final
-   Notion** GA §5, and Update once. FR/ES admin edits are allowed here (privacy §6).
-3. Re-check with step 1.
+**C-10 Privacy §5: verify; edit only for GA-off or a 12-10 release (≈ 5 min verify; ≈ 15 min with an edit).**
+The production pages already carry the Version A (GA) §5, dated 3 December 2026 (F-14, A0.4).
+1. Re-run A0.4. Expected for every locale to enable, **GA on, 12-03**: equal to F-14. That is `publish`; the GA §5,
+   i.e. the content contains "Privacy choices" / "Choix de confidentialité" / "Opciones de privacidad"; no Version B
+   text; no "BORRADOR" / "DRAFT"; dates = G-3 (3 December 2026). **No edit.**
+2. Edit only in these cases. In admin, open that locale's privacy page, change only what the case requires, using
+   the **final Notion** text (P-3), and Update once. FR/ES admin edits are allowed here (privacy §6).
+   - **GA off (Plan B / Version B):** replace §5 with the Version B §5. Otherwise the policy describes analytics that
+     don't run.
+   - **Release on 12-10:** correct the effective date and the last-updated date in **all three** pages (R-14). They
+     are corrected here, inside the window and after B0, so the content freeze (RH-1 → C-14) holds and an abort's B0
+     restore reverts them.
+3. Re-check with step 1, against the edited expectation (Version B §5 and/or the 12-10 dates).
+
+Effect on the window: with GA on at 12-03, C-10 drops from ≈ 15 to ≈ 5 min. The C-3 → C-13 expectation (≈ 3.5 h) and
+the 5 h limit are unchanged; a GA-off or 12-10 release keeps ≈ 15 min.
 
 | | |
 |---|---|
-| Stop if | the text can't be made right. Then launch as Version B: no GA ID in C-11 (5f §9). |
+| Stop if | the text can't be made right. Then launch as Version B: §5 → Version B (step 2) and no GA ID in C-11 (5f §9). On 12-10, dates that can't be corrected → abort path (§C-R0). |
 | Rollback | WP revisions. |
 
 **C-11 Vercel env (≈ 10 min).** Settings → Environment Variables.
@@ -1068,7 +1259,8 @@ Rollback: restore the previous values (nothing is built yet).
 - [ ] **V-6** D-L: privacy §7 items 1-5 (6 if 5e) per enabled locale.
 - [ ] **V-7** 5f AC-L1 / AC-L2 Production (no analytics host before Accept; no debug marker; the visit in Realtime;
   Reject → no collection); AC-L3 iPhone.
-- [ ] **V-8** `/sitemap.xml` lists `/privacy-policy` + 3 project URLs; `/robots.txt` unchanged.
+- [ ] **V-8** `/sitemap.xml` lists `/privacy-policy` + 3 project URLs; `/robots.txt` unchanged. Expected count
+  (rev 0.3): 9 `<loc>` without the `/packages` PR (§B4 note), 10 with it. The check is the line above.
 - [ ] **V-9** The booking modal opens and closes on `/contact` per locale. **No submission.**
 - [ ] **V-10** `dump prod-release-after-$(date +%Y%m%d-%H%M).sql` + a SiteGround backup `release-after-…`.
 - [ ] **V-11** After V-10 is downloaded and hashed: `sg "rm -f $BK/*.sql"`. Delete the bundle on 12-10. Remove the
@@ -1095,15 +1287,18 @@ cancels the release**, and can be chosen at any gate or stop.
    - the home, titles and `display_order`;
    - every load;
    - the Services media;
-   - the privacy §5 edits.
+   - the C-10 privacy edits (Version B §5, the 12-10 dates).
 
    The Part A posts and the §B1 media are in B0, so they stay (invisible).
 4. **Verify:**
-   - the live A0.2h routes and the A0.2i sitemap on `SITE` equal the C-1.5 baseline;
+   - the live A0.2h routes and the A0.2i sitemap on `SITE` equal the C-1.5 baseline (= A0.3: 9 × `200`, 4 × `404`
+     including `/privacy-policy`, 8 `<loc>`);
    - check-translations fr / es equal C-1.3.
 5. **Record and reschedule:**
    - the reason and the times go in `notes.md`;
    - the release moves to **Thu 12-10**;
+   - **the privacy dates:** the three production pages say 3 December 2026 (F-14), and B0 still holds that date.
+     On 12-10, C-10 step 2 corrects the effective and last-updated dates in all three pages **before C-13** (R-14);
    - **the content freeze continues.** B0 is the RH-1 state if the freeze held (C-1.3), so the rehearsal stays valid
      for 12-10. Re-run RH only if the cause needs a code or bundle change, or the freeze was broken.
 
@@ -1172,7 +1367,7 @@ Anything else is out of scope:
   GraphQL (D-R5).
 - Plugin changes (R-12 is closed).
 - Brevo / 5e production steps beyond the D-L item 6 check; Phase 7 (hreflang, per-locale sitemap, the http
-  `siteurl`); Phase 8 graphics beyond the approved local media.
+  `siteurl`, the apex 307 redirect: D3); Phase 8 graphics beyond the approved local media.
 - The post-launch Dangel slug change; the contract / cleanup phase; orphan testimonial meta (5c-rest R-8).
 
 ## Acceptance criteria
@@ -1243,7 +1438,20 @@ Anything else is out of scope:
   - §C-R0 (abort path, who decides, cost by gate);
   - the GA deletion and Law 25 note.
 
-**Open:** none. rev 0.3 is a fill-in (A0 values), not a decision.
+- **D-R10: decided (Mauricio, 2026-11-19, rev 0.3). Two levels for version changes at C-1.1.**
+  - **Stop the release:** a version change on `sitepress-multilingual-cms`, `acfml`, `wpml-graphql`,
+    `wp-seo-multilingual`, `wpml-string-translation`, `advanced-custom-fields-pro`, `wp-graphql`, `wpgraphql-acf`,
+    `svg-support`, or one of these inactive or missing; `classic-editor` inactive or missing (not its version
+    changes); or PHP leaving the 8.2 branch. `classic-editor` is here because every admin click path (Part A paths
+    P / J; C-3, C-5, C-7) assumes it (`WP-SETUP.md:72`). Without it the block editor appears, and those paths no
+    longer describe the screen.
+  - **Record in `notes.md` and tell the Architect, no stop:** a PHP patch inside 8.2.x, or a version change in any
+    other plugin.
+  - The comparison list is the F-6 table.
+  - Rationale: the rev 0.2.2 wording ("stop if anything differs") turned a routine hosting update into a
+    cancellation. SiteGround already raised the PHP patch once without notice (D1).
+
+**Open:** none. rev 0.3 is a fill-in (A0 values); its one decision, D-R10, is already taken.
 
 No ADR is needed:
 - no new dependency, routing or data-model change;
@@ -1266,6 +1474,7 @@ No ADR is needed:
 | R-11 | Part A slips past Sun 11-22 | FR first; small batches; re-check the 12-10 trigger |
 | R-12 | B2 or the rehearsal compete with 5e (Mon 11-23 – Tue 11-24) for time | B2 ≈ 2 h; order agreed at P-1 |
 | R-13 | ES privacy or labels not final (G-8) | Plan B at GNG-0 |
+| R-14 | The production privacy pages already state an effective and last-updated date of 3 December 2026 (F-14). On a 12-10 release the published policy would carry a date earlier than its own release | GNG-0 input; C-10 step 2 corrects the dates in all three pages before C-13; §C-R0 step 5; dates ready in P-3 |
 
 ## Estimate
 
