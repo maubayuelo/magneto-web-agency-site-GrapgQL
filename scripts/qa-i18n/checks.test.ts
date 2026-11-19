@@ -52,6 +52,13 @@ describe('deterministic checks: one positive and one negative case each', () => 
     expect(checks(unit({ en: '', fr: 'Bonjour', es: 'Hola' }))).toEqual(['empty:en:warning']);
     expect(checks(unit({ en: '', fr: '', es: '' }))).toEqual([]);
   });
+  it('empty: emptyAllowed exempts only the listed unit id in the listed language (5c-rest ES testimonial note)', () => {
+    const id = 'content:home/homeTestimonialsSection.testimonials[0].note';
+    expect(glossary.emptyAllowed.es).toContain(id);
+    expect(checks(unit({ en: 'Translated from Spanish.', fr: 'Traduit de l’espagnol.', es: '' }, { id }))).toEqual([]);
+    expect(checks(unit({ en: 'Translated from Spanish.', fr: '', es: '' }, { id }))).toEqual(['empty:fr:error']);
+    expect(checks(unit({ en: 'Translated from Spanish.', fr: 'Traduit.', es: '' }))).toEqual(['empty:es:error']);
+  });
   it('placeholder in any language, EN included', () => {
     expect(checks(unit({ en: 'Hello', fr: '[FR TODO] Hello', es: 'Hola' }))).toEqual(['placeholder:fr:error']);
     expect(checks(unit({ en: 'TBD', fr: 'Bonjour', es: 'Hola' }))).toContain('placeholder:en:error');
