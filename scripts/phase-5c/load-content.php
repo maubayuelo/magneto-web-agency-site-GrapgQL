@@ -1,15 +1,21 @@
 <?php
 /**
- * Phase 5c loader — LOCAL EN / FR / ES content for Services, Packages, About, Contact, page heroes and two case studies.
- * LOCAL ONLY. Run by Mauricio, never by agents.
+ * Phase 5c loader — EN / FR / ES content for Services, Packages, About, Contact, page heroes and two case studies.
+ * Run by Mauricio, never by agents.
  *
  * Spec: docs/specs/phase-5c-loader.md rev 3.1 (§3), which folds in the 5b §5.4 override: cta_text_hero is the main CTA
  * label per language; cta_link_hero is never written. Values come only from scripts/phase-5c/content/<lang>.json.
  *
- * Run from Local's "Open site shell" (one command at a time, one language per run, order en → fr → es):
- *   wp eval-file <repo>/scripts/phase-5c/load-content.php lang=<en|fr|es> dry-run
- *   wp eval-file <repo>/scripts/phase-5c/load-content.php lang=<en|fr|es> backup=<.sql file exported in the last 3 hours>
+ * Targets (docs/specs/release-runbook.md §B2; exact home_url(), checked first by target-guard.php, no override):
+ *   no target          → local http://magneto-cms-2.local (Local's "Open site shell")
+ *   target=production  → http://cms.magnetomarketing.co (release day only)
+ *   target=rehearsal   → http://magneto-prod-rehearsal.local (the rehearsal on a production copy)
+ *
+ * One command at a time, one language per run, order en → fr → es:
+ *   wp eval-file <repo>/scripts/phase-5c/load-content.php [target=<production|rehearsal>] lang=<en|fr|es> dry-run
+ *   wp eval-file <repo>/scripts/phase-5c/load-content.php [target=<production|rehearsal>] lang=<en|fr|es> backup=<.sql file exported in the last 3 hours>
  * Optional: content=<path to a content JSON> (default: content/<lang>.json next to this file; used for guard proofs).
+ * The first log line is: TARGET <local|production|rehearsal> · home_url <…> · lang <…> · DRY-RUN|REAL RUN
  *
  * Order: guards → preflight (nothing written if any check fails) → plan (dry-run prints it and stops) → write →
  * read-back by key and by meta name → cross-language probe. No deletes, no post/title/slug/status changes, no options,
@@ -34,11 +40,15 @@ $p5c_abort = static function ( $message ) {
 	WP_CLI::error( 'Aborted before any write: ' . $message );
 };
 
-// ---- 1. Local-only guard (no flag overrides it) ---------------------------------------------------------------------
-$p5c_expected_home = 'http://magneto-cms-2.local';
-if ( untrailingslashit( home_url() ) !== $p5c_expected_home ) {
-	$p5c_abort( 'home_url() is ' . home_url() . ", expected {$p5c_expected_home}. This loader is local only." );
+// ---- 1. Host / target guard (release runbook §B2; runs first, no flag or env var overrides it) ----------------------
+require_once __DIR__ . '/target-guard.php';
+$p5c_target       = $p5c_opt( 'target' );
+$p5c_target_error = p5c_target_guard( $p5c_target, home_url() );
+if ( null !== $p5c_target_error ) {
+	$p5c_abort( $p5c_target_error );
 }
+$p5c_expected_home = untrailingslashit( home_url() ); // equals the allowed host for this target (used by the Plan line)
+WP_CLI::log( 'TARGET ' . ( $p5c_target ?? 'local' ) . ' · home_url ' . home_url() . ' · lang ' . ( $p5c_opt( 'lang' ) ?? '(none)' ) . ' · ' . ( $p5c_dry_run ? 'DRY-RUN' : 'REAL RUN' ) );
 
 // ---- 2. Language argument (§3.1) -----------------------------------------------------------------------------------
 $p5c_sources = array(
