@@ -461,6 +461,15 @@ wp post list --post_type=project --post__in=270,224,498,550,541 --fields=ID,post
   from the local runs.
 - **The plugin versions verified locally in §0**, as the production baseline. The runbook preflight confirms that
   production still runs the same versions (read-only, admin Plugins screen). If it doesn't, stop before any load.
+- **Local/production plugin gap (added 2026-11-17, P-2 parity not achieved; R-12 open).** Local runs WPML
+  (sitepress-multilingual-cms) 5.4.0, acfml 5.4.0, wpml-graphql 5.4.0, enable-cors 2.1.0, svg-support 2.6.4, plus
+  wp-seo-multilingual 5.4.0 and wpml-string-translation 5.4.0; production runs sitepress 4.7.6, acfml 2.1.5,
+  wpml-graphql 1.1.3, enable-cors 3.0.0, svg-support 2.6.1, without the last two. The local results (AC-12 Copy sync,
+  dry-run totals, GraphQL shapes) were measured on 5.4.0. **This gap must be resolved before the production load.**
+  Options, not yet chosen:
+  1. upgrade production to the local versions (backup first), then re-run the preflight;
+  2. downgrade local to the production versions, then re-run AC-12, the 0-change dry-runs and the introspection;
+  3. accept the gap and run a production canary first (one post, read back, then continue or roll back).
 - The 13 FR/ES production posts (OQ-1): created after this phase passes locally and before Sun 11-22. A read-only check
   confirms that FR/ES `home` and Trépied exist in production (A2).
 - **D-9 B in production, before the EN load.** In admin, on EN home:
@@ -522,8 +531,11 @@ Anything else is out of scope, including `AboutSection/*`, `local-fixtures.php`,
 - [ ] **AC-3 Greps:**
   - `grep -rn "637fba7\|d3516151\|f52cf70e\|83332a1b" src scripts` → 0 matches;
   - `grep -rn "llamada de orientación" src scripts/phase-5c` → 0 matches;
-  - `grep -n "llamada de orientación" docs/content/magneto-copy-es.md` → only internal checklist lines, if any (none of
-    755, 864, 909 or the CTA lines);
+  - CTA, button, label and heading contexts only (reworded 2026-11-17, Mauricio):
+    `grep -n -E "^(\*\*|#{1,4} ).*llamada de orientación" docs/content/magneto-copy-es.md` → 0 matches. Running prose
+    (privacy policy §2 / §3 / §6) and internal checklist rows are out of this grep; the privacy terminology is an open
+    item for the ES privacy final review (report). The pattern matches 14 lines in the `637fba7` export (every former
+    CTA, button and modal heading, incl. 755 / 864 / 909);
   - `DESCRIPTION_EXCEPTIONS` is absent.
 - [ ] **AC-4 Dictionary:**
   - ES `sendFailed` ends "…o reserva una consulta gratis.", and `sendFailedCta` = "reserva una consulta gratis";
@@ -607,6 +619,13 @@ the 12-10 fallback release is checked again.
 - **O-1 → in scope, narrowed.** Mauricio updates the case post titles himself with `wp post update`, backup first
   (§8: T1-T3, T5, T6).
 - **T4 → dropped.** The About post keeps "About Magneto".
+
+**Decided (Mauricio, 2026-11-17):**
+- **D-15 → Notion "Export → Markdown & CSV" is the canonical export method.** Compared with the earlier export it drops
+  the 9-line provenance header and no longer escapes `$`, `[` and `]`. Notion links carry full titles plus `?pvs=21`;
+  blank lines and some indentation differ. These are format-only changes. The AC-2 table therefore has two groups: (a)
+  format-only changes, counted; (b) copy changes, each mapped to an Appendix A item (the EN lead-magnet edits and the
+  CASL address map to item 7). The test normalizers drop their unescape step (report: "simpler").
 
 No ADR is needed: no new dependency, routing or data-model change. The plugin updates (§0) were already applied in
 production by Mauricio. This spec only requires local parity.
