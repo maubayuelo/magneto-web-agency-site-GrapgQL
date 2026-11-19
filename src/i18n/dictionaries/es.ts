@@ -5,7 +5,7 @@ import type { Dictionary } from '../dictionary';
 
 export const es: Dictionary = {
   common: {
-    bookStrategyCall: 'Agendar una llamada de orientación gratuita',
+    bookStrategyCall: 'Reservar consulta gratis',
     goHome: 'Volver al inicio',
     loading: 'Cargando...',
     close: 'Cerrar',
@@ -110,8 +110,8 @@ export const es: Dictionary = {
       needRequired: 'Elige con qué necesitas ayuda.',
       messageRequired: 'Cuéntame brevemente sobre tu sitio web o tu proyecto.',
       budgetRequired: 'Elige un presupuesto aproximado, o « Todavía no lo sé ».',
-      sendFailed: 'Ocurrió un error y tu mensaje no se envió. Inténtalo de nuevo o agenda una llamada de orientación gratuita.',
-      sendFailedCta: 'agenda una llamada de orientación gratuita',
+      sendFailed: 'Ocurrió un error y tu mensaje no se envió. Inténtalo de nuevo o reserva una consulta gratis.',
+      sendFailedCta: 'reserva una consulta gratis',
     },
   },
   contactPage: {
@@ -145,7 +145,7 @@ export const es: Dictionary = {
     submitting: 'Enviando...',
     continueDownload: 'Continuar con la descarga',
   },
-  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 637fba7 (ES 911/917/928/932/934/944).
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 2026-11-17 (ES 936/942/953/957/959/969).
   // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
   bookingModal: {
     body: 'Responde tres preguntas breves para que podamos concentrarnos en tu sitio web durante la conversación. Después elige un horario para una llamada gratuita de 30 minutos.',
@@ -155,7 +155,7 @@ export const es: Dictionary = {
     continue: 'Continuar a la reserva',
     // B2 (D-1): true only once V1 + V2 confirm the answers reach Calendly (spec §5.3, AC-13).
     privacyText:
-      'Tus respuestas se transmiten a Calendly junto con tu reserva para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizarla. Agendar una llamada no te suscribe a correos promocionales.',
+      'Tus respuestas se transmiten a Calendly junto con tu reserva para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizarla. Reservar una consulta no te suscribe a correos promocionales.',
   },
   notFound: {
     metaTitle: '404: no se encontró esta página.',
@@ -206,15 +206,15 @@ export const es: Dictionary = {
     },
     about: {
       title: 'Sobre Magneto | Consultoría web en Montreal',
-      // K2 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting", ≤ 160 chars. Differs from export ES 246.
+      // K2 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting", ≤ 160 chars. = export ES 271 since the 5c-rest re-export.
       description: 'Mauricio Bayuelo, fundador de Magneto Web Consulting en Montreal: estrategia web, diseño UX/UI y desarrollo para empresas de servicios, en tres idiomas.',
     },
     contact: {
       title: 'Contacta a Magneto | Proyectos web en Montreal',
-      // K3 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting". Differs from export ES 852.
+      // K3 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting". = export ES 877 since the 5c-rest re-export.
       description: 'Contacta a Magneto Web Consulting en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu sitio web. Atención en español, francés e inglés.',
     },
-    // Privacy route (spec §4): magneto-copy-es.md:1065 / :1067 (637fba7).
+    // Privacy route (spec §4): magneto-copy-es.md:1091 / :1093 (export 2026-11-17).
     privacy: {
       title: 'Política de privacidad | Magneto Web Consulting',
       description: 'Cómo Magneto Web Consulting recopila, utiliza y protege la información personal enviada a través de este sitio web, y cómo contactar a la persona responsable de su protección.',

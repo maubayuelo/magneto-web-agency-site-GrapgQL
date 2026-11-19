@@ -1,7 +1,7 @@
 // MUTATED TEST DATA, NOT COPY: phase-5g eval fixture (see ../README.md). Never imported by src.
 export const es = {
   "common": {
-    "bookStrategyCall": "Agendar una llamada de orientación gratuita",
+    "bookStrategyCall": "Reservar consulta gratis",
     "privacyPolicy": "Política de privacidad"
   },
   "nav": {

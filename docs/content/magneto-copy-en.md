@@ -1,12 +1,4 @@
-<!--
-Source: Notion — Magneto's Page Copy / EN
-URL: https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f
-Notion page last edited: 2026-11-04 (Privacy gates G-1…G-7: effective date, §4 providers, §5 analytics, internal ready blocks — Senior Architect via the Notion connector, approved by Mauricio; lead-magnet copy edited by Mauricio 2026-11-03)
-Exported: 2026-11-04 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: fresh full-page fetch converted with the ffec355 conventions (bold/italic to Markdown, mentions as [Notion page](url), \$ and \[ \] kept escaped); diff vs ffec355 limited to the lead-magnet blocks and the Privacy Policy (dates, §4, §5, internal ready blocks).
-Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
-re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
--->
+# Magneto’s Page Copy / EN
 
 ## Home — Consensus EN Source Copy v2
 
@@ -28,7 +20,9 @@ Build a stronger website, fix what is holding your current one back, or keep it 
 
 ### 2. Meet Magneto
 
-#### Work directly with the person who plans, designs and builds your website.
+#### Meet Magneto
+
+Work directly with the person who plans, designs and builds your website.
 
 Magneto is a founder-led web consulting practice in Montreal. You work directly with Mauricio from strategy and UX/UI through development and launch.
 
@@ -90,9 +84,7 @@ Magneto's own project: an online shop and blog combined in one website, with sha
 
 “Very professional. Mauricio understood my work from the start and knew how to create what I need. The result exceeds my expectations, and working with him was simple and very satisfying.”
 
-
 **Dangel Manik · Holistic therapist · Montreal**  
-
 
 *Translated from Spanish.*
 
@@ -114,12 +106,12 @@ Magneto's own project: an online shop and blog combined in one website, with sha
 
 **Fix, Rebuild or Maintain? The 10-Minute Website Checkup**
 
-A free 10-minute checkup for small businesses and independent professionals. Answer simple yes/no questions and see where your site stands. No tech knowledge needed.
+A free 10-minute checkup for small businesses and independent professionals. Answer simple questions and see where your site stands. No tech knowledge needed.
 
 **What's inside:**
 
-- 25 yes/no questions on clarity, inquiries, foundations, content and upkeep
-- A result that points to fix, rebuild or maintain — or confirms your site is in good shape
+- 25 simple questions on clarity, inquiries, foundations, content and upkeep
+- A result that points to fix, rebuild or maintain — or shows that nothing urgent is needed
 - A one-page worksheet to set your top 3 priorities
 
 **Format line:** Free PDF · about 10 pages
@@ -138,9 +130,9 @@ A free 10-minute checkup for small businesses and independent professionals. Ans
 
 **Privacy line:** The checkup is sent by email. Requesting it does not subscribe you to marketing emails; the newsletter is optional. **Privacy Policy**
 
-**Identification line:** Magneto Web Consulting · \[mailing address\] · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co)
+**Identification line:** Magneto Web Consulting · 10-6295 Boyer Street, Montreal, QC H2S 2J2 · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co)
 
-**Success message:** Thank you. Your checkup is on its way to \[email\]. If it isn't in your inbox within a few minutes, check your spam folder or write to [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co).
+**Success message:** Thank you. Your checkup is on its way to [email]. If it isn't in your inbox within a few minutes, check your spam folder or write to [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co).
 
 **Email error:** Please enter a valid email address.
 
@@ -155,7 +147,7 @@ A free 10-minute checkup for small businesses and independent professionals. Ans
 
 #### In-PDF closing CTA — approved UX-copy direction (2026-11-03)
 
-**Canonical copy now lives in** [Notion page](https://app.notion.com/p/40e702393b5e818aa2b8e7f7bcacdabc) → Page 9. Edit it there, not here.
+**Canonical copy now lives in** [Lead Magnet — Fix, Rebuild or Maintain? (EN v1.2)](https://app.notion.com/p/Lead-Magnet-Fix-Rebuild-or-Maintain-EN-v1-2-40e702393b5e818aa2b8e7f7bcacdabc?pvs=21) → Page 9. Edit it there, not here.
 
 **Summary (v1.2):** Headline "Not sure what your website needs next?" · body offers a free 30-minute call as a second opinion on the reader's findings · three bullets on what happens in the call · button "Book a Free Strategy Call" · microcopy "Free · 30 minutes · No obligation · In English, French or Spanish. Bring your worksheet if you have it."
 
@@ -271,7 +263,7 @@ If your website is outdated, unclear or difficult to use — or you are not sure
 
 **Fix, Rebuild or Maintain? The 10-Minute Website Checkup**
 
-A free yes/no checkup for small businesses and independent professionals to see whether a site needs a focused fix, a rebuild or ongoing care.
+A free checkup for small businesses and independent professionals to see whether a site needs a focused fix, a rebuild or ongoing care.
 
 **CTA:** Get the Free Checkup
 
@@ -351,7 +343,7 @@ The work brings strategy, structure, UX/UI and development together so the finis
 - Analytics and search foundations
 - QA, launch and handoff
 
-**Investment:** Starting at **C\$3,500** for a focused one-language landing page. Typical website investment: **C\$5,000–8,000**. Custom projects: **C\$10,000+**. All prices are in Canadian dollars. Applicable taxes are added when required.
+**Investment:** Starting at **C$3,500** for a focused one-language landing page. Typical website investment: **C$5,000–8,000**. Custom projects: **C$10,000+**. All prices are in Canadian dollars. Applicable taxes are added when required.
 
 **CTA:** See BUILD pricing
 
@@ -445,7 +437,7 @@ Advanced automation, AI systems, complex e-commerce, custom application logic or
 
 **Fix, Rebuild or Maintain? The 10-Minute Website Checkup**
 
-A free yes/no checkup for small businesses and independent professionals to see whether a site needs a focused fix, a rebuild or ongoing care.
+A free checkup for small businesses and independent professionals to see whether a site needs a focused fix, a rebuild or ongoing care.
 
 **CTA:** Get the Free Checkup
 
@@ -508,9 +500,9 @@ All prices are in Canadian dollars. Applicable taxes are added when required.
 
 #### For a new website, a substantial rebuild or a focused landing page.
 
-- **Focused landing page, one language:** from **C\$3,500**
-- **Full website, about 5–10 pages, typically in two or three languages:** **C\$5,000–8,000**
-- **Larger or more complex projects:** **C\$10,000+**, quoted individually
+- **Focused landing page, one language:** from **C$3,500**
+- **Full website, about 5–10 pages, typically in two or three languages:** **C$5,000–8,000**
+- **Larger or more complex projects:** **C$10,000+**, quoted individually
 
 Includes strategy, design, development, launch and handoff.
 
@@ -524,7 +516,7 @@ FIX can address pages that are confusing or slow, problems on mobile, or forms a
 
 You receive a written list of what will be fixed and a fixed price before any work starts. The result is checked afterward.
 
-**Starting at C\$1,000.** Final price is confirmed before work begins.
+**Starting at C$1,000.** Final price is confirmed before work begins.
 
 **CTA:** Discuss a FIX project
 
@@ -532,7 +524,7 @@ You receive a written list of what will be fixed and a fixed price before any wo
 
 #### For a website that already works well and needs to stay that way.
 
-**Starting at C\$200/month.**
+**Starting at C$200/month.**
 
 **CARE Essential:** updates, monitoring, regular checks that forms and booking work, and a website health report.
 
@@ -554,7 +546,7 @@ Most projects start with a conversation and a look at what is publicly visible o
 
 A Paid Website Diagnostic is used when technical unknowns make a responsible estimate impossible, or before CARE begins on a website Magneto did not build.
 
-You receive the evidence, priorities and a recommended direction for a **C\$450 fixed fee** that you approve before it starts.
+You receive the evidence, priorities and a recommended direction for a **C$450 fixed fee** that you approve before it starts.
 
 ### 6. Good to Know Before You Budget
 
@@ -597,7 +589,7 @@ Mauricio Bayuelo on LinkedIn · Privacy Policy · Privacy choices
 
 **Title:** Website Design Pricing in Montreal | Magneto
 
-**Meta description:** Website pricing for Montreal service businesses. Landing pages from C\$3,500, full websites typically C\$5,000–8,000. Fixes start at C\$1,000; care starts at C\$200/month.
+**Meta description:** Website pricing for Montreal service businesses. Landing pages from C$3,500, full websites typically C$5,000–8,000. Fixes start at C$1,000; care starts at C$200/month.
 
 ### System messages — Final (approved by Mauricio, 2026-10-31)
 
@@ -611,9 +603,9 @@ Mauricio Bayuelo on LinkedIn · Privacy Policy · Privacy choices
 - BUILD and FIX can carry similar visual weight; CARE may be visually lighter because it is recurring and capacity-limited.
 - Do not use unsupported badges such as **Most popular** or **Recommended**.
 - BUILD prices are approved and may be published.
-- FIX public starting price **C\$1,000** is approved. The **C\$1,500–3,000 typical** range remains internal calibration until more paid cases are measured.
-- CARE public starting price **C\$200/month** is approved. Partner pricing and the 1 h/month allowance remain internal calibration until separately finalized.
-- Paid Website Diagnostic public fixed fee **C\$450** is approved. The 3–4 h effort estimate and any credit toward later work remain internal until separately finalized.
+- FIX public starting price **C$1,000** is approved. The **C$1,500–3,000 typical** range remains internal calibration until more paid cases are measured.
+- CARE public starting price **C$200/month** is approved. Partner pricing and the 1 h/month allowance remain internal calibration until separately finalized.
+- Paid Website Diagnostic public fixed fee **C$450** is approved. The 3–4 h effort estimate and any credit toward later work remain internal until separately finalized.
 - Conditions of payment remain governed by **4. Sales & Commercial System** and are not added here until finalized.
 - Paid Website Diagnostic sits below the three main package cards as an exception, not a fourth package.
 - Keep internal pricing logic, Custom triggers and proposal-level exclusions out of public copy.
@@ -668,10 +660,10 @@ Helper text: A few sentences is enough.
 
 Options:
 
-- Under C\$1,000
-- Around C\$1,000–3,500
-- Around C\$3,500–8,000
-- More than C\$8,000
+- Under C$1,000
+- Around C$1,000–3,500
+- Around C$3,500–8,000
+- More than C$8,000
 - Not sure yet
 
 Helper text: A rough range is enough. It helps me suggest a realistic next step and does not create a quote. Choose **Not sure yet** if you are asking about ongoing care.
@@ -755,12 +747,12 @@ Answer three short questions so we can focus the conversation on your website. T
 - **Email address**
 - **Your website (if you have one)** — Website URL, optional
 - **What do you need help with?**
-  - A new website or rebuild
-  - Fix or improve my current website
-  - Ongoing website care
-  - Not sure yet
+    - A new website or rebuild
+    - Fix or improve my current website
+    - Ongoing website care
+    - Not sure yet
 - **What is the main website problem or goal?**
-  - Helper text: One or two sentences is enough.
+    - Helper text: One or two sentences is enough.
 
 **CTA:** Continue to scheduling
 
@@ -769,13 +761,13 @@ Answer three short questions so we can focus the conversation on your website. T
 ### Strategy Call ModalPopup — Implementation Constraints
 
 - Use the popup for lightweight qualification before showing Calendly.
-  - Preferred fields in the ModalPopup: **Email · Website URL · What do you need help with? · What is the main website problem or goal?**
-  - If supported reliably with a small implementation change, pass the email into Calendly so it opens **prefilled**.
-  - If email prefill is not reliable or adds unnecessary integration complexity, **remove Email from the ModalPopup and let Calendly collect it directly**.
-  - **Never ask for the email twice.**
-  - Do not add **Budget** to the booking popup in v1; budget stays in the Project Inquiry form.
-  - Calendly remains responsible for scheduling and the required booking identity fields such as **Name / Email** when they are not already prefilled.
-  - Keep the qualification layer to the three project questions: **Website URL · What do you need help with? · What is the main website problem or goal?**
+    - Preferred fields in the ModalPopup: **Email · Website URL · What do you need help with? · What is the main website problem or goal?**
+    - If supported reliably with a small implementation change, pass the email into Calendly so it opens **prefilled**.
+    - If email prefill is not reliable or adds unnecessary integration complexity, **remove Email from the ModalPopup and let Calendly collect it directly**.
+    - **Never ask for the email twice.**
+    - Do not add **Budget** to the booking popup in v1; budget stays in the Project Inquiry form.
+    - Calendly remains responsible for scheduling and the required booking identity fields such as **Name / Email** when they are not already prefilled.
+    - Keep the qualification layer to the three project questions: **Website URL · What do you need help with? · What is the main website problem or goal?**
 - Do not promise a response SLA until Magneto has evidence it can be maintained consistently.
 - Before launch, verify the privacy notice / consent wording and Privacy Policy against current Quebec / Canada requirements.
 - No newsletter checkbox, CRM, conditional multi-step form, AI qualification assistant or automated estimator is required for the first version.
@@ -784,14 +776,14 @@ Answer three short questions so we can focus the conversation on your website. T
 ## Privacy Policy — Consensus EN Source Copy v2
 
 > **Internal compliance note:** EN copy frozen after GPT + Claude review against current Quebec CAI guidance and Canadian CASL guidance on 8 Oct 2026. Publication is still gated by implementation verification: production providers, consent behavior, privacy-choice reopening and actual data flows must match this policy. This is not legal advice.
+> 
 
->
+> 
+> 
 
 ### Privacy Policy
 
-
 **Effective date:** 3 December 2026  
-
 
 **Last updated:** 3 December 2026
 
@@ -801,13 +793,9 @@ This policy explains what personal information Magneto collects through this web
 
 ### 1. Who is responsible for your information?
 
-
 **Person in charge of the protection of personal information (Privacy Officer):** Mauricio Bayuelo  
 
-
-
 **Business:** Magneto Web Consulting · registered business name Magneto MKTNG · Montreal, Quebec, Canada  
-
 
 **Email:** [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co)
 
@@ -961,9 +949,7 @@ Your answers are used to prepare for the call. Your email is passed to Calendly 
 
 If a future guide or newsletter is enabled, marketing consent stays separate from delivery of the requested asset.
 
-
 **Optional checkbox, unchecked by default:**  
-
 
 I'd also like occasional emails from **Magneto Web Consulting** about website tips and services. I can unsubscribe at any time.
 
@@ -992,16 +978,22 @@ I'd also like occasional emails from **Magneto Web Consulting** about website ti
 ## Dangel Wellness — Consensus EN Case Study v2
 
 > **Consensus status:** Copy / structure closed.
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
 > **Proof status:** Dangel is live / delivered. Booking functionality has been confirmed in real client use. Public analytics claims remain limited to what the instrumentation actually measures.
+> 
 
->
+> 
+> 
 
 ### Hero
 
@@ -1093,24 +1085,34 @@ The Dangel testimonial belongs on the **Home testimonial block**, not inside thi
 ## Trépied — Consensus EN Case Study v2
 
 > **Consensus status:** Copy / structure closed. Do not reopen strategy during Magneto implementation.
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
 > **Magneto dependency:** Trépied does **not** block writing, building, translating or publishing the updated Magneto website.
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
 > **Promotion gate:** before actively promoting the refreshed Magneto site, finish the Trépied cleanup below and send Isra the testimonial request. Use email follow-up rather than scheduling another meeting unless a real issue requires one.
+> 
 
->
+> 
+> 
 
 ### Hero
 
@@ -1202,46 +1204,60 @@ Public privacy language, if needed, should remain factual: **A cookie-consent ba
 
 Complete before actively promoting the refreshed Magneto website. These checks do **not** block Magneto copy, trilingual implementation or site publication:
 
-- [ ] Email Isra with the remaining closeout items instead of scheduling another meeting by default.
-- [ ] Replace any remaining **Mauricio Bayuelo Vanegas** owner / contact reference that belongs to Trépied with **Israel Valencia Vazquez**.
-- [ ] Confirm every call-booking button on [trepied.ca](http://trepied.ca) points to **Trépied's Calendly**, not Mauricio's account.
-- [ ] Submit the quote form successfully and verify the form event before adding **quote-request measurement** to the public case study.
-- [ ] Confirm / close the two outstanding consent items from the audit: Calendly loading behavior and the Privacy Policy link beside the form consent.
-- [ ] Correct and QA the three known language details in production.
-- [ ] Rebuild all case-study screenshots from the verified production site.
-- [ ] Send Isra a real testimonial request for Magneto / Home social proof.
+- [ ]  Email Isra with the remaining closeout items instead of scheduling another meeting by default.
+- [ ]  Replace any remaining **Mauricio Bayuelo Vanegas** owner / contact reference that belongs to Trépied with **Israel Valencia Vazquez**.
+- [ ]  Confirm every call-booking button on [trepied.ca](http://trepied.ca) points to **Trépied's Calendly**, not Mauricio's account.
+- [ ]  Submit the quote form successfully and verify the form event before adding **quote-request measurement** to the public case study.
+- [ ]  Confirm / close the two outstanding consent items from the audit: Calendly loading behavior and the Privacy Policy link beside the form consent.
+- [ ]  Correct and QA the three known language details in production.
+- [ ]  Rebuild all case-study screenshots from the verified production site.
+- [ ]  Send Isra a real testimonial request for Magneto / Home social proof.
 
 **Rule:** the Trépied case-study copy stays closed. These items gate **active promotion / outreach with the refreshed Magneto proof**, not the Magneto website build itself. Do not publish a claim that depends on an unverified item.
 
 ## Shamanicca — Consensus EN Case Study v2
 
 > **Consensus status:** Copy / structure closed. Do not reopen strategy during Magneto implementation.
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
 > **Disclosure:** Shamanicca is **Magneto's own project**, not a client project. This must remain explicit wherever the case study appears.
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
 > **Magneto dependency:** Shamanicca does **not** block writing, building, translating or publishing the updated Magneto website.
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
->
+> 
+> 
 
 > **Proof / promotion status:** use only current verified production evidence. Keep payment / purchase-result claims outside the case study until a full test order is verified, and complete the cleanup gate below before treating Shamanicca as polished promotional proof.
+> 
 
->
+> 
+> 
 
 ### Hero
 
@@ -1339,11 +1355,11 @@ Technical details such as Next.js, GraphQL, Tailwind migration, CI, Brevo, Verce
 
 These items do **not** block construction of the Magneto website:
 
-- [ ] Complete the scheduled **Shamanicca urgent blog SEO/AEO cleanup + affiliate-link compliance** work before using the site as polished promotional proof.
-- [ ] Complete the newsletter confirmation cycle in production. Only after verification may public copy say **with email confirmation**.
-- [ ] Restore / verify the favicon before directing Magneto visitors to the live site.
-- [ ] Rebuild all seven screenshots from current production.
-- [ ] Keep all completed-purchase / checkout / payment claims out until a real test order succeeds end-to-end.
+- [ ]  Complete the scheduled **Shamanicca urgent blog SEO/AEO cleanup + affiliate-link compliance** work before using the site as polished promotional proof.
+- [ ]  Complete the newsletter confirmation cycle in production. Only after verification may public copy say **with email confirmation**.
+- [ ]  Restore / verify the favicon before directing Magneto visitors to the live site.
+- [ ]  Rebuild all seven screenshots from current production.
+- [ ]  Keep all completed-purchase / checkout / payment claims out until a real test order succeeds end-to-end.
 
 **Rule:** the case-study copy is closed now. The cleanup gate affects promotional readiness, not Magneto website construction. Verification may unlock a more specific claim, but it does not reopen the positioning or structure unless the live product materially changes.
 

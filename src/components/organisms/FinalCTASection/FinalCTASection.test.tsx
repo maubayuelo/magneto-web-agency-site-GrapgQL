@@ -14,9 +14,9 @@ vi.mock('@/components/organisms/EmailCollectorProvider', () => ({ useEmailModal:
 vi.mock('@/components/atoms/WpResponsiveImage', () => ({ default: () => null }));
 
 const LABELS: Record<Locale, string> = {
-  en: 'Book a Free Strategy Call', // magneto-copy-en.md:27 (01ff73f)
-  fr: 'Réserver un appel-conseil gratuit', // magneto-copy-fr-CA.md:27
-  es: 'Agendar una llamada de orientación gratuita', // magneto-copy-es.md:29
+  en: 'Book a Free Strategy Call', // magneto-copy-en.md:19 (export 2026-11-17)
+  fr: 'Réserver un appel-conseil gratuit', // magneto-copy-fr-CA.md:20
+  es: 'Reservar consulta gratis', // magneto-copy-es.md:22
 };
 
 describe('FinalCTASection fallback label', () => {

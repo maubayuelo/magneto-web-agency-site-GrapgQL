@@ -1,8 +1,7 @@
 /// <reference types="vitest" />
 // 5b §6, AC-10/11/25: every route's generateMetadata returns the approved SEO copy of its locale, mirrored to Open Graph
-// and Twitter. Expected values are read from the copy export (docs/content @ 637fba7; 5b spec E6 lines re-pinned after the
-// 2026-11-04 re-export: EN +43 from old 120, +45 from old 228, +47 from old 406, +73 from old 865; FR +24 from old 102;
-// ES +18 from old 114), not retyped.
+// and Twitter. Expected values are read from the copy export (docs/content, export 2026-11-17; BLOCKS re-pinned by
+// 5c-rest), not retyped.
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { Metadata } from 'next';
@@ -23,31 +22,20 @@ import { generateMetadata as caseMeta } from '@/app/[locale]/projects/[slug]/pag
 const FILES: Record<Locale, string> = { en: 'magneto-copy-en.md', fr: 'magneto-copy-fr-CA.md', es: 'magneto-copy-es.md' };
 // SEO block heading line; title = +2, description = +4 (E6).
 const BLOCKS = {
-  en: { home: 182, projects: 199, about: 298, services: 474, packages: 596, contact: 723, dangel: 1070, trepied: 1181, shamanicca: 1316 },
-  fr: { home: 143, projects: 149, about: 236, services: 395, packages: 512, contact: 838, dangel: 585, trepied: 657, shamanicca: 729 },
-  es: { home: 149, projects: 155, about: 242, services: 401, packages: 516, contact: 848, dangel: 591, trepied: 665, shamanicca: 739 },
+  en: { home: 174, projects: 191, about: 290, services: 466, packages: 588, contact: 715, dangel: 1062, trepied: 1183, shamanicca: 1332 },
+  fr: { home: 176, projects: 182, about: 269, services: 428, packages: 545, contact: 871, dangel: 618, trepied: 690, shamanicca: 762 },
+  es: { home: 174, projects: 180, about: 267, services: 426, packages: 541, contact: 873, dangel: 616, trepied: 690, shamanicca: 764 },
 } as const;
 type Block = keyof (typeof BLOCKS)['en'];
 
-// Q-D1 K1–K3: these three descriptions add the kept term "Magneto Web Consulting", so they differ from the 637fba7
-// export. Notion updated 2026-11-09 to match; remove this exception when the 5c-rest export re-pins the copy.
-const DESCRIPTION_EXCEPTIONS: Partial<Record<`${Locale}:${Block}`, string>> = {
-  'fr:about': 'Mauricio Bayuelo, fondateur de Magneto Web Consulting à Montréal : stratégie web, UX/UI et développement pour entreprises de services, en trois langues.',
-  'es:about': 'Mauricio Bayuelo, fundador de Magneto Web Consulting en Montreal: estrategia web, diseño UX/UI y desarrollo para empresas de servicios, en tres idiomas.',
-  'es:contact': 'Contacta a Magneto Web Consulting en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu sitio web. Atención en español, francés e inglés.',
-};
-
 const lines = (locale: Locale) => readFileSync(resolve(process.cwd(), 'docs/content', FILES[locale]), 'utf8').split('\n');
-const value = (line: string) => line.replace(/^\*\*[^*]+\*\*\s?/, '').trim().replace(/\\([$&|*_])/g, '$1');
+// The Notion export escapes nothing (D-15), so only the bold label is removed.
+const value = (line: string) => line.replace(/^\*\*[^*]+\*\*\s?/, '').trim();
 function fromExport(locale: Locale, block: Block) {
   const all = lines(locale);
   const n = BLOCKS[locale][block];
   expect(all[n - 1], `${locale} ${block} heading`).toMatch(/SEO/);
   return { title: value(all[n + 1]), description: value(all[n + 3]) };
-}
-function exported(locale: Locale, block: Block) {
-  const copy = fromExport(locale, block);
-  return { ...copy, description: DESCRIPTION_EXCEPTIONS[`${locale}:${block}`] ?? copy.description };
 }
 function expectMeta(meta: Metadata, expected: { title: string; description: string }) {
   expect(meta.title).toBe(expected.title);
@@ -65,25 +53,16 @@ describe('page generateMetadata (EN/FR/ES)', () => {
   ] as const;
   for (const locale of LOCALES) {
     it.each(routes)(`${locale} %s = the export's SEO block`, async (block, generate) => {
-      expectMeta(await generate(params(locale)), exported(locale, block));
+      expectMeta(await generate(params(locale)), fromExport(locale, block));
     });
   }
 
-  it.each(LOCALES)('%s fallbackDescription = the Home meta description (EN 186 / FR 147 / ES 153)', (locale) => {
-    expect(getDictionary(locale).meta.site.fallbackDescription).toBe(exported(locale, 'home').description);
-  });
-
-  it('the K1–K3 exception covers exactly 3 descriptions, each still different from the export (else remove it)', () => {
-    expect(Object.keys(DESCRIPTION_EXCEPTIONS).sort()).toEqual(['es:about', 'es:contact', 'fr:about']);
-    for (const [key, description] of Object.entries(DESCRIPTION_EXCEPTIONS)) {
-      const [locale, block] = key.split(':') as [Locale, Block];
-      expect(fromExport(locale, block).description, key).not.toBe(description);
-      expect(description, key).toContain('Magneto Web Consulting');
-    }
+  it.each(LOCALES)('%s fallbackDescription = the Home meta description (EN 178 / FR 180 / ES 178)', (locale) => {
+    expect(getDictionary(locale).meta.site.fallbackDescription).toBe(fromExport(locale, 'home').description);
   });
 
   it('an unknown locale segment falls back to EN', async () => {
-    expectMeta(await servicesMeta({ params: Promise.resolve({ locale: 'de' }) }), exported('en', 'services'));
+    expectMeta(await servicesMeta({ params: Promise.resolve({ locale: 'de' }) }), fromExport('en', 'services'));
   });
 });
 
@@ -92,7 +71,7 @@ describe('case-study generateMetadata', () => {
   for (const locale of LOCALES) {
     it.each(slugs)(`${locale} %s → %s case copy`, async (slug, block) => {
       vi.mocked(getProjectBySlug).mockResolvedValueOnce({ title: 'Some title' } as never);
-      expectMeta(await caseMeta({ params: Promise.resolve({ locale, slug }) }), exported(locale, block));
+      expectMeta(await caseMeta({ params: Promise.resolve({ locale, slug }) }), fromExport(locale, block));
       expect(getProjectBySlug).toHaveBeenLastCalledWith(slug, locale);
     });
   }
@@ -111,7 +90,7 @@ describe('case-study generateMetadata', () => {
   it('unknown case → generic title + fallback description', async () => {
     vi.mocked(getProjectBySlug).mockResolvedValueOnce({ title: 'New Case' } as never);
     const meta = await caseMeta({ params: Promise.resolve({ locale: 'en', slug: 'new-case' }) });
-    expectMeta(meta, { title: 'New Case | Magneto Projects', description: exported('en', 'home').description });
+    expectMeta(meta, { title: 'New Case | Magneto Projects', description: fromExport('en', 'home').description });
   });
 
   it('ignores inherited object keys as slugs', () => {

@@ -10,13 +10,15 @@ interface FeaturedServicesProps {
 }
 
 // Home BUILD / FIX / CARE cards (Phase 5a): no section heading and no "all services" button (copy decision Q3).
+// A row with an empty title is skipped: WPML Copy sync can leave an untitled FR/ES row before its load (5c-rest §6).
 const FeaturedServices: React.FC<FeaturedServicesProps> = ({ services = [], locale }) => {
-  if (services.length === 0) return null;
+  const rows = services.filter((service) => (service.serviceTitle ?? '').trim() !== '');
+  if (rows.length === 0) return null;
   return (
     <section className="main pb-lg-responsive">
       <div className="services-section pt-lg-responsive">
         <div className="services-section__grid">
-          {services.map((service, idx) => (
+          {rows.map((service, idx) => (
             <ServiceCard
               key={service.anchorLink || idx}
               title={service.serviceTitle || ''}

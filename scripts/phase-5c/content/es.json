@@ -1,8 +1,8 @@
 {
   "source": {
     "file": "docs/content/magneto-copy-es.md",
-    "commit": "637fba7",
-    "sha256": "83332a1b84daecfdd041127cd5d8d752ddd5b9c5e671958690860a2f18c7e857"
+    "commit": "export 2026-11-17",
+    "sha256": "737b0084acce6ad603a2f3108944022485cb5670f22597ed08a45484ba24bdb6"
   },
   "spec": "docs/specs/phase-5c-loader.md rev 3.1 (§2; 5b §5.4 override folded in)",
   "format": "fields[].value is the raw ACF value; repeater rows are keyed by sub-field key; subfields maps sub-field key → GraphQL name (\"[]\" = GraphQL list).",
@@ -15,55 +15,55 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "ES 254",
+          "src": "ES 279",
           "value": "Servicios web diseñados en función de lo que tu negocio realmente necesita."
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "ES 256",
+          "src": "ES 281",
           "value": "Crea un sitio web más sólido, mejora el que ya tienes o asegúrate de que siga funcionando con un mantenimiento continuo y confiable."
         },
         {
           "key": "field_689a2e0960321",
           "label": "heroContent.ctaTextHero",
-          "src": "ES 258 (5b §5.4 override: main CTA label)",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 283 (5b §5.4 override: main CTA label)",
+          "value": "Reservar consulta gratis"
         },
         {
           "key": "field_68cb1f8940e08",
           "label": "pageintrotext.pageIntroText",
-          "src": "ES 262",
+          "src": "ES 287",
           "value": "Empezar por el problema, no por el paquete."
         },
         {
           "key": "field_p5_pageintrotext_intro_body_html",
           "label": "pageintrotext.introBodyHtml",
-          "src": "ES 264-268",
+          "src": "ES 289-293",
           "value": "<p>Magneto ayuda a las empresas de servicios de Montreal a elegir la solución más sensata para su sitio web.</p>\n<p>Puede tratarse de crear un sitio nuevo, corregir problemas específicos de uno existente o darle mantenimiento continuo una vez que esté estable.</p>\n<p>Los tres servicios principales son <strong>BUILD, FIX y CARE</strong>.</p>"
         },
         {
           "key": "field_p5_servicesservicedetails_core_heading",
           "label": "servicesServiceDetails.coreHeading",
-          "src": "ES 270",
+          "src": "ES 295",
           "value": "Los tres servicios principales"
         },
         {
           "key": "field_p5_servicesservicedetails_supporting_heading",
           "label": "servicesServiceDetails.supportingHeading",
-          "src": "ES 335",
+          "src": "ES 360",
           "value": "Incluido según lo que necesite tu proyecto"
         },
         {
           "key": "field_p5_servicesservicedetails_supporting_intro",
           "label": "servicesServiceDetails.supportingIntro",
-          "src": "ES 337",
+          "src": "ES 362",
           "value": "Estas son capacidades complementarias, no paquetes independientes de Magneto. Se incluyen o se definen dentro del alcance del proyecto cuando contribuyen a las necesidades del sitio web y los objetivos del negocio."
         },
         {
           "key": "field_689a5f0dc2a9b",
           "label": "servicesServiceDetails.services",
-          "src": "ES 272-293, 295-321, 323-333, 339-347, 349-359, 361-367, 369-375",
+          "src": "ES 297-318, 320-346, 348-358, 364-372, 374-384, 386-392, 394-400",
           "subfields": {
             "field_689a5f28c2a9c": "title",
             "field_p5_servicesservicedetails_services_heading": "heading",
@@ -142,37 +142,37 @@
         {
           "key": "field_689a58f65e417",
           "label": "finalCtaSection.title",
-          "src": "ES 383",
+          "src": "ES 408",
           "value": "¿No sabes qué opción le conviene a tu sitio web?"
         },
         {
           "key": "field_689a592f5e419",
           "label": "finalCtaSection.subtitle",
-          "src": "ES 385 + 387",
+          "src": "ES 410 + 412",
           "value": "No necesitas elegir entre BUILD, FIX o CARE antes de ponerte en contacto con Magneto. Empieza por explicar qué está pasando con tu sitio web. Magneto te recomendará el siguiente paso más sensato antes de definir el alcance del proyecto."
         },
         {
           "key": "field_689a59405e41a",
           "label": "finalCtaSection.ctaText",
-          "src": "ES 389",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 414",
+          "value": "Reservar consulta gratis"
         },
         {
           "key": "field_p5_finalctasection_cta_path",
           "label": "finalCtaSection.ctaPath",
-          "src": "ES 389 (path as EN)",
+          "src": "ES 414 (path as EN)",
           "value": ""
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_text",
           "label": "finalCtaSection.secondaryCtaText",
-          "src": "ES 391",
+          "src": "ES 416",
           "value": "Cuéntame sobre tu proyecto"
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_path",
           "label": "finalCtaSection.secondaryCtaPath",
-          "src": "ES 391 (path as EN)",
+          "src": "ES 416 (path as EN)",
           "value": "/contact"
         }
       ]
@@ -185,37 +185,37 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "ES 413",
+          "src": "ES 438",
           "value": "Paquetes y precios para tu sitio web"
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "ES 415 + 417",
+          "src": "ES 440 + 442",
           "value": "Puntos de partida claros para crear, mejorar o mantener tu sitio web.\n\nCada proyecto comienza por entender el problema que hay que resolver. Los precios y detalles que encontrarás a continuación te ayudan a identificar dónde podría encajar tu proyecto antes de recibir una propuesta."
         },
         {
           "key": "field_689a2e0960321",
           "label": "heroContent.ctaTextHero",
-          "src": "ES 419",
+          "src": "ES 444",
           "value": "Cuéntame sobre tu proyecto"
         },
         {
           "key": "field_p5_herocontent_hero_cta_path",
           "label": "heroContent.ctaPath",
-          "src": "ES 419 (B1: /contact)",
+          "src": "ES 444 (B1: /contact)",
           "value": "/contact"
         },
         {
           "key": "field_p5_pageintrotext_intro_body_html",
           "label": "pageintrotext.introBodyHtml",
-          "src": "ES 421",
+          "src": "ES 446",
           "value": "<p>Todos los precios están expresados en dólares canadienses. Se añaden los impuestos aplicables cuando corresponda.</p>"
         },
         {
           "key": "field_689a4b0bfdf48",
           "label": "packagesPackageFeatures.packagesElements",
-          "src": "ES 425-435, 437-447, 449-465",
+          "src": "ES 450-460, 462-472, 474-490",
           "subfields": {
             "field_689a4b21fdf49": "name",
             "field_p5_packagespackagefeatures_packages_elements_heading": "heading",
@@ -254,7 +254,7 @@
         {
           "key": "field_p5_packagescontentsections_sections",
           "label": "packagesContentSections.sections",
-          "src": "ES 469-477, 479-494",
+          "src": "ES 494-502, 504-519",
           "subfields": {
             "field_p5_packagescontentsections_sections_heading": "heading",
             "field_p5_packagescontentsections_sections_body_html": "bodyHtml"
@@ -273,37 +273,37 @@
         {
           "key": "field_689a58f65e417",
           "label": "finalCtaSection.title",
-          "src": "ES 498",
+          "src": "ES 523",
           "value": "¿No sabes qué paquete se adapta a tu proyecto?"
         },
         {
           "key": "field_689a592f5e419",
           "label": "finalCtaSection.subtitle",
-          "src": "ES 500 + 502",
+          "src": "ES 525 + 527",
           "value": "No necesitas elegir entre BUILD, FIX o CARE antes de ponerte en contacto con Magneto. Explica qué está pasando con tu sitio web y qué quieres mejorar. Magneto te orientará hacia la opción y el rango de inversión más adecuados."
         },
         {
           "key": "field_689a59405e41a",
           "label": "finalCtaSection.ctaText",
-          "src": "ES 504",
+          "src": "ES 529",
           "value": "Cuéntame sobre tu proyecto"
         },
         {
           "key": "field_p5_finalctasection_cta_path",
           "label": "finalCtaSection.ctaPath",
-          "src": "ES 504 (path as EN)",
+          "src": "ES 529 (path as EN)",
           "value": "/contact"
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_text",
           "label": "finalCtaSection.secondaryCtaText",
-          "src": "ES 506",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 531",
+          "value": "Reservar consulta gratis"
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_path",
           "label": "finalCtaSection.secondaryCtaPath",
-          "src": "ES 506 (path as EN)",
+          "src": "ES 531 (path as EN)",
           "value": ""
         }
       ]
@@ -316,20 +316,136 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "ES 25",
+          "src": "ES 18",
           "value": "Estrategia, diseño y desarrollo web para empresas de servicios en Montreal."
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "ES 27",
+          "src": "ES 20",
           "value": "Crea un sitio web más sólido, corrige lo que limita tu sitio actual o asegúrate de que siga funcionando con un mantenimiento continuo y confiable."
         },
         {
           "key": "field_689a2e0960321",
           "label": "heroContent.ctaTextHero",
-          "src": "ES 29 (5b §5.4 override)",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 22 (5b §5.4 override)",
+          "value": "Reservar consulta gratis"
+        },
+        {
+          "key": "field_689a5bb77c99c",
+          "label": "homeAboutSection.aboutSectionTitle",
+          "src": "ES 26 (item 8: visible-heading line)",
+          "value": "Conoce Magneto"
+        },
+        {
+          "key": "field_p5_homeaboutsection_description_html",
+          "label": "homeAboutSection.descriptionHtml",
+          "src": "ES 28, 30, 32, 34 (item 8: lead + 3 paragraphs)",
+          "value": "<p>Trabaja directamente con quien planifica, diseña y desarrolla tu sitio web.</p>\n<p>Magneto es una consultoría web de Montreal dirigida por su fundador. Trabajas directamente con Mauricio en todas las etapas: desde la estrategia y el diseño UX/UI hasta el desarrollo y el lanzamiento.</p>\n<p>Magneto trabaja principalmente con profesionales del bienestar, terapeutas y empresas de servicios profesionales que necesitan un sitio web más claro, que inspire confianza y sea más fácil de usar.</p>\n<p>Atención disponible en español, francés e inglés.</p>"
+        },
+        {
+          "key": "field_689a5395d1bc9",
+          "label": "homeFeaturedServices.service",
+          "src": "ES 38-42, 46-50, 54-58",
+          "subfields": {
+            "field_689a53b3d1bca": "serviceTitle",
+            "field_p5_homefeaturedservices_service_service_tagline": "serviceTagline",
+            "field_689a53c7d1bcb": "serviceDescription",
+            "field_689a5402d1bcd": "anchorLink"
+          },
+          "value": [
+            {
+              "field_689a53b3d1bca": "BUILD",
+              "field_p5_homefeaturedservices_service_service_tagline": "Un sitio web que explica claramente lo que hace tu negocio.",
+              "field_689a53c7d1bcb": "Sitios web nuevos, rediseños y páginas de destino específicas, planificados según lo que tus visitantes necesitan comprender y la acción que quieres que realicen.",
+              "field_689a5402d1bcd": "build"
+            },
+            {
+              "field_689a53b3d1bca": "FIX",
+              "field_p5_homefeaturedservices_service_service_tagline": "Mejora el sitio web que ya tienes, sin rehacerlo innecesariamente.",
+              "field_689a53c7d1bcb": "Para sitios difíciles de entender, lentos, incómodos de usar en dispositivos móviles o con problemas en formularios y reservas. Magneto identifica primero qué es importante corregir; tú apruebas las mejoras y luego se verifica el resultado.",
+              "field_689a5402d1bcd": "fix"
+            },
+            {
+              "field_689a53b3d1bca": "CARE",
+              "field_p5_homefeaturedservices_service_service_tagline": "Mantén tu sitio web actualizado y funcionando bien.",
+              "field_689a53c7d1bcb": "CARE se ocupa de actualizar, supervisar y dar soporte a un sitio web estable, para que no tengas que encargarte tú de los detalles técnicos.",
+              "field_689a5402d1bcd": "care"
+            }
+          ]
+        },
+        {
+          "key": "field_689a37f1b1fb8",
+          "label": "homeTestimonialsSection.testimonials",
+          "src": "ES 86 + 88 + 90 (no public note), 92 + 94",
+          "subfields": {
+            "field_689a52d93cd54": "author",
+            "field_689a52e73cd55": "testimonial",
+            "field_p5_hometestimonialssection_testimonials_role": "role",
+            "field_p5_hometestimonialssection_testimonials_company": "company",
+            "field_p5_hometestimonialssection_testimonials_city": "city",
+            "field_p5_hometestimonialssection_testimonials_note": "note"
+          },
+          "value": [
+            {
+              "field_689a52d93cd54": "Dangel Manik",
+              "field_689a52e73cd55": "Mauricio es muy profesional, entendió desde el principio mi trabajo y supo crear lo que yo necesito, el resultado supera mis expectativas, trabajar con él fue sencillo y muy satisfactorio.",
+              "field_p5_hometestimonialssection_testimonials_role": "Terapeuta holístico",
+              "field_p5_hometestimonialssection_testimonials_company": "",
+              "field_p5_hometestimonialssection_testimonials_city": "Montreal",
+              "field_p5_hometestimonialssection_testimonials_note": ""
+            },
+            {
+              "field_689a52d93cd54": "Israel Valencia Vázquez",
+              "field_689a52e73cd55": "Excelente experiencia trabajando con Mauricio (Magneto). Supo entender nuestras necesidades y transformarlas en un sitio web atractivo, funcional y profesional. ¡Recomendamos Magneto ampliamente!",
+              "field_p5_hometestimonialssection_testimonials_role": "Fundador y productor de video",
+              "field_p5_hometestimonialssection_testimonials_company": "TRÉPIED",
+              "field_p5_hometestimonialssection_testimonials_city": "",
+              "field_p5_hometestimonialssection_testimonials_note": ""
+            }
+          ]
+        },
+        {
+          "key": "field_68b33adfb508b",
+          "label": "homeFooter.footerLine2",
+          "src": "ES 168",
+          "value": "Con sede en Montreal · Atención en español, francés e inglés"
+        },
+        {
+          "key": "field_689a58f65e417",
+          "label": "finalCtaSection.title",
+          "src": "ES 160",
+          "value": "Empecemos con una conversación."
+        },
+        {
+          "key": "field_689a592f5e419",
+          "label": "finalCtaSection.subtitle",
+          "src": "ES 162",
+          "value": "Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas, optar por mantenimiento continuo o, por ahora, no realizar cambios importantes."
+        },
+        {
+          "key": "field_689a59405e41a",
+          "label": "finalCtaSection.ctaText",
+          "src": "ES 164",
+          "value": "Reservar consulta gratis"
+        },
+        {
+          "key": "field_p5_finalctasection_cta_path",
+          "label": "finalCtaSection.ctaPath",
+          "src": "ES 164 (path as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_text",
+          "label": "finalCtaSection.secondaryCtaText",
+          "src": "ES 164 (none, as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_path",
+          "label": "finalCtaSection.secondaryCtaPath",
+          "src": "ES 164 (path as EN)",
+          "value": ""
         }
       ]
     },
@@ -341,91 +457,91 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "ES 167",
+          "src": "ES 192",
           "value": "Sobre Magneto Web Consulting"
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "ES 169",
+          "src": "ES 194",
           "value": "Estrategia web, diseño UX/UI y desarrollo con una sola persona de contacto, desde la primera conversación hasta el lanzamiento."
         },
         {
           "key": "field_689a2e0960321",
           "label": "heroContent.ctaTextHero",
-          "src": "ES 171 (5b §5.4 override: main CTA label)",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 196 (5b §5.4 override: main CTA label)",
+          "value": "Reservar consulta gratis"
         },
         {
           "key": "field_689bae6dc2660",
           "label": "aboutData.sectionTitle",
-          "src": "ES 175",
+          "src": "ES 200",
           "value": "El fundador"
         },
         {
           "key": "field_p5_aboutdata_description_html",
           "label": "aboutData.descriptionHtml",
-          "src": "ES 177-179",
+          "src": "ES 202-204",
           "value": "<p>Magneto es la consultoría web de <strong>Mauricio Bayuelo</strong>, consultor web, diseñador UX/UI y desarrollador front-end radicado en Montreal.</p>\n<p>Trabajas directamente con Mauricio desde la primera conversación y durante la estrategia, el diseño, el desarrollo y el lanzamiento. Tienes una sola persona de contacto, y quien te recomienda la solución también participa en su desarrollo.</p>"
         },
         {
           "key": "field_689baec9c2662",
           "label": "aboutData.linkText",
-          "src": "ES 181",
+          "src": "ES 206",
           "value": "Ver el perfil de Mauricio en LinkedIn"
         },
         {
           "key": "field_689baf03953b6",
           "label": "aboutData.generalText",
-          "src": "ES 185-218 (D-6 template)",
+          "src": "ES 210-243 (D-6 template)",
           "value": "<h3 class=\"typo-2xl-extrabold hero-title m-0\">Lo que ofrece Magneto</h3>\n<ul>\n<li>Sitios web claros y profesionales que ayudan a entender tus servicios y facilitan que los visitantes den el siguiente paso.</li>\n<li>Mejoras específicas cuando es posible corregir un sitio existente sin hacer un rediseño innecesario.</li>\n<li>Mantenimiento continuo para negocios que necesitan soporte y seguimiento confiables.</li>\n<li>Sitios web en español, francés e inglés cuando el proyecto requiere varios idiomas.</li>\n<li>Acompañamiento práctico, desde la estrategia hasta el lanzamiento.</li>\n</ul>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">Con quién trabaja mejor Magneto</h3>\n<p class=\"typo-lg-medium hero-title m-0\">Magneto trabaja principalmente con profesionales del bienestar, terapeutas y empresas de servicios profesionales, así como con otras empresas de servicios de Montreal cuando el proyecto encaja bien.</p>\n<p class=\"typo-lg-medium hero-title m-0\">La colaboración es especialmente adecuada para empresas que valoran la claridad, el diseño bien pensado, una implementación confiable y la comunicación directa con quien realiza el trabajo.</p>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">Recomendar primero. Diseñar y desarrollar después.</h3>\n<p class=\"typo-lg-medium hero-title m-0\">Cada proyecto comienza por comprender el negocio y el problema real que debe resolver su sitio web.</p>\n<p class=\"typo-lg-medium hero-title m-0\">A veces, la mejor opción es crear un sitio nuevo. Otras veces, basta con hacer correcciones específicas. También puede ocurrir que el sitio actual solo necesite pequeños ajustes o mantenimiento continuo.</p>\n<p class=\"typo-lg-medium hero-title m-0\">El papel de Magneto es recomendar primero el camino más sensato y, después, diseñar y desarrollar lo que el negocio realmente necesita.</p>\n<ul>\n<li>Una sola persona de contacto, desde la estrategia hasta la implementación.</li>\n<li>Diseño UX/UI y desarrollo integrados.</li>\n<li>Capacidad de trabajar en varios idiomas cuando el proyecto lo requiere.</li>\n<li>Sin rediseños innecesarios ni promesas sin fundamento.</li>\n</ul>\n<h3 class=\"typo-2xl-extrabold hero-title m-0\">¿Tienes un proyecto web en mente?</h3>\n<p class=\"typo-lg-medium hero-title m-0\">¿Tu sitio está desactualizado, no comunica claramente lo que ofreces o es difícil de usar? ¿Todavía no sabes qué necesitas cambiar? Comparte algunos detalles y Magneto te propondrá un siguiente paso adecuado.</p>"
         },
         {
           "key": "field_p5_aboutdata_cta_text",
           "label": "aboutData.ctaText",
-          "src": "ES 220",
+          "src": "ES 245",
           "value": "Cuéntame sobre tu proyecto"
         },
         {
           "key": "field_p5_aboutdata_cta_path",
           "label": "aboutData.ctaPath",
-          "src": "ES 220 (/contact)",
+          "src": "ES 245 (/contact)",
           "value": "/contact"
         },
         {
           "key": "field_689a58f65e417",
           "label": "finalCtaSection.title",
-          "src": "ES 228",
+          "src": "ES 253",
           "value": "Empecemos con una conversación."
         },
         {
           "key": "field_689a592f5e419",
           "label": "finalCtaSection.subtitle",
-          "src": "ES 230",
+          "src": "ES 255",
           "value": "Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar cuál es el siguiente paso más conveniente."
         },
         {
           "key": "field_689a59405e41a",
           "label": "finalCtaSection.ctaText",
-          "src": "ES 232",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 257",
+          "value": "Reservar consulta gratis"
         },
         {
           "key": "field_p5_finalctasection_cta_path",
           "label": "finalCtaSection.ctaPath",
-          "src": "ES 232 (path as EN)",
+          "src": "ES 257 (path as EN)",
           "value": ""
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_text",
           "label": "finalCtaSection.secondaryCtaText",
-          "src": "ES 232 (none, as EN)",
+          "src": "ES 257 (none, as EN)",
           "value": ""
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_path",
           "label": "finalCtaSection.secondaryCtaPath",
-          "src": "ES 232 (path as EN)",
+          "src": "ES 257 (path as EN)",
           "value": ""
         }
       ]
@@ -438,20 +554,20 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "ES 69",
+          "src": "ES 64",
           "value": "Proyectos web destacados"
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "ES 73",
+          "src": "ES 68",
           "value": "Experiencias web para el sector del bienestar, los servicios profesionales y el comercio digital, desarrolladas según las necesidades de cada negocio."
         },
         {
           "key": "field_689a2e0960321",
           "label": "heroContent.ctaTextHero",
-          "src": "ES 29 (Home §4; 5b §5.4 override: main CTA label)",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 22 (Home §4; 5b §5.4 override: main CTA label)",
+          "value": "Reservar consulta gratis"
         }
       ]
     },
@@ -463,13 +579,13 @@
         {
           "key": "field_689a2d9a6031f",
           "label": "heroContent.heroTitle",
-          "src": "ES 751",
+          "src": "ES 776",
           "value": "Cuéntame sobre tu proyecto web."
         },
         {
           "key": "field_689a2dbb60320",
           "label": "heroContent.subtitleHero",
-          "src": "ES 753",
+          "src": "ES 778",
           "value": "Comparte algunos detalles sobre tu proyecto y lo que quieres crear o mejorar. Te responderé con una recomendación sobre el siguiente paso más conveniente."
         }
       ]
@@ -482,7 +598,7 @@
         {
           "key": "field_689bb68e09f8a",
           "label": "projectsProjectData.projectData",
-          "src": "ES 532, 538-544, 548-550, 554-557, 561-566",
+          "src": "ES 557, 563-569, 573-575, 579-582, 586-591",
           "subfields": {
             "field_689bb6b409f8b": "projectSubtitle",
             "field_689bb6ca09f8c": "projectDescription",
@@ -546,13 +662,13 @@
         {
           "key": "field_p5_projectsprojectdata_card_description",
           "label": "projectsProjectData.cardDescription",
-          "src": "ES 77 (Home §4 card)",
+          "src": "ES 72 (Home §4 card)",
           "value": "Un sitio web en español, francés e inglés para un profesional del bienestar en Montreal. El sitio presenta claramente sus diferentes servicios y ofrece opciones directas para comunicarse o reservar una cita."
         },
         {
           "key": "field_689a6d04467f9",
           "label": "projectsProjectData.images",
-          "src": "ES 568-577 (D-4: foot_note empty on every existing row)",
+          "src": "ES 593-602 (D-4: foot_note empty on every existing row)",
           "subfields": {
             "field_689a6d4d467fb": "footNote"
           },
@@ -577,37 +693,37 @@
         {
           "key": "field_689a58f65e417",
           "label": "finalCtaSection.title",
-          "src": "ES 585",
+          "src": "ES 610",
           "value": "¿Necesitas un sitio web que facilite entender tus diferentes servicios y dar el siguiente paso?"
         },
         {
           "key": "field_689a592f5e419",
           "label": "finalCtaSection.subtitle",
-          "src": "ES 587",
+          "src": "ES 612",
           "value": "Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo."
         },
         {
           "key": "field_689a59405e41a",
           "label": "finalCtaSection.ctaText",
-          "src": "ES 589",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 614",
+          "value": "Reservar consulta gratis"
         },
         {
           "key": "field_p5_finalctasection_cta_path",
           "label": "finalCtaSection.ctaPath",
-          "src": "ES 589 (path as EN)",
+          "src": "ES 614 (path as EN)",
           "value": ""
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_text",
           "label": "finalCtaSection.secondaryCtaText",
-          "src": "ES 589 (none, as EN)",
+          "src": "ES 614 (none, as EN)",
           "value": ""
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_path",
           "label": "finalCtaSection.secondaryCtaPath",
-          "src": "ES 589 (path as EN)",
+          "src": "ES 614 (path as EN)",
           "value": ""
         }
       ]
@@ -620,7 +736,7 @@
         {
           "key": "field_689bb68e09f8a",
           "label": "projectsProjectData.projectData",
-          "src": "ES 679, 685-691, 695-697, 701-704, 708-713",
+          "src": "ES 704, 710-716, 720-722, 726-729, 733-738",
           "subfields": {
             "field_689bb6b409f8b": "projectSubtitle",
             "field_689bb6ca09f8c": "projectDescription",
@@ -684,13 +800,13 @@
         {
           "key": "field_p5_projectsprojectdata_card_description",
           "label": "projectsProjectData.cardDescription",
-          "src": "ES 85 (Home §4 card)",
+          "src": "ES 80 (Home §4 card)",
           "value": "Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda en línea y un blog integrados en un mismo sitio web, con un buscador común y suscripción al boletín informativo."
         },
         {
           "key": "field_689a6d04467f9",
           "label": "projectsProjectData.images",
-          "src": "ES 715-725 (D-4: foot_note empty on every existing row)",
+          "src": "ES 740-750 (D-4: foot_note empty on every existing row)",
           "subfields": {
             "field_689a6d4d467fb": "footNote"
           },
@@ -721,37 +837,181 @@
         {
           "key": "field_689a58f65e417",
           "label": "finalCtaSection.title",
-          "src": "ES 733",
+          "src": "ES 758",
           "value": "¿Necesitas un sitio web que integre claramente diferentes partes de tu negocio?"
         },
         {
           "key": "field_689a592f5e419",
           "label": "finalCtaSection.subtitle",
-          "src": "ES 735",
+          "src": "ES 760",
           "value": "Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo."
         },
         {
           "key": "field_689a59405e41a",
           "label": "finalCtaSection.ctaText",
-          "src": "ES 737",
-          "value": "Agendar una llamada de orientación gratuita"
+          "src": "ES 762",
+          "value": "Reservar consulta gratis"
         },
         {
           "key": "field_p5_finalctasection_cta_path",
           "label": "finalCtaSection.ctaPath",
-          "src": "ES 737 (path as EN)",
+          "src": "ES 762 (path as EN)",
           "value": ""
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_text",
           "label": "finalCtaSection.secondaryCtaText",
-          "src": "ES 737 (none, as EN)",
+          "src": "ES 762 (none, as EN)",
           "value": ""
         },
         {
           "key": "field_p5_finalctasection_secondary_cta_path",
           "label": "finalCtaSection.secondaryCtaPath",
-          "src": "ES 737 (path as EN)",
+          "src": "ES 762 (path as EN)",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "type": "project",
+      "slug": "trepied-trepied-ca",
+      "lang": "es",
+      "fields": [
+        {
+          "key": "field_689bb68e09f8a",
+          "label": "projectsProjectData.projectData",
+          "src": "ES 630, 636-642, 646-648, 652-655, 659-664",
+          "subfields": {
+            "field_689bb6b409f8b": "projectSubtitle",
+            "field_689bb6ca09f8c": "projectDescription",
+            "field_689bb6e509f8d": "challenges[]",
+            "field_689bb6ff09f8e": "item",
+            "field_689bb725dc084": "solutions[]",
+            "field_689bb725dc085": "item",
+            "field_689bb738dc086": "results[]",
+            "field_689bb738dc087": "item"
+          },
+          "value": {
+            "field_689bb6b409f8b": "Un sitio web en español, francés e inglés para un estudio de producción de video de Montreal, creado para presentar claramente sus servicios y producciones y orientar a posibles clientes hacia una llamada o una solicitud de cotización.",
+            "field_689bb6ca09f8c": "<p>Trépied es un estudio de producción de video de Montreal que trabaja con pequeñas y medianas empresas, organizaciones sin fines de lucro y proyectos culturales.</p>\n<p>El estudio necesitaba un sitio que explicara sus tres tipos de producción de video, dejara que sus propias producciones demostraran su experiencia, funcionara en tres idiomas y ofreciera a los posibles clientes una forma sencilla de iniciar una conversación.</p>\n<p>Magneto se encargó del proyecto desde la estrategia hasta el lanzamiento: estructura, diseño, desarrollo en WordPress, configuración del alojamiento web y una guía escrita para que el cliente pudiera actualizar su sitio.</p>\n<p><strong>BUILD · Estrategia · Diseño UX/UI · Desarrollo · Español, francés e inglés</strong></p>",
+            "field_689bb6e509f8d": [
+              {
+                "field_689bb6ff09f8e": "Presentar los tres tipos de producción —videos corporativos, contenido para redes sociales, eventos y cultura— como una oferta coherente, y no como servicios sin relación entre sí."
+              },
+              {
+                "field_689bb6ff09f8e": "Dar protagonismo a las propias producciones del estudio y permitir que cada visitante encontrara rápidamente ejemplos relevantes."
+              },
+              {
+                "field_689bb6ff09f8e": "Integrar tres idiomas en un único sitio fácil de actualizar."
+              }
+            ],
+            "field_689bb725dc084": [
+              {
+                "field_689bb725dc085": "Organizar el sitio en tres áreas de servicio bajo un mensaje común, cada una con una invitación a conversar."
+              },
+              {
+                "field_689bb725dc085": "Crear un portafolio donde cada producción de Trépied muestra a su cliente, una breve descripción y su video, que puede reproducirse en la misma página."
+              },
+              {
+                "field_689bb725dc085": "Integrar español, francés e inglés en un único sitio WordPress, desde el cual el cliente puede editar textos y añadir proyectos al portafolio."
+              },
+              {
+                "field_689bb725dc085": "Ofrecer dos opciones para iniciar un proyecto: agendar una llamada o enviar una solicitud de cotización con presupuesto, plazo y una breve descripción."
+              }
+            ],
+            "field_689bb738dc086": [
+              {
+                "field_689bb738dc087": "Sitio web publicado en español, francés e inglés en trepied.ca."
+              },
+              {
+                "field_689bb738dc087": "Tres secciones de servicios y un portafolio de las producciones propias del estudio."
+              },
+              {
+                "field_689bb738dc087": "Reserva de llamadas y solicitud de cotización mediante un formulario estructurado."
+              },
+              {
+                "field_689bb738dc087": "Contenido editable por el cliente y una guía de administración escrita."
+              },
+              {
+                "field_689bb738dc087": "Banner de consentimiento para cookies y páginas de política de privacidad."
+              },
+              {
+                "field_689bb738dc087": "Medición de clics en enlaces para agendar llamadas."
+              }
+            ]
+          }
+        },
+        {
+          "key": "field_p5_projectsprojectdata_card_description",
+          "label": "projectsProjectData.cardDescription",
+          "src": "ES 76 (Home §4 card)",
+          "value": "Un sitio web para un estudio de producción de video de Montreal, diseñado para mostrar claramente sus producciones y orientar a posibles clientes hacia una llamada o una solicitud de cotización."
+        },
+        {
+          "key": "field_689a6d04467f9",
+          "label": "projectsProjectData.images",
+          "src": "ES 666-676 (D-4: foot_note empty on every existing row)",
+          "subfields": {
+            "field_689a6d4d467fb": "footNote"
+          },
+          "value": [
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            },
+            {
+              "field_689a6d4d467fb": ""
+            }
+          ]
+        },
+        {
+          "key": "field_689a58f65e417",
+          "label": "finalCtaSection.title",
+          "src": "ES 684",
+          "value": "¿Tu sitio web necesita presentar tus servicios y trabajos con mayor claridad?"
+        },
+        {
+          "key": "field_689a592f5e419",
+          "label": "finalCtaSection.subtitle",
+          "src": "ES 686",
+          "value": "Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo."
+        },
+        {
+          "key": "field_689a59405e41a",
+          "label": "finalCtaSection.ctaText",
+          "src": "ES 688",
+          "value": "Reservar consulta gratis"
+        },
+        {
+          "key": "field_p5_finalctasection_cta_path",
+          "label": "finalCtaSection.ctaPath",
+          "src": "ES 688 (path as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_text",
+          "label": "finalCtaSection.secondaryCtaText",
+          "src": "ES 688 (none, as EN)",
+          "value": ""
+        },
+        {
+          "key": "field_p5_finalctasection_secondary_cta_path",
+          "label": "finalCtaSection.secondaryCtaPath",
+          "src": "ES 688 (path as EN)",
           "value": ""
         }
       ]

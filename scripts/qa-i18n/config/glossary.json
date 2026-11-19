@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "Mauricio, D-9, 2026-11-09 (phase-5g spec rev 0.3 §3.3); additions WordPress, WooCommerce, Calendly, Brevo, Magneto MKTNG approved by Mauricio 2026-11-09; identicalAllowed FR Menu/Logo, ES Popular/Logo approved by Mauricio 2026-11-09 (Logo = header.logoAlt until it becomes Magneto, F-1)",
+  "source": "Mauricio, D-9, 2026-11-09 (phase-5g spec rev 0.3 §3.3); additions WordPress, WooCommerce, Calendly, Brevo, Magneto MKTNG approved by Mauricio 2026-11-09; identicalAllowed FR Menu/Logo, ES Popular/Logo approved by Mauricio 2026-11-09 (Logo = header.logoAlt until it becomes Magneto, F-1); emptyAllowed ES Dangel testimonial note = phase-5c-rest §4 / Appendix A item 6 (the ES quote is the Spanish original, so no 'translated' note), 2026-11-17",
   "approved": { "by": "Mauricio", "on": "2026-11-09" },
   "register": {
     "fr": { "rule": "vous", "description": "Address the reader as vous (vous / votre / vos). Never tu / toi / ton / ta / tes." },
@@ -24,9 +24,10 @@
   ],
   "ctaLabels": [
     { "dictKey": "common.bookStrategyCall", "note": "main CTA; value per locale read from the dictionaries at runtime" },
-    { "dictKey": "header.scheduleCall", "note": "header CTA; ES 'Reservar consulta' differs from the main CTA on purpose" }
+    { "dictKey": "header.scheduleCall", "note": "header CTA; differs from the main CTA in every locale (ES 'Reservar consulta' vs 'Reservar consulta gratis')" }
   ],
   "required": [],
   "identicalAllowed": { "fr": ["Services", "Contact", "Solutions", "Menu", "Logo"], "es": ["Popular", "Logo"] },
+  "emptyAllowed": { "fr": [], "es": ["content:home/homeTestimonialsSection.testimonials[0].note"] },
   "urlExceptions": []
 }

@@ -1,14 +1,7 @@
-<!--
-Source: Notion — Magneto's Page Copy / FR-CA
-URL: https://app.notion.com/p/3fc702393b5e8195a8c1eeede1910b62
-Notion page last edited: 2026-11-04 (Privacy gates G-1…G-7: effective date, §4 providers, §5 analytics, internal ready blocks — Senior Architect via the Notion connector, approved by Mauricio; lead-magnet copy edited by Mauricio 2026-11-03)
-Exported: 2026-11-04 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: fresh full-page fetch converted with the ffec355 conventions (bold/italic to Markdown, mentions as [Notion page](url), \$ and \[ \] kept escaped); diff vs ffec355 limited to the lead-magnet blocks and the Privacy Policy (dates, §4, §5, internal ready blocks).
-Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
-re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
--->
+# Magneto’s Page Copy / FR-CA
 
-> **Copie FR-CA de référence — sections terminées sur le plan éditorial : Accueil, À propos, Services, Forfaits, fiches Réalisations (Dangel Wellness, Trépied, Shamanicca), Contact / Demande de projet, Modal appel-conseil (deux variantes conditionnelles) et Politique de confidentialité (publication soumise aux vérifications techniques et juridiques).** Les autres pages du site restent à adapter. Cette page contient le texte destiné au site, sans comptes rendus de révision. **Ce n'est pas une confirmation de mise en ligne :** voir les dépendances de publication à la fin. Source de sens : [Notion page](https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f).
+> **Copie FR-CA de référence — sections terminées sur le plan éditorial : Accueil, À propos, Services, Forfaits, fiches Réalisations (Dangel Wellness, Trépied, Shamanicca), Contact / Demande de projet, Modal appel-conseil (deux variantes conditionnelles) et Politique de confidentialité (publication soumise aux vérifications techniques et juridiques).** Les autres pages du site restent à adapter. Cette page contient le texte destiné au site, sans comptes rendus de révision. **Ce n'est pas une confirmation de mise en ligne :** voir les dépendances de publication à la fin. Source de sens : [Magneto’s Page Copy / EN](https://app.notion.com/p/Magneto-s-Page-Copy-EN-3fc702393b5e80ab9658cef2f9f46e1f?pvs=21).
+> 
 
 # ACCUEIL
 
@@ -28,7 +21,9 @@ Bâtissez un site web plus solide, corrigez ce qui freine votre site actuel ou g
 
 ## 2. Découvrir Magneto
 
-### Collaborez directement avec la personne qui planifie, conçoit et développe votre site web.
+### Découvrir Magneto
+
+Collaborez directement avec la personne qui planifie, conçoit et développe votre site web.
 
 Magneto est une entreprise de consultation web établie à Montréal et dirigée par son fondateur. Vous travaillez directement avec Mauricio, de la stratégie et de la conception UX/UI jusqu'au développement et à la mise en ligne.
 
@@ -84,11 +79,15 @@ Projet de Magneto, et non un projet client : une boutique en ligne et un blogue 
 
 ## 5. Témoignage client
 
+**Titre affiché (dictionnaire, testimonials.title) :** Témoignages de clients
+
 « Très professionnel. Mauricio a compris mon travail dès le départ et a su créer ce dont j'ai besoin. Le résultat dépasse mes attentes, et travailler avec lui a été simple et très satisfaisant. »
 
 **Dangel Manik · Thérapeute holistique · Montréal**
 
-*Traduit de l'espagnol (original : courriel du 2026-08-20, vérifié). Traduction validée par Mauricio (2026-10-26).*
+*Traduit de l'espagnol.*
+
+*Note interne, non visible : original : courriel du 2026-08-20, vérifié. Traduction validée par Mauricio (2026-10-26).*
 
 « Excellente expérience avec Mauricio (Magneto) ! Il a su comprendre nos besoins et les transformer en un site web attrayant, fonctionnel et professionnel. Nous recommandons Magneto sans hésitation ! »
 
@@ -100,11 +99,45 @@ Projet de Magneto, et non un projet client : une boutique en ligne et un blogue 
 
 *Bloc masqué jusqu'à la finalisation du PDF et de l'envoi par courriel. Ne pas publier.*
 
-**Accroche courte :** Améliorer ou refaire votre site?
+*Aligné sur le bloc EN (Home §6) et sur la page couverture du PDF FR-CA v1.2, 2026-11-04.*
 
-**Promesse :** Repérez les problèmes prioritaires et trouvez la prochaine étape adaptée.
+**Sur-titre :** Bilan gratuit de votre site web
 
-**CTA du téléchargement (mobile) :** Obtenir le guide
+#### Améliorer, refaire ou entretenir? Découvrez ce dont votre site web a vraiment besoin.
+
+**Améliorer, refaire ou entretenir? Le bilan de votre site web en 10 minutes**
+
+Un bilan gratuit de 10 minutes pour les petites entreprises et les professionnels autonomes. Répondez à des questions simples et voyez où en est votre site. Aucune connaissance technique requise.
+
+**Ce que contient le bilan :**
+
+- 25 questions simples sur la clarté, les demandes, les fondations, le contenu et l'entretien
+- Un résultat qui vous oriente vers améliorer, refaire ou entretenir — ou indique qu'aucun travail urgent n'est requis
+- Un plan d'action d'une page pour établir vos 3 grandes priorités
+
+**Format :** PDF gratuit · environ 10 pages
+
+**CTA :** Obtenir le bilan gratuit
+
+#### Formulaire de téléchargement
+
+**Champ :** Prénom (facultatif)
+
+**Champ :** Adresse courriel (obligatoire)
+
+**Case facultative, décochée par défaut :** J'aimerais aussi recevoir à l'occasion des courriels de Magneto Web Consulting sur des conseils et des services liés aux sites web. Je peux me désabonner en tout temps.
+
+**Bouton d'envoi :** Envoyez-moi le bilan
+
+**Mention de confidentialité :** Le bilan vous est envoyé par courriel. Le demander ne vous abonne pas aux courriels promotionnels; l'infolettre est facultative. Politique de confidentialité
+
+**Ligne d'identification :** Magneto Web Consulting · 10-6295, rue Boyer, Montréal (Québec) H2S 2J2 · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co)
+
+**Message de confirmation :** Merci. Votre bilan est en route vers [email]. S'il n'est pas dans votre boîte de réception d'ici quelques minutes, vérifiez vos courriels indésirables ou écrivez à [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co).
+
+**Erreur de courriel :** Veuillez entrer une adresse courriel valide.
+
+**Échec de l'envoi :** Un problème est survenu et votre demande n'a pas été envoyée. Veuillez réessayer.
 
 #### CTA de fin du PDF — copie FR-CA (2026-11-03)
 
@@ -144,7 +177,7 @@ Mauricio Bayuelo sur LinkedIn · Politique de confidentialité · Choix de confi
 
 **Balise titre :** Conception et développement de sites web à Montréal | Magneto
 
-**Méta-description :** Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec son fondateur, en français, en anglais et en espagnol.
+**Méta-description :** Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec l'implication directe du fondateur, en français, en anglais et en espagnol.
 
 ## SEO — Index Réalisations (/projects) — Final (approuvé par Mauricio, 2026-10-31)
 
@@ -237,7 +270,7 @@ Mauricio Bayuelo sur LinkedIn · Politique de confidentialité · Choix de confi
 
 **Balise titre :** À propos de Magneto | Consultation web à Montréal
 
-**Méta-description :** Découvrez Mauricio Bayuelo, fondateur de Magneto à Montréal : stratégie web, UX/UI et développement pour les entreprises de services, en français, en anglais et en espagnol.
+**Méta-description :** Mauricio Bayuelo, fondateur de Magneto Web Consulting à Montréal : stratégie web, UX/UI et développement pour entreprises de services, en trois langues.
 
 ---
 
@@ -282,7 +315,7 @@ Le travail réunit stratégie, structure, conception UX/UI et développement afi
 - Bases d'analytique et de référencement
 - Vérifications qualité, mise en ligne et transfert au client
 
-**Investissement :** à partir de **3 500 \$ CA** pour une page de destination ciblée, en une seule langue. Investissement habituel pour un site web : **5 000 à 8 000 \$ CA**. Projets sur mesure : **10 000 \$ CA et plus**. Tous les prix sont en dollars canadiens. Les taxes applicables sont ajoutées s'il y a lieu.
+**Investissement :** à partir de **3 500 $ CA** pour une page de destination ciblée, en une seule langue. Investissement habituel pour un site web : **5 000 à 8 000 $ CA**. Projets sur mesure : **10 000 $ CA et plus**. Tous les prix sont en dollars canadiens. Les taxes applicables sont ajoutées s'il y a lieu.
 
 **CTA : Voir les tarifs BUILD**
 
@@ -422,9 +455,9 @@ Tous les prix sont en dollars canadiens. Les taxes applicables sont ajoutées s'
 
 #### Pour créer un site web, réaliser une refonte importante ou concevoir une page de destination ciblée.
 
-- **Page de destination ciblée, en une seule langue :** à partir de **3 500 \$ CA**
-- **Site web complet d'environ 5 à 10 pages, habituellement en deux ou trois langues :** **5 000 à 8 000 \$ CA**
-- **Projets plus grands ou plus complexes :** **10 000 \$ CA et plus**, sur soumission personnalisée
+- **Page de destination ciblée, en une seule langue :** à partir de **3 500 $ CA**
+- **Site web complet d'environ 5 à 10 pages, habituellement en deux ou trois langues :** **5 000 à 8 000 $ CA**
+- **Projets plus grands ou plus complexes :** **10 000 $ CA et plus**, sur soumission personnalisée
 
 Comprend la stratégie, la conception, le développement, la mise en ligne et le transfert au client.
 
@@ -438,7 +471,7 @@ FIX peut corriger des pages difficiles à comprendre ou lentes, des problèmes d
 
 Vous recevez une liste écrite des correctifs prévus ainsi qu'un prix fixe avant le début des travaux. Le résultat est vérifié par la suite.
 
-**À partir de 1 000 \$ CA.** Le prix définitif est confirmé avant tout travail.
+**À partir de 1 000 $ CA.** Le prix définitif est confirmé avant tout travail.
 
 **CTA : Discutons de votre projet FIX**
 
@@ -446,7 +479,7 @@ Vous recevez une liste écrite des correctifs prévus ainsi qu'un prix fixe avan
 
 #### Pour un site web qui fonctionne déjà bien et qui doit le rester.
 
-**À partir de 200 \$ CA par mois.**
+**À partir de 200 $ CA par mois.**
 
 **CARE Essential :** mises à jour, surveillance, vérification régulière du bon fonctionnement des formulaires et des systèmes de réservation, et rapport de santé du site web.
 
@@ -468,7 +501,7 @@ La plupart des projets commencent par une conversation et un examen de ce qui es
 
 Le Diagnostic payant de site web intervient lorsque des inconnues techniques empêchent de préparer une estimation responsable, ou avant l'admission à CARE d'un site que Magneto n'a pas créé.
 
-**Tarif fixe : 450 \$ CA.** Vous approuvez ce montant avant le début de l'évaluation.
+**Tarif fixe : 450 $ CA.** Vous approuvez ce montant avant le début de l'évaluation.
 
 Vous recevez les constats documentés, les priorités et une orientation recommandée.
 
@@ -513,7 +546,7 @@ Mauricio Bayuelo sur LinkedIn · Politique de confidentialité · Choix de confi
 
 **Balise titre :** Tarifs de création de sites web à Montréal | Magneto
 
-**Méta-description :** Tarifs de sites web pour les entreprises de services à Montréal : pages de destination dès 3 500 \$ CA, sites complets généralement de 5 000 à 8 000 \$ CA, FIX dès 1 000 \$ CA et CARE dès 200 \$ CA/mois.
+**Méta-description :** Tarifs de sites web pour les entreprises de services à Montréal : pages de destination dès 3 500 $ CA, sites complets généralement de 5 000 à 8 000 $ CA, FIX dès 1 000 $ CA et CARE dès 200 $ CA/mois.
 
 ---
 
@@ -572,7 +605,7 @@ Magneto a pris en charge le projet, de la stratégie à la mise en ligne : conce
 
 ### Voir le site
 
-**CTA : Voir **[**dangelwellness.ca**](https://dangelwellness.ca)
+**CTA : Voir [dangelwellness.ca](https://dangelwellness.ca)**
 
 ### Appel à l'action final
 
@@ -644,7 +677,7 @@ Magneto a pris en charge le projet, de la stratégie à la mise en ligne : struc
 
 ### Voir le site
 
-**CTA : Voir **[**trepied.ca**](https://trepied.ca)
+**CTA : Voir [trepied.ca](https://trepied.ca)**
 
 ### Appel à l'action final
 
@@ -716,7 +749,7 @@ Magneto a conçu et développé le site web et continue de l'entretenir et de le
 
 ### Voir le site
 
-**CTA : Voir **[**shamanicca.com**](https://shamanicca.com)
+**CTA : Voir [shamanicca.com](https://shamanicca.com)**
 
 ### Appel à l'action final
 
@@ -783,10 +816,10 @@ Options :
 
 Options :
 
-- Moins de 1 000 \$ CA
-- Environ 1 000 à 3 500 \$ CA
-- Environ 3 500 à 8 000 \$ CA
-- Plus de 8 000 \$ CA
+- Moins de 1 000 $ CA
+- Environ 1 000 à 3 500 $ CA
+- Environ 3 500 à 8 000 $ CA
+- Plus de 8 000 $ CA
 - Je ne sais pas encore
 
 **Texte d'aide :** Une fourchette suffit. Elle m'aide à vous proposer une prochaine étape réaliste et ne constitue pas une soumission. Si votre demande concerne l'entretien continu de votre site, choisissez **« Je ne sais pas encore »**.
@@ -939,9 +972,9 @@ Vos réponses sont transmises à Calendly avec votre réservation afin de prépa
 
 ## Politique de confidentialité
 
-**Date d'entrée en vigueur : 3 décembre 2026**
+**Date d'entrée en vigueur :** 3 décembre 2026
 
-**Dernière mise à jour : 3 décembre 2026**
+**Dernière mise à jour :** 3 décembre 2026
 
 Magneto Web Consulting est exploité par Mauricio Bayuelo sous le nom d'entreprise enregistré **Magneto MKTNG**, à Montréal, au Québec, au Canada.
 
@@ -1113,7 +1146,7 @@ J'utiliserai les renseignements fournis pour examiner votre demande de projet et
 
 **Case facultative, décochée par défaut :**
 
-- [ ] J'aimerais aussi recevoir des courriels occasionnels de **Magneto Web Consulting** contenant des conseils sur les sites web et de l'information sur ses services. Je peux me désabonner à tout moment.
+- [ ]  J'aimerais aussi recevoir des courriels occasionnels de **Magneto Web Consulting** contenant des conseils sur les sites web et de l'information sur ses services. Je peux me désabonner à tout moment.
 
 *La livraison du guide demandé et le consentement aux courriels promotionnels restent distincts. Ne pas afficher ce bloc avant que le guide et le parcours d'envoi soient prêts.*
 
@@ -1137,40 +1170,40 @@ Envoyé par courriel. L'abonnement à l'infolettre est facultatif.
 
 *Ces lignes ne font pas partie du texte visible du site.*
 
-- [ ] Politique de confidentialité — vérifier les données officielles du nom d'entreprise enregistré Magneto MKTNG, la désignation du responsable et l'adresse publique; confirmer si la date d'entrée en vigueur affichée doit être le 8 octobre 2026 (date du texte EN) ou la date réelle de prise d'effet. Toute modification de fond ou des dates doit être reprise dans l'EN canonique avant adaptation FR.
-- [ ] Politique §4 — identifier les fournisseurs réels, leurs rôles, leurs lieux de traitement/stockage et les mesures, évaluations ou ententes applicables. Une fois vérifiés, remplacer dans l'EN puis le FR la phrase prospective « Avant la mise en ligne, Magneto doit vérifier… » par un énoncé factuel approprié avant publication.
-- [ ] Politique §5 — tester en production la désactivation par défaut des outils d'analyse non essentiels, leur activation uniquement après acceptation, le refus sans perte d'accès et la réouverture effective du choix au moyen du lien « Choix de confidentialité » dans le pied de page. Harmoniser les formulations prospectives dans l'EN puis le FR selon les faits vérifiés.
-- [ ] Politique §7 — examiner avec le propriétaire (et idéalement un professionnel compétent en confidentialité) le libellé prospectif sur le calendrier interne de conservation. Créer et maintenir ce document opérationnel après lancement, conformément à la source actuelle; ne pas inventer de délais publics. Tout changement substantiel commence par l'EN.
-- [ ] Politique §§2 et 4 / modal — vérifier si les réponses sont collectées et/ou conservées par le site, Calendly ou un autre fournisseur, comment elles sont associées à la bonne réservation et où le courriel est saisi. Adapter l'EN puis le FR si A2/B2 transmet les réponses à Calendly ou si A collecte le courriel avant Calendly; ne sélectionner qu'une seule mention A1/A2/B1/B2 réellement exacte.
-- [ ] Politique / bannière — garder « Choix de confidentialité » identique dans le bandeau et le lien permanent du pied de page; garder « Accepter les outils d'analyse » identique dans le texte de §5 et le bouton. Vérifier que les boutons, liens et préférences fonctionnent réellement, sur ordinateur et mobile, avant publication.
-- [ ] Consentement — l'envoi du formulaire et la réservation Calendly ne doivent pas inscrire automatiquement aux courriels promotionnels. La case facultative pour l'infolettre/guide reste masquée et décochée par défaut jusqu'à activation, avec consentement marketing séparé et désabonnement vérifié.
-- [ ] Politique / accès — vérifier que la page est accessible depuis le pied de page, Contact, le modal et le bandeau. Contrôler les pratiques réelles de confidentialité : accès habituel, sécurité, conservation/suppression/anonymisation, demandes de droits et plaintes, ainsi que les obligations québécoises/canadiennes applicables au moment de la publication. Cette adaptation éditoriale ne constitue pas un avis juridique ni une certification de conformité.
-- [ ] Modal appel-conseil — vérifier la transmission et le préremplissage de l'adresse courriel dans la vraie interface Calendly; choisir A seulement si cette fonction marche de manière fiable. Sinon choisir B. Ne jamais demander le courriel deux fois.
-- [ ] Modal appel-conseil — tester comment les trois réponses sont transmises, conservées et associées à **la bonne réservation** (site, Calendly ou autre système). Si cette association ne fonctionne pas, ne pas mettre le modal en ligne en affirmant que les réponses servent à préparer l'appel.
-- [ ] Modal appel-conseil — retenir exactement **une seule** mention de confidentialité correspondant au flux effectivement vérifié (A1, A2, B1 ou B2). Vérifier aussi les informations à fournir sur le traitement et la conservation dans la future Politique de confidentialité FR, ainsi que le fonctionnement de consentement applicable avant publication.
-- [ ] Modal appel-conseil — ne pas ajouter de Budget, d'inscription à l'infolettre implicite, de CRM, d'assistant IA ni d'estimateur. Calendly assure le choix de la plage horaire et les renseignements d'identité requis non déjà préremplis; le CTA ne signifie pas que la réservation est confirmée.
-- [ ] Modal appel-conseil — vérifier le texte, les étiquettes, la longueur mobile et l'intégration dans la zone visuelle existante; ne pas assimiler l'appel gratuit de 30 minutes au Diagnostic payant de site web. Les erreurs de formulaire non définies dans l'EN restent à rédiger dans la source avant adaptation.
-- [ ] Contact : garder la structure Hero + formulaire et image/texte latéral, sans sections supplémentaires; exactement six entrées (nom, courriel, URL facultative, besoin, problème/objectif, budget).
-- [ ] Contact : question ouverte et budget obligatoires; conserver « Je ne sais pas encore » dans le budget et vérifier l'URL facultative sans préfixe https:// imposé si possible. Décider et vérifier les marqueurs de champs obligatoires/facultatifs ainsi que les valeurs initiales des deux listes déroulantes.
-- [ ] Contact : l'EN ne fournit pas encore les textes canoniques de validation (champ obligatoire, courriel invalide) ni d'échec d'envoi. Définir ces messages dans l'EN avant leur adaptation FR-CA; ne pas les considérer comme déjà approuvés.
-- [ ] Contact : n'afficher le message de confirmation qu'après retour positif du serveur, et prévoir un état d'erreur distinct. Tester réellement l'envoi.
-- [ ] Contact : maintenir le formulaire comme voie principale, l'appel-conseil comme CTA secondaire dans le Hero; ne pas demander un budget dans le modal de réservation. Ne pas ajouter d'inscription marketing implicite ni d'estimateur automatisé.
-- [ ] Contact : vérifier le lien Politique de confidentialité et les pratiques réelles de collecte/consentement avant la mise en ligne; harmoniser « Choix de confidentialité » lors de l'adaptation Privacy. Ceci est une exigence de QA, pas une affirmation de conformité.
-- [ ] Contact : réévaluer l'utilité du champ Budget après environ 10 demandes réelles, à titre de test UX et non de changement commercial automatique.
-- [ ] Réalisations — vérifier le lien réel du menu « Réalisations » lors de l'implémentation; l'EN canonique ne définit pas de page index autonome, donc aucune nouvelle page index n'est créée par cette adaptation.
-- [ ] Dangel — utiliser seulement des captures actuelles en production. Six légendes publiques sont rédigées; le septième emplacement éventuel (administration/transfert) est une directive de sélection, pas une légende à afficher. Privilégier une capture publique si une preuve d'administration n'apporte pas de valeur claire.
-- [ ] Dangel — vérifier l'absence d'adresse privée et de formulations anciennes. Remplacer l'ancien slug de projet /projects/fashion-company-ecommerce par un slug Dangel précis; conserver une redirection si l'ancienne adresse est publique. Ne mesurer publiquement que les envois de formulaires et les clics sur les liens de réservation, jamais les réservations terminées. Témoignage uniquement sur Accueil après contrôle de l'original ES.
-- [ ] Trépied — conserver les sept emplacements de capture existants et les recréer depuis la production vérifiée; ne pas capturer la fenêtre Calendly ni d'anciennes images de témoignages. Ne pas présenter les clients de Trépied comme des clients de Magneto et ne pas annoncer la mesure des demandes de soumission avant vérification.
-- [ ] Trépied — avant promotion active du portfolio (sans bloquer la construction, la traduction ou la publication de Magneto) : suivi écrit à Isra; corriger les mentions de propriétaire/contact en faveur d'Israel Valencia Vazquez; vérifier que tous les boutons de réservation visent le Calendly Trépied; tester le formulaire et son événement; clore les points de consentement Calendly et du lien Privacy; corriger les trois détails de langue connus; reconstruire les captures; demander un témoignage réel.
-- [ ] Shamanicca — garder explicite « Projet de Magneto, et non un projet client » partout où le statut du projet est présenté; renouveler les sept captures de l'état actuel en production. Ne pas présenter de résultats de vente, commande, paiement, livraison, conformité fiscale, SEO ou croissance d'audience non vérifiés; ne pas afficher la future identité de marque comme déjà déployée.
-- [ ] Shamanicca — avant de l'utiliser comme preuve promotionnelle aboutie (sans bloquer la construction de Magneto) : nettoyage SEO/AEO du blogue et des liens affiliés, vérification du cycle d'inscription à l'infolettre avant toute mention de confirmation par courriel, vérification du favicon et nouvelles captures. Ne parler de paiement ou de commande terminée qu'après un test réel de bout en bout.
-- [ ] Forfaits : présenter uniquement BUILD, FIX et CARE comme cartes de forfaits; placer le Diagnostic payant de site web à part, sous les cartes, sans badge commercial non documenté.
-- [ ] Forfaits : vérifier l'affichage mobile des montants et unités (\$ CA, par mois) ainsi que la distinction entre le court examen préalable à CARE et le diagnostic payant obligatoire pour un site externe.
-- [ ] Reconstituer et vérifier le témoignage Dangel depuis l'original espagnol; obtenir idéalement sa validation française. Réutiliser le composant actuel masqué, sans en créer un nouveau.
-- [ ] Conserver exactement trois éléments par carte de projet : capture · titre · description; les liens sont portés par les cartes/titres, sans quatrième élément visible.
-- [ ] Tester la mise en page et la longueur des textes sur ordinateur et mobile; portrait réel dominant dans À propos.
-- [ ] Vérifier la correspondance de l'intitulé professionnel avec le profil LinkedIn personnel.
-- [ ] Réserver un appel-conseil désigne la conversation initiale gratuite; il ne remplace pas le Diagnostic payant de site web.
-- [ ] Harmoniser Choix de confidentialité avec le bandeau et la politique FR avant publication.
-- [ ] Ne pas activer une langue dans le sélecteur avant que sa version complète soit en ligne et ait passé la vérification qualité.
-- [ ] Garder le guide gratuit masqué jusqu'à ce que le guide et son envoi par courriel existent; garder CARE qualitatif sur Services (comparaison détaillée sur Forfaits).
+- [ ]  Politique de confidentialité — vérifier les données officielles du nom d'entreprise enregistré Magneto MKTNG, la désignation du responsable et l'adresse publique; confirmer si la date d'entrée en vigueur affichée doit être le 8 octobre 2026 (date du texte EN) ou la date réelle de prise d'effet. Toute modification de fond ou des dates doit être reprise dans l'EN canonique avant adaptation FR.
+- [ ]  Politique §4 — identifier les fournisseurs réels, leurs rôles, leurs lieux de traitement/stockage et les mesures, évaluations ou ententes applicables. Une fois vérifiés, remplacer dans l'EN puis le FR la phrase prospective « Avant la mise en ligne, Magneto doit vérifier… » par un énoncé factuel approprié avant publication.
+- [ ]  Politique §5 — tester en production la désactivation par défaut des outils d'analyse non essentiels, leur activation uniquement après acceptation, le refus sans perte d'accès et la réouverture effective du choix au moyen du lien « Choix de confidentialité » dans le pied de page. Harmoniser les formulations prospectives dans l'EN puis le FR selon les faits vérifiés.
+- [ ]  Politique §7 — examiner avec le propriétaire (et idéalement un professionnel compétent en confidentialité) le libellé prospectif sur le calendrier interne de conservation. Créer et maintenir ce document opérationnel après lancement, conformément à la source actuelle; ne pas inventer de délais publics. Tout changement substantiel commence par l'EN.
+- [ ]  Politique §§2 et 4 / modal — vérifier si les réponses sont collectées et/ou conservées par le site, Calendly ou un autre fournisseur, comment elles sont associées à la bonne réservation et où le courriel est saisi. Adapter l'EN puis le FR si A2/B2 transmet les réponses à Calendly ou si A collecte le courriel avant Calendly; ne sélectionner qu'une seule mention A1/A2/B1/B2 réellement exacte.
+- [ ]  Politique / bannière — garder « Choix de confidentialité » identique dans le bandeau et le lien permanent du pied de page; garder « Accepter les outils d'analyse » identique dans le texte de §5 et le bouton. Vérifier que les boutons, liens et préférences fonctionnent réellement, sur ordinateur et mobile, avant publication.
+- [ ]  Consentement — l'envoi du formulaire et la réservation Calendly ne doivent pas inscrire automatiquement aux courriels promotionnels. La case facultative pour l'infolettre/guide reste masquée et décochée par défaut jusqu'à activation, avec consentement marketing séparé et désabonnement vérifié.
+- [ ]  Politique / accès — vérifier que la page est accessible depuis le pied de page, Contact, le modal et le bandeau. Contrôler les pratiques réelles de confidentialité : accès habituel, sécurité, conservation/suppression/anonymisation, demandes de droits et plaintes, ainsi que les obligations québécoises/canadiennes applicables au moment de la publication. Cette adaptation éditoriale ne constitue pas un avis juridique ni une certification de conformité.
+- [ ]  Modal appel-conseil — vérifier la transmission et le préremplissage de l'adresse courriel dans la vraie interface Calendly; choisir A seulement si cette fonction marche de manière fiable. Sinon choisir B. Ne jamais demander le courriel deux fois.
+- [ ]  Modal appel-conseil — tester comment les trois réponses sont transmises, conservées et associées à **la bonne réservation** (site, Calendly ou autre système). Si cette association ne fonctionne pas, ne pas mettre le modal en ligne en affirmant que les réponses servent à préparer l'appel.
+- [ ]  Modal appel-conseil — retenir exactement **une seule** mention de confidentialité correspondant au flux effectivement vérifié (A1, A2, B1 ou B2). Vérifier aussi les informations à fournir sur le traitement et la conservation dans la future Politique de confidentialité FR, ainsi que le fonctionnement de consentement applicable avant publication.
+- [ ]  Modal appel-conseil — ne pas ajouter de Budget, d'inscription à l'infolettre implicite, de CRM, d'assistant IA ni d'estimateur. Calendly assure le choix de la plage horaire et les renseignements d'identité requis non déjà préremplis; le CTA ne signifie pas que la réservation est confirmée.
+- [ ]  Modal appel-conseil — vérifier le texte, les étiquettes, la longueur mobile et l'intégration dans la zone visuelle existante; ne pas assimiler l'appel gratuit de 30 minutes au Diagnostic payant de site web. Les erreurs de formulaire non définies dans l'EN restent à rédiger dans la source avant adaptation.
+- [ ]  Contact : garder la structure Hero + formulaire et image/texte latéral, sans sections supplémentaires; exactement six entrées (nom, courriel, URL facultative, besoin, problème/objectif, budget).
+- [ ]  Contact : question ouverte et budget obligatoires; conserver « Je ne sais pas encore » dans le budget et vérifier l'URL facultative sans préfixe https:// imposé si possible. Décider et vérifier les marqueurs de champs obligatoires/facultatifs ainsi que les valeurs initiales des deux listes déroulantes.
+- [ ]  Contact : l'EN ne fournit pas encore les textes canoniques de validation (champ obligatoire, courriel invalide) ni d'échec d'envoi. Définir ces messages dans l'EN avant leur adaptation FR-CA; ne pas les considérer comme déjà approuvés.
+- [ ]  Contact : n'afficher le message de confirmation qu'après retour positif du serveur, et prévoir un état d'erreur distinct. Tester réellement l'envoi.
+- [ ]  Contact : maintenir le formulaire comme voie principale, l'appel-conseil comme CTA secondaire dans le Hero; ne pas demander un budget dans le modal de réservation. Ne pas ajouter d'inscription marketing implicite ni d'estimateur automatisé.
+- [ ]  Contact : vérifier le lien Politique de confidentialité et les pratiques réelles de collecte/consentement avant la mise en ligne; harmoniser « Choix de confidentialité » lors de l'adaptation Privacy. Ceci est une exigence de QA, pas une affirmation de conformité.
+- [ ]  Contact : réévaluer l'utilité du champ Budget après environ 10 demandes réelles, à titre de test UX et non de changement commercial automatique.
+- [ ]  Réalisations — vérifier le lien réel du menu « Réalisations » lors de l'implémentation; l'EN canonique ne définit pas de page index autonome, donc aucune nouvelle page index n'est créée par cette adaptation.
+- [ ]  Dangel — utiliser seulement des captures actuelles en production. Six légendes publiques sont rédigées; le septième emplacement éventuel (administration/transfert) est une directive de sélection, pas une légende à afficher. Privilégier une capture publique si une preuve d'administration n'apporte pas de valeur claire.
+- [ ]  Dangel — vérifier l'absence d'adresse privée et de formulations anciennes. Remplacer l'ancien slug de projet /projects/fashion-company-ecommerce par un slug Dangel précis; conserver une redirection si l'ancienne adresse est publique. Ne mesurer publiquement que les envois de formulaires et les clics sur les liens de réservation, jamais les réservations terminées. Témoignage uniquement sur Accueil après contrôle de l'original ES.
+- [ ]  Trépied — conserver les sept emplacements de capture existants et les recréer depuis la production vérifiée; ne pas capturer la fenêtre Calendly ni d'anciennes images de témoignages. Ne pas présenter les clients de Trépied comme des clients de Magneto et ne pas annoncer la mesure des demandes de soumission avant vérification.
+- [ ]  Trépied — avant promotion active du portfolio (sans bloquer la construction, la traduction ou la publication de Magneto) : suivi écrit à Isra; corriger les mentions de propriétaire/contact en faveur d'Israel Valencia Vazquez; vérifier que tous les boutons de réservation visent le Calendly Trépied; tester le formulaire et son événement; clore les points de consentement Calendly et du lien Privacy; corriger les trois détails de langue connus; reconstruire les captures; demander un témoignage réel.
+- [ ]  Shamanicca — garder explicite « Projet de Magneto, et non un projet client » partout où le statut du projet est présenté; renouveler les sept captures de l'état actuel en production. Ne pas présenter de résultats de vente, commande, paiement, livraison, conformité fiscale, SEO ou croissance d'audience non vérifiés; ne pas afficher la future identité de marque comme déjà déployée.
+- [ ]  Shamanicca — avant de l'utiliser comme preuve promotionnelle aboutie (sans bloquer la construction de Magneto) : nettoyage SEO/AEO du blogue et des liens affiliés, vérification du cycle d'inscription à l'infolettre avant toute mention de confirmation par courriel, vérification du favicon et nouvelles captures. Ne parler de paiement ou de commande terminée qu'après un test réel de bout en bout.
+- [ ]  Forfaits : présenter uniquement BUILD, FIX et CARE comme cartes de forfaits; placer le Diagnostic payant de site web à part, sous les cartes, sans badge commercial non documenté.
+- [ ]  Forfaits : vérifier l'affichage mobile des montants et unités ($ CA, par mois) ainsi que la distinction entre le court examen préalable à CARE et le diagnostic payant obligatoire pour un site externe.
+- [ ]  Reconstituer et vérifier le témoignage Dangel depuis l'original espagnol; obtenir idéalement sa validation française. Réutiliser le composant actuel masqué, sans en créer un nouveau.
+- [ ]  Conserver exactement trois éléments par carte de projet : capture · titre · description; les liens sont portés par les cartes/titres, sans quatrième élément visible.
+- [ ]  Tester la mise en page et la longueur des textes sur ordinateur et mobile; portrait réel dominant dans À propos.
+- [ ]  Vérifier la correspondance de l'intitulé professionnel avec le profil LinkedIn personnel.
+- [ ]  Réserver un appel-conseil désigne la conversation initiale gratuite; il ne remplace pas le Diagnostic payant de site web.
+- [ ]  Harmoniser Choix de confidentialité avec le bandeau et la politique FR avant publication.
+- [ ]  Ne pas activer une langue dans le sélecteur avant que sa version complète soit en ligne et ait passé la vérification qualité.
+- [ ]  Garder le guide gratuit masqué jusqu'à ce que le guide et son envoi par courriel existent; garder CARE qualitatif sur Services (comparaison détaillée sur Forfaits).

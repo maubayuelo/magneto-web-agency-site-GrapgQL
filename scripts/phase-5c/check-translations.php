@@ -5,6 +5,7 @@
  *   wp eval-file <repo>/scripts/phase-5c/check-translations.php [lang=fr|es]
  *
  * One line per checklist row (13, or the rows of one language), then "N/13 PASS" (or N/<rows>).
+ * Rows 14-17 (5c-rest §5: FR/ES Trépied and home) are informational: printed with "(info)", never counted in N/13.
  * No host guard on purpose: it may be run read-only in production (release-day note 2). It calls no write function.
  */
 
@@ -40,9 +41,16 @@ $p5t_rows = array(
 	array( 12, 'project', 'fashion-company-ecommerce', 'es', 'Dangel Wellness' ),
 	array( 13, 'project', 'shamaniccas-ecommerce', 'es', 'Shamanicca' ),
 );
+// Informational rows (5c-rest §5): shown with their row counts and media report, not counted in N/13.
+$p5t_info_rows = array(
+	array( 14, 'project', 'trepied-trepied-ca', 'fr', 'Trépied' ),
+	array( 15, 'project', 'trepied-trepied-ca', 'es', 'Trépied' ),
+	array( 16, 'page', 'home', 'fr', 'Accueil' ),
+	array( 17, 'page', 'home', 'es', 'Inicio' ),
+);
 // Copy repeaters shown per type (meta name → field key, for image sub-fields).
 $p5t_repeaters = array(
-	'page'    => array( 'services' => 'field_689a5f0dc2a9b', 'packages_elements' => 'field_689a4b0bfdf48', 'sections' => 'field_p5_packagescontentsections_sections' ),
+	'page'    => array( 'services' => 'field_689a5f0dc2a9b', 'packages_elements' => 'field_689a4b0bfdf48', 'sections' => 'field_p5_packagescontentsections_sections', 'service' => 'field_689a5395d1bc9', 'testimonials' => 'field_689a37f1b1fb8' ),
 	'project' => array( 'project_data_challenges' => '', 'project_data_solutions' => '', 'project_data_results' => '', 'images' => 'field_689a6d04467f9' ),
 );
 
@@ -71,21 +79,24 @@ $p5t_rows_of = static function ( $id, $meta ) {
 $p5t_pass  = 0;
 $p5t_total = 0;
 $p5t_warns = 0;
-foreach ( $p5t_rows as list( $p5t_n, $p5t_type, $p5t_slug, $p5t_lang, $p5t_title ) ) {
+$p5t_iwarn = 0; // media WARN rows on the informational rows 14-17
+foreach ( array_merge( $p5t_rows, $p5t_info_rows ) as list( $p5t_n, $p5t_type, $p5t_slug, $p5t_lang, $p5t_title ) ) {
 	if ( '' !== $p5t_only && $p5t_only !== $p5t_lang ) {
 		continue;
 	}
-	++$p5t_total;
+	$p5t_info = $p5t_n > count( $p5t_rows );
+	$p5t_mark = $p5t_info ? ' (info)' : '';
+	$p5t_total += $p5t_info ? 0 : 1;
 	$p5t_fail = array();
 	$p5t_en   = $p5t_en_ids( $p5t_type, $p5t_slug );
 	if ( 1 !== count( $p5t_en ) ) {
-		WP_CLI::log( sprintf( '#%-2d FAIL %s %s/%s: %d EN posts (expected 1)', $p5t_n, $p5t_type, $p5t_slug, $p5t_lang, count( $p5t_en ) ) );
+		WP_CLI::log( sprintf( '#%-2d FAIL%s %s %s/%s: %d EN posts (expected 1)', $p5t_n, $p5t_mark, $p5t_type, $p5t_slug, $p5t_lang, count( $p5t_en ) ) );
 		continue;
 	}
 	$p5t_en  = (int) $p5t_en[0];
 	$p5t_tid = (int) apply_filters( 'wpml_object_id', $p5t_en, $p5t_type, false, $p5t_lang );
 	if ( ! $p5t_tid || $p5t_tid === $p5t_en ) {
-		WP_CLI::log( sprintf( '#%-2d FAIL %s %s (EN %d) → no %s translation', $p5t_n, $p5t_type, $p5t_slug, $p5t_en, $p5t_lang ) );
+		WP_CLI::log( sprintf( '#%-2d FAIL%s %s %s (EN %d) → no %s translation', $p5t_n, $p5t_mark, $p5t_type, $p5t_slug, $p5t_en, $p5t_lang ) );
 		continue;
 	}
 	$p5t_post  = get_post( $p5t_tid );
@@ -116,12 +127,12 @@ foreach ( $p5t_rows as list( $p5t_n, $p5t_type, $p5t_slug, $p5t_lang, $p5t_title
 	}
 
 	$p5t_ok = ! $p5t_fail;
-	$p5t_pass += $p5t_ok ? 1 : 0;
+	$p5t_pass += $p5t_ok && ! $p5t_info ? 1 : 0;
 	WP_CLI::log(
 		sprintf(
 			'#%-2d %s %s %s EN %d → %d %s · post_name %s · %s · "%s"%s · trid %s · dup_of %s · groups %d/%d%s',
 			$p5t_n,
-			$p5t_ok ? 'PASS' : 'FAIL',
+			( $p5t_ok ? 'PASS' : 'FAIL' ) . $p5t_mark,
 			$p5t_type,
 			$p5t_slug,
 			$p5t_en,
@@ -170,7 +181,11 @@ foreach ( $p5t_rows as list( $p5t_n, $p5t_type, $p5t_slug, $p5t_lang, $p5t_title
 				}
 			}
 			if ( $p5t_bad ) {
-				$p5t_warns += count( $p5t_bad );
+				if ( $p5t_info ) {
+					$p5t_iwarn += count( $p5t_bad );
+				} else {
+					$p5t_warns += count( $p5t_bad );
+				}
 				WP_CLI::log( "      media WARN {$p5t_meta}.{$p5t_sub['name']} (" . implode( '; ', $p5t_bad ) . ')' );
 			} else {
 				WP_CLI::log( "      media ok   {$p5t_meta}.{$p5t_sub['name']} ({$p5t_ok_n} rows)" );
@@ -180,5 +195,5 @@ foreach ( $p5t_rows as list( $p5t_n, $p5t_type, $p5t_slug, $p5t_lang, $p5t_title
 	WP_CLI::log( '      rows (target/EN): ' . ( $p5t_counts ? implode( ' · ', $p5t_counts ) : '—' ) );
 }
 
-WP_CLI::log( "media WARN rows: {$p5t_warns}" );
+WP_CLI::log( "media WARN rows: {$p5t_warns} (info rows 14-17: {$p5t_iwarn})" );
 WP_CLI::log( "{$p5t_pass}/{$p5t_total} PASS" );

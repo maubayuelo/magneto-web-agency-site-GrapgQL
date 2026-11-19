@@ -282,6 +282,8 @@ export const GlossarySchema = z.object({
   ctaLabels: z.array(z.object({ dictKey: z.string(), note: z.string().optional() })),
   required: z.array(z.object({ en: z.string(), fr: z.string().optional(), es: z.string().optional() })),
   identicalAllowed: z.object({ fr: z.array(z.string()), es: z.array(z.string()) }),
+  // Unit ids whose target value is empty on purpose (approved copy), exempt from the `empty` error. Optional.
+  emptyAllowed: z.object({ fr: z.array(z.string()), es: z.array(z.string()) }).default({ fr: [], es: [] }),
   urlExceptions: z.array(z.object({ en: z.string(), fr: z.string().optional(), es: z.string().optional() })),
 });
 export type Glossary = z.infer<typeof GlossarySchema>;

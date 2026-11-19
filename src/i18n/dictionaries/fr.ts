@@ -145,7 +145,7 @@ export const fr: Dictionary = {
     submitting: 'Envoi en cours...',
     continueDownload: 'Continuer vers le téléchargement',
   },
-  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 637fba7 (FR 901/907/918/922/924/934).
+  // 5d-lite §5.1 / §8.1: booking dialog (variant B), verbatim from export 2026-11-17 (FR 934/940/951/955/957/967).
   // Heading = common.bookStrategyCall; website/need labels and options = contactForm.*.
   bookingModal: {
     body: 'Répondez à trois courtes questions pour préparer notre échange sur votre site web. Choisissez ensuite une plage horaire pour un appel gratuit de 30 minutes.',
@@ -186,11 +186,11 @@ export const fr: Dictionary = {
   meta: {
     site: {
       fallbackTitle: 'Magneto Web Consulting',
-      fallbackDescription: 'Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec son fondateur, en français, en anglais et en espagnol.',
+      fallbackDescription: "Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec l'implication directe du fondateur, en français, en anglais et en espagnol.",
     },
     home: {
       title: 'Conception et développement de sites web à Montréal | Magneto',
-      description: 'Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec son fondateur, en français, en anglais et en espagnol.',
+      description: "Magneto conçoit, améliore et entretient des sites web pour les entreprises de services à Montréal. Stratégie, UX/UI et développement avec l'implication directe du fondateur, en français, en anglais et en espagnol.",
     },
     services: {
       title: 'Services web à Montréal | BUILD, FIX et CARE | Magneto',
@@ -206,14 +206,14 @@ export const fr: Dictionary = {
     },
     about: {
       title: 'À propos de Magneto | Consultation web à Montréal',
-      // K1 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting", ≤ 160 chars. Differs from export FR 240.
+      // K1 (Q-D1, 2026-11-09): adds the kept term "Magneto Web Consulting", ≤ 160 chars. = export FR 273 since the 5c-rest re-export.
       description: 'Mauricio Bayuelo, fondateur de Magneto Web Consulting à Montréal : stratégie web, UX/UI et développement pour entreprises de services, en trois langues.',
     },
     contact: {
       title: 'Contacter Magneto | Projets web à Montréal',
       description: "Contactez Magneto Web Consulting à Montréal. Présentez votre projet de création, d'amélioration ou d'entretien de site web et découvrez la prochaine étape, en français, en anglais ou en espagnol.",
     },
-    // Privacy route (spec §4): magneto-copy-fr-CA.md:1061 / :1063 (637fba7).
+    // Privacy route (spec §4): magneto-copy-fr-CA.md:1094 / :1096 (export 2026-11-17).
     privacy: {
       title: 'Politique de confidentialité | Magneto Web Consulting',
       description: 'Découvrez comment Magneto Web Consulting recueille, utilise et protège les renseignements personnels transmis au moyen de son site web et comment joindre le responsable de leur protection.',

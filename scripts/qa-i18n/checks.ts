@@ -149,7 +149,7 @@ export function checkUnit(unit: Unit, ctx: CheckContext): Finding[] {
     const enEmpty = en.trim() === '';
     const tEmpty = t.trim() === '';
     if (!enEmpty && tEmpty) {
-      f('empty', 'error', lang, en, t, `EN has text, ${lang.toUpperCase()} is empty`);
+      if (!ctx.glossary.emptyAllowed[lang].includes(unit.id)) f('empty', 'error', lang, en, t, `EN has text, ${lang.toUpperCase()} is empty`);
       continue;
     }
     if (enEmpty && !tEmpty) {

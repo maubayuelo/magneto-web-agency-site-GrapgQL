@@ -1,14 +1,7 @@
-<!--
-Source: Notion — Magneto's Page Copy / ES
-URL: https://app.notion.com/p/3fc702393b5e81abaf9af4c499daab27
-Notion page last edited: 2026-11-04 (Privacy gates G-1…G-7: effective date, §4 providers, §5 analytics, internal ready blocks — Senior Architect via the Notion connector, approved by Mauricio; lead-magnet copy edited by Mauricio 2026-11-03)
-Exported: 2026-11-04 by the Senior Architect (Claude chat) via the Notion connector, unedited content.
-Method: fresh full-page fetch converted with the ffec355 conventions (bold/italic to Markdown, mentions as [Notion page](url), \$ and \[ \] kept escaped); diff vs ffec355 limited to the lead-magnet blocks and the Privacy Policy (dates, §4, §5, internal ready blocks).
-Status: canonical copy source (EN SOURCE FROZEN v1 / FR-CA, ES finalized editorially). Notion stays canonical;
-re-export if Notion changes. Do not edit copy here — edit in Notion, then re-export.
--->
+# Magneto’s Page Copy / ES
 
-> **Copy ES de referencia — Home, Sobre Magneto (About), Servicios (Services), Paquetes (Packages), las tres fichas de Proyectos, Contacto y Modal de llamada finalizados editorialmente.** Fuente canónica de significado: [Notion page](https://app.notion.com/p/3fc702393b5e80ab9658cef2f9f46e1f) (Home, About, Services, Packages, Case Studies y Contact / Strategy Call Modal — Consensus EN Source Copy v2). Adaptación para una audiencia hispanohablante de Montreal en español latinoamericano neutro. El resto de las páginas ES está pendiente. Este documento contiene el copy consolidado, no los informes de revisión; no confirma la publicación del idioma ES.
+> **Copy ES de referencia — Home, Sobre Magneto (About), Servicios (Services), Paquetes (Packages), las tres fichas de Proyectos, Contacto y Modal de llamada finalizados editorialmente.** Fuente canónica de significado: [Magneto’s Page Copy / EN](https://app.notion.com/p/Magneto-s-Page-Copy-EN-3fc702393b5e80ab9658cef2f9f46e1f?pvs=21) (Home, About, Services, Packages, Case Studies y Contact / Strategy Call Modal — Consensus EN Source Copy v2). Adaptación para una audiencia hispanohablante de Montreal en español latinoamericano neutro. El resto de las páginas ES está pendiente. Este documento contiene el copy consolidado, no los informes de revisión; no confirma la publicación del idioma ES.
+> 
 
 # HOME
 
@@ -26,11 +19,13 @@ re-export if Notion changes. Do not edit copy here — edit in Notion, then re-e
 
 Crea un sitio web más sólido, corrige lo que limita tu sitio actual o asegúrate de que siga funcionando con un mantenimiento continuo y confiable.
 
-**CTA: Agendar una llamada de orientación gratuita**
+**CTA: Reservar consulta gratis**
 
 ## 2. Conoce Magneto
 
-### Trabaja directamente con quien planifica, diseña y desarrolla tu sitio web.
+### Conoce Magneto
+
+Trabaja directamente con quien planifica, diseña y desarrolla tu sitio web.
 
 Magneto es una consultoría web de Montreal dirigida por su fundador. Trabajas directamente con Mauricio en todas las etapas: desde la estrategia y el diseño UX/UI hasta el desarrollo y el lanzamiento.
 
@@ -92,7 +87,7 @@ Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda 
 
 **Dangel Manik · Terapeuta holístico · Montreal**
 
-*Original en español, verificado contra el correo del 2026-08-20; solo se corrigió el acento de «él». Reutilizar el componente testimonial existente, actualmente oculto.*
+*Nota interna, no visible — sin nota pública en ES (el original es en español). Original en español, verificado contra el correo del 2026-08-20; solo se corrigió el acento de «él». Reutilizar el componente testimonial existente, actualmente oculto.*
 
 “Excelente experiencia trabajando con Mauricio (Magneto). Supo entender nuestras necesidades y transformarlas en un sitio web atractivo, funcional y profesional. ¡Recomendamos Magneto ampliamente!”
 
@@ -102,15 +97,45 @@ Proyecto propio de Magneto, no un trabajo realizado para un cliente: una tienda 
 
 ## 6. Guía gratuita — BLOQUE OCULTO HASTA SU ACTIVACIÓN
 
-### ¿Mejorar o rehacer tu sitio web?
+*Alineado con el bloque EN (Home §6) y con la portada del PDF ES v1.2, 2026-11-04.*
 
-**¿Mejorar o rehacer? Guía para decidir**
+**Antetítulo:** Chequeo gratuito de tu sitio web
 
-Identifica los problemas prioritarios y descubre qué conviene revisar primero.
+### ¿Mejorar, rehacer o mantener? Descubre qué necesita realmente tu sitio web.
 
-**CTA de descarga (móvil): Obtener la guía**
+**¿Mejorar, rehacer o mantener? El chequeo de tu sitio web en 10 minutos**
 
-Enviada por correo electrónico. La suscripción al boletín es opcional.
+Un chequeo gratuito de 10 minutos para pequeñas empresas y profesionales independientes. Responde preguntas sencillas y descubre en qué punto está tu sitio. No necesitas conocimientos técnicos.
+
+**Qué incluye:**
+
+- 25 preguntas sencillas sobre claridad, consultas, bases, contenido y mantenimiento
+- Un resultado que apunta a mejorar, rehacer o mantener — o indica que no hay nada urgente
+- Un plan de acción de una página para definir tus 3 prioridades principales
+
+**Formato:** PDF gratuito · unas 10 páginas
+
+**CTA:** Obtener el chequeo gratis
+
+#### Formulario de descarga
+
+**Campo:** Nombre (opcional)
+
+**Campo:** Correo electrónico (obligatorio)
+
+**Casilla opcional, desmarcada por defecto:** También quiero recibir de vez en cuando correos de Magneto Web Consulting con consejos y servicios para sitios web. Puedo darme de baja en cualquier momento.
+
+**Botón de envío:** Envíame el chequeo
+
+**Línea de privacidad:** El chequeo se envía por correo electrónico. Pedirlo no te suscribe a correos promocionales; el boletín es opcional. Política de privacidad
+
+**Línea de identificación:** Magneto Web Consulting · 10-6295 rue Boyer, Montreal, QC H2S 2J2 · [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co)
+
+**Mensaje de éxito:** Gracias. Tu chequeo va en camino a [email]. Si no lo ves en tu bandeja de entrada en unos minutos, revisa tu carpeta de correo no deseado o escribe a [contact@magnetomarketing.co](mailto:contact@magnetomarketing.co).
+
+**Error de correo:** Ingresa un correo electrónico válido.
+
+**Fallo de envío:** Algo salió mal y tu solicitud no se envió. Inténtalo de nuevo.
 
 #### CTA final dentro del PDF — copy ES (2026-11-03)
 
@@ -136,7 +161,7 @@ Enviada por correo electrónico. La suscripción al boletín es opcional.
 
 Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas, optar por mantenimiento continuo o, por ahora, no realizar cambios importantes.
 
-**CTA: Agendar una llamada de orientación gratuita**
+**CTA: Reservar consulta gratis**
 
 ## 8. Pie de página
 
@@ -168,7 +193,7 @@ Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacida
 
 Estrategia web, diseño UX/UI y desarrollo con una sola persona de contacto, desde la primera conversación hasta el lanzamiento.
 
-**CTA: Agendar una llamada de orientación gratuita**
+**CTA: Reservar consulta gratis**
 
 ## 2. El fundador
 
@@ -229,7 +254,7 @@ El papel de Magneto es recomendar primero el camino más sensato y, después, di
 
 Explica qué funciona y qué no en tu sitio web. Magneto te ayudará a determinar cuál es el siguiente paso más conveniente.
 
-**CTA: Agendar una llamada de orientación gratuita**
+**CTA: Reservar consulta gratis**
 
 ## 8. Pie de página
 
@@ -243,7 +268,7 @@ Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacida
 
 **Título SEO:** Sobre Magneto | Consultoría web en Montreal
 
-**Metadescripción:** Conoce a Mauricio Bayuelo, fundador de Magneto en Montreal. Estrategia web, diseño UX/UI y desarrollo para empresas de servicios, en español, francés e inglés.
+**Metadescripción:** Mauricio Bayuelo, fundador de Magneto Web Consulting en Montreal: estrategia web, diseño UX/UI y desarrollo para empresas de servicios, en tres idiomas.
 
 ---
 
@@ -255,7 +280,7 @@ Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacida
 
 Crea un sitio web más sólido, mejora el que ya tienes o asegúrate de que siga funcionando con un mantenimiento continuo y confiable.
 
-**CTA: Agendar una llamada de orientación gratuita**
+**CTA: Reservar consulta gratis**
 
 ## 2. Introducción
 
@@ -386,7 +411,7 @@ No necesitas elegir entre BUILD, FIX o CARE antes de ponerte en contacto con Mag
 
 Empieza por explicar qué está pasando con tu sitio web. Magneto te recomendará el siguiente paso más sensato antes de definir el alcance del proyecto.
 
-**CTA principal: Agendar una llamada de orientación gratuita**
+**CTA principal: Reservar consulta gratis**
 
 **CTA secundario: Cuéntame sobre tu proyecto**
 
@@ -503,7 +528,7 @@ Explica qué está pasando con tu sitio web y qué quieres mejorar. Magneto te o
 
 **CTA principal: Cuéntame sobre tu proyecto**
 
-**CTA secundario: Agendar una llamada de orientación gratuita**
+**CTA secundario: Reservar consulta gratis**
 
 ## 8. Pie de página
 
@@ -586,7 +611,7 @@ Magneto se encargó del proyecto desde la estrategia hasta el lanzamiento: dise�
 
 Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo.
 
-**CTA: Agendar una llamada de orientación gratuita**
+**CTA: Reservar consulta gratis**
 
 ### SEO — Dangel
 
@@ -660,7 +685,7 @@ Magneto se encargó del proyecto desde la estrategia hasta el lanzamiento: estru
 
 Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo.
 
-**CTA: Agendar una llamada de orientación gratuita**
+**CTA: Reservar consulta gratis**
 
 ### SEO — Trépied
 
@@ -734,7 +759,7 @@ Magneto diseñó y desarrolló el sitio, y continúa manteniéndolo y ampliándo
 
 Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nuevo, hacer correcciones específicas o contar con mantenimiento continuo.
 
-**CTA: Agendar una llamada de orientación gratuita**
+**CTA: Reservar consulta gratis**
 
 ### SEO — Shamanicca
 
@@ -752,7 +777,7 @@ Magneto puede ayudarte a determinar si lo más conveniente es crear un sitio nue
 
 Comparte algunos detalles sobre tu proyecto y lo que quieres crear o mejorar. Te responderé con una recomendación sobre el siguiente paso más conveniente.
 
-**CTA secundario:** ¿Prefieres conversar? **Agendar una llamada de orientación gratuita**
+**CTA secundario:** ¿Prefieres conversar? **Reservar consulta gratis**
 
 ## 2. Formulario de solicitud de proyecto
 
@@ -835,7 +860,7 @@ Los revisaré y te responderé por correo electrónico con una recomendación so
 
 **Error — presupuesto:** Elige un presupuesto aproximado, o « Todavía no lo sé ».
 
-**Fallo del envío:** Ocurrió un error y tu mensaje no se envió. Inténtalo de nuevo o agenda una llamada de orientación gratuita.
+**Fallo del envío:** Ocurrió un error y tu mensaje no se envió. Inténtalo de nuevo o reserva una consulta gratis.
 
 ## 5. Pie de página
 
@@ -849,7 +874,7 @@ Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacida
 
 **Título SEO:** Contacta a Magneto | Proyectos web en Montreal
 
-**Metadescripción:** Contacta a Magneto en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu sitio web. Atención en español, francés e inglés.
+**Metadescripción:** Contacta a Magneto Web Consulting en Montreal. Cuéntame qué necesitas crear, corregir o mantener en tu sitio web. Atención en español, francés e inglés.
 
 ---
 
@@ -857,11 +882,11 @@ Mauricio Bayuelo en LinkedIn · Política de privacidad · Opciones de privacida
 
 *Instrucción interna no visible: A y B son alternativas de interfaz excluyentes. Solo una se integrará tras comprobar localmente el prellenado de Calendly. Las menciones A1/A2/B1/B2 también son alternativas excluyentes: utilizar únicamente aquella que describa los datos y el flujo verificados. Ninguna está seleccionada ni autorizada para publicación todavía.*
 
-## Variante A — Correo electrónico en el modal \[CONDICIONAL\]
+## Variante A — Correo electrónico en el modal [CONDICIONAL]
 
 *Instrucción interna no visible: usar solo si Calendly recibe el correo desde el modal y lo muestra prellenado de manera fiable. No volver a pedirlo.*
 
-### Agendar una llamada de orientación gratuita
+### Reservar consulta gratis
 
 Indica tu correo electrónico y responde tres preguntas breves para que podamos concentrarnos en tu sitio web durante la conversación. Después elige un horario para una llamada gratuita de 30 minutos.
 
@@ -896,17 +921,17 @@ Indica tu correo electrónico y responde tres preguntas breves para que podamos 
 
 **A1 — Condición interna:** las tres respuestas se procesan por el sitio y quedan asociadas de forma comprobada con la reserva; solo el correo se transmite a Calendly.
 
-Tus respuestas se utilizan para preparar la llamada. Tu correo electrónico se transmite a Calendly para que no tengas que escribirlo dos veces. Agendar una llamada no te suscribe a correos promocionales. **Política de privacidad**
+Tus respuestas se utilizan para preparar la llamada. Tu correo electrónico se transmite a Calendly para que no tengas que escribirlo dos veces. Reservar una consulta no te suscribe a correos promocionales. **Política de privacidad**
 
 **A2 — Condición interna:** las tres respuestas y el correo se transmiten realmente a Calendly y quedan asociados con la reserva.
 
-Tus respuestas y tu correo electrónico se transmiten a Calendly junto con tu reserva para preparar la llamada y evitar que tengas que escribir el correo dos veces. Agendar una llamada no te suscribe a correos promocionales. **Política de privacidad**
+Tus respuestas y tu correo electrónico se transmiten a Calendly junto con tu reserva para preparar la llamada y evitar que tengas que escribir el correo dos veces. Reservar una consulta no te suscribe a correos promocionales. **Política de privacidad**
 
-## Variante B — Correo electrónico recogido directamente por Calendly \[CONDICIONAL\]
+## Variante B — Correo electrónico recogido directamente por Calendly [CONDICIONAL]
 
 *Instrucción interna no visible: utilizar si el prellenado del correo desde el modal no es fiable o resulta innecesariamente complejo. No mostrar un campo de correo en este modal. Calendly recoge nombre y correo para reservar.*
 
-### Agendar una llamada de orientación gratuita
+### Reservar consulta gratis
 
 Responde tres preguntas breves para que podamos concentrarnos en tu sitio web durante la conversación. Después elige un horario para una llamada gratuita de 30 minutos.
 
@@ -937,17 +962,18 @@ Responde tres preguntas breves para que podamos concentrarnos en tu sitio web du
 
 **B1 — Condición interna:** el sitio procesa las tres respuestas y puede asociarlas de forma fiable con la reserva sin enviarlas a Calendly; requiere una comprobación positiva en local.
 
-Tus respuestas se utilizan para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizar la reserva. Agendar una llamada no te suscribe a correos promocionales. **Política de privacidad**
+Tus respuestas se utilizan para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizar la reserva. Reservar una consulta no te suscribe a correos promocionales. **Política de privacidad**
 
 **B2 — Condición interna:** las tres respuestas se transmiten realmente a Calendly y quedan asociadas con la reserva.
 
-Tus respuestas se transmiten a Calendly junto con tu reserva para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizarla. Agendar una llamada no te suscribe a correos promocionales. **Política de privacidad**
+Tus respuestas se transmiten a Calendly junto con tu reserva para preparar la llamada. Calendly te pedirá tu nombre y correo electrónico para realizarla. Reservar una consulta no te suscribe a correos promocionales. **Política de privacidad**
 
 ---
 
 # POLÍTICA DE PRIVACIDAD — ES (BORRADOR)
 
 > **Nota interna, no visible — BORRADOR (2026-10-30).** Adaptado de la fuente EN canónica (Privacy Policy — Consensus EN Source Copy v2) y alineado con la versión FR-CA. Terminología cercana a la Ley 25 de Quebec (Loi sur la protection des renseignements personnels dans le secteur privé). Sujeto a las mismas verificaciones de publicación que EN y FR-CA; todo cambio de fondo empieza en el EN. No es asesoría legal.
+> 
 
 ## Política de privacidad
 
@@ -1107,7 +1133,7 @@ Las tecnologías necesarias ayudan a que este sitio funcione. Con tu permiso, Ma
 
 **Casilla opcional, desmarcada por defecto:**
 
-- [ ] Me gustaría recibir también correos ocasionales de **Magneto Web Consulting** con consejos sobre sitios web e información sobre sus servicios. Puedo darme de baja en cualquier momento.
+- [ ]  Me gustaría recibir también correos ocasionales de **Magneto Web Consulting** con consejos sobre sitios web e información sobre sus servicios. Puedo darme de baja en cualquier momento.
 
 *La entrega de la guía solicitada y el consentimiento para correos promocionales son independientes. No mostrar este bloque hasta que la guía y su envío estén listos.*
 
@@ -1115,48 +1141,48 @@ Las tecnologías necesarias ayudan a que este sitio funcione. Con tu permiso, Ma
 
 # VERIFICACIONES ANTES DE PUBLICAR — NO VISIBLES EN EL SITIO
 
-- [ ] Contacto: conservar la estructura actual de dos bloques Hero + formulario/imagen y texto lateral. El formulario ocupa la vía principal y la llamada aparece como CTA secundario del Hero. No añadir una página de solicitud de presupuesto ni secciones nuevas « Qué pasa después », « Alternativa de llamada » o CTA final.
-- [ ] Contacto: exactamente **seis campos** — nombre, correo, URL, necesidad, problema/objetivo abierto y presupuesto. URL **siempre opcional**, incluso si hay sitio, y tolerante con la ausencia del prefijo https:// cuando sea viable; pregunta abierta requerida; presupuesto requerido con **« Todavía no lo sé »**. No sumar Empresa, Idiomas, Plazo u otros campos sin aprendizaje real de consultas.
-- [ ] Contacto: probar las opciones y los umbrales **1 000 / 3 500 / 8 000 CAD**; el presupuesto ayuda a recomendar el siguiente paso y **no genera una cotización automática**. Revisar la utilidad del campo tras aproximadamente las primeras diez solicitudes reales como prueba UX, no como regla permanente.
-- [ ] Contacto: el mensaje de confirmación aparece solo tras éxito real del servidor. Los mensajes de validación y error (campo obligatorio, correo incorrecto y fallo del envío) **no están definidos en el EN canónico**; definirlos primero allí y luego adaptarlos al ES/FR-CA en la implementación. Verificar estados de campo obligatorio/opcional y valores iniciales de los desplegables; no inventar una promesa de tiempo de respuesta.
-- [ ] Contacto: la mención « Usaré la información… » es el **único texto público provisional** de privacidad junto al formulario; no copiar etiquetas de revisión ni notas editoriales. El envío no suscribe a correos promocionales. Comprobar enlace real, aviso y política en el gate pre-lanzamiento.
-- [ ] Modal: escoger únicamente A (correo en modal + prellenado fiable de Calendly) **o** B (Calendly recoge nombre y correo). No solicitar el correo dos veces. Mantener únicamente las tres preguntas de proyecto, URL opcional, sin presupuesto y sin nuevo CRM, IA, estimador, newsletter ni formulario multietapa en v1. Reutilizar visual existente.
-- [ ] Modal: comprobar dónde se procesan/conservan las tres respuestas, si se transmiten a Calendly y, sobre todo, si quedan asociadas a **la reserva correcta**. Elegir luego exactamente una de **A1/A2/B1/B2**, sin publicarlas juntas. Si no se verifica la asociación, no afirmar que las respuestas se utilizan para preparar la llamada; corregir el flujo o reconciliar el copy con EN.
-- [ ] Modal: si A2/B2 envía respuestas a Calendly, revisar primero §§2/4 de la Privacy EN, y después FR-CA y ES. Si A recoge correo, comprobar que Privacy describe correctamente quién lo recoge y lo almacena. Verificar datos solicitados por Calendly en su configuración final y lectura en móvil/teclado. La llamada es **gratuita de 30 minutos**, distinta del Diagnóstico pagado del sitio web.
-- [ ] Gate Privacy: finalizar las afirmaciones factuales del EN, luego FR-CA y ES conforme a la implementación local **antes** de producción. Confirmar « Política de privacidad » y « Opciones de privacidad » contra el banner y los enlaces reales. Tarea canónica: [Notion page](https://app.notion.com/p/3fc702393b5e81769152d3f158979ab1). No activar ES solo porque Contact y Modal estén editorialmente cerrados.
-- [ ] Fichas / estructura: conservar el componente real y su ritmo Hero → Presentación + línea de capacidades → tres retos → cuatro soluciones → entregables → capturas/leyendas → enlace al sitio real → CTA final → SEO. Testimonios solo en el Home, no en las fichas. No crear una página índice nueva ni inventar datos de resultados.
-- [ ] Dangel: usar únicamente capturas actuales sin direcciones privadas ni términos clínicos obsoletos; conservar como métricas medidas los envíos de formularios y los **clics** en enlaces de reserva, no reservas completadas. Reemplazar el slug heredado /projects/fashion-company-ecommerce por uno de Dangel y mantener redirección si la URL anterior está publicada. Testimonio solo en Home y únicamente tras recuperar/verificar su original español.
-- [ ] Trépied — cierre **antes de promoción activa** (no bloquea traducción, construcción ni publicación de Magneto): enviar seguimiento escrito a Isra y solicitar testimonio; corregir referencias de dueño/contacto que pertenezcan a Trépied de Mauricio Bayuelo Vanegas a Israel Valencia Vazquez; verificar todos los botones de reserva con el Calendly de Trépied; enviar un formulario de cotización y comprobar su evento antes de declarar medición de solicitudes; cerrar la carga/consentimiento de Calendly y el enlace de privacidad junto al consentimiento del formulario; corregir los tres detalles de idioma; renovar las siete capturas reales. No incluir modal de Calendly ni testimonios antiguos en las capturas.
-- [ ] Trépied — límites públicos: la medición actual corresponde a **clics en enlaces para agendar llamadas**, no a reservas terminadas ni envíos de cotización verificados. Las producciones y clientes de Trépied pertenecen al estudio, no son trabajos audiovisuales ni clientes de Magneto. No afirmar WhatsApp actual, publicidad lista, resultados, cumplimiento legal o testimonios inventados. Si se publica « la analítica respeta las elecciones de consentimiento », comprobarlo realmente.
-- [ ] Shamanicca — antes de utilizar como prueba promocional acabada, terminar la limpieza SEO/AEO y de enlaces de afiliación, comprobar el ciclo completo del boletín, verificar/restaurar favicon y rehacer las siete capturas de producción. Esto no bloquea la traducción ni la publicación de Magneto.
-- [ ] Shamanicca — el carácter de **proyecto propio** permanece explícito en Hero, presentación, línea de capacidades y SEO. No declarar confirmación por correo electrónico antes de probar ese ciclo, ni compras completadas, pagos, checkout, procesamiento de pedidos o entregas fiables sin una compra real de prueba de extremo a extremo. No inventar ventas, crecimiento SEO, conversiones, conformidad fiscal ni la implementación de una identidad futura. En imágenes de producto priorizar fotos, tallas y acciones sobre descripciones genéricas de proveedores; rehacer capturas si cambia materialmente la identidad.
-- [ ] Fichas / implementación: usar enlaces reales y capturas actuales; no añadir detalles profundos de arquitectura, herramientas de Career o depuración sin utilidad para el cliente. Mantener el CTA « Agendar una llamada de orientación » con destino de reserva gratuita de 30 minutos.
-- [ ] Paquetes: mantener solo las tres tarjetas comerciales BUILD / FIX / CARE. El Diagnóstico pagado del sitio web aparece en un bloque separado debajo de ellas; no es un cuarto paquete y no lleva CTA de compra. Sin insignias comerciales sin respaldo.
-- [ ] Paquetes / BUILD: mostrar correctamente cada alcance con su precio: página de destino específica en **un solo idioma desde 3 500 CAD**; web de **aproximadamente 5 a 10 páginas, generalmente en dos o tres idiomas, 5 000–8 000 CAD**; proyecto más grande/complejo **10 000 CAD o más**, cotización individual. Mantener la cláusula de impuestos; no equiparar el mínimo de landing con un sitio completo.
-- [ ] Paquetes / FIX: desde **1 000 CAD**; lista escrita del trabajo y precio fijo confirmados **antes de iniciar**, resultado verificado después. El Diagnóstico pagado del sitio web no es obligatorio para todos los casos FIX; usarlo cuando las incógnitas técnicas impidan presupuestar responsablemente.
-- [ ] Paquetes / CARE: desde **200 CAD al mes**; no inventar precios propios de Essential/Partner ni SLA cuantitativos. Es un **plan** mensual dentro del paquete CARE. Confirmar el importe tras una breve revisión; reparaciones previas y nuevas funciones se cotizan por separado. Si Magneto no desarrolló el sitio, diagnóstico de pago **obligatorio antes de aceptarlo en CARE**, con estabilización FIX cuando corresponda.
-- [ ] Paquetes / diagnóstico: tarifa pública fija de **450 CAD**, aprobada antes del inicio. Entregar hallazgos documentados, prioridades y recomendación. Mantener la separación frente a la llamada gratuita inicial de 30 minutos y la breve revisión pública previa.
-- [ ] Paquetes / inclusiones: comprobar los **cinco** factores de precio y los **cuatro** grupos de elementos contratados o aportados aparte. Adaptación multilingüe solo según alcance y aprobada por el cliente; traducción especializada/certificada, copywriting completo, fotografía, gestión SEO/contenidos/Ads, hosting, dominio y herramientas de terceros no se incluyen por defecto. Estos últimos se pagan en cuentas del cliente.
-- [ ] Paquetes / diseño y enlaces: verificar formato con espacios de no separación de **3 500 CAD / 5 000–8 000 CAD / 10 000 CAD / 1 000 CAD / 200 CAD al mes / 450 CAD** y saltos de línea en móvil; CTA « Cuéntame sobre tu proyecto » a Contacto y « Agendar una llamada de orientación » al modal. Los botones de las tarjetas no deben activar cobro automático.
-- [ ] Paquetes: no publicar rangos internos de calibración FIX, precios Partner no cerrados, horas internas o créditos potenciales del diagnóstico. Mantener « Opciones de privacidad » como provisional hasta la revisión de Privacy ES.
-- [ ] Servicios: respetar el ritmo visual del EN. BUILD, FIX y CARE son las tres ofertas principales. Las cuatro capacidades complementarias se muestran subordinadas y sin precios ni CTA principales independientes.
-- [ ] BUILD: revisar en móvil la legibilidad y el formato de importes **3 500 CAD**, **5 000–8 000 CAD** y **10 000 CAD o más**, usando espacios de no separación cuando corresponda; conservar que el precio de entrada solo aplica a una página de destino específica en un idioma. Impuestos aplicables según corresponda. Aplicar la misma convención monetaria en Paquetes y Contacto ES.
-- [ ] FIX: no imponer un diagnóstico pagado a todos los casos; los problemas bien delimitados pueden cotizarse directamente. Recomendar el **Diagnóstico pagado del sitio web** solo si hace falta una revisión técnica más profunda para acotar el trabajo responsablemente; verificar el flujo Diagnosticar → Priorizar → Aprobar → Corregir → Verificar.
-- [ ] CARE: solo para sitios estables. Exigir el **Diagnóstico pagado del sitio web** antes de aceptar en CARE un sitio no construido por Magneto; si hace falta, estabilizar sus problemas mediante FIX antes. Mantener CARE cualitativo aquí; los precios y las diferencias entre planes pertenecen a Paquetes.
-- [ ] Capacidades complementarias: página de destino = proyecto BUILD; no ofrecer gestión de campañas Ads. Textos multilingües solo dentro del alcance, sin traducción especializada/certificada y sujetos a aprobación del cliente. Evaluación por separado para automatización avanzada, IA, e-commerce complejo, lógica personalizada o infraestructura inusual; no prometer que siempre se convertirán en proyectos a medida.
-- [ ] Servicios: verificar rutas de CTA BUILD/FIX/CARE hacia Paquetes o su sección definida, llamada de orientación al modal y « Cuéntame sobre tu proyecto » a Contacto. Mantener guía gratuita oculta y reutilizar el componente de Home ES.
-- [ ] Services: no inventar métricas, resultados SEO, accesibilidad certificada, captación garantizada, campañas administradas o servicios nuevos; verificar la lectura y los cortes en móvil. « Opciones de privacidad » se confirmará en la futura Privacy ES.
-- [ ] Sobre Magneto: conservar la estructura About del EN y el retrato real de Mauricio como imagen dominante de confianza; no sustituirlo por una gran ilustración 3D genérica ni rediseñar la página fuera del alcance del copy.
-- [ ] Sobre Magneto: el CTA de LinkedIn lleva al perfil profesional personal de Mauricio. « Cuéntame sobre tu proyecto » dirige al formulario Contacto; « Agendar una llamada de orientación » dirige a la conversación inicial gratuita de 30 minutos, no al diagnóstico técnico pagado.
-- [ ] Sobre Magneto: reutilizar la guía compartida y oculta de Home ES; no crear otra versión del bloque ni mostrarlo antes de tener la guía y el flujo de entrega. Consentimiento comercial separado.
-- [ ] Sobre Magneto: revisar ritmo de lectura en móvil, enlaces y accesibilidad del retrato. No sugerir un equipo adicional, disponibilidad ilimitada, resultados garantizados ni servicios nuevos.
-- [ ] El selector **ES** solo se activa cuando la versión ES completa esté implementada y haya superado el QA multilingüe; Home, Sobre Magneto, Servicios, Paquetes, las tres fichas de Proyectos, Contacto y Modal finalizados editorialmente no autorizan la publicación independiente del idioma.
-- [ ] Mantener el Home y su ritmo visual actual. BUILD y FIX conservan la mayor presencia; CARE debe quedar visible. Usar una composición de Hero centrada en sitios web y trabajo real de Magneto, no ilustraciones genéricas de embudos o promesas de captación.
-- [ ] Cada tarjeta de proyecto tiene exactamente tres elementos visibles: captura real actual · título · descripción. Vincular el título o la tarjeta a la ficha de proyecto que corresponda durante la implementación, sin mostrar el dominio como cuarto elemento ni inventar rutas antes de definirlas.
-- [ ] Dangel: recuperar y cotejar el testimonio **original en español** antes de activar el bloque oculto existente; la versión EN es una traducción, no fuente para fabricar una cita española. Verificar la atribución.
-- [ ] Shamanicca siempre queda identificado como proyecto propio, no como encargo de cliente; las producciones y los clientes de Trépied no son prueba de que esas organizaciones sean clientes de Magneto.
-- [ ] Mantener la guía y sus CTA ocultos hasta contar con el archivo real y el envío funcional. La solicitud de la guía no implica suscripción al boletín informativo.
-- [ ] « Agendar una llamada de orientación » designa la conversación inicial gratuita de 30 minutos y no el diagnóstico técnico de pago. Verificar su legibilidad en botones, especialmente en móvil, sin cambiar la denominación en una sola pantalla.
-- [ ] El enlace « Mauricio Bayuelo en LinkedIn » dirige a su perfil personal, no a una página corporativa de Magneto. « Opciones de privacidad » deberá revisarse junto con el banner y la Política de privacidad ES antes de publicar.
-- [ ] Usar **boletín informativo** uniformemente en el ES por ahora; no alternar silenciosamente con newsletter o boletín en páginas posteriores. Usar **lanzamiento** para Launch, no « puesta en línea ».
-- [ ] No publicar testimonios inventados ni métricas, ganancias, resultados de campañas, rankings, conversiones o afirmaciones legales que la fuente EN no sustenta; verificar los cortes de texto y la lectura en móvil.
+- [ ]  Contacto: conservar la estructura actual de dos bloques Hero + formulario/imagen y texto lateral. El formulario ocupa la vía principal y la llamada aparece como CTA secundario del Hero. No añadir una página de solicitud de presupuesto ni secciones nuevas « Qué pasa después », « Alternativa de llamada » o CTA final.
+- [ ]  Contacto: exactamente **seis campos** — nombre, correo, URL, necesidad, problema/objetivo abierto y presupuesto. URL **siempre opcional**, incluso si hay sitio, y tolerante con la ausencia del prefijo https:// cuando sea viable; pregunta abierta requerida; presupuesto requerido con **« Todavía no lo sé »**. No sumar Empresa, Idiomas, Plazo u otros campos sin aprendizaje real de consultas.
+- [ ]  Contacto: probar las opciones y los umbrales **1 000 / 3 500 / 8 000 CAD**; el presupuesto ayuda a recomendar el siguiente paso y **no genera una cotización automática**. Revisar la utilidad del campo tras aproximadamente las primeras diez solicitudes reales como prueba UX, no como regla permanente.
+- [ ]  Contacto: el mensaje de confirmación aparece solo tras éxito real del servidor. Los mensajes de validación y error (campo obligatorio, correo incorrecto y fallo del envío) **no están definidos en el EN canónico**; definirlos primero allí y luego adaptarlos al ES/FR-CA en la implementación. Verificar estados de campo obligatorio/opcional y valores iniciales de los desplegables; no inventar una promesa de tiempo de respuesta.
+- [ ]  Contacto: la mención « Usaré la información… » es el **único texto público provisional** de privacidad junto al formulario; no copiar etiquetas de revisión ni notas editoriales. El envío no suscribe a correos promocionales. Comprobar enlace real, aviso y política en el gate pre-lanzamiento.
+- [ ]  Modal: escoger únicamente A (correo en modal + prellenado fiable de Calendly) **o** B (Calendly recoge nombre y correo). No solicitar el correo dos veces. Mantener únicamente las tres preguntas de proyecto, URL opcional, sin presupuesto y sin nuevo CRM, IA, estimador, newsletter ni formulario multietapa en v1. Reutilizar visual existente.
+- [ ]  Modal: comprobar dónde se procesan/conservan las tres respuestas, si se transmiten a Calendly y, sobre todo, si quedan asociadas a **la reserva correcta**. Elegir luego exactamente una de **A1/A2/B1/B2**, sin publicarlas juntas. Si no se verifica la asociación, no afirmar que las respuestas se utilizan para preparar la llamada; corregir el flujo o reconciliar el copy con EN.
+- [ ]  Modal: si A2/B2 envía respuestas a Calendly, revisar primero §§2/4 de la Privacy EN, y después FR-CA y ES. Si A recoge correo, comprobar que Privacy describe correctamente quién lo recoge y lo almacena. Verificar datos solicitados por Calendly en su configuración final y lectura en móvil/teclado. La llamada es **gratuita de 30 minutos**, distinta del Diagnóstico pagado del sitio web.
+- [ ]  Gate Privacy: finalizar las afirmaciones factuales del EN, luego FR-CA y ES conforme a la implementación local **antes** de producción. Confirmar « Política de privacidad » y « Opciones de privacidad » contra el banner y los enlaces reales. Tarea canónica: [Magneto — Finalize Privacy Policy after local technical implementation (pre-launch)](https://app.notion.com/p/Magneto-Finalize-Privacy-Policy-after-local-technical-implementation-pre-launch-3fc702393b5e81769152d3f158979ab1?pvs=21). No activar ES solo porque Contact y Modal estén editorialmente cerrados.
+- [ ]  Fichas / estructura: conservar el componente real y su ritmo Hero → Presentación + línea de capacidades → tres retos → cuatro soluciones → entregables → capturas/leyendas → enlace al sitio real → CTA final → SEO. Testimonios solo en el Home, no en las fichas. No crear una página índice nueva ni inventar datos de resultados.
+- [ ]  Dangel: usar únicamente capturas actuales sin direcciones privadas ni términos clínicos obsoletos; conservar como métricas medidas los envíos de formularios y los **clics** en enlaces de reserva, no reservas completadas. Reemplazar el slug heredado /projects/fashion-company-ecommerce por uno de Dangel y mantener redirección si la URL anterior está publicada. Testimonio solo en Home y únicamente tras recuperar/verificar su original español.
+- [ ]  Trépied — cierre **antes de promoción activa** (no bloquea traducción, construcción ni publicación de Magneto): enviar seguimiento escrito a Isra y solicitar testimonio; corregir referencias de dueño/contacto que pertenezcan a Trépied de Mauricio Bayuelo Vanegas a Israel Valencia Vazquez; verificar todos los botones de reserva con el Calendly de Trépied; enviar un formulario de cotización y comprobar su evento antes de declarar medición de solicitudes; cerrar la carga/consentimiento de Calendly y el enlace de privacidad junto al consentimiento del formulario; corregir los tres detalles de idioma; renovar las siete capturas reales. No incluir modal de Calendly ni testimonios antiguos en las capturas.
+- [ ]  Trépied — límites públicos: la medición actual corresponde a **clics en enlaces para agendar llamadas**, no a reservas terminadas ni envíos de cotización verificados. Las producciones y clientes de Trépied pertenecen al estudio, no son trabajos audiovisuales ni clientes de Magneto. No afirmar WhatsApp actual, publicidad lista, resultados, cumplimiento legal o testimonios inventados. Si se publica « la analítica respeta las elecciones de consentimiento », comprobarlo realmente.
+- [ ]  Shamanicca — antes de utilizar como prueba promocional acabada, terminar la limpieza SEO/AEO y de enlaces de afiliación, comprobar el ciclo completo del boletín, verificar/restaurar favicon y rehacer las siete capturas de producción. Esto no bloquea la traducción ni la publicación de Magneto.
+- [ ]  Shamanicca — el carácter de **proyecto propio** permanece explícito en Hero, presentación, línea de capacidades y SEO. No declarar confirmación por correo electrónico antes de probar ese ciclo, ni compras completadas, pagos, checkout, procesamiento de pedidos o entregas fiables sin una compra real de prueba de extremo a extremo. No inventar ventas, crecimiento SEO, conversiones, conformidad fiscal ni la implementación de una identidad futura. En imágenes de producto priorizar fotos, tallas y acciones sobre descripciones genéricas de proveedores; rehacer capturas si cambia materialmente la identidad.
+- [ ]  Fichas / implementación: usar enlaces reales y capturas actuales; no añadir detalles profundos de arquitectura, herramientas de Career o depuración sin utilidad para el cliente. Mantener el CTA « Agendar una llamada de orientación » con destino de reserva gratuita de 30 minutos.
+- [ ]  Paquetes: mantener solo las tres tarjetas comerciales BUILD / FIX / CARE. El Diagnóstico pagado del sitio web aparece en un bloque separado debajo de ellas; no es un cuarto paquete y no lleva CTA de compra. Sin insignias comerciales sin respaldo.
+- [ ]  Paquetes / BUILD: mostrar correctamente cada alcance con su precio: página de destino específica en **un solo idioma desde 3 500 CAD**; web de **aproximadamente 5 a 10 páginas, generalmente en dos o tres idiomas, 5 000–8 000 CAD**; proyecto más grande/complejo **10 000 CAD o más**, cotización individual. Mantener la cláusula de impuestos; no equiparar el mínimo de landing con un sitio completo.
+- [ ]  Paquetes / FIX: desde **1 000 CAD**; lista escrita del trabajo y precio fijo confirmados **antes de iniciar**, resultado verificado después. El Diagnóstico pagado del sitio web no es obligatorio para todos los casos FIX; usarlo cuando las incógnitas técnicas impidan presupuestar responsablemente.
+- [ ]  Paquetes / CARE: desde **200 CAD al mes**; no inventar precios propios de Essential/Partner ni SLA cuantitativos. Es un **plan** mensual dentro del paquete CARE. Confirmar el importe tras una breve revisión; reparaciones previas y nuevas funciones se cotizan por separado. Si Magneto no desarrolló el sitio, diagnóstico de pago **obligatorio antes de aceptarlo en CARE**, con estabilización FIX cuando corresponda.
+- [ ]  Paquetes / diagnóstico: tarifa pública fija de **450 CAD**, aprobada antes del inicio. Entregar hallazgos documentados, prioridades y recomendación. Mantener la separación frente a la llamada gratuita inicial de 30 minutos y la breve revisión pública previa.
+- [ ]  Paquetes / inclusiones: comprobar los **cinco** factores de precio y los **cuatro** grupos de elementos contratados o aportados aparte. Adaptación multilingüe solo según alcance y aprobada por el cliente; traducción especializada/certificada, copywriting completo, fotografía, gestión SEO/contenidos/Ads, hosting, dominio y herramientas de terceros no se incluyen por defecto. Estos últimos se pagan en cuentas del cliente.
+- [ ]  Paquetes / diseño y enlaces: verificar formato con espacios de no separación de **3 500 CAD / 5 000–8 000 CAD / 10 000 CAD / 1 000 CAD / 200 CAD al mes / 450 CAD** y saltos de línea en móvil; CTA « Cuéntame sobre tu proyecto » a Contacto y « Agendar una llamada de orientación » al modal. Los botones de las tarjetas no deben activar cobro automático.
+- [ ]  Paquetes: no publicar rangos internos de calibración FIX, precios Partner no cerrados, horas internas o créditos potenciales del diagnóstico. Mantener « Opciones de privacidad » como provisional hasta la revisión de Privacy ES.
+- [ ]  Servicios: respetar el ritmo visual del EN. BUILD, FIX y CARE son las tres ofertas principales. Las cuatro capacidades complementarias se muestran subordinadas y sin precios ni CTA principales independientes.
+- [ ]  BUILD: revisar en móvil la legibilidad y el formato de importes **3 500 CAD**, **5 000–8 000 CAD** y **10 000 CAD o más**, usando espacios de no separación cuando corresponda; conservar que el precio de entrada solo aplica a una página de destino específica en un idioma. Impuestos aplicables según corresponda. Aplicar la misma convención monetaria en Paquetes y Contacto ES.
+- [ ]  FIX: no imponer un diagnóstico pagado a todos los casos; los problemas bien delimitados pueden cotizarse directamente. Recomendar el **Diagnóstico pagado del sitio web** solo si hace falta una revisión técnica más profunda para acotar el trabajo responsablemente; verificar el flujo Diagnosticar → Priorizar → Aprobar → Corregir → Verificar.
+- [ ]  CARE: solo para sitios estables. Exigir el **Diagnóstico pagado del sitio web** antes de aceptar en CARE un sitio no construido por Magneto; si hace falta, estabilizar sus problemas mediante FIX antes. Mantener CARE cualitativo aquí; los precios y las diferencias entre planes pertenecen a Paquetes.
+- [ ]  Capacidades complementarias: página de destino = proyecto BUILD; no ofrecer gestión de campañas Ads. Textos multilingües solo dentro del alcance, sin traducción especializada/certificada y sujetos a aprobación del cliente. Evaluación por separado para automatización avanzada, IA, e-commerce complejo, lógica personalizada o infraestructura inusual; no prometer que siempre se convertirán en proyectos a medida.
+- [ ]  Servicios: verificar rutas de CTA BUILD/FIX/CARE hacia Paquetes o su sección definida, llamada de orientación al modal y « Cuéntame sobre tu proyecto » a Contacto. Mantener guía gratuita oculta y reutilizar el componente de Home ES.
+- [ ]  Services: no inventar métricas, resultados SEO, accesibilidad certificada, captación garantizada, campañas administradas o servicios nuevos; verificar la lectura y los cortes en móvil. « Opciones de privacidad » se confirmará en la futura Privacy ES.
+- [ ]  Sobre Magneto: conservar la estructura About del EN y el retrato real de Mauricio como imagen dominante de confianza; no sustituirlo por una gran ilustración 3D genérica ni rediseñar la página fuera del alcance del copy.
+- [ ]  Sobre Magneto: el CTA de LinkedIn lleva al perfil profesional personal de Mauricio. « Cuéntame sobre tu proyecto » dirige al formulario Contacto; « Agendar una llamada de orientación » dirige a la conversación inicial gratuita de 30 minutos, no al diagnóstico técnico pagado.
+- [ ]  Sobre Magneto: reutilizar la guía compartida y oculta de Home ES; no crear otra versión del bloque ni mostrarlo antes de tener la guía y el flujo de entrega. Consentimiento comercial separado.
+- [ ]  Sobre Magneto: revisar ritmo de lectura en móvil, enlaces y accesibilidad del retrato. No sugerir un equipo adicional, disponibilidad ilimitada, resultados garantizados ni servicios nuevos.
+- [ ]  El selector **ES** solo se activa cuando la versión ES completa esté implementada y haya superado el QA multilingüe; Home, Sobre Magneto, Servicios, Paquetes, las tres fichas de Proyectos, Contacto y Modal finalizados editorialmente no autorizan la publicación independiente del idioma.
+- [ ]  Mantener el Home y su ritmo visual actual. BUILD y FIX conservan la mayor presencia; CARE debe quedar visible. Usar una composición de Hero centrada en sitios web y trabajo real de Magneto, no ilustraciones genéricas de embudos o promesas de captación.
+- [ ]  Cada tarjeta de proyecto tiene exactamente tres elementos visibles: captura real actual · título · descripción. Vincular el título o la tarjeta a la ficha de proyecto que corresponda durante la implementación, sin mostrar el dominio como cuarto elemento ni inventar rutas antes de definirlas.
+- [ ]  Dangel: recuperar y cotejar el testimonio **original en español** antes de activar el bloque oculto existente; la versión EN es una traducción, no fuente para fabricar una cita española. Verificar la atribución.
+- [ ]  Shamanicca siempre queda identificado como proyecto propio, no como encargo de cliente; las producciones y los clientes de Trépied no son prueba de que esas organizaciones sean clientes de Magneto.
+- [ ]  Mantener la guía y sus CTA ocultos hasta contar con el archivo real y el envío funcional. La solicitud de la guía no implica suscripción al boletín informativo.
+- [ ]  « Agendar una llamada de orientación » designa la conversación inicial gratuita de 30 minutos y no el diagnóstico técnico de pago. Verificar su legibilidad en botones, especialmente en móvil, sin cambiar la denominación en una sola pantalla.
+- [ ]  El enlace « Mauricio Bayuelo en LinkedIn » dirige a su perfil personal, no a una página corporativa de Magneto. « Opciones de privacidad » deberá revisarse junto con el banner y la Política de privacidad ES antes de publicar.
+- [ ]  Usar **boletín informativo** uniformemente en el ES por ahora; no alternar silenciosamente con newsletter o boletín en páginas posteriores. Usar **lanzamiento** para Launch, no « puesta en línea ».
+- [ ]  No publicar testimonios inventados ni métricas, ganancias, resultados de campañas, rankings, conversiones o afirmaciones legales que la fuente EN no sustenta; verificar los cortes de texto y la lectura en móvil.
