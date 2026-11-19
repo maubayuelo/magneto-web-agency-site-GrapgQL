@@ -210,6 +210,7 @@ $p5c_en_growth = array(
 	'page/packages'                     => array( 'sections' => array( 0, 2 ) ),
 	'project/fashion-company-ecommerce' => array( 'project_data_results' => array( 3, 6 ) ),
 	'project/shamaniccas-ecommerce'     => array( 'project_data_solutions' => array( 3, 4 ), 'project_data_results' => array( 3, 6 ) ),
+	'project/trepied-trepied-ca'        => array( 'project_data_results' => array( 4, 6 ) ),
 );
 $p5c_short = static function ( $value ) {
 	$text = is_scalar( $value ) || null === $value ? (string) $value : wp_json_encode( $value, JSON_UNESCAPED_UNICODE );
