@@ -11,6 +11,7 @@ import type { Metadata } from 'next';
 import { Header } from '@/components/organisms';
 import FooterLoader from '@/components/organisms/Footer/FooterLoader';
 import EmailCollectorProvider from '@/components/organisms/EmailCollectorProvider';
+import ConsentProvider from '@/components/organisms/ConsentBanner';
 import { SITE_URL, siteName, defaultOgImage, buildCanonical } from '@/utils/seo';
 import { devConsoleError } from '@/utils/dev-console';
 import { fetchWPGraphQL } from '@/utils/wp-graphql';
@@ -159,6 +160,8 @@ export default async function RootLayout({
         <a className="skip-link" href="#main-content">{t.common.skipToContent}</a>
         {/* Only this locale's dictionary reaches the client (ADR 0005). Renders no DOM. */}
         <I18nProvider locale={locale} dictionary={t}>
+        {/* Phase 5f: consent banner (client-only, before the page in DOM order); nothing without NEXT_PUBLIC_GA_ID. */}
+        <ConsentProvider>
         {/* Header: site navigation and branding. This is a shared component used across pages. */}
         <EmailCollectorProvider>
           <Header
@@ -180,6 +183,7 @@ export default async function RootLayout({
               magnet is not rendered until its guide is rebuilt (Phase 5a, Part 2 item 2). */}
           <FooterLoader locale={locale} />
         </EmailCollectorProvider>
+        </ConsentProvider>
         </I18nProvider>
       </body>
     </html>
