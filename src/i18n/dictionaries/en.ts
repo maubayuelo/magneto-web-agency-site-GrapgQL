@@ -43,6 +43,14 @@ export const en = {
     copyright: 'Magneto Web Consulting © {year}',
     linkedin: 'Mauricio Bayuelo on LinkedIn',
   },
+  // Phase 5f §7: privacy banner + footer control, verbatim from magneto-copy-en.md (export 2026-11-17):
+  // privacyChoices :930 (= footer :170 item 2), body :932, accept / reject :934 items 1-2 (item 3 = common.privacyPolicy).
+  consent: {
+    privacyChoices: 'Privacy choices',
+    body: 'Necessary technologies help this website function. With your permission, Magneto may also use analytics to understand how the site is used and improve the experience. You can accept or reject non-essential analytics.',
+    accept: 'Accept analytics',
+    reject: 'Reject non-essential',
+  },
   testimonials: {
     title: 'Client feedback',
   },
