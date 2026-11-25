@@ -1,7 +1,7 @@
 # Release runbook report — §B2 loader production mode
 
-- Spec: `docs/specs/release-runbook.md` rev 0.3 (Approved), on branch `spec/release-runbook`. This report covers **§B2
-  only**. The other sections this report must later hold (RH-6 Expected table and read-back, Part A batch read-back,
+- Spec: `docs/specs/release-runbook.md` rev 0.3 (Approved), on branch `spec/release-runbook`. This report covers **§B2**
+  and **§B3 RH-6** (section "RH-6" at the end). The other sections this report must later hold (Part A batch read-back,
   release-day evidence G-2 and V-1 … V-11) are added when those steps run.
 - Author: Dev · Date: 2026-11-19 · Branch: `feat/release-runbook-b2` (from `master` @ `bc8688b1d5bf`)
 
@@ -204,3 +204,241 @@ are on `master`.
 
 ## Time
 Agent time ≈ 45 min (estimated). Active human time: unknown. AC-B2-4 is ≈ 10 min of Mauricio's time (spec estimate).
+
+---
+
+# RH-6 — rehearsal Expected table and equality read-back (§B3)
+
+- Author: Dev · Date: 2026-11-25 · `master` @ `1267b90` · read-only on both sites (GraphQL POSTs with no cookie or
+  auth, to `http://magneto-cms-2.local/graphql` and `http://magneto-prod-rehearsal.local/graphql` only). No write to
+  either site, no loader change.
+- Inputs, all in `~/Documents/projects/magneto/backups/release/rehearsal/`, read with `grep` only (dumps also with a
+  scratchpad meta-diff script):
+  - outputs: RH-C4-en-dryrun, RH-C6-en-dryrun, RH-C6-en-run; RH-C7-check-fr / -es, RH-C7-en-dryrun, RH-C7-en-run,
+    RH-C7-en-dryrun2; RH-C8b-fr-dryrun, RH-C8b-fr-run, RH-C8b-fr-dryrun2; RH-C9b-es-dryrun, RH-C9b-es-run,
+    RH-C9b-es-dryrun2;
+  - dumps: RH-C5-before-titles, RH-C6-before-en, RH-C7-before-svcmedia, RH-C7-before-load `.sql`.
+- **Superseded, not used for any figure:** the first-pass `RH-C8-fr-dryrun`, `RH-C8-fr-run`, `RH-C9-es-dryrun`,
+  `RH-C9-es-run`. They were measured without C-7, an order that will not occur on release day. A first RH-6 pass
+  against that state (same day) found the 42 Services-media mismatches. Mauricio then restored `RH-C8-before-fr.sql`
+  (the post-C-6 state), ran C-7, and ran C-8 and C-9 again in release order (C-8b / C-9b). Everything below is from
+  that second state.
+- Environment: the rehearsal ran on **PHP 8.2.35** (production 8.2.36, D1) and **without `sg-ai-studio`** (D4).
+- `.env.local` was not checked: the read-only `grep` was denied. RH-6 doesn't use `.env.local` (both hosts are queried
+  directly). No Next.js server or build was run.
+
+## RH-6 result
+**RH-6: 0 mismatches.** The read-back and the Expected table are complete for C-4 … C-9 in release order. From the Dev
+side, the GNG-0 item "RH-6 0 mismatches" holds. The spec edits listed under "RH-6 deviations" are with the Architect.
+
+| Check | Result |
+|---|---|
+| Every loaded value on the rehearsal = the content files (27 posts × languages, 5c-rest AC-7 normalization) | **762 values, 0 mismatches** |
+| Rehearsal = local CMS, every queried leaf except IDs (27 posts × languages) | **969 leaves, 0 mismatches** (20 raw-only differences, removed by the normalization, see below) |
+| FR/ES home rows: `service` 3, `testimonials` 2 | ✅ EN, FR, ES 3 / 2 |
+| Trépied challenges / solutions / results | ✅ 3 / 4 / 6 in EN 498, FR 619, ES 677 (Dangel and Shamanicca are also 3 / 4 / 6) |
+| `display_order` 10 / 20 / 40 on all nine project posts | ✅ Dangel 10, Shamanicca 20, Trépied 40, in EN, FR and ES |
+| Titles | ✅ "Dangel Wellness", "Shamanicca", "Trépied" in all three languages; slugs `fashion-company-ecommerce`, `shamaniccas-ecommerce`, `trepied-trepied-ca`; all `publish` |
+| Home media by EN-original file name | ✅ hero `2026/11/magneto-hero-phone-1.png`; featured icons `2026/11/ico-layout-template.svg`, `ico-wrench.svg`, `ico-shield-check.svg` (EN, FR, ES = local); testimonial thumbs empty on both sites |
+| **Services media by EN-original file name** (the first pass's 42-mismatch block) | ✅ EN, FR, ES = local = the C-7 table (below) |
+| Project images by EN-original file name | ✅ all 19 per language equal local (not required by RH-6; checked as well) |
+
+Services media on the rehearsal after C-7, the same in EN 34, FR 582 and ES 644, and equal to local:
+
+| Row | Image (EN original) | Icon (EN original) |
+|---|---|---|
+| 1 | `2026/11/magneto-build-1.jpg` | `2026/11/ico-layout-template.svg` |
+| 2 | `2026/11/magneto-fix.jpg` | `2026/11/ico-wrench.svg` |
+| 3 | `2026/11/magneto-care-1.jpg` | `2026/11/ico-shield-check.svg` |
+| 4 | empty | `2025/10/icon-target.svg` |
+| 5 | empty | `2026/11/ico-languages.svg` |
+| 6 | empty | `2026/11/ico-calendar-check.svg` |
+| 7 | empty | `2026/11/ico-chart-no-axes-column.svg` |
+
+The rehearsal FR/ES rows point at the EN attachments themselves (C-8b media report: `services[0].Image target 739 →
+EN original 739`). Locally, FR/ES resolve to translated attachment copies (5c-rest AC-7: 703 / 709 …). Both resolve to
+the same EN-original file, which is what the site renders (`src/utils/wp-media.ts`).
+
+### C-7 admin save (measured in the dumps `RH-C7-before-svcmedia.sql` → `RH-C7-before-load.sql`)
+- **Intended:** EN 34 `services_0…6_Image` 134 / 138 / 142 / 145 / 148 / 151 / 473 → 739 / 745 / 742 / `''` ×4, and
+  `services_0…6_icon` 74 / 69 / 97 / 101 / 82 / 154 / 476 → 694 / 700 / 697 / 476 / 691 / 685 / 688. **WPML Copy carried
+  the same 14 values to FR 582 and ES 644** (rows re-inserted with new meta IDs).
+- **The known re-format (F-10):** EN 34 `intro_body_html` + `services_0…6_description_html` went from `<p>` HTML to
+  plain text with `\r\n\r\n`. These are exactly the 8 changes of the C-7 EN dry-run, and the C-7 load restored them.
+- **Side effects, the same kind as F-10, not loaded values:**
+  - EN 34 gained empty `hero_cta_path`, `prefooter_cta_link`, `cta_path`, `bgimage` (and their `_…` field-key rows),
+    and lost `_yoast_wpseo_content_score` / `_yoast_wpseo_linkdex`;
+  - FR 582 / ES 644 gained empty `bgimage` and `prefooter_cta_link` (and field keys).
+
+  None of them was counted as a change by the C-7 EN or the C-8b / C-9b dry-runs, and the read-back shows no rendered
+  difference.
+- This save is why the FR/ES Services probe **hash** differs between the C-6 "after" line (`582:92:c9e1…`) and the C-7
+  "before" line (`582:92:d8e0…`) while the count stays 92. It happened in the admin save, not in a load. The C-7 load
+  itself left the probe byte-identical.
+
+### Raw differences that the normalization removes (20, all FR, not a defect)
+Site against site, 20 leaves differ raw, and 0 after normalization. All 20 are FR
+wysiwyg fields (Services intro + 7 descriptions, Packages intro + 3 elements + 2 sections, home About, About
+description and general text, the three project descriptions). Each one differs **only** in wptexturize's entity
+form: local renders `&rsquo;`, the rehearsal renders `&#8217;`. That is render-filter output (an AC-7 normalization
+item), not stored content: both sites equal the content files after normalization, and the loads' second dry-runs
+were 0 / 0. Likely cause, not verified: the FR WordPress translation that wptexturize reads its quote characters from
+differs between the two installs.
+
+### How the read-back was done
+A scratchpad script (not in the repo) reads `scripts/phase-5c/content/{en,fr,es}.json`. It builds one query per post
+× language from the field labels: `pages|projects(first: 1, where: { language, name })`, the same lookup the site
+uses. It runs that query on both hosts and flattens each result into leaf paths. It then compares rehearsal ↔ local on
+every leaf except `databaseId`, and rehearsal ↔ content file on every loaded value, including the repeater row counts.
+Media are compared by the EN original's path under `uploads/` (the `translations { languageCode sourceUrl }` of each
+node), never by ID. The IDs differ between the sites, e.g. Services FR local 637 / rehearsal 582, home ES 536 / 642.
+The normalization is 5c-rest AC-7's: HTML entities and curly quotes, `wpautop` newlines between block tags, a trailing
+`\n`, and a select field returned as a one-item list.
+
+## Expected table (release day, Part C, release order)
+Every figure is measured from an output file in the rehearsal folder, except the **C-6 second dry-run**. That one has
+no file: it was piped to `grep` at the time, and that state no longer exists. Its `237 unchanged` is Mauricio's
+terminal observation only. It is backed independently by `RH-C7-en-dryrun2.txt`, which shows the same 237. The
+unchanged totals also agree by arithmetic: first dry-run changes + unchanged + the appended rows' sub-field values.
+EN: 186 + 38 + 13 (2 `sections` rows × 2 + 9 project rows × 1) = 237. FR: 189 + 42 + 9 = 240. ES: 188 + 43 + 9 = 240.
+
+| Step | Per post (`changes (appended), unchanged`) | Total | Other lines |
+|---|---|---|---|
+| **C-4** EN dry-run (`RH-C4-en-dryrun`) | services 49 (0), 14 · packages 28 (2), 1 · home 28 (0), 8 · about-magneto 10 (0), 5 · projects 2 (0), 1 · contact 2 (0), 0 · fashion-company-ecommerce 21 (3), 3 · shamaniccas-ecommerce 22 (4), 3 · trepied-trepied-ca 24 (2), 3 | **186 changes (11 appended rows), 38 unchanged** | 11 `+ append` (below); no media report and no `↺` in EN (EN is the source) |
+| **C-6** EN dry-run (`RH-C6-en-dryrun`) | identical to C-4 (byte-identical file except the probe line, see "C-5 probe drift") | **186 (11), 38** | as C-4 |
+| **C-6** EN run (`RH-C6-en-run`) | same per-post lines | 186 changes, 11 appended; **66 fields written** (66 `wrote` lines), 346 `ok` read-back lines | ends `FAIL values of fr/es posts changed` + `Error: 1 read-back check(s) failed`: **expected**, see "C-6 probe" |
+| **C-6** second dry-run | *terminal observation only* | **0 changes (0 appended rows), 237 unchanged** | — |
+| **C-7** check-translations (`RH-C7-check-fr` / `-es`) | — | **fr 6/6 PASS · es 7/7 PASS**; `media WARN rows: 0` | rows 1 and 5: `media ok services.Image (7 rows)`, `media ok services.icon (7 rows)`; home rows 16 / 17 `service 3/3 · testimonials 2/2` |
+| **C-7** EN dry-run (`RH-C7-en-dryrun`) | **services 8 (0), 55**; every other post 0 (0): packages 33 · home 36 · about-magneto 15 · projects 3 · contact 2 · fashion 27 · shamanicca 29 · trepied 29 unchanged | **8 changes (0 appended rows), 229 unchanged** | the 8 = `pageintrotext.introBodyHtml` + `services[0…6].descriptionHtml`, plain text → `<p>` HTML (the admin-save re-format); 0 WARN |
+| **C-7** EN run (`RH-C7-en-run`) | same | `Success: 2 field(s) written (8 changes, 0 appended rows), all read back ok.` (`wrote` `pageintrotext.introBodyHtml`, `servicesServiceDetails.services`; 79 `ok` lines, 0 FAIL) | **probe before = after, byte-identical** |
+| **C-7** second dry-run (`RH-C7-en-dryrun2`) | services 0 (0), 63; the rest as above | **0 changes (0 appended rows), 237 unchanged** | — |
+| **C-8** FR dry-run (`RH-C8b-fr-dryrun`) | services 43 (0), 20 · packages 32 (0), 1 · home 30 (0), 6 · about-magneto 12 (0), 3 · projects 3 (0), 0 · contact 2 (0), 0 · fashion 21 (3), 4 · shamanicca 22 (4), 4 · trepied 24 (2), 4 | **189 changes (9 appended rows), 42 unchanged** | 9 `+ append`; **10 `↺ copy-sync`** (7 × `services[n].serviceGroup[]` core×3 / supporting×4, 3 × `displayOrder` 10/20/40); **41 `media ok`**, 0 WARN, with Services `Image` 739 / 745 / 742 / 0 ×4 and `icon` 694 / 700 / 697 / 476 / 691 / 685 / 688; `Success: Dry run: nothing written.` |
+| **C-8** FR run (`RH-C8b-fr-run`) | same | `Success: 72 field(s) written (189 changes, 9 appended rows), all read back ok.` (72 `wrote` lines, 0 FAIL) | probe before = after, byte-identical |
+| **C-8** second dry-run (`RH-C8b-fr-dryrun2`) | every post 0 (0) | **0 changes (0 appended rows), 240 unchanged** | — |
+| **C-9** ES dry-run (`RH-C9b-es-dryrun`) | services 43 (0), 20 · packages 32 (0), 1 · home **29** (0), **7** · about-magneto 12 (0), 3 · projects 3 (0), 0 · contact 2 (0), 0 · fashion 21 (3), 4 · shamanicca 22 (4), 4 · trepied 24 (2), 4 | **188 changes (9 appended rows), 43 unchanged** | 9 `+ append`; 10 `↺ copy-sync` (as FR); 41 `media ok` (Services IDs as FR), 0 WARN; `Success: Dry run: nothing written.` |
+| **C-9** ES run (`RH-C9b-es-run`) | same | `Success: 72 field(s) written (188 changes, 9 appended rows), all read back ok.` (72 `wrote` lines, 0 FAIL) | probe before = after, byte-identical |
+| **C-9** second dry-run (`RH-C9b-es-dryrun2`) | every post 0 (0) | **0 changes (0 appended rows), 240 unchanged** | — |
+
+On release day the media IDs are production's own (B1 notes). The rehearsal IDs above are a copy of production's,
+because the rehearsal is a production dump, so they should be the same. Compare the counts, and `media ok` against
+`WARN`, rather than relying on the IDs.
+
+**C-7 doesn't change the FR/ES figures.** `RH-C8b-fr-dryrun` against the superseded first-pass `RH-C8-fr-dryrun`
+(`diff`): the only differences are the 14 Services `media ok` lines (the new IDs) and the probe line. Every per-post
+line, the totals, the 9 appends and the 10 copy-sync lines are identical. The same holds for ES. The Services media
+that C-7 copies to the translations are media fields: the loader checks them (`media ok`) and does not write them.
+
+**C-6 EN: 66 fields, not 72 (confirmed by Mauricio).** The run ended with `Error`, so it printed no
+`Success: N field(s) written` line. There are 66 `wrote` lines. FR/ES write 72 because they also write the 6 fields
+that are fully `= unchanged` in EN: `heroContent.ctaTextHero` on services, home, about-magneto and projects,
+`homeAboutSection.aboutSectionTitle` and `aboutData.sectionTitle`.
+
+**One correction to my first pass:** the first-pass FR/ES dry-runs also had 41 `media ok` lines, not the 42 I wrote
+then.
+
+`+ append` lines:
+- EN (11): `packages/en sections[0]`, `[1]`; `fashion-company-ecommerce/en project_data_results[3]`, `[4]`, `[5]`;
+  `shamaniccas-ecommerce/en project_data_solutions[3]`, `project_data_results[3]`, `[4]`, `[5]`;
+  `trepied-trepied-ca/en project_data_results[4]`, `[5]`.
+- FR and ES (9 each): the same list without the two `packages/<lang> sections` lines.
+
+Two ES-only `~ change` lines (C-9b) show where production's ES posts held a different legacy value from FR:
+`shamaniccas-ecommerce/es project_data_solutions[2].item` and `trepied-trepied-ca/es project_data_results[2].item`.
+This also explains home 29 / 7 in ES against 30 / 6 in FR (one home field already equal in ES). The totals came out as
+measured; these lines are context only.
+
+### Cross-check against F-11 (11 appends per language)
+F-11 predicted 11 per language: Dangel `results` +3, Shamanicca `solutions` +1 and `results` +3, Trépied `results`
++2, Packages `sections` +2. **Measured: EN 11, FR 9, ES 9.** The project appends match in every language (9). The
+difference is the two Packages `sections` rows:
+- **the EN load's WPML Copy sync creates the FR/ES `sections` counter.** In `RH-C6-before-en.sql`, FR 596 and ES 637
+  have no `sections` meta. In `RH-C8-before-fr.sql` (after the EN load; it is also the state C-7 started from) both
+  have `sections = 2` and `_sections = field_p5_packagescontentsections_sections`. No sub-field rows are created: the
+  probe count for each post goes up by exactly 1.
+- So when the FR/ES loads run, the repeater already has 2 (empty) rows. The loader writes them as changes, not appends:
+  `~ change packages/fr sections[0].heading: "" → "Diagnostic payant de site web"`, `sections[0].bodyHtml`,
+  `sections[1].heading`, `sections[1].bodyHtml` (`RH-C8b-fr-dryrun` lines 97-100; ES the same).
+- F-11 is therefore right for EN, and correctly predicts 9 project appends for FR/ES. Its 2 Packages appends turn into
+  4 changes in FR/ES. **The release-day Expected is the measured 11 / 9 / 9.** The spec's C-6 step 2 ("Cross-check: 11
+  `+ append` lines") still holds for EN. C-8 step 2 ("11 `+ append`") should read 9 (C-9 says "the same"). This is
+  the Architect's call; I have not edited the spec.
+
+## C-6 probe: expected behaviour of the EN load, not a defect
+The C-6 EN real run ended with:
+```
+  FAIL  values of fr/es posts changed
+Error: 1 read-back check(s) failed. Restore with: wp db import <backup> && wp cache flush
+```
+Every field wrote (66), every read-back line is `ok` (346, 0 others), and the second dry-run was 0 / 0 (terminal
+observation; `RH-C7-en-dryrun2` later shows the same 237 unchanged). The
+cross-language probe before → after differs in exactly four of its eighteen entries (`id:count:hash`):
+
+| Probe entry | Before | After |
+|---|---|---|
+| `page/services/fr` · `page/services/es` | `582:85:a010d4bde3d26a0c` · `644:85:a010d4bde3d26a0c` | `582:92:c9e1a54cb82f6f59` · `644:92:c9e1a54cb82f6f59` |
+| `page/packages/fr` · `page/packages/es` | `596:71:5a68044f958225b5` · `637:71:5a68044f958225b5` | `596:72:c965d79f6b89162d` · `637:72:c965d79f6b89162d` |
+| the other 14 (home, about-magneto, projects, contact, the 6 project posts, FR + ES) | — | byte-identical |
+
+What changed, measured in the dumps either side of the EN load (`RH-C6-before-en.sql` → `RH-C8-before-fr.sql`):
+- **Services FR 582 / ES 644, +7:** `services_0…6_service_group` = core, core, core, supporting, supporting,
+  supporting, supporting (plus their `_services_n_service_group` field-key rows), absent before. This is WPML Copy
+  sync of the 7 EN `serviceGroup` values that the EN load wrote. The FR/ES dry-runs then report the same 7 as
+  `↺ copy-sync … from EN`.
+- **Packages FR 596 / ES 637, +1:** the `sections` counter `2` (Copy sync of the EN repeater count), as above.
+
+That is the WPML Copy behaviour of the EN load on a production copy, where the FR/ES posts were created from the
+legacy EN (Part A). **It is not a defect, and the loader is not changed.**
+
+**Confirmed by C-7:** the second EN load (`RH-C7-en-run`) writes Services fields again (`introBodyHtml` and the
+`services` repeater), but it **left the probe byte-identical** before and after. The serviceGroup values and the
+`sections` counter already exist on FR/ES by then, so the Copy sync has nothing to create. That, together with the
+dump diff above, shows the C-6 probe failure comes only from the seven serviceGroup Copy values and the `sections`
+counter. No other Copy path fires during the EN loads. The C-8b and C-9b runs also left their probes identical.
+
+**On release day C-6 will exit non-zero** (`Error: 1 read-back check(s) failed`). Rule for Mauricio:
+- **Continue** if, and only if, all of these hold:
+  1. the run printed no `FAIL` other than `values of fr/es posts changed`;
+  2. every read-back line is `ok`;
+  3. the probe delta is **exactly** this one: `page/services/fr` and `/es` 85 → 92, `page/packages/fr` and `/es`
+     71 → 72, the other 14 entries byte-identical. The before IDs and hashes are production's own: compare the
+     counts and which entries changed, not the IDs;
+  4. after `wp cache flush`, the second `lang=en dry-run` prints `0 changes (0 appended rows)` on every post.
+- **Any other probe change remains a STOP** (another entry, another count, or a hash change on an entry whose count
+  didn't change). Its rollback is unchanged: restore `$B`, or B0.
+- Do **not** run the printed `Restore with: …` hint when the four conditions hold. It's the loader's generic message.
+- The spec's C-6 stop list ("a read-back failure (`:545`), a probe change") needs this exception written into it.
+  That is the Architect's edit, not mine.
+
+### C-5 probe drift (between C-4 and C-6, before the EN load)
+The C-4 and C-6 EN dry-runs are byte-identical except the probe line. Between them, each FR/ES project entry went
+up by 1 (e.g. `project/fashion-company-ecommerce/fr` `584:40:274c…` → `584:41:cd1c…`). Dumps `RH-C5-before-titles.sql`
+→ `RH-C6-before-en.sql`: `display_order` is absent on all six FR/ES project posts before C-5, and present after it as
+584 / 659 = 10, 610 / 668 = 20, 619 / 677 = 40. This is the WPML Copy of the three C-5 admin saves, as C-5 step 4
+intends (F-8). It explains why the release-day **C-4 probe line will not equal the C-6 "before" line**. C-6 compares
+its own before/after, so this is expected.
+
+## RH-6 deviations
+- **Two passes.** The first pass ran against a rehearsal without C-7 and found 42 Services-media mismatches. The
+  rehearsal was then restored to the post-C-6 dump, and C-7, C-8 and C-9 were run in release order. This report gives
+  the second pass only. The first-pass `RH-C8-*` / `RH-C9-*` files are superseded and are not used for any figure.
+- **C-6 second dry-run** has no output file (terminal observation only; independently matched by `RH-C7-en-dryrun2`).
+- **Spec text** that RH-6 shows needs updating. Mauricio is collecting it for the Architect, and I didn't edit it:
+  - the C-6 stop list needs the probe exception;
+  - C-8 / C-9 say "11 `+ append`", which should be 9;
+  - C-6 should note 66 fields;
+  - C-7's admin-save side effects (empty Copy meta, the Yoast keys) could be noted like F-10.
+
+## RH-6 issues found (not fixed)
+- **wptexturize entity form differs** between local (`&rsquo;`) and the production copy (`&#8217;`) in FR. It is
+  invisible once rendered as HTML, and normalized away here. The release-day G-2 / V-checks must use the same
+  normalization, or they will report 20 FR differences.
+- **The C-7 admin save adds empty Copy meta and drops two Yoast analysis keys** (EN 34; FR/ES `bgimage`,
+  `prefooter_cta_link`). This is the F-10 pattern again. The site doesn't read the values (empty), and the loads
+  don't count them. It is recorded so that a release-day meta diff doesn't read them as surprises.
+- The loader's generic `Restore with:` hint appears on the expected C-6 exit (above). Runbook wording only.
+
+## RH-6 proposed commit
+`docs(report): release runbook RH-6 rehearsal Expected table and read-back` — `docs/reports/release-runbook.md`
+
+## RH-6 time
+Agent ≈ 1.5 h over two passes (estimated). Human time: the rehearsal itself is not measured here.
