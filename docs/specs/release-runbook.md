@@ -1,9 +1,13 @@
 # Release runbook — production FR/ES posts (Part A), media and rehearsal (Part B), release day (Part C)
 
-- **Status: Approved (rev 0.3, Mauricio + Senior Architect, 2026-11-19).** Every decision D-R2 … D-R10 is recorded
+- **Status: Approved (rev 0.4, Mauricio + Senior Architect, 2026-11-25, with the five review corrections 3a-3f applied).** Every decision D-R2 … D-R10 is recorded
   (D-R1 moot). rev 0.3 records the A0 values and classifies four deviations from A0.3 (D1-D4). It changes no batch,
   gate or order; its one new decision is D-R10 (C-1.1 version levels). **Part A may start:** the first action is §A1
   step 1.
+- **rev 0.4 (2026-11-25)** records the rehearsal result (§B3 PASS, RH-6 0 mismatches), the measured Expected values,
+  the C-6 probe exception, Mauricio's G-8 decision (ES ships; Plan B withdrawn), the F-13 Vercel correction and P-2's
+  partial close. It changes no batch, gate or order, and nothing in Part A or §B1 … §B3. The review added the GNG-0
+  ES-only contingency (3d), moved the hero alt fix into C-14 (3c) and the pre-promote deployment re-read (3e).
 - Author: Architect · Reviewed by: Mauricio + Senior Architect · **Run by: Mauricio.** Every production action (SSH,
   WP admin, Vercel, GA) is his. Agents never write to production. The Dev has read-only production GraphQL on release
   day only (D-R5).
@@ -22,9 +26,9 @@
   - **Part A by Sun 11-22** (the slip trigger);
   - media Mon 11-23;
   - B0 Mon 11-23 – Tue 11-24;
-  - rehearsal Wed 11-25 – Fri 11-27;
+  - rehearsal Wed 11-25 – Fri 11-27 (**done 11-25: RH-6 0 mismatches**, rev 0.4);
   - go/no-go Tue 12-01;
-  - **release Thu 12-03**;
+  - **release Thu 12-03, EN + FR + ES** (G-8, rev 0.4);
   - fallback Thu 12-10.
 
 ## Revision
@@ -127,6 +131,53 @@ review:**
 - **Approved (Mauricio + Senior Architect, 2026-11-19)** with one amendment: `classic-editor` inactive or missing is a
   D-R10 stop. Its version changes stay at "record, don't stop". Every admin click path (Part A paths P / J; C-3, C-5,
   C-7) assumes the classic editor (`WP-SETUP.md:72`).
+
+**rev 0.4 (2026-11-25), rehearsal results, G-8, Vercel correction; Draft for review.** Source: the RH-6 section of
+`docs/reports/release-runbook.md` (on `master` @ `e4d6c40`) and Mauricio's brief of 2026-11-25. Items as numbered in
+the brief:
+- **ONE, the C-6 probe exception (§C-6).** On the production copy the EN load exits non-zero
+  (`FAIL values of fr/es posts changed`, `Error: 1 read-back check(s) failed`) while every field writes, every
+  read-back line is `ok` and the second dry-run is 0 / 0. Cause (measured in the dumps): ACFML/WPML Copy carries the
+  seven `serviceGroup` values and the Packages `sections` counter from EN to FR/ES as the EN load writes them. Delta:
+  Services FR 582 / ES 644 85 → 92, Packages FR 596 / ES 637 71 → 72, the other 14 entries byte-identical. C-6's stop
+  list now treats exactly that delta (with every read-back `ok` and a 0 / 0 second dry-run) as **continue**; any other
+  probe change stays a stop. **No loader change:** it would need a new bundle and a new rehearsal (§B2 "Any later
+  change"), eight days out. The C-7 load left the probe byte-identical, so no other Copy path fires during the EN loads.
+- **TWO, the Expected table (Part C intro).** The measured RH-6 values, in release order, replace every
+  local-derived expectation.
+- **THREE, F-11 corrected.** Measured appends: EN 11, FR 9, ES 9. C-8 / C-9 expect 9.
+- **FOUR, C-7 admin-save side effects** recorded beside F-10; C-7's probe baseline is taken fresh.
+- **FIVE, media IDs across environments** noted under V-5.
+- **SIX, attachment 748 alt text:** a production defect, fixed by one wp-cli line in C-14 (C-14.1, review 3c), not
+  before: an earlier fix would break the content freeze.
+- **SEVEN, attachment counts:** 186 → 234 → 288; the open item is "+24 in §B1, cause unknown" (§B1 result, review 3b).
+  No action (Post-release list PR-2).
+- **EIGHT, rehearsal conditions** recorded (§B3 "Result").
+- **NINE, G-8 decided (Mauricio, 2026-11-25): Spanish ships.** Release = EN + FR + ES on Thu 12-03. **Plan B (an
+  EN + FR launch) is withdrawn.** C-11 sets `en,fr,es` with no alternative; GNG-0 no longer offers `en,fr`. Kept:
+  dropping one locale **after C-13** as a targeted rollback (§C-R), no longer called Plan B. **Amended at review (3d):**
+  a narrow GNG-0 ES-only contingency (§B4 GNG-0) replaces "an ES 'no' moves the whole release".
+- **TEN, F-13 corrected.** `NEXT_PUBLIC_GA_ID` is already set in Vercel for Production, Preview and Development, the
+  same value; rev 0.2 / 0.3 said Production stays unset until GNG-0, which was false. C-11's GA step becomes "verify it
+  is set and matches". A GA-off outcome now has to **unset** it explicitly (not contemplated before). Preview
+  `ENABLED_LOCALES` is already `en,fr,es`, so C-12 exercises the FR and ES routes. Measured: GA is not collecting today
+  (the promoted build is Phase 4's, with neither tag nor banner).
+- **ELEVEN, P-2 partly closed.** GA Internal Traffic and Developer Traffic data filters Active; the internal-traffic IP
+  rule published. Open: the 5f launch ACs on the Preview.
+- New R-15; R-13 updated; AC-B3-1 … AC-B3-3 marked met; O-3 raised (closed at review, 3f).
+- Unchanged: Part A, §B1 … §B3 procedure, the bundle (no re-rehearsal needed: nothing here touches the CMS, the
+  loader or the content files), the gates, the window limit, D-R2 … D-R10.
+- **Review (Senior Architect + Mauricio, 2026-11-25): approved with five corrections, applied here:**
+  - **3a** AC-B3-1 cites the two abort-proof files `RH-C4-guard-notarget.txt` and `RH-C4-guard-production.txt`.
+  - **3b** "about 264" dropped (it was not a spec figure). The measured chain 186 → 234 → 288 is recorded; Part A's +48
+    is explained; the open item is "+24 in §B1, cause unknown".
+  - **3c** The hero alt fix is C-14.1, after the promote and outside the C-3 → C-13 window, not a G-4 box. The
+    Post-release list keeps PR-2 only.
+  - **3d** Decided by Mauricio: a GNG-0 ES-only contingency (`en,fr` on 12-03 if ES is the only blocker; any non-ES
+    blocker → 12-10). C-11's default stays `en,fr,es`. Stated once in GNG-0 and referenced from G-8.
+  - **3e** R-15 strengthened with the unexplained 2026-11-19 Production rebuild; an explicit "no Production promote or
+    redeploy before C-13" instruction (Order of operations); C-13 step 1 re-reads the Production deployment ID.
+  - **3f** Decided: the GA ID is removed from the Vercel Development scope. O-3 closed.
 
 rev 0.1 (2026-11-19): first draft.
 
@@ -300,6 +351,15 @@ F-1).
   (5c report `:831-835`; 5c-rest report `:204-215`, `:342-343`).
 - A project admin save creates empty `bgimage` / `prefooter_cta_link` Copy meta on EN and FR/ES (harmless).
 - **On 2026-11-18 the Dangel EN slug was found changed** around an admin save. The cause is unknown; it was reverted.
+- **On the production copy (rehearsal, measured in the dumps; RH-6 report "C-7 admin save"; rev 0.4):** the C-7
+  Services save, besides the 8 expected `wysiwyg` re-formats (`intro_body_html` + 7 `description_html`):
+  - added empty `hero_cta_path`, `prefooter_cta_link`, `cta_path` and `bgimage` (with their `_…` key rows) on EN 34,
+    and removed `_yoast_wpseo_content_score` / `_yoast_wpseo_linkdex` there;
+  - added empty `bgimage` and `prefooter_cta_link` on FR 582 / ES 644;
+  - copied the 14 Services media IDs to FR 582 and ES 644 (WPML Copy, intended by D-7 B).
+
+  All harmless: the site doesn't read the empty values, and no dry-run counts them. The media copy changes the FR/ES
+  Services probe **hash** between C-6 and C-7 while the count stays 92 (see C-7).
 
 **F-11. Expected appends are not the local ones.**
 - In production the FR/ES posts are created from the legacy EN before the EN load. The growth list
@@ -311,6 +371,10 @@ F-1).
 - Locally the counts were split across runs (7 + 2), and `sections` was already 2. This prediction is a cross-check
   only. **The expected values come from the rehearsal (§B3).**
 - This corrects 5c §8 "Production rule" (`phase-5c-loader.md:541-542`).
+- **Corrected by the rehearsal (fact, RH-6, rev 0.4): EN 11, FR 9, ES 9.** The project appends (9) match in every
+  language. The EN load creates the two Packages `sections` rows, and WPML Copy sets the `sections` counter to 2 on
+  FR 596 / ES 637 (no sub-field rows). The FR/ES loads therefore fill those two rows as 4 changes, not 2 appends
+  (`RH-C8b-fr-dryrun` lines 97-100; ES the same). The 11-per-language prediction holds for EN only.
 
 **F-12. Live-site exposure.**
 - `ENABLED_LOCALES` is applied at build time (`config.ts:24-27`; `layout.tsx:132-136`).
@@ -323,10 +387,23 @@ F-1).
 - Promoting a preview deployment rebuilds it with Production env; Instant Rollback does not rebuild (5f spec
   `:347-349`).
 - Env changes need a new build (5f report `:231-240`).
-- **Reported, not measured** (Mauricio, 2026-11-19): `ENABLED_LOCALES` = `en`. `NEXT_PUBLIC_GA_ID` =
-  `G-N2YZ6SG2WM` for **Preview**; Production stays unset until the 12-01 go/no-go. Mauricio will read the Preview
-  `ENABLED_LOCALES` and the Production and Preview `NEXT_PUBLIC_GA_ID` and record them in `notes.md`. These values
-  stand until then.
+- rev 0.3 (reported, Mauricio, 2026-11-19): `ENABLED_LOCALES` = `en`; `NEXT_PUBLIC_GA_ID` = `G-N2YZ6SG2WM` for
+  Preview only, Production unset until the 12-01 go/no-go. **The Production half was false** (corrected in rev 0.4).
+- **Env values, read in Vercel by Mauricio on 2026-11-25 (rev 0.4; the Architect has no Vercel access):**
+
+  | Variable | Production | Preview | Development |
+  |---|---|---|---|
+  | `NEXT_PUBLIC_GA_ID` | **set** | set | set |
+  | `ENABLED_LOCALES` | `en` (reported 11-19; not re-read 11-25) | **`en,fr,es`** | not recorded |
+
+  - The GA ID is the same value in all three scopes. C-11 checks that it equals `G-N2YZ6SG2WM`.
+  - Preview `en,fr,es` means the C-12 release preview builds and serves the FR and ES routes.
+  - **GA is not collecting today (measured):** the promoted build is still `55d4350` (Phase 4), which carries neither
+    the tag nor the banner (A0.5 below: 0 matches for `gtag|googletagmanager|consent|privacy choices`). `NEXT_PUBLIC_`
+    values are inlined at build time, so the set Production ID has no effect until a post-5f build is promoted (R-15).
+  - Development scope: read only by `vercel dev` / `vercel env pull`, never by `npm run dev` from `.env.local`. The
+    local GA ID must stay empty (AGENTS hard rule 2). **Decided (Mauricio, 2026-11-25): the GA ID is removed from the
+    Development scope** (O-3 closed).
 - **The live Production deployment (A0.5, fact, 2026-11-19):**
   - project `magneto-web-agency-site`; `www.magnetomarketing.co` is assigned to it;
   - branch `master`, commit `55d43506ed81a34c968364422929771ab11c69bc` ("Merge pull request #14 from
@@ -336,15 +413,17 @@ F-1).
     `ENABLED_LOCALES` = `en` at build time (measured for that build);
   - the live home has 0 matches for `privacy choices|consent|gtag|googletagmanager`. 5f is not live, and GA does not
     load in production today;
-  - its "created" time is today, ≈ 4 h before 12:54: a Redeploy of the old commit, not a new commit. Mauricio is
-    confirming why it ran (open; it doesn't block rev 0.3).
+  - its "created" time is today, ≈ 4 h before 12:54: a Redeploy of the old commit, not a new commit. **Mauricio did
+    not trigger it, and its cause was never established** (rev 0.4, 2026-11-25). Hence R-15 and the C-13 step 1
+    re-read.
   - It is the live build and the C-0 Instant Rollback target unless another promotion happens first.
 - Release process: `WORKFLOW.md:53-73`.
 
 **F-14. Privacy.**
 - GA §5 at EN `:841` / FR `:1032` / ES `:1035`; Version B at EN `:905` / FR `:1102` / ES `:1099` (export 2026-11-17).
-- The ES **canonical copy** is still BORRADOR (`magneto-copy-es.md:973`; G-8). The **production page** is not (below).
-  G-8 remains Mauricio's decision.
+- The ES **canonical copy** is still BORRADOR (`magneto-copy-es.md:973`; G-8, export 2026-11-17). The **production
+  page** is not (below). **G-8 decided (Mauricio, 2026-11-25, rev 0.4): ES ships**, with the narrow GNG-0 ES-only contingency (§B4
+  GNG-0). P-3 confirms the final ES text.
 - Footer labels: "Privacy choices" / "Choix de confidentialité" / "Opciones de privacidad" (`en.ts:49`, `fr.ts:49`,
   `es.ts:50`).
 - **Production pages (fact, A0.4 `A0-privacy-20261119-1150.json`, 2026-11-19).** rev 0.2.2's assumption that they
@@ -400,6 +479,8 @@ F-1).
   `$RB/canonical-site.txt`. The apex redirects to it with a 307 (D3, A0.3).
 - **O-2. Closed (fact, A0.4).** All three production privacy pages hold the Version A (GA) §5, dated 3 December 2026
   (F-14).
+- **O-3. Closed (decided by Mauricio, 2026-11-25, review 3f).** `NEXT_PUBLIC_GA_ID` was also set in the Vercel
+  **Development** scope (F-13). It is removed from that scope. Nothing in this runbook reads it.
 
 ## Design
 
@@ -414,6 +495,8 @@ Each step starts only after the previous one passes.
    - A dump taken earlier would not contain them. The rehearsal would then abort at the first missing translation
      (`load-content.php:186-189`), or would differ from production.
    - **The production content freeze starts at RH-1 and ends at C-14.**
+   - **No Production promote or redeploy in Vercel before C-13** (R-15; rev 0.4). The live Production deployment must
+     stay the one recorded at C-0; C-13 step 1 re-reads it.
 6. **§B3 RH-2 … RH-6:** the rehearsal on the copy; the Expected table; the equality read-back.
 7. **GNG-0** (Tue 12-01).
 8. **Part C** (Thu 12-03).
@@ -668,7 +751,7 @@ Rules behind the values:
 4. Batch 2, then check.
 5. **Pilot gate J:** item 10 `PASS`, rows equal to EN including `images`, `dup_of none`.
 6. Batch 3, then check.
-7. Batch 4, then check. **FR is complete** (Plan B never depends on ES).
+7. Batch 4, then check. **FR is complete** (FR never depends on ES).
 8. ES backup.
 9. Batch 5, then check.
 10. Batch 6, then check. Send the final file to the Architect.
@@ -755,6 +838,20 @@ sg "wp eval-file -" < "$RB/inventory.php" | grep '^media ' | tee "$RB/B1-media-$
 - an attachment shows language fr / es: delete it and re-upload in English.
 
 Rollback: Media → delete the uploaded attachments **permanently**, or restore `prod-media-before-…`.
+
+**§B1 result (measured by Mauricio; rev 0.4, review 3b).** The 10 release media exist with their EN IDs and no
+EN-side duplicates. Attachment counts in production:
+
+| Point | Attachments | Max ID |
+|---|---:|---:|
+| A0 (before Part A, F-1) | 186 | 528 |
+| After Part A (2026-11-19) | 234 | 684 |
+| After §B1, and today (2026-11-25) | 288 | 750 |
+
+- **Part A +48: explained.** WPML creates attachment translations for the project images as the path-J posts are
+  created.
+- **§B1 +54 where 30 were expected** (10 files × 3 languages). **Open: +24 in §B1, cause unknown.** Nothing references
+  the extra records. Recorded, no action before release (Post-release list PR-2).
 
 #### B2. Loader production mode (Dev; D-R2 approved with conditions)
 Change only the host guard of `scripts/phase-5c/load-content.php` (`:37-41` and the header comment `:1-17`).
@@ -913,12 +1010,22 @@ In the rehearsal shell, the loader is `wp eval-file "$RB/rehearsal/$SHA/scripts/
 
 **RH-7** Keep the rehearsal site until 12-10, then delete it (it holds production user data).
 
+**§B3 result (rev 0.4; RH-6 section of `docs/reports/release-runbook.md`, 2026-11-25): PASS, 0 mismatches.**
+- 762 loaded values = the content files; 969 leaves rehearsal = local (except IDs); FR/ES home 3 / 2; Trépied 3/4/6;
+  `display_order` 10 / 20 / 40 on all nine projects; titles; home, Services and project media by EN-original file name.
+- Run in release order after a second pass: the first-pass `RH-C8-*` / `RH-C9-*` files ran without C-7 and are
+  superseded; every figure comes from the restored post-C-6 state with C-7, C-8b and C-9b.
+- **Conditions (EIGHT):** PHP **8.2.35** against production's 8.2.36 (D1), and **without `sg-ai-studio`** (D4).
+- **Raw-only difference (EIGHT):** 20 FR `wysiwyg` values where local renders the apostrophe as `&rsquo;` and the
+  rehearsal as `&#8217;`. That is wptexturize render output, not stored content, and the 5c-rest AC-7 normalization
+  removes it. Any release-day comparison (G-2, V-4) uses the same normalization.
+
 #### B4. Other preparation (go/no-go inputs)
 
 | # | Item | Who | By | Done when |
 |---|---|---|---|---|
 | P-1 | rev 0.3 Approved (D-R6 reviewed, IDs filled) | Mauricio + Senior Architect | Thu 11-19 or Fri 11-20 (before Part A) | Status Approved |
-| P-2 | 5f launch ACs on the Preview with `G-N2YZ6SG2WM`; GA Developer-traffic filter **Active** ≥ 36 h before (5f D-F4) | Mauricio | Sun 11-29 | 5f AC-L1/L2/L3 Preview recorded |
+| P-2 | 5f launch ACs on the Preview with `G-N2YZ6SG2WM`; GA Developer-traffic filter **Active** ≥ 36 h before (5f D-F4). **Partly closed (rev 0.4, reported by Mauricio 2026-11-25):** the GA **Internal Traffic** and **Developer Traffic** data filters exist with state **Active**, and the internal-traffic IP rule is published. **Remaining:** the 5f launch ACs AC-L1 / AC-L2 / AC-L3 on the Preview | Mauricio | Sun 11-29 | 5f AC-L1/L2/L3 Preview recorded |
 | P-3 | Privacy (G-1…G-7; G-8 for ES), for every locale to enable: the production Version A text (F-14) confirmed as the final Notion text; the **Version B §5** ready (needed only for GA-off, C-10); for a 12-10 release, the corrected effective and last-updated dates ready (R-14) | Mauricio | Mon 11-30 | texts ready |
 | P-4 | 5c-rest AC-10 (FR-CA / ES approval) closed | Mauricio | Mon 11-30 | recorded in the 5c-rest report |
 | P-5 | Release deployment: every launch PR merged with its preview checked (WORKFLOW); the `master` deployment ID noted | Mauricio | Mon 11-30 | ID in `notes.md` |
@@ -934,19 +1041,49 @@ paths.
 
 **GNG-0, Tue 12-01:**
 - Part A PASS, §B1 done, B2 merged;
-- **RH-6 0 mismatches**;
-- P-1 … P-5 done;
-- G-8 decided (`ENABLED_LOCALES` = `en,fr,es` or `en,fr`);
+- **RH-6 0 mismatches** (met 2026-11-25, rev 0.4);
+- P-1 … P-5 done, and rev 0.4 approved;
+- G-8: **decided** (Mauricio, 2026-11-25, rev 0.4). ES ships; `ENABLED_LOCALES` = `en,fr,es`, subject only to the
+  ES-only contingency below;
 - 5e in or out (G-4b if in);
 - the effective date holds. The production privacy pages already say **3 December 2026** (F-14). On a 12-10 release,
   C-10 must correct the dates in all three pages before C-13 (R-14).
 
 Any "no": release moves to Thu 12-10. **No Part C write happens before GNG-0.**
 
+**GNG-0 ES-only contingency (decided by Mauricio, 2026-11-25; review 3d).** Spanish remains the plan of record.
+- **Condition:** every other GNG-0 input passes, and the **only** blocker is ES: P-3's ES privacy text or P-4's ES copy
+  approval.
+- **Then:** the release still goes on **Thu 12-03 with `ENABLED_LOCALES` = `en,fr`**. ES is enabled in a later
+  deployment once its inputs close. Mauricio records the contingency and its reason in `notes.md` at GNG-0.
+- **Any non-ES blocker** still moves the whole release to 12-10.
+- What changes on 12-03 if it is invoked: C-11 sets `en,fr` in Production **and Preview** (so C-12 previews what is
+  promoted); C-9 still runs (D-R8); in V-2 the 10 `/es` URLs return **404**; V-6 covers EN and FR only.
+- This is a GNG-0 contingency, not a restored Plan B: C-11's default stays `en,fr,es`.
+
 ### Part C — release day (Thu 12-03)
 - Quiet window, at a low-traffic hour.
 - Outputs: `| tee "$RB/C<n>-<what>.txt"`.
-- **"Expected" = the RH-6 table.**
+- **"Expected" = the RH-6 table** (report section "Expected table"; per-post lines there). The totals, measured on the
+  production copy in release order (rev 0.4), replace every local-derived expectation:
+
+  | Step | Expected total | Other |
+  |---|---|---|
+  | C-4 EN dry-run | 186 changes, 11 appended, 38 unchanged | 11 `+ append` |
+  | C-6 EN dry-run | as C-4 | the probe line differs from C-4's (C-5 `display_order` Copy; report "C-5 probe drift") |
+  | C-6 EN run | 66 fields written, 186 changes, 11 appended; every read-back line `ok` | **exits non-zero:** probe `FAIL` per the C-6 exception |
+  | C-6 dry-run 2 | 0 / 0, 237 unchanged | terminal observation, no output file; corroborated by `RH-C7-en-dryrun2.txt` |
+  | C-7 EN dry-run | 8 changes, 0 appended, 229 unchanged | services only: `intro_body_html` + 7 `description_html` |
+  | C-7 EN run | 2 fields written, 8 changes, 0 appended, read-back ok | probe identical |
+  | C-7 dry-run 2 | 0 / 0, 237 unchanged | |
+  | C-8 FR dry-run | 189 changes, 9 appended, 42 unchanged | 9 `+ append`; 10 `↺ copy-sync`; 41 `media ok`, 0 WARN |
+  | C-8 FR run | 72 fields, 189 changes, 9 appended, read-back ok | probe identical |
+  | C-8 dry-run 2 | 0 / 0, 240 unchanged | |
+  | C-9 ES dry-run | 188 changes, 9 appended, 43 unchanged | as FR (ES home 29 / 7 against FR 30 / 6) |
+  | C-9 ES run | 72 fields, 188 changes, 9 appended, read-back ok | probe identical |
+  | C-9 dry-run 2 | 0 / 0, 240 unchanged | |
+
+  Media IDs on release day are production's own; compare counts and `media ok` against `WARN`, not IDs.
 - **⚠** marks irreversible effects.
 
 Helpers (every new terminal, after the common setup):
@@ -1131,13 +1268,25 @@ Expected-but-odd states, like the empty third card until C-6, are not "broken". 
 **C-6 EN load (≈ 20 min). ⚠ The live EN body copy changes.**
 1. `B=prod-release-en-$(date +%Y%m%d-%H%M).sql; dump $B`
 2. `load lang=en dry-run` = Expected C-6. Cross-check: 11 `+ append` lines, no `media WARN`.
-3. `load lang=en backup=$BK/$B`. Expected: `all read back ok`, `(appended)` marks, the probe unchanged.
+3. `load lang=en backup=$BK/$B`. Expected: 66 `wrote` lines, every read-back line `ok`, `(appended)` marks.
+   **This step exits non-zero, and that is expected (rev 0.4):** it ends with `FAIL values of fr/es posts changed`
+   and `Error: 1 read-back check(s) failed. Restore with: …`. Cause: WPML Copy carries the seven `serviceGroup`
+   values and the Packages `sections` counter to FR/ES as the EN load writes them (F-11; RH-6 report "C-6 probe").
+   **Do not run the printed `Restore with:` hint** when the C-6 exception below holds.
 4. Flush both caches.
-5. `load lang=en dry-run` → `0 changes (0 appended rows)`.
+5. `load lang=en dry-run` → `0 changes (0 appended rows)`, 237 unchanged.
+
+**C-6 exception: continue** if, and only if, all of these hold:
+1. the only `FAIL` line is `values of fr/es posts changed`;
+2. every read-back line is `ok`;
+3. the probe delta is **exactly**: `page/services/fr` and `page/services/es` 85 → 92; `page/packages/fr` and
+   `page/packages/es` 71 → 72; the other 14 entries byte-identical. IDs and hashes are production's own: compare which
+   entries changed and their counts;
+4. step 5 prints `0 changes (0 appended rows)` on every post.
 
 | | |
 |---|---|
-| Stop if | totals ≠ Expected, an abort, a read-back failure (`:545`), a probe change, or the second dry-run ≠ 0. |
+| Stop if | totals ≠ Expected, an abort, a read-back failure other than the C-6 exception, **any probe change other than the exact delta above** (another entry, another count, or a hash change on an entry whose count didn't change), or the second dry-run ≠ 0. |
 | Rollback | Restore `$B`, or B0. |
 
 **C-7 Services images and icons (D-7 B; admin, ≈ 25 min).**
@@ -1163,10 +1312,16 @@ Expected-but-odd states, like the empty third card until C-6, are not "broken". 
    - `load lang=en backup=$BK/prod-release-svcmedia-….sql`;
    - flush;
    - dry-run → 0 / 0.
+6. **Probe (rev 0.4):** the C-7 load's probe baseline is its own "before" line, taken fresh. It is **not** compared with
+   C-6's "after": the step 2 save copies the 14 Services media IDs to FR 582 / ES 644, so the FR/ES Services hash
+   changes between C-6 and C-7 while the count stays 92 (F-10). The C-7 load itself must leave the probe
+   byte-identical (rehearsal: identical).
+   The step 2 save also adds empty Copy meta and drops two Yoast analysis keys (F-10); a meta diff shows them, and they
+   are not a stop.
 
 | | |
 |---|---|
-| Stop if | a `media WARN`, or any change ≠ Expected. |
+| Stop if | a `media WARN`, any change ≠ Expected, or any probe change during the C-7 load. |
 | Rollback | Restore `prod-release-svcmedia-…`. |
 
 **G-2 (EN complete).** All of these must hold:
@@ -1179,14 +1334,14 @@ Expected-but-odd states, like the empty third card until C-6, are not "broken". 
 
 **C-8 FR load (≈ 20 min; invisible).** The C-6 sequence with `lang=fr`:
 1. dump `prod-release-fr-…`;
-2. dry-run = Expected C-8 (11 `+ append`, `↺ copy-sync`, no `media WARN`);
+2. dry-run = Expected C-8 (**9** `+ append`, 10 `↺ copy-sync`, no `media WARN`; F-11 rev 0.4);
 3. run, flush;
 4. dry-run 0 / 0;
 5. check-translations fr 6/6.
 
 Rollback: restore `prod-release-fr-…`. EN is unaffected (the probe shows it).
 
-**C-9 ES load (≈ 20 min; invisible; D-R8: also run if ES isn't enabled).** The same with `lang=es`. Rollback:
+**C-9 ES load (≈ 20 min; invisible; D-R8).** The same with `lang=es`; Expected C-9 (9 `+ append`). Rollback:
 restore `prod-release-es-…`.
 
 **C-10 Privacy §5: verify; edit only for GA-off or a 12-10 release (≈ 5 min verify; ≈ 15 min with an edit).**
@@ -1196,7 +1351,7 @@ The production pages already carry the Version A (GA) §5, dated 3 December 2026
    text; no "BORRADOR" / "DRAFT"; dates = G-3 (3 December 2026). **No edit.**
 2. Edit only in these cases. In admin, open that locale's privacy page, change only what the case requires, using
    the **final Notion** text (P-3), and Update once. FR/ES admin edits are allowed here (privacy §6).
-   - **GA off (Plan B / Version B):** replace §5 with the Version B §5. Otherwise the policy describes analytics that
+   - **GA off (Version B):** replace §5 with the Version B §5. Otherwise the policy describes analytics that
      don't run.
    - **Release on 12-10:** correct the effective date and the last-updated date in **all three** pages (R-14). They
      are corrected here, inside the window and after B0, so the content freeze (RH-1 → C-14) holds and an abort's B0
@@ -1208,20 +1363,28 @@ the 5 h limit are unchanged; a GA-off or 12-10 release keeps ≈ 15 min.
 
 | | |
 |---|---|
-| Stop if | the text can't be made right. Then launch as Version B: §5 → Version B (step 2) and no GA ID in C-11 (5f §9). On 12-10, dates that can't be corrected → abort path (§C-R0). |
+| Stop if | the text can't be made right. Then launch as Version B: §5 → Version B (step 2) and **unset** `NEXT_PUBLIC_GA_ID` in Production and Preview at C-11 (it is already set, F-13; 5f §9 `phase-5f-analytics-consent.md:334`). On 12-10, dates that can't be corrected → abort path (§C-R0). |
 | Rollback | WP revisions. |
 
-**C-11 Vercel env (≈ 10 min).** Settings → Environment Variables.
+**C-11 Vercel env (≈ 10 min).** Settings → Environment Variables. First write the current Production and Preview
+values of `ENABLED_LOCALES` and `NEXT_PUBLIC_GA_ID` in `notes.md`: they are the restore values (§C-R0).
 1. **Production:**
-   - `ENABLED_LOCALES` `en` → `en,fr,es` (Plan B: `en,fr`);
-   - `NEXT_PUBLIC_GA_ID` unset → `G-N2YZ6SG2WM` (GA-on only).
-2. Preview: the same `ENABLED_LOCALES`; the GA ID is already set (F-13).
+   - `ENABLED_LOCALES` `en` → **`en,fr,es`** (G-8, rev 0.4; no alternative value, unless GNG-0 recorded the ES-only
+     contingency, §B4). If it doesn't read `en` before the
+     change, record it and tell the Architect before continuing;
+   - `NEXT_PUBLIC_GA_ID`: **verify** that it is set and equals `G-N2YZ6SG2WM` (already set, F-13). No change. Missing or
+     different → stop; Mauricio decides the value before C-12;
+   - **GA off only** (C-10 "Stop if"): **unset** it. Left set, the build would ship the tag and banner under a Version B
+     policy.
+2. **Preview:** verify `ENABLED_LOCALES` = `en,fr,es` (already set, F-13; no change) and the GA ID = the Production
+   value. **GA off only:** unset it here too, so C-12 previews the configuration that will be promoted (5f §9 `:334`).
 3. `ALLOW_UNTRANSLATED_LOCALES` is absent in every scope.
 4. "Automatically expose System Environment Variables" is on.
 
-Rollback: restore the previous values (nothing is built yet).
+Rollback: restore the `notes.md` values (nothing is built yet).
 
-**C-12 Release preview check (≈ 30 min). Gate G-3.**
+**C-12 Release preview check (≈ 30 min). Gate G-3.** Preview `ENABLED_LOCALES` is `en,fr,es` (F-13), so this preview
+exercises the FR and ES routes.
 1. The release `master` deployment (P-5) → **Redeploy** in Preview → Ready. Record the ID.
 2. Build log: no TODO error; prerendered `/en|fr|es/projects/{3 slugs}` and `/…/privacy-policy` per enabled locale.
 3. On the preview URL, second pass ≥ 60 s: V-2 … V-6 and 5f AC-L2 Preview.
@@ -1229,15 +1392,32 @@ Rollback: restore the previous values (nothing is built yet).
 **G-3:** pass → promote. Fail → fix, or §C-R. **No promote on a failed preview.**
 
 **C-13 Promote (≈ 15 min). ⚠ The release is public.**
-1. That deployment → **⋯ → Promote to Production**. Vercel rebuilds it with Production env (F-13).
-2. Ready → record the **new** ID, the commit and the time.
+1. **Immediately before promoting:** re-read the current Production deployment ID in Vercel. It must equal the C-0
+   ID in `notes.md`. Different → **stop** and tell the Architect: an unplanned Production build ran (R-15), and the
+   C-0 Instant Rollback target is in question.
+2. That deployment → **⋯ → Promote to Production**. Vercel rebuilds it with Production env (F-13).
+3. Ready → record the **new** ID, the commit and the time.
 
 ⚠ Public FR/ES and new EN pages; GA collects after Accept.
 
 **C-14 Post-promote verification (≈ 45-60 min). Gate G-4.** On `$SITE`, second pass ≥ 60 s after Ready.
+
+**C-14.1 Hero alt fix (≈ 1 min; first, before the V-checks; not a G-4 box; review 3c).** Attachment 748
+(`magneto-hero-phone-1.png`, the home hero, §B1 M-1) carries "Illustration of a website problem being repaired", the
+alt text of `magneto-fix` (M-6). F-7 / M-1 require an empty alt (confirmed with
+`wp post meta get 748 _wp_attachment_image_alt`; found in the rehearsal). The Hero renders the CMS `altText`
+(`Hero/index.tsx:96`), so from the promote a screen reader announces the hero as a website being repaired. It runs
+after C-13, outside the C-3 → C-13 window and after the last load, so no Expected is affected; it is the one planned
+content edit inside the RH-1 → C-14 freeze.
+1. `sg "wp post meta update 748 _wp_attachment_image_alt ''"`, then flush both caches.
+2. Read-back: `sg "wp post meta get 748 _wp_attachment_image_alt"` prints an empty line.
+3. FR/ES copies: `sg "wp eval-file -" < "$RB/inventory.php" | grep '^media magneto-hero-phone-1.png'`. For each FR/ES
+   ID listed, run step 2 with that ID. A non-empty alt → record it and tell the Architect (don't change it unasked).
+4. Rollback: step 1 with the old text.
+It doesn't block G-4.
 - [ ] **V-1** Production build of the release commit; per-locale prerendered paths in the log; ID recorded (5f AC-L1).
 - [ ] **V-2** **200** for `/`, `/fr`, `/es` and, under each prefix, `services`, `packages`, `projects`,
-  `about-magneto`, `contact`, `privacy-policy` and the 3 cases (30 URLs; under Plan B the 10 `/es` URLs return 404 instead). **404** for
+  `about-magneto`, `contact`, `privacy-policy` and the 3 cases (30 URLs). **404** for
   `/esto-no-existe`, `/fr/esto-no-existe`, `/en/services`.
   ```bash
   for p in "" /fr /es; do for r in "" /services /packages /projects /about-magneto /contact /privacy-policy /projects/fashion-company-ecommerce /projects/shamaniccas-ecommerce /projects/trepied-trepied-ca; do u="$p$r"; [ -z "$u" ] && u=/; curl -s -o /dev/null -w "%{http_code} $u\n" "$SITE$u"; done; done; for u in /esto-no-existe /fr/esto-no-existe /en/services; do curl -s -o /dev/null -w "%{http_code} $u\n" "$SITE$u"; done
@@ -1256,6 +1436,11 @@ Rollback: restore the previous values (nothing is built yet).
   - the Services images and icons;
   - the grid order Dangel → Shamanicca → Trépied;
   - no horizontal scroll.
+
+  **Media IDs differ by environment, by design (rev 0.4).** On the production copy the FR/ES Services rows point at the
+  EN attachments themselves (739, 694, …); locally they point at translated attachment copies. Both resolve to the same
+  EN-original file, which is what the site renders (`src/utils/wp-media.ts`). A release-day ID comparison against local
+  is not a defect; compare by EN-original file name.
 - [ ] **V-6** D-L: privacy §7 items 1-5 (6 if 5e) per enabled locale.
 - [ ] **V-7** 5f AC-L1 / AC-L2 Production (no analytics host before Accept; no debug marker; the visit in Realtime;
   Reject → no collection); AC-L3 iPhone.
@@ -1280,8 +1465,10 @@ cancels the release**, and can be chosen at any gate or stop.
 1. **Frontend:**
    - before C-13: do nothing; the old frontend stays promoted;
    - after C-13: Vercel → **Instant Rollback** to the C-0 deployment ID (no rebuild).
-2. **Vercel env:** if C-11 ran, set Production (and Preview) `ENABLED_LOCALES` back to `en` and **unset** Production
-   `NEXT_PUBLIC_GA_ID`, using the values in `notes.md`.
+2. **Vercel env:** if C-11 ran, restore the pre-C-11 values written in `notes.md` at C-11. Per F-13 (rev 0.4) these
+   are: Production `ENABLED_LOCALES` = `en`; Preview `en,fr,es`; `NEXT_PUBLIC_GA_ID` set in every scope. So the ID
+   stays set (or is set back, if C-11 unset it for GA off); rev 0.3's "unset Production `NEXT_PUBLIC_GA_ID`" restored
+   nothing and is removed. A set ID collects nothing while the C-0 build is promoted (F-13).
    - Instant Rollback doesn't read the env, so this is for the next build.
 3. **CMS:** if any write ran (from C-3), **restore B0** (Restore, §C), then flush both caches. This reverts:
    - the home, titles and `display_order`;
@@ -1312,7 +1499,7 @@ cancels the release**, and can be chosen at any gate or stop.
 | G-3 (C-12) | + privacy edit, env changed, preview built; nothing new public | 2, 3, 4, 5 | **cheap**: ≈ 30 min |
 | G-4 (C-14) | + public FR/ES and new EN; GA collecting | 1, 2, 3, 4, 5 | **expensive**: ≈ 45 min. ⚠ crawled FR/ES URLs return 404; GA hits stay (see the GA row) |
 
-**After C-13, prefer a targeted rollback** (Plan B locale, GA reverse order) if only one part is wrong. Abort fully if
+**After C-13, prefer a targeted rollback** (drop one locale, GA reverse order) if only one part is wrong. Abort fully if
 the EN experience is broken.
 
 #### C-R. Rollback matrix (D-R6: approved 2026-11-19, with C-3a, §C-R0 and the GA deletion note)
@@ -1322,7 +1509,7 @@ the EN experience is broken.
 | Before C-3 | anything | stop | nothing changed |
 | C-3 … C-9 | a stop condition | restore that step's dump, or B0 | live EN back to the dump's state. ⚠ visitors already saw the intermediate EN |
 | C-10 … C-12 | privacy, env or preview fails | fix within the window limit (C-3a), or restore env values; no promote | the live old frontend shows the new EN CMS values. Beyond the limit → abort path (§C-R0) |
-| After C-13 | FR or ES only broken | Plan B: `ENABLED_LOCALES` without that locale → redeploy → promote (minutes) | ⚠ already-crawled FR/ES URLs return 404 |
+| After C-13 | FR or ES only broken | drop that locale: Production `ENABLED_LOCALES` without it (`en,es` or `en,fr`) → redeploy → promote (minutes). A targeted production fix, not a launch option (Plan B withdrawn, rev 0.4) | ⚠ already-crawled FR/ES URLs return 404 |
 | After C-13 | frontend broken | **Instant Rollback** to the C-0 deployment (no rebuild) | old frontend + new EN CMS values |
 | After C-13 | GA wrong | 5f §9 reverse order: unset the ID → redeploy → verify → §5 to Version B. Then, if hits must go: GA **Admin → Data collection and modification → Data deletion requests** (Editor role; by date range) | ⚠ collected hits stay in GA until deleted. **A deletion request is slow:** Google states a grace period before it starts and a completion time measured in weeks, so check Google's current documentation when you file it. **Law 25:** hits collected without valid consent are a collection the policy didn't announce. Record the facts (dates, scope, request ID) and decide on deletion and any incident-register entry with that in mind; that decision is not the Architect's |
 | After C-13 | content broken in EN | Instant Rollback **and** restore B0 | the full pre-release state; every release-day CMS change is lost |
@@ -1345,6 +1532,11 @@ the EN experience is broken.
 | G-2 | after C-7 | EN complete |
 | G-3 | C-12 | preview check |
 | G-4 | C-14 | post-promote verification |
+
+#### Post-release list (rev 0.4; not release-day gates)
+- **PR-2, §B1 attachments (§B1 result).** +24 in §B1 beyond the 30 expected, cause unknown; nothing references them.
+  Investigate, then clean up at most, after a backup. No release-day action.
+- (The hero alt fix, first listed here as PR-1, is now C-14.1.)
 
 ## Files the Dev may touch
 - `scripts/phase-5c/load-content.php`: the host-guard block and the header comment only (§B2). Every other guard is
@@ -1391,9 +1583,17 @@ Anything else is out of scope:
 - [ ] AC-B2-3: the stub-harness integration proof (`writes=0` on a guard abort); `php -l` clean; the completion gate
   passes with lint ≤ 65 / 76.
 - [ ] AC-B2-4: Mauricio's local dry-runs `lang=en|fr|es` → `0 changes (0 appended rows)`.
-- [ ] AC-B3-1: RH-4's three real-WordPress proofs, as expected.
-- [ ] AC-B3-2: RH-5 C-1 … C-9 pass on the rehearsal site, every loader step ending in `0 changes (0 appended rows)`.
-- [ ] AC-B3-3: RH-6 Expected table complete; the read-back against local has 0 mismatches.
+- [x] AC-B3-1: RH-4's three real-WordPress proofs, as expected. **Met (rev 0.4, review 3a):** in
+  `~/Documents/projects/magneto/backups/release/rehearsal/`: `RH-C4-guard-notarget.txt` (no target → abort: `home_url`
+  is `magneto-prod-rehearsal.local`, expected `magneto-cms-2.local`) and `RH-C4-guard-production.txt`
+  (`target=production` → abort: expected `cms.magnetomarketing.co`); the `target=rehearsal` runs (every `RH-C*` file)
+  prove case 3.
+- [x] AC-B3-2: RH-5 C-1 … C-9 pass on the rehearsal site, every loader step ending in `0 changes (0 appended rows)`.
+  **Met (rev 0.4):** RH-6 report "Expected table": `RH-C7-en-dryrun2`, `RH-C8b-fr-dryrun2`, `RH-C9b-es-dryrun2` 0 / 0;
+  the C-6 second dry-run 0 / 0 by terminal observation (no file), corroborated by `RH-C7-en-dryrun2`. C-6's non-zero
+  exit is the C-6 exception.
+- [x] AC-B3-3: RH-6 Expected table complete; the read-back against local has 0 mismatches. **Met (rev 0.4):** RH-6
+  report "RH-6 result": 762 values and 969 leaves, 0 mismatches (20 raw-only, normalized).
 
 **Part C:**
 - [ ] AC-C1: G-1 … G-4 recorded with times.
@@ -1451,7 +1651,14 @@ Anything else is out of scope:
   - Rationale: the rev 0.2.2 wording ("stop if anything differs") turned a routine hosting update into a
     cancellation. SiteGround already raised the PHP patch once without notice (D1).
 
-**Open:** none. rev 0.3 is a fill-in (A0 values); its one decision, D-R10, is already taken.
+- **G-8: decided (Mauricio, 2026-11-25, rev 0.4). Spanish ships; Plan B (EN + FR launch) withdrawn.** C-11 sets
+  `en,fr,es`. Dropping one locale stays available after C-13 as a targeted rollback (§C-R). **Amended at review (3d):**
+  the GNG-0 ES-only contingency (§B4 GNG-0).
+- **O-3 (review 3f):** the GA ID is removed from the Vercel Development scope.
+- **C-6 probe exception (rev 0.4; Mauricio's brief):** accepted as the measured behaviour of WPML Copy; no loader
+  change before the release.
+
+**Open:** none. rev 0.3 was a fill-in (A0 values); its one decision, D-R10, is already taken.
 
 No ADR is needed:
 - no new dependency, routing or data-model change;
@@ -1473,8 +1680,9 @@ No ADR is needed:
 | R-10 | The WPML "moved / copy" prompt on the clone touches the production registration | RH-2 step 4: always "copy"; never register or unregister; STOP if unclear |
 | R-11 | Part A slips past Sun 11-22 | FR first; small batches; re-check the 12-10 trigger |
 | R-12 | B2 or the rehearsal compete with 5e (Mon 11-23 – Tue 11-24) for time | B2 ≈ 2 h; order agreed at P-1 |
-| R-13 | ES privacy or labels not final (G-8) | Plan B at GNG-0 |
+| R-13 | ES privacy or labels not final at GNG-0 | G-8 decided (ES ships, rev 0.4); Plan B withdrawn. If ES is the only GNG-0 blocker → the ES-only contingency (§B4 GNG-0). After C-13 an ES-only fault → drop the locale (§C-R) |
 | R-14 | The production privacy pages already state an effective and last-updated date of 3 December 2026 (F-14). On a 12-10 release the published policy would carry a date earlier than its own release | GNG-0 input; C-10 step 2 corrects the dates in all three pages before C-13; §C-R0 step 5; dates ready in P-3 |
+| R-15 | `NEXT_PUBLIC_GA_ID` is already set in Production (F-13, rev 0.4): any Production build of a post-5f commit before C-13 (an unplanned promote or redeploy) ships the GA tag and banner with `ENABLED_LOCALES` = `en` | **Fact:** on 2026-11-19 a Production build ran that Mauricio did not trigger, rebuilding the Phase 4 commit `55d4350`; its cause was never established (F-13). So: merging doesn't publish (WORKFLOW "Release process"); an explicit **no Production promote or redeploy before C-13** (Order of operations); C-0 records the live deployment ID, and **C-13 step 1 re-reads it immediately before the promote** |
 
 ## Estimate
 
